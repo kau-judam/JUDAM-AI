@@ -125,3 +125,43 @@ pytest tests/ -v
 - .env 파일은 절대 커밋하지 마세요
 - 앙커 데이터는 실제 시음 기반으로 입력해야 합니다
 - 외부 API 호출은 Mock 테스트 먼저 진행하세요
+
+## 백엔드 연동
+
+백엔드 Node.js 서버와의 연동 방법은 [BACKEND_INTEGRATION.md](BACKEND_INTEGRATION.md)를 참고하세요.
+
+### 연동 방식
+- **공유 DB 방식**: 백엔드와 AI 서버가 동일한 PostgreSQL DB 공유
+- **API 통신**: 백엔드가 AI 서버 API 호출
+
+### 데이터베이스 구조
+- `users`: 사용자 정보
+- `drinks`: 전통주 정보 (맛 벡터 포함)
+- `user_taste_history`: 취향 히스토리
+- `recommendations`: 추천 기록
+- `food_pairings`: 음식 페어링
+
+## AWS 배포
+
+AWS EC2 배포 방법은 [DEPLOYMENT.md](DEPLOYMENT.md)를 참고하세요.
+
+### 배포 구성
+- **EC2**: Ubuntu 22.04 LTS, t3.medium 이상
+- **RDS**: PostgreSQL 15.x
+- **ElastiCache**: Redis (선택사항)
+- **Nginx**: 리버스 프록시
+- **Supervisor**: 프로세스 관리
+
+### 예상 비용
+- EC2: 약 $30/월
+- RDS: 약 $15/월
+- ElastiCache: 약 $20/월
+- **합계**: 약 $65/월
+
+## 문서
+
+- [API_GUIDE.md](API_GUIDE.md) - API 상세 가이드
+- [BACKEND_INTEGRATION.md](BACKEND_INTEGRATION.md) - 백엔드 연동 가이드
+- [DEPLOYMENT.md](DEPLOYMENT.md) - AWS 배포 가이드
+- [SKILL.md](SKILL.md) - AI 서버 설계 원칙
+- [CLAUDE.md](CLAUDE.md) - Claude Code 설정
