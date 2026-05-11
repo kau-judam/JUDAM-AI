@@ -6,6 +6,7 @@
 import json
 import logging
 import math
+import asyncio
 from pathlib import Path
 from typing import List, Dict, Optional
 from datetime import datetime
@@ -21,6 +22,8 @@ class AdvancedMakgeolliRecommender:
     def __init__(self, data_file: str = "data/processed/makgeolli_with_vectors.json"):
         self.data_file = Path(data_file)
         self.drinks = []
+        self.db = None  # DB 연결 (나중에 설정)
+        self.db_connected = False
         self.load_data()
 
         # 사용자 취향 히스토리 (취향 진화 트래킹)
@@ -40,12 +43,95 @@ class AdvancedMakgeolliRecommender:
             '김치찌개': ['이동 생 쌀 막걸리', '오산막걸리', '연천 아주']
         }
 
+    def set_db(self, db):
+        """DB 연결 설정"""
+        self.db = db
+        self.db_connected = db is not None and db.pool is not None
+
+    async def load_data_from_db(self):
+        """DB에서 데이터 로드"""
+        if not self.db or not self.db_connected:
+            logger.warning("DB 연결이 없어 JSON 파일에서 로드합니다")
+            return False
+
+        try:
+            all_drinks = await self.db.get_all_drinks()
+            if all_drinks:
+                self.drinks = all_drinks
+                logger.info(f"DB에서 데이터 로드 완료: {len(self.drinks)}개")
+                return True
+            else:
+                logger.info("DB가 비어있어 JSON 파일에서 로드 후 DB에 저장합니다")
+                return False
+        except Exception as e:
+            logger.error(f"DB 로드 실패: {e}")
+            return False
+
+    async def load_taste_history_from_db(self):
+        """DB에서 취향 히스토리 로드"""
+        if not self.db or not self.db_connected:
+            logger.warning("DB 연결이 없어 히스토리 로드를 건너뜁니다")
+            return
+
+        try:
+            # 모든 사용자의 히스토리 로드
+            query = """
+            SELECT DISTINCT user_id FROM user_taste_history
+            """
+            user_ids = await self.db.fetch(query)
+
+            for user_row in user_ids:
+                user_id = user_row['user_id']
+                history = await self.db.get_user_taste_history(user_id)
+
+                # 메모리에 로드
+                for record in history:
+                    self.user_taste_history[user_id].append({
+                        'drink_id': record['drink_id'],
+                        'drink_name': '',  # DB에는 없으므로 빈 문자열
+                        'rating': record['rating'],
+                        'tags': record.get('tags', []),
+                        'taste_vector': record.get('taste_vector', {}),
+                        'timestamp': record['created_at'].isoformat() if record.get('created_at') else datetime.now().isoformat()
+                    })
+
+            total_records = sum(len(h) for h in self.user_taste_history.values())
+            logger.info(f"DB에서 취향 히스토리 로드 완료: {len(self.user_taste_history)}명 사용자, {total_records}개 기록")
+
+        except Exception as e:
+            logger.error(f"히스토리 로드 실패: {e}")
+
+    async def initialize_db_from_json(self):
+        """JSON 파일에서 DB 초기화"""
+        if not self.db or not self.db_connected:
+            logger.warning("DB 연결이 없어 초기화를 건너뜁니다")
+            return
+
+        try:
+            # 테이블 초기화
+            await self.db.initialize_tables()
+
+            # JSON 파일에서 데이터 로드
+            if self.data_file.exists():
+                with open(self.data_file, 'r', encoding='utf-8') as f:
+                    json_drinks = json.load(f)
+
+                # DB에 삽입
+                for drink in json_drinks:
+                    await self.db.insert_drink(drink)
+
+                logger.info(f"DB 초기화 완료: {len(json_drinks)}개 데이터 삽입")
+            else:
+                logger.warning(f"데이터 파일 없음: {self.data_file}")
+        except Exception as e:
+            logger.error(f"DB 초기화 실패: {e}")
+
     def load_data(self):
-        """데이터 로드"""
+        """데이터 로드 (JSON 파일 fallback)"""
         if self.data_file.exists():
             with open(self.data_file, 'r', encoding='utf-8') as f:
                 self.drinks = json.load(f)
-            logger.info(f"데이터 로드 완료: {len(self.drinks)}개")
+            logger.info(f"JSON 파일에서 데이터 로드 완료: {len(self.drinks)}개")
         else:
             logger.warning(f"데이터 파일 없음: {self.data_file}")
 
@@ -207,7 +293,7 @@ class AdvancedMakgeolliRecommender:
 
         return recommendations[:top_k]
 
-    def update_user_taste(self, user_id: str, drink_id: str, rating: int, tags: List[str] = None):
+    async def update_user_taste(self, user_id: str, drink_id: str, rating: int, tags: List[str] = None):
         """
         사용자 취향 업데이트 (취향 진화 트래킹)
 
@@ -228,7 +314,7 @@ class AdvancedMakgeolliRecommender:
             logger.warning(f"막걸리 찾기 실패: {drink_id}")
             return
 
-        # 취향 히스토리에 추가
+        # 취향 히스토리에 추가 (메모리)
         self.user_taste_history[user_id].append({
             'drink_id': drink_id,
             'drink_name': drink['name'],
@@ -237,6 +323,20 @@ class AdvancedMakgeolliRecommender:
             'taste_vector': drink['taste_vector'],
             'timestamp': datetime.now().isoformat()
         })
+
+        # DB에도 저장
+        if self.db and self.db_connected:
+            try:
+                await self.db.insert_taste_history({
+                    'user_id': user_id,
+                    'drink_id': drink_id,
+                    'rating': rating,
+                    'tags': tags or [],
+                    'taste_vector': drink['taste_vector']
+                })
+                logger.info(f"DB에 취향 히스토리 저장 완료: {user_id} - {drink['name']} ({rating}점)")
+            except Exception as e:
+                logger.error(f"DB 저장 실패: {e}")
 
         logger.info(f"사용자 취향 업데이트: {user_id} - {drink['name']} ({rating}점)")
 

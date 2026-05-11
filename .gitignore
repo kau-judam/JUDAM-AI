@@ -42,7 +42,6 @@ cache/
 
 # Data
 data/raw/*.csv
-data/processed/*.json
 data/anchors.json
 
 # Models

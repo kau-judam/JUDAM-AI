@@ -369,39 +369,62 @@ class LawClient:
                 for article in articles[:5]
             ])
 
-            # 프롬프트 구성
+            # 프롬프트 구성 (강화된 버전)
             prompt = f"""
-다음은 전통주 관련 콘텐츠입니다:
+당신은 전통주 관련 법률 전문가입니다. 다음 콘텐츠를 분석하여 법적 위반 여부를 판단해주세요.
 
+**중요한 판단 원칙:**
+1. 애매한 경우에는 보수적으로 violation: true로 판단하세요
+2. 위반이 명백히 아닌 경우에만 false를 반환하세요
+3. 판단 근거를 관련 법령 조문 번호와 함께 반드시 명시하세요
+4. 과대광고/허위표시는 "숙취 없는", "건강에 좋은", "치료 효과" 등의 표현이 있으면 무조건 위반으로 간주하세요
+5. 미성년자 타겟은 "청소년", "미성년자", "학생" 등의 표현이 있으면 무조건 위반으로 간주하세요
+
+**분석 대상 콘텐츠:**
 제목: {title}
 설명: {description}
 재료: {ingredients}
 콘텐츠 타입: {content_type.value}
 
-관련 법령 조문:
+**관련 법령 조문:**
 {articles_text}
 
-이 콘텐츠가 다음 법적 문제를 일으킬 수 있는지 분석해주세요:
+**Few-shot 예시:**
 
-1. 미성년자 타겟 콘텐츠 (청소년보호법)
-2. 불법/금지 재료 포함 (식품위생법)
-3. 지역특산주 요건 불충족 (전통주등의산업진흥에관한법률)
-4. 과대광고/허위표시 (식품위생법, 표시광고법)
-{'''
-5. 무허가 제조 방법 언급 (주세법)
-6. 도수 표기 비현실적 범위 (주세법)
-7. 상표명 침해 가능성 (상표법)
-8. 펀딩 금융 규제 위반 (자본시장법)
-''' if content_type == ContentType.FUNDING else ''}
+예시 1:
+제목: "숙취 없는 건강 막걸리"
+설명: "숙취가 전혀 없고 건강에 좋은 막걸리"
+재료: "쌀, 누룩, 물"
+결과: {{"violation": true, "category": "과대광고/허위표시", "law": "식품위생법", "reason": "숙취 없다는 표현은 과대광고입니다", "article": "식품위생법 제4조"}}
 
-답변 형식 (JSON):
+예시 2:
+제목: "미성년자용 딸기 막걸리"
+설명: "학생들이 즐길 수 있는 맛있는 막걸리"
+재료: "쌀, 딸기, 누룩, 물"
+결과: {{"violation": true, "category": "미성년자 타겟", "law": "청소년보호법", "reason": "미성년자용 표현은 청소년보호법 위반입니다", "article": "청소년보호법 제6조"}}
+
+예시 3:
+제목: "경기도 쌀 막걸리, 전통 방식으로 제조"
+설명: "경기도산 쌀 100% 사용, 전통 누룩으로 양조"
+재료: "쌀, 누룩, 물"
+결론: {{"violation": false, "category": "", "law": "", "reason": "법적 문제가 없습니다", "article": ""}}
+
+**판단 기준:**
+- 위반이 명백히 아닌 경우에만 false를 반환하세요
+- 애매한 경우에는 반드시 true로 판단하세요
+- 판단 근거를 조문과 함께 반드시 명시하세요
+
+**이제 위 콘텐츠를 분석해주세요:**
+
+답변 형식 (JSON만 반환, 다른 텍스트 없음):
 {{
+  "violation": true 또는 false,
   "violations": [
     {{
       "category": "위반 카테고리",
       "law": "관련 법령",
-      "reason": "위반 이유",
-      "article": "관련 조문"
+      "reason": "위반 이유 (구체적 근거 포함)",
+      "article": "관련 조문 번호"
     }}
   ],
   "recommendation": "수정 권장사항"
@@ -414,31 +437,47 @@ class LawClient:
             # JSON 파싱
             try:
                 import re
-                json_match = re.search(r'\{[^}]+\}', result_text, re.DOTALL)
+                json_match = re.search(r'\{[\s\S]*\}', result_text)
                 if json_match:
                     result_text = json_match.group(0)
 
                 result = json.loads(result_text)
 
+                # violation 필드 확인
+                violation = result.get("violation", False)
+
                 violations = []
-                for v in result.get("violations", []):
-                    violations.append(ViolationDetail(
-                        category=v.get("category", ""),
-                        law=v.get("law", ""),
-                        reason=v.get("reason", ""),
-                        article=v.get("article")
-                    ))
+                if violation:
+                    for v in result.get("violations", []):
+                        violations.append(ViolationDetail(
+                            category=v.get("category", ""),
+                            law=v.get("law", ""),
+                            reason=v.get("reason", ""),
+                            article=v.get("article")
+                        ))
 
                 return violations
 
             except json.JSONDecodeError as e:
                 logger.error(f"JSON 파싱 실패: {e}")
                 logger.error(f"원본 응답: {result_text}")
-                return []
+                # 파싱 실패 시 보수적으로 true 반환
+                return [ViolationDetail(
+                    category="파싱오류",
+                    law="알 수 없음",
+                    reason="분석 실패로 보수적으로 차단합니다",
+                    article=""
+                )]
 
         except Exception as e:
             logger.error(f"Gemini 분석 실패: {e}")
-            return []
+            # 분석 실패 시 보수적으로 true 반환
+            return [ViolationDetail(
+                category="분석오류",
+                law="알 수 없음",
+                reason="분석 실패로 보수적으로 차단합니다",
+                article=""
+            )]
 
     async def filter_content(
         self,
