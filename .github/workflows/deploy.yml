@@ -25,6 +25,7 @@ jobs:
             --comment "Deploy JUDAM AI Server" \
             --parameters 'commands=[
               "set -e",
+              "git config --global --add safe.directory ${{ secrets.AI_PROJECT_DIR }}",
               "cd ${{ secrets.AI_PROJECT_DIR }}",
               "git pull origin main",
               "REGION=\"${{ secrets.AWS_REGION }}\"",
