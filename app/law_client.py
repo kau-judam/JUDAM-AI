@@ -361,7 +361,7 @@ class LawClient:
             import google.generativeai as genai
 
             genai.configure(api_key=self.gemini_api_key)
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            model = genai.GenerativeModel('gemini-2.5-flash')
 
             # 조문 정보를 텍스트로 변환
             articles_text = "\n".join([

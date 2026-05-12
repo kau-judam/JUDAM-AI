@@ -1,4 +1,4 @@
-"""
+﻿"""
 Chat API Endpoint
 Handles user queries with context-aware responses
 """
