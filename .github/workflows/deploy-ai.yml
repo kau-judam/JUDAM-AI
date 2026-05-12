@@ -24,13 +24,29 @@ jobs:
             --document-name "AWS-RunShellScript" \
             --comment "Deploy JUDAM AI server" \
             --parameters 'commands=[
-              "cd ${{ secrets.AI_PROJECT_DIR }}",
-              "git pull origin main",
-              "source venv/bin/activate && pip install -r requirements.txt",
-              "pm2 restart judam-ai-server",
-              "pm2 status",
-              "curl -f http://localhost:8000/health"
-            ]' \
+            "cd ${{ secrets.AI_PROJECT_DIR }}",
+            "git pull origin main",
+            "source venv/bin/activate && pip install -r requirements.txt",
+            "REGION=\"${{ secrets.AWS_REGION }}\"",
+            "PORT=$(aws ssm get-parameter --name \"/judam/ai/PORT\" --region \"$REGION\" --query \"Parameter.Value\" --output text)",
+            "HOST=$(aws ssm get-parameter --name \"/judam/ai/HOST\" --region \"$REGION\" --query \"Parameter.Value\" --output text)",
+            "APP_AWS_REGION=$(aws ssm get-parameter --name \"/judam/ai/AWS_REGION\" --region \"$REGION\" --query \"Parameter.Value\" --output text)",
+            "AWS_SQS_AI_TASK_QUEUE_URL=$(aws ssm get-parameter --name \"/judam/ai/AWS_SQS_AI_TASK_QUEUE_URL\" --region \"$REGION\" --query \"Parameter.Value\" --output text)",
+            "SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id \"judam/ai/secrets\" --region \"$REGION\" --query \"SecretString\" --output text)",
+            "export SECRET_JSON",
+            "GEMINI_API_KEY=$(python3 -c \"import json, os; print(json.loads(os.environ['\''SECRET_JSON'\''])['\''GEMINI_API_KEY'\''])\")",
+            "ENV_TMP=$(mktemp .env.XXXXXX)",
+            "echo \"PORT=$PORT\" > \"$ENV_TMP\"",
+            "echo \"HOST=$HOST\" >> \"$ENV_TMP\"",
+            "echo \"AWS_REGION=$APP_AWS_REGION\" >> \"$ENV_TMP\"",
+            "echo \"AWS_SQS_AI_TASK_QUEUE_URL=$AWS_SQS_AI_TASK_QUEUE_URL\" >> \"$ENV_TMP\"",
+            "echo \"GEMINI_API_KEY=$GEMINI_API_KEY\" >> \"$ENV_TMP\"",
+            "chmod 600 \"$ENV_TMP\"",
+            "mv \"$ENV_TMP\" .env",
+            "pm2 restart judam-ai-server --update-env",
+            "pm2 status",
+            "curl -f http://localhost:8000/health"
+          ]' \
             --query "Command.CommandId" \
             --output text)
 
