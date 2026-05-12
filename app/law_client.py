@@ -1,4 +1,4 @@
-"""
+﻿"""
 국가법령정보센터 API 클라이언트
 전통주 관련 법령 실시간 조회 및 콘텐츠 필터링
 """
@@ -361,7 +361,7 @@ class LawClient:
             import google.generativeai as genai
 
             genai.configure(api_key=self.gemini_api_key)
-            model = genai.GenerativeModel('gemini-1.5-pro')
+            model = genai.GenerativeModel('gemini-1.5-flash')
 
             # 조문 정보를 텍스트로 변환
             articles_text = "\n".join([

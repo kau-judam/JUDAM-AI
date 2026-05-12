@@ -1,7 +1,29 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python *)"
+      "Bash(python *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(curl -s \"https://www.law.go.kr/DRF/lawSearch.do?OC=juddam-ai&target=law&query=청소년보호법&type=JSON&display=5\")",
+      "Bash(rm test_law_filter.py)",
+      "Bash(git add *)",
+      "Bash(curl -s http://localhost:8000/health)",
+      "Bash(curl *)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :8000)",
+      "Bash(Start-Process python *)",
+      "Bash(Start-Sleep -Seconds 10)",
+      "Bash(pkill -f uvicorn)",
+      "Bash(pkill -9 -f uvicorn)",
+      "Bash(pkill -9 -f python)",
+      "Bash(uvicorn app.main:app *)",
+      "PowerShell(uvicorn app.main:app *)",
+      "PowerShell(python -m uvicorn app.main:app --reload --port 8001)",
+      "Bash(taskkill *)",
+      "PowerShell(Stop-Process *)",
+      "Bash(findstr 8000)",
+      "PowerShell(Get-NetTCPConnection *)",
+      "PowerShell(Get-Process *)"
     ]
   }
 }

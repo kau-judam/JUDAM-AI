@@ -204,21 +204,49 @@ class FoodRecommendResponse(BaseModel):
 # ========== 설문 관련 ==========
 
 class SurveyResponse(BaseModel):
-    """술BTI 설문 응답 모델"""
-    sweetness: int = Field(..., ge=0, le=10, description="단맛 선호도 (0~10)")
-    body: int = Field(..., ge=0, le=10, description="바디감 선호도 (0~10)")
-    carbonation: int = Field(..., ge=0, le=10, description="탄산 선호도 (0~10)")
-    flavor: int = Field(..., ge=0, le=10, description="풍미 선호도 (0~10)")
-    alcohol: int = Field(..., ge=0, le=10, description="도수 선호도 (0~10)")
-    preferred_ingredients: List[str] = Field(default_factory=list, description="선호하는 재료")
-    disliked_ingredients: List[str] = Field(default_factory=list, description="싫어하는 재료")
-    preferred_region: str = Field("", max_length=50, description="선호하는 지역")
+    """술BTI 25문항 설문 응답 모델"""
+
+    # q1~q3: 서열척도 (1~5)
+    q1: int = Field(..., ge=1, le=5, description="전통주 경험 수준 (1~5)")
+    q2: int = Field(..., ge=1, le=5, description="선호 도수 수준 (1~5)")
+    q3: int = Field(..., ge=1, le=5, description="선호 바디감/색상 수준 (1~5)")
+
+    # q4~q22: 등간척도 Likert (1~7)
+    q4: int = Field(..., ge=1, le=7, description="단맛 선호도 (1~7)")
+    q5: int = Field(..., ge=1, le=7, description="신맛 선호도 (1~7)")
+    q6: int = Field(..., ge=1, le=7, description="청량감 선호도 (1~7)")
+    q7: int = Field(..., ge=1, le=7, description="과일 향 선호도 (1~7)")
+    q8: int = Field(..., ge=1, le=7, description="여운 선호도 (1~7)")
+    q9: int = Field(..., ge=1, le=7, description="풍미 복잡성 선호도 (1~7)")
+    q10: int = Field(..., ge=1, le=7, description="바디감 선호도 (1~7)")
+    q11: int = Field(..., ge=1, le=7, description="맛의 농도 선호도 (1~7)")
+    q12: int = Field(..., ge=1, le=7, description="도수 내성 (1~7)")
+    q13: int = Field(..., ge=1, le=7, description="알콜 감지 선호도 (1~7)")
+    q14: int = Field(..., ge=1, le=7, description="탄산감 선호도 (1~7)")
+    q15: int = Field(..., ge=1, le=7, description="향기 강도 선호도 (1~7)")
+    q16: int = Field(..., ge=1, le=7, description="꽃향 선호도 (1~7)")
+    q17: int = Field(..., ge=1, le=7, description="허브향 선호도 (1~7)")
+    q18: int = Field(..., ge=1, le=7, description="과일향 선호도 (1~7)")
+    q19: int = Field(..., ge=1, le=7, description="신선한 향 선호도 (1~7)")
+    q20: int = Field(..., ge=1, le=7, description="구수한 향 선호도 (1~7)")
+    q21: int = Field(..., ge=1, le=7, description="알콜 향 선호도 (1~7)")
+    q22: int = Field(..., ge=1, le=7, description="전반적인 맛 강도 선호도 (1~7)")
+
+    # q23: 명목척도 (1~5) - 선호 과일
+    q23: int = Field(..., ge=1, le=5, description="선호 과일 (1~5)")
+
+    # q24: 명목척도 복수선택 - 음식 페어링
+    q24: List[int] = Field(..., description="음식 페어링 선호 (복수선택)")
+
+    # q25: 명목척도 복수선택 - 관심 향
+    q25: List[int] = Field(..., description="관심 향 (복수선택)")
 
 
 class SurveyConvertResponse(BaseModel):
     """설문 변환 응답 모델"""
     status: str
-    taste_vector: TasteVector
+    taste_vector: Dict[str, float]
+    food_pairing: List[str] = []
 
 
 # ========== 법률 필터링 관련 ==========
@@ -307,3 +335,62 @@ class SuccessResponse(BaseModel):
     status: str = "success"
     message: str
     data: Optional[Dict] = None
+
+
+# ========== 술BTI 관련 ==========
+
+class BTITypeRequest(BaseModel):
+    """술BTI 유형 판정 요청 모델"""
+    sweetness: float = Field(..., ge=0, le=10, description="단맛 (0~10)")
+    body: float = Field(..., ge=0, le=10, description="바디감 (0~10)")
+    carbonation: float = Field(..., ge=0, le=10, description="탄산 (0~10)")
+    flavor: float = Field(..., ge=0, le=10, description="풍미 (0~10)")
+
+
+class BTITypeResponse(BaseModel):
+    """술BTI 유형 판정 응답 모델"""
+    code: str
+    character_name: str
+    tags: List[str]
+    recommended_drinks: List[str]
+
+
+# ========== 레시피 관련 ==========
+
+class SubIngredientsRequest(BaseModel):
+    """서브재료 추천 요청 모델"""
+    main_ingredient: str = Field(..., description="메인 재료")
+    region: str = Field(..., description="지역")
+
+
+class SubIngredientsResponse(BaseModel):
+    """서브재료 추천 응답 모델"""
+    sub_ingredients: List[str]
+
+
+class FlavorTagsRequest(BaseModel):
+    """맛 태그 추천 요청 모델"""
+    title: str = Field(..., description="제목")
+    main_ingredient: str = Field(..., description="메인 재료")
+    sub_ingredients: List[str] = Field(default_factory=list, description="서브 재료")
+    abv_range: str = Field(..., description="도수 범위")
+
+
+class FlavorTagsResponse(BaseModel):
+    """맛 태그 추천 응답 모델"""
+    flavor_tags: List[str]
+
+
+class SummaryRequest(BaseModel):
+    """요약문 생성 요청 모델"""
+    title: str = Field(..., description="제목")
+    main_ingredient: str = Field(..., description="메인 재료")
+    sub_ingredients: List[str] = Field(default_factory=list, description="서브 재료")
+    abv_range: str = Field(..., description="도수 범위")
+    flavor_tags: List[str] = Field(default_factory=list, description="맛 태그")
+    concept: Optional[str] = Field(None, description="컨셉")
+
+
+class SummaryResponse(BaseModel):
+    """요약문 생성 응답 모델"""
+    summary: str

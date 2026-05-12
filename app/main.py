@@ -20,13 +20,19 @@ from app.law_client import LawClient, ContentType, FilterResult
 from app.insight import InsightDashboard, InsightRequest, InsightResponse
 from app.rag import TraditionalAlcoholRAG, RAGSearchRequest, RAGSearchResponse
 from app.recipe import RecipeAI
+# from app.chat import TraditionalAlcoholChat, ChatRequest, ChatResponse
 from app.models import (
     TasteVector, RecommendRequest, RecommendResponse,
     TasteUpdateRequest, TasteUpdateResponse,
     TasteHistorySummaryResponse,
     FoodRecommendRequest, FoodRecommendResponse,
-    SurveyConvertResponse, HealthResponse,
-    LawFilterRequest
+    HealthResponse,
+    LawFilterRequest,
+    SurveyConvertResponse,
+    BTITypeRequest, BTITypeResponse,
+    SubIngredientsRequest, SubIngredientsResponse,
+    FlavorTagsRequest, FlavorTagsResponse,
+    SummaryRequest, SummaryResponse
 )
 from app.db import db
 
@@ -37,6 +43,7 @@ _law_client = LawClient()
 _insight_dashboard = InsightDashboard()
 _rag_system = TraditionalAlcoholRAG()
 _recipe_ai = RecipeAI()
+# _chat_bot = TraditionalAlcoholChat(recommender=_recommender, rag_system=_rag_system)
 
 # FastAPI 인스턴스 생성
 app = FastAPI(
@@ -52,6 +59,7 @@ app.state.law_client = _law_client
 app.state.insight_dashboard = _insight_dashboard
 app.state.rag_system = _rag_system
 app.state.recipe_ai = _recipe_ai
+#app.state.chat_bot = _chat_bot
 
 
 @app.on_event("startup")
@@ -85,120 +93,6 @@ def clean_string(value) -> str:
     if value is None or (isinstance(value, float) and str(value) == 'nan'):
         return ""
     return str(value) if value else ""
-
-
-# Pydantic 모델
-class TasteVector(BaseModel):
-    """맛 벡터 모델"""
-    sweetness: float
-    body: float
-    carbonation: float
-    flavor: float
-    alcohol: float
-    acidity: float
-    aroma_intensity: float
-    finish: float
-
-
-class RecommendRequest(BaseModel):
-    """추천 요청 모델"""
-    user_vector: TasteVector
-    top_k: int = 10
-    exclude_ids: List[str] = []
-
-
-class RecommendResponse(BaseModel):
-    """추천 응답 모델"""
-    id: str
-    name: str
-    similarity: float
-    abv: float
-    brewery: str
-    region: str
-    features: str
-    taste_vector: TasteVector
-
-
-class TasteUpdateRequest(BaseModel):
-    """취향 업데이트 요청 모델"""
-    user_id: str
-    drink_id: str
-    rating: int
-    tags: List[str] = []
-
-
-class FoodRecommendRequest(BaseModel):
-    """음식 기반 추천 요청 모델"""
-    food: str
-    top_k: int = 5
-
-
-class FoodRecommendResponse(BaseModel):
-    """음식 기반 추천 응답 모델"""
-    id: str
-    name: str
-    abv: float
-    brewery: str
-    region: str
-    features: str
-    taste_vector: TasteVector
-    reason: str
-
-
-class BTITypeRequest(BaseModel):
-    """술BTI 유형 판정 요청 모델"""
-    sweetness: float = Field(..., ge=0, le=10, description="단맛 (0~10)")
-    body: float = Field(..., ge=0, le=10, description="바디감 (0~10)")
-    carbonation: float = Field(..., ge=0, le=10, description="탄산 (0~10)")
-    flavor: float = Field(..., ge=0, le=10, description="풍미 (0~10)")
-
-
-class BTITypeResponse(BaseModel):
-    """술BTI 유형 판정 응답 모델"""
-    code: str
-    character_name: str
-    tags: List[str]
-    recommended_drinks: List[str]
-
-
-# 레시피 관련 Pydantic 모델
-class SubIngredientsRequest(BaseModel):
-    """서브재료 추천 요청 모델"""
-    main_ingredient: str = Field(..., description="메인 재료")
-    region: str = Field(..., description="지역")
-
-
-class SubIngredientsResponse(BaseModel):
-    """서브재료 추천 응답 모델"""
-    sub_ingredients: List[str]
-
-
-class FlavorTagsRequest(BaseModel):
-    """맛 태그 추천 요청 모델"""
-    title: str = Field(..., description="제목")
-    main_ingredient: str = Field(..., description="메인 재료")
-    sub_ingredients: List[str] = Field(default_factory=list, description="서브 재료")
-    abv_range: str = Field(..., description="도수 범위")
-
-
-class FlavorTagsResponse(BaseModel):
-    """맛 태그 추천 응답 모델"""
-    flavor_tags: List[str]
-
-
-class SummaryRequest(BaseModel):
-    """요약문 생성 요청 모델"""
-    title: str = Field(..., description="제목")
-    main_ingredient: str = Field(..., description="메인 재료")
-    sub_ingredients: List[str] = Field(default_factory=list, description="서브 재료")
-    abv_range: str = Field(..., description="도수 범위")
-    flavor_tags: List[str] = Field(default_factory=list, description="맛 태그")
-    concept: Optional[str] = Field(None, description="컨셉")
-
-
-class SummaryResponse(BaseModel):
-    """요약문 생성 응답 모델"""
-    summary: str
 
 
 # 술BTI 16가지 유형 매핑
@@ -335,6 +229,8 @@ def root():
             "law_info": "/api/law/info",
             "insight": "/api/insight",
             "rag_search": "/api/rag/search",
+            "rag_category": "/api/rag/category/{category}",
+            "chat": "/api/chat",
             "health": "/health"
         }
     }
@@ -518,15 +414,11 @@ def survey_convert(survey: SurveyResponse):
     """
     try:
         survey_converter = app.state.survey_converter
-
         vector_dict = survey_converter.convert(survey)
-        vector = TasteVector(**vector_dict)
-
-        return SurveyConvertResponse(
-            status="success",
-            taste_vector=vector
-        )
-
+        if hasattr(vector_dict, 'model_dump'):
+            vector_dict = vector_dict.model_dump()
+        food_pairing = vector_dict.pop('food_pairing', []) if isinstance(vector_dict, dict) else []
+        return {"status": "success", "taste_vector": vector_dict, "food_pairing": food_pairing}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -803,6 +695,28 @@ def get_rag_documents_by_category(category: str):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# @app.post("/api/chat", response_model=ChatResponse)
+# async def chat(request: ChatRequest):
+#     """
+#     전통주 챗봇
+#
+#     Args:
+#         request: 챗봇 요청
+#
+#     Returns:
+#         챗봇 응답
+#     """
+#     try:
+#         chat_bot = app.state.chat_bot
+#
+#         response = await chat_bot.chat(request)
+#
+#         return response
+#
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":

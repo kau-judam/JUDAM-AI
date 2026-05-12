@@ -19,7 +19,12 @@ logger = logging.getLogger(__name__)
 class AdvancedMakgeolliRecommender:
     """고도화된 막걸리 추천 시스템"""
 
-    def __init__(self, data_file: str = "data/processed/makgeolli_with_vectors.json"):
+    def __init__(self, data_file: str = None):
+        # 절대경로로 데이터 파일 설정
+        if data_file is None:
+            # __file__ 기준으로 절대경로 계산
+            base_dir = Path(__file__).parent.parent.parent
+            data_file = base_dir / "data" / "processed" / "makgeolli_with_vectors.json"
         self.data_file = Path(data_file)
         self.drinks = []
         self.db = None  # DB 연결 (나중에 설정)

@@ -1,0 +1,6771 @@
+[
+  {
+    "id": "makgeolli_0",
+    "name": "이동 생 쌀 막걸리",
+    "description": "포천의 이동주조는 군사지역인 탓에 군인들이 거주하는 경우가 많았는데, 이들이 제대한 후에도 이동막걸리를 잊지 못해 찾아오며 이름을 알리기 시작",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 백미, 팽화미, 입국, 아스파탐 등",
+    "features": "적절한 산미가 음식맛을 도드라져 갈비찜과 어울린다.",
+    "brewery": "이동주조",
+    "region": "경기도 포천시 이동면 화동로 2466",
+    "homepage": "http://edongricewine.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 1.7,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_1",
+    "name": "연천 율무 동동주",
+    "description": "경기도 최북단 DMZ의 민통선에 위치한 연천양조장에서 연천 고래실논에서 재배되는 연천쌀과 누룩, 열천에서 재배된 율무로 빚은 알콜올 15%의 ",
+    "abv": 14.0,
+    "volume": "750ml",
+    "ingredients": "쌀(국내산), 누룩, 효모, 연천 율무, 정제수",
+    "features": "알콜올 도수가 14%로 일반 막걸리의 2배가 넘는 만큼 한여름에는 얼음을 넣어 온더록스로 한잔해도 충분히 제 역할을 하는 제품입니다.",
+    "brewery": "농업회사법인 연천양조㈜",
+    "region": "경기도 연천군 마산면 청정로 1738번길 15",
+    "homepage": "https://ksool88.modoo.at/?NaPm=ct%3Dkj7xdaia%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3D%7Chk%3D7a2095c72e4d037a16692c63a0a54b00c1b9f400",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_2",
+    "name": "행운 생유자 동동주",
+    "description": "유자 동동주는 거제도의 특산품 유자를 활용하여 생산한 막걸리다. 유자 추출액을 발효된 막걸리에 첨가하는 방식이 아니라 발효과정에 첨가하여 제대",
+    "abv": 6.0,
+    "volume": "750ml / 1700ml",
+    "ingredients": "쌀(국내산), 소맥분(미국산), 전분당, 정제수, 유자과즙, 치자, 정제효소, 종국, 효모, 젖산, 아스파탐",
+    "features": "술을 마시고 난 후에도 매우 개운하다. 산미와 신선함이 자칫 술 맛을 가볍게 만들 수 있는데 쌀과 밀을 함께 이용해 적절한 무게감을 갖게 만들",
+    "brewery": "성포양조장",
+    "region": "경남 거제시 사등면 지석3길3",
+    "homepage": "http://성포양조장.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.8,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "citrus": 2.0,
+        "other_fruit": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_3",
+    "name": "오산막걸리",
+    "description": "오산막걸리는 오산에서 재배한 세마쌀을 주원료로 누룩과 물 이외에는 인공감미료를 넣지 않고 만든 전통 수제 막걸리다. 인위적인 탄산감이 없어 마",
+    "abv": 6.0,
+    "volume": "500ml",
+    "ingredients": "쌀(국내산), 국, 효모, 정제수",
+    "features": "술을 마시고 난 후에도 개운하고 아주 약하게 남는 곡물의 느낌이 음식과의 조화를 잘 갖추게 해준다. 고기류 보다는 홍어나 오징어 등 무침류와 ",
+    "brewery": "농업회사법인 오산양조㈜",
+    "region": "경기도 오산시 시장길 63",
+    "homepage": "http://osansool.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 6.8,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "other_grain": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_4",
+    "name": "오미자 생막걸리",
+    "description": "다섯 가지 맛이 난다고 하여 붙여진 이름처럼 문경주조의 오미자 막걸리는 마실 때마다 색다른 맛을 느낄 수 있다. 과하지 않은 달콤함과 새콤함의",
+    "abv": 6.5,
+    "volume": "750ml",
+    "ingredients": "정제수, 백미(국내산), 입국(쌀, 밀), 올리고당, 물엿, 허브(유기농), 오미자 2.4%(국내산, 문경로동산), 정제효소, 아스파탐·아세셀펌칼륨(함성감미료, 메닐알라닌 함유)",
+    "features": "산뜻한 오미자 특유의 산미 향이 코를 자극시키며, 오미자의 특징인 오미의 조화가 잘 갖춰진 색이 아름다운 막걸리다. 소고기 구이와 잘 어울린다",
+    "brewery": "문경주조",
+    "region": "경상북도 문경시 동로면 노은리 192번지",
+    "homepage": "https://mgomijasul.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 9.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 7.2,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "berry": 2.0
+      },
+      "floral_notes": {
+        "herbal_floral": 2.0
+      },
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {
+        "herb": 2.0
+      }
+    }
+  },
+  {
+    "id": "makgeolli_5",
+    "name": "가야 프리미엄 막걸리",
+    "description": "풍부한 일조량은 받고 자란 김해 쌀로 만든 가야는 감미료를 전혀 넣지 않았음에도 꽃 향기 등이 나고 새콤달콤한 맛을 느낄 수 있다. 상쾌한 감",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "김해 쌀(100%)",
+    "features": "인공탄산, 인공 감밀가 들어가지 않아 우리나라의 다양한 음식들과 잘 어울린다.",
+    "brewery": "가야양조장",
+    "region": "경남 김해시 한림면 한림로 46번길 79-1",
+    "homepage": "https://www.instagram.com/gaya_brewery/?hl=ko",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 6.4,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 8.5,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_6",
+    "name": "영일만친구 막걸리",
+    "description": "영일만친구 막걸리는 경북 포항을 대표하는 우리쌀로 빚은 막걸리다. 영일만친구 막걸리는 포항시청에서 브랜드를 만들고, 포항공대에서 연구개발하고,",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "국내산 쌀, 물엿, 우뭇가사리, 효모, 조제 종국, 정제효소제, 아스파탐, 젖산",
+    "features": "영일만 친구는 우뭇가사리를 넣은 술이다. 우뭇가사리의 풍부한 식이섬유를 함께 마시는 즐거움이 있다. 역시 우뭇가사리 무침과 잘 어울린다.",
+    "brewery": "동해명주",
+    "region": "경북 포항시 남구 동해면 일월리 51-1",
+    "homepage": "https://www.yangjo.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_7",
+    "name": "소양강 생 막걸리",
+    "description": "소양강 생 막걸리는 100% 국내산 쌀을 이용하며 춘천의 깨끗한 자연환경 아래서 빚어내는 막걸리다. 일반적으로 기간이나 온도를 조절해 막걸리를",
+    "abv": 6.0,
+    "volume": "750ml/ 1700ml",
+    "ingredients": "백미, 소맥분, 정제수, 팽화미, 아스파탐, 물엿, 정제수",
+    "features": "밀가루와 팽화미를 이용해 고소한 맛과 텁텁함이 있다. 단맛이 적고 산미가 도드라지며 목넘김이 깔끔하며 마시고 난 뒤 쓴맛의 여운이 길다. 황태",
+    "brewery": "소양강도가(구, 천정양조장)",
+    "region": "강원도 춘천시 신북읍 율문길 65-5",
+    "homepage": "http://sygdoga.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 6.8
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 6.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_8",
+    "name": "세종대왕어주 탁주",
+    "description": "세종대왕어주 탁주는 국내산 찹쌀과 멥쌀, 전통누룩을 사용하여 세계3대 광천수로 유명한 초정리의 암반수로 빚은 술이다. 저온에서 오랜시간 숙성하",
+    "abv": 13.0,
+    "volume": "500ml",
+    "ingredients": "쌀(국내산), 누룩, 정제수",
+    "features": "술을 마시고 난 후에 혀에 남는 미세한 곡물의 느낌이 음식을 당기게 하며 일반 막걸리에 비해 도수(13%)가 높기 때문에 작은 잔에 식사와 함",
+    "brewery": "장희도가",
+    "region": "충북 청주 청원구 내수읍 미원초정로 1275",
+    "homepage": "https://jhdg3491.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 8.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_9",
+    "name": "성포 생막걸리",
+    "description": "성포 생막걸리는 친환경 인증을 받은 미나리를 활용해 만든 산뜻한 맛의 막걸리다. 대구 팔공산 일대 100여개 농가에서 생산한 미나리를 수매하여",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀(국내산), 소맥분(미국산), 전분당, 정제수, 무농약 미나리추출액, 정제효소, 종국, 효모, 아스파탐",
+    "features": "전체적으로 단맛과 신맛의 조화가 잘 갖춰져 있으며 마시고 난 후에 술의 산미가 입 전체를 산뜻하게 만들어 미나리전이나 무침과도 잘 어울린다.",
+    "brewery": "성포양조장",
+    "region": "경남 거제시 사등면 지석3길3",
+    "homepage": "http://성포양조장.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.8,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_10",
+    "name": "설성 만월 막걸리",
+    "description": "병영주조장의 설성 만월 막걸리는 유기농 쌀만을 사용하여 대한민국 식품명인 61호인 김견식 명인의 손끝에서 빚어지는 막걸리다. 호리병처럼 우아하",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 유기농쌀국내산, 누룩, 유기농올리고당 등",
+    "features": "고소한 곡물 볶는 향이 있고 단맛과 신맛의 균형이 잘 갖춰져 있으며, 술이 가볍지 않고 묵직한 목넘김이 특징이다. 약간의 떫은맛도 가지고 있다",
+    "brewery": "병영주조장",
+    "region": "전남 강진군 병영면 하멜로 407(성남리 140-3)",
+    "homepage": "http://byjujo.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "other_grain": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_11",
+    "name": "선운산의 아침 복분자 막걸리",
+    "description": "명작 복분자로 국내외에서 우수한 품질을 인정 받은 국순당고창명주에서 국내산 1등급 복분자와 국내산 쌀로 빚은 살균 막걸리다. 복분자의 깊은 맛",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "복분자, 쌀, 효모, 국, 과당, 구연산, 젖산, 정제수",
+    "features": "은은하게 올라오는 익은 베리향이 일품이며 단맛과 신맛의 조화가 잘 어울어져 있다. 적절한 산미가 입 전체를 깔끔하게 만들어주고 술을 마시고 난",
+    "brewery": "국순당고창명주㈜",
+    "region": "전북 고창군 심원면 선운대로 2197",
+    "homepage": "http://bokbunjaju.kr/",
+    "awards": "2016 대한민국 우리술품평회 살균막걸리 우수상",
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.8,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "berry": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_12",
+    "name": "석탄주 탁주",
+    "description": "임원십육지를 비롯해서 양주방, 음식방문, 조선무쌍신식요리제법 등 여러 고문에서 석탄향에 대한 기록을 찾을 수 있는 것으로 보아 당시에는 상당히",
+    "abv": 15.0,
+    "volume": "500ml",
+    "ingredients": "국내산 찹쌀, 누룩, 정제수",
+    "features": "과실향이 좋아 식중주보다는 식전주로 어울리며, 술의 향을 방해하지 않는 가벼운 샐러드 등이 잘 어울린다.",
+    "brewery": "케이소주",
+    "region": "전북 전주시 완산구 중산중앙로27. 3층",
+    "homepage": "https://ksoju.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_13",
+    "name": "생 청주 막걸리",
+    "description": "국내산 쌀과 함께 소맥분을 사용하여 진한 맛을 느낄 수 있으며 알싸한 탄산의 맛까지 있어 청주의 대표 막걸리로 자리매김 하고 있는 생 청주 막",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀, 소맥분, 국, 조제종국, 효모, 물엿 등",
+    "features": "쌀 막걸리의 가벼움과 밀가루 막걸리의 묵직함이 어울어진 술로 산미는 적지만 단맛이 두드러지고 탄산에 의한 청량감이 강한 막걸리다. 더덕구이랑 ",
+    "brewery": "조은술 세종",
+    "region": "충북 청주시 청원구 사천로 18길 5-2",
+    "homepage": "http://www.joeunsulsj.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 6.8,
+      "carbonation": 6.8,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 6.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_14",
+    "name": "산정호수 동정춘막걸리",
+    "description": "향긋한 열대 과일 향과 기분 좋은 단맛이 입안을 감도는 감미로운 막걸리다. 2018년 대한민국 우리술품평회 탁주부문에서 대상을 수상하며 맛과 ",
+    "abv": 6.0,
+    "volume": "720ml",
+    "ingredients": "국내산 쌀, 누룩, 정제수",
+    "features": "입 안에도 감도는 꿀같은 단맛이 매력적인 술로 떡 등과 함께 마시면 좋다.",
+    "brewery": "술빚는 전가네",
+    "region": "경기도 포천시 영북면 산정호수로 335",
+    "homepage": "https://www.sooldoga.com/home",
+    "awards": "2018 대한민국 우리술품평회 탁주부문 대상",
+    "taste_vector": {
+      "sweetness": 7.2,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "other_fruit": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_15",
+    "name": "산막 생유 막걸리",
+    "description": "다양한 전통주 제품을 선보이고 있는 신탄진주조에서 생산하는 막걸리다. 양조장을 설립할 당시 생산하던 산막 막걸리를 2011년에 제품명을 바꾼 ",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "국내산 쌀, 소맥분, 종국, 효모",
+    "features": "술을 마시고 난 후에는 고소한 맛이 혀에 남아 술이 너무 가볍게 느끼지 않도록 한다. 닭갈비 등 양념된 고기와 잘 어울린다.",
+    "brewery": "농업회사법인 신탄진주조(주)",
+    "region": "대전시 대덕구 신탄진로 738번길 128",
+    "homepage": "https://stjjujo.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_16",
+    "name": "봉하쌀 생막걸리",
+    "description": "봉하쌀 생막걸리는 경남 김해 봉하마을에서 재배한 친환경 유기농쌀을 사용하여 전남 담양의 양조장 죽향도가에서 제조한 지역화합의 의미를 담고 있는",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀(국내산), 정제효소, 젖산, 효모, 아스파탐, 정제수",
+    "features": "술을 마시고 난 후에 여운이 길고 깨끗해 홍어무침과 잘 어울린다.",
+    "brewery": "농업회사법인 (주)봉하마을",
+    "region": "경상남도 김해시 진영읍 봉하로 122-15",
+    "homepage": "https://www.bongha.net/goods/goods_view.php?goodsNo=1000000668",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_17",
+    "name": "볼빨간막걸리 10",
+    "description": "볼빨간 막걸리는 부산에서 재배한 찹쌀로 만든 수제 막걸리다. 볼빨간 막걸리를 빚고 있는 벗드림의 김성욱 대표가 술을 마시면 볼이 빨개져서 볼빨",
+    "abv": 10.0,
+    "volume": "500ml",
+    "ingredients": "찹쌀(국내산), 누룩, 정제수",
+    "features": "진한 살색을 갖고 있는 술로 볼빨간막걸리7도에 비해 물 희석량이 적고 도수가 높고 전체적인 맛 또한 진한 산미가 매력적이다. 술을 마시고 난 ",
+    "brewery": "농업회사법인 (주)벗드림",
+    "region": "부산광역시 북구 덕천로247번길 3, 2층",
+    "homepage": "https://butdream.modoo.at/?NaPm=ct%3Dkhvqprdz%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3D%7Chk%3Dd2521ff08b7af8f71afa71d4392e797b803c7da0",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 1.7,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_18",
+    "name": "병영설성 생막걸리",
+    "description": "전라남도 친환경막걸리 공동브랜드로 강진지역에서 재배한 100% 유기농 쌀을 원로로 유산균 증식에 도움이 되는 올리고당을 자연 발효시켜 만든 제",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀(국내산), 효모, 누룩, 정제수",
+    "features": "새우 간장 절임이나 남도 한정식과 잘 어울린다.",
+    "brewery": "병영양조장",
+    "region": "전남 강진군 병영로 하멜로 407",
+    "homepage": "https://byjujo.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_19",
+    "name": "병영설성 동동주",
+    "description": "병영설성 동동주는 병영면 수인산의 맑은 물과 유기농 햅쌀을 사용하여 전통과 현대의 제조기법이 결합하여 만들어진 정직한 제품이다. 술을 빚기 위",
+    "abv": 6.0,
+    "volume": "1700ml",
+    "ingredients": "쌀(국내산), 전분, 효모, 누룩, 정제수",
+    "features": "묵은 김치 볶음, 담치국, 두부김치와 잘 어울린다.",
+    "brewery": "병영양조장",
+    "region": "전남 강진군 병영로 하멜로 407",
+    "homepage": "https://byjujo.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_20",
+    "name": "미생 막걸리",
+    "description": "미생 막걸리를 생산하고 있는 김포금쌀탁주는 좋은 쌀과 좋은 물로 유명한 김포에서 3대째 가업을 이어 80여년 동안 술을 빚고 있는 양조장이다.",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "국내산 쌀, 누룩, 효모, 정제효소, 정제수",
+    "features": "일반 쌀 막걸리에 비해 단맛이 적은 드라이한 맛이다. 개운한 맛의 칼칼함이 특징. 덕분에 다양한 음식과 식중주로 잘 어울리는 막걸리이다. 단맛",
+    "brewery": "김포금쌀탁주 영농조합법인",
+    "region": "경기도 김포시 하성면 하성로 622",
+    "homepage": "https://shopping.naver.com/fresh/traditionalalcohol/stores/100194518",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_21",
+    "name": "방문주 탁주",
+    "description": "방문주는 이름 그대로 술 빚는 방법대로 빚은 술을 뜻한다. 방문주는 주로 봄, 가을철에 빚는 술로 알려져 있는데, 문헌 및 가전비법에 따라 재",
+    "abv": 15.0,
+    "volume": "500ml",
+    "ingredients": "국내산 찹쌀, 누룩, 정제수",
+    "features": "식중주로도 좋은 역할을 할 듯하며, 잡채, 육전 등 기름진 요리와 잘 어울린다.",
+    "brewery": "케이소주",
+    "region": "전북 전주시 완산구 중산중앙로27. 3층",
+    "homepage": "https://ksoju.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_22",
+    "name": "매실 막걸리",
+    "description": "저온장기 발효방식의 매실 막걸리는 젊은 소비자의 입맛에 맞게 개발된 제품으로 부드러운 목넘김을 강조한 막걸리이다. 특히 새콤달콤한 맛의 광양에",
+    "abv": 7.0,
+    "volume": "750ml",
+    "ingredients": "쌀, 매실과즙",
+    "features": "매실을 이용했지만 산미는 적어 더덕구이 등이 잘 어울린다.",
+    "brewery": "백운주가",
+    "region": "전라남도 광양시 옥룡면 신재로 946-18",
+    "homepage": "https://shopping.naver.com/fresh/traditionalalcohol/stores/100192629",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 8.5,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "berry": 2.0,
+        "other_fruit": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_23",
+    "name": "까메오 막걸리",
+    "description": "까메오 막걸리는 국내산 쌀을 원료로, 지장수의 미네랄이 풍부하게 함유되어 있는 것이 특징이다. 아스파탐을 넣지 않으며 무첨가제로 빚어 뒤끝 없",
+    "abv": 6.0,
+    "volume": "550ml",
+    "ingredients": "정제수, 쌀, 효모, 누룩, 과당 등",
+    "features": "미세하게 올라오는 캐러멜 향기에 산미가 적고 당도가 높고 초콜릿 맛이 나는 것이 특징이다. 다양한 야채와 과실이 혼합된 샐러드와 함께 마시면 ",
+    "brewery": "낙천",
+    "region": "강원도 동해시 공단2로 73",
+    "homepage": "http://nakchun.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_24",
+    "name": "다랭이팜 유자 막걸리",
+    "description": "유기농 7분도 현미를 전통항아리에서 발효시켜 빚은 생 막걸리에 유기농 유자원액을 넣어 만든 막걸리로, 합성감미료 없이도 유자의 싱그러운 향기가",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 유기농7분도쌀, 친환경유자원액, 혼합제과 누룩",
+    "features": "아구포, 유자해물화덕피자와 페어링하여 즐기기 좋다.",
+    "brewery": "농업회사법인 주식회사 다랭이팜",
+    "region": "경남 남해군 남면 남면로 679번길 27-5",
+    "homepage": "https://darangyifarm.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "citrus": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_25",
+    "name": "동백우리쌀생막걸리",
+    "description": "기장 백운산 자락 지하수를 길어 술을 빚는다. 동백 양조장만의 방식으로 고두밥을 찔 때 밀가루와 쌀을 적절한 비율로 섞어 시골에서 뚝배기에 담",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 쌀 소맥분 물엿, 곡자, 효모, 조제종국, 정제효소, 아스파탐,아세설팜칼륨",
+    "features": "고갈비, 편육와 어울린다.",
+    "brewery": "(주)동백양조",
+    "region": "부산광역시 기장군 정관읍 정관로 266",
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 6.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_26",
+    "name": "손가네 태종대 개똥쑥생막걸리",
+    "description": "저온 추출법으로 추출해 특유의 향을 최소로 줄인 개똥쑥액 10%와 막걸리와 섞어 본연의 맛과 향을 보존했다. 쑥향의 씁쓸한 향이 은은하게 나며",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 쌀, 태종대개똥쑥추출물, 입국, 누룩, 정제효소, 이소말토올리고당, 구연산, 아스파탐, 효모",
+    "features": "땡초어묵, 대패삼겹살과 잘 어울린다.",
+    "brewery": "태종대양조",
+    "region": "부산광역시 영도구 동삼동 태종로793번길 5",
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {
+        "other_herbal": 2.0
+      }
+    }
+  },
+  {
+    "id": "makgeolli_27",
+    "name": "다랭이팜 생막걸리",
+    "description": "다랭이팜에서는 막걸리에 사용되는 원료를 모두 까다롭게 선택하며, 고급원료에 대한 자부심이 있다. 일체의 첨가물 없이 유기농 7분도 현미, 누룩",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "지하정제수, 9분도쌀, 찹쌀, 혼합제제 누룩,",
+    "features": "된장쌈밥, 멍게비빔밥과 잘 어울린다.",
+    "brewery": "농업회사법인 주식회사 다랭이팜",
+    "region": "경남 남해군 남면 남면로 679번길 27-5",
+    "homepage": "https://darangyifarm.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_28",
+    "name": "볼빨간막걸리 7",
+    "description": "볼빨간 막걸리는 부산에서 재배한 찹쌀로 만든 수제 막걸리다. 볼빨간 막걸리를 빚고 있는 벗드림의 김성욱 대표가 술을 마시면 볼이 빨개져서 볼빨",
+    "abv": 7.0,
+    "volume": "500ml",
+    "ingredients": "정제수, 찹쌀, 누룩",
+    "features": "단맛을 좋아하지 않는 사람들에게는 볼빨개지면서 한 없이 마실 수 있는 술로 오징어 무침과 잘 어울린다.",
+    "brewery": "벗드림양조장",
+    "region": "부산광역시 북구 만덕동 921-13번지 2층",
+    "homepage": "https://smartstore.naver.com/butdream",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_29",
+    "name": "인생막걸리",
+    "description": "5번의 담금 과정과 저온 발효 공법을 통해 막걸리의 풍미를 살렸다. 쌀과 밀의 적절한 비율로 만들어져 밀 특유의 상큼한 첫맛과 쌀의 단맛이 느",
+    "abv": 5.0,
+    "volume": "750ml",
+    "ingredients": "정제수,팽화미,팽화밀가루,말토올리고당,국,혼합제제효모,아스파탐,아세설팜칼륨",
+    "features": "파전, 새우전과 페어링하기 좋다.",
+    "brewery": "서울장수(주)",
+    "region": "충청북도 진천군 광혜원면 죽현리 277",
+    "homepage": "https://seouljangsu.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 3.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_30",
+    "name": "장홍삼 장수 막걸리",
+    "description": "국내산 원재료만을 사용하여 홍삼 분말이 들어갔다. 인삼향과 막걸리 본연의 곡물향이 잘 어우러지며, 적당한 산미와 단맛, 청량감이 목넘김을 깔끔",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "백미,말토올리고당,홍삼분말",
+    "features": "한식, 전, 삼겹살",
+    "brewery": "서울장수(주)",
+    "region": "충청북도 진천군 광혜원면 죽현리 277",
+    "homepage": "https://seouljangsu.modoo.at/",
+    "awards": "2016 대한민국 우리술품평회 살균막걸리 부문 최우수상",
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.1,
+      "carbonation": 6.4,
+      "flavor": 5.1,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.1,
+      "finish": 5.1
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {
+        "other_herbal": 4.0
+      }
+    }
+  },
+  {
+    "id": "makgeolli_31",
+    "name": "이화백주 순탁주",
+    "description": "국내산 햅쌀 100%와 전통누룩으로 빚어 15일간 저온에서 자연 발효했다. 첨가물을 넣지 않고 전통방식으로 빚어 부드러우면서도 풍미가 뛰어나다",
+    "abv": 6.0,
+    "volume": "940ml",
+    "ingredients": "정제수, 쌀(국내산), 누룩, 설탕, 물엿, 밀, 아스파탐",
+    "features": "갈비찜, 해물파전, 보쌈, 족발과 잘 어울린다.",
+    "brewery": "이화백주",
+    "region": "경상남도 양산시 상북면 상삼리 389",
+    "homepage": "https://www.facebook.com/ehwayangzo/",
+    "awards": "2019대한민국주류대상, 2017년 공식건배주선정",
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_32",
+    "name": "호랑이 생 막걸리",
+    "description": "한국을 대표하는 최고급 품질의 술을 만들고자 하는 의지로 우리나라의 상징적 동물인 호랑이를 브랜드명으로 선저하였다. 호랑이생은 단 맛과 신 맛",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "물, 쌀(국내산),에리스리톨, 효모, 국, 젖산, 합성향료,밀함유",
+    "features": "족발, 보쌈, 매운 음식과 잘 어울린다.",
+    "brewery": "배혜정도가",
+    "region": "경기도 화성시 정남면 서봉로 835",
+    "homepage": "http://www.baedoga.co.kr/",
+    "awards": "2016 대한민국 우리술품평회 우수상",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_33",
+    "name": "씨(C) 그린막걸리",
+    "description": "녹즙을 마시는듯한 케일의 건강한 맛과 개똥쑥의 강렬한 향의 조합이 특징이다.",
+    "abv": 12.0,
+    "volume": "500ml",
+    "ingredients": "쌀, 물, 누룩, 케일, 개똥쑥",
+    "features": "조청을 찍은 쑥떡 등 한식디저트, 갈비찜이나 찜닭 등 단짠의 조화를 이루는 한식 찜류와 어울린다.",
+    "brewery": "씨(C) 막걸리",
+    "region": "서울시 강남구 논현로 18 (개포동), 지수빌딩 2층",
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {
+        "other_herbal": 2.0
+      }
+    }
+  },
+  {
+    "id": "makgeolli_34",
+    "name": "씨(C) 옐로막걸리",
+    "description": "당도가 높지 않고, 드라이하지 않다.",
+    "abv": 12.0,
+    "volume": "500ml",
+    "ingredients": "쌀, 물, 누룩, 당근, 레몬그라스",
+    "features": "동남아요리, 회, 해산물 냉채 또는 닭고기, 오리고기 등의 가금류와 어울린다.",
+    "brewery": "씨(C) 막걸리",
+    "region": "서울시 강남구 논현로 18 (개포동), 지수빌딩 2층",
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 7.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "citrus": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_35",
+    "name": "씨(C) 막걸리 시그니처 큐베",
+    "description": "C막걸리의 시그니처 제품으로 항아리에 발효한 범벅 밑술을 사용하며, 노간주나무 열매의 유쾌한 산미가 특징이다. 고도수이지만 걸쭉하지 않은 깔끔",
+    "abv": 12.0,
+    "volume": "500ml",
+    "ingredients": "쌀, 물, 누룩, 노간주나무열매, 건포도",
+    "features": "치즈가 들어간 전식, 사천요리, 중식/한식의 퓨전요리와 어울린다.",
+    "brewery": "씨(C) 막걸리",
+    "region": "서울시 강남구 논현로 18 (개포동), 지수빌딩 2층",
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 1.7,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_36",
+    "name": "세오녀탁주",
+    "description": "탄산과 강한 단맛을 가진 일반 막걸리와는 달리, 무감미로 만들어져 어떤 해산물 안주와도 잘 어울리는 막걸리이다. 걸쭉한 느낌보다는 담담하게 입",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 쌀(국내산, 포항쌀), 누룩, 효모, 조제종국, 정제효소제, 젖산",
+    "features": "회를 비롯한 해산물 음식과 잘 어울린다.",
+    "brewery": "동해명주",
+    "region": "경북 포항시 남구 동해면 일월로 51-1",
+    "homepage": "www.yangjo.com",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 8.5,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_37",
+    "name": "동해동동주",
+    "description": "쌀이 동동 뜬 옛 동동주의 모습을 연상시켜 아직까지 많은 애주가들에게 사랑을 받고 있는 술이다. 청량감과 단맛이 적절하게 어우러져 부드러운 맛",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀100%(포항쌀)",
+    "features": "돼지고기수육, 두부김치, 해물파전과 잘 어우러진다.",
+    "brewery": "동해명주",
+    "region": "경북 포항시 남구 동해면 일월로 51-1",
+    "homepage": "www.yangjo.com",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 1.7,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_38",
+    "name": "연오랑탁주",
+    "description": "무감미 막걸리인 연오랑 탁주는 드라이하고 깔끔한 맛을 가지고 있다. 12도의 막걸리로 탄탄한 바디감과 구수한 맛이 일품인 술이다.",
+    "abv": 12.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 쌀(국내산, 포항쌀), 누룩, 효모, 조제종국, 정제효소제, 젖산",
+    "features": "구운고기, 양념고기와 잘 어울린다.",
+    "brewery": "동해명주",
+    "region": "경북 포항시 남구 동해면 일월로 51-1",
+    "homepage": "https://www.yangjo.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 3.7,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_39",
+    "name": "영탁막걸리",
+    "description": "차고 달아 술 빚기에 으뜸으로 꼽는 예천의 물로 빚은 막걸리이다. 특유의 묵직한 바디감이 느껴지는 일반 막걸리와 달리 부드러우면서도 깔끔한 목",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 백미(국내산), 입국(쌀, 밀), 물엿, 올리고당, 누룩(밀), 효모, 아스파탐, 아세설팔칼륨",
+    "features": "전, 보쌈과 같은 기름진 음식에 잘 어울린다.",
+    "brewery": "예천양조",
+    "region": "경상북도 예천군 용궁면 월오길 17",
+    "homepage": "https://yecheonbrewery.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 9.0,
+      "body": 6.8,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_40",
+    "name": "별산막걸리",
+    "description": "별산막걸리는 경기도 양주의 단단한 쌀을 사용하고 어느 누구도 시도하지 않은 특별한 발효균주를 이용하여 만든 프리미엄 막걸리다. 맛과 품질에서 ",
+    "abv": 6.5,
+    "volume": "800ml",
+    "ingredients": "정제수, 쌀(국내산), 입국, 효모, 당류가공품",
+    "features": "갈비찜, 전류 등 기름진 음식과 매칭이 좋으며, 다양한 치즈와 매칭해 즐겨봐도 좋다.",
+    "brewery": "양주도가",
+    "region": "경기도 양주시 광적면 부흥로 21번길 60",
+    "homepage": "https://smartstore.naver.com/yangjudoga?NaPm=ct%3Dku6d6nma%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3D%7Chk%3D3123618dd9f37e80e65447c2e20725e85e5ad16e",
+    "awards": "2020 대한민국주류대상 우리술 탁주 생막걸리 전통부문 대상, 2020 대한민국 주류대상 Best of 2020, 2021 대한민국 우리술품평",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_41",
+    "name": "지리산 허브잎술 쌀 막걸리",
+    "description": "&amp;quot;지리산 허브잎 술&amp;quot;은 지리산에서 자란 로즈마리, 라벤다를 첨가해 빚은 막걸리다. 한 모금 맛보면 은은하게 허",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀(국내산), 입국, 정제수, 효모, 곡자, 국내산허브(로즈마리, 라벤다잎줄기추출액, 울금) 등",
+    "features": "홍어회 무침, 골뱅이 무침",
+    "brewery": "지리산 운봉주조",
+    "region": "전북 남원시 운봉읍 서천리 622번지",
+    "homepage": "http://www.herbsul.com/",
+    "awards": "2015 샌프란시스코 세계 주류 품평회 은상, 2011 대한민국 우리술 품평회 대상, 2014 대한민국 우리술 품평회 대상, 2015 벨기에 ",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {
+        "herbal_floral": 4.0
+      },
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {
+        "herb": 4.0
+      }
+    }
+  },
+  {
+    "id": "makgeolli_42",
+    "name": "야관문 쌀 막걸리",
+    "description": "야관문 막걸리는 비수리라 불리는 토종허브 야관문을 넣고 빚었다. 밤의 빗장을 여는 문이라는 뜻을 가진 야관문은 술로 빚어 섭취하면 더욱 효능이",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "팽화미, 입국, 효모, 곡자(밀), 정제수, 야관문잎 줄기 추출액 등",
+    "features": "채소 샐러드와 어을린다.",
+    "brewery": "지리산 운봉주조",
+    "region": "전북 남원시 운봉읍 서천리 622번지",
+    "homepage": "http://www.herbsul.com/",
+    "awards": "2010 IFFE 한국식품원장수상, 2015 샌프란시스코 세계 주류 품평회 은상, 2018 IFFE 농림부 장관상수상",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {
+        "herbal_floral": 2.0
+      },
+      "grain_notes": {
+        "wheat": 2.0
+      },
+      "herbal_notes": {
+        "herb": 2.0
+      }
+    }
+  },
+  {
+    "id": "makgeolli_43",
+    "name": "해창 막걸리 9도",
+    "description": "땅끝 해남의 청정 자연 발효환경에서 생산된 프리미엄 무감미료 생막걸리이다. 국내산 100% 멥쌀과 찹쌀에서 나오는 인위적이지 않은 단맛이 매력",
+    "abv": 9.0,
+    "volume": "900ml",
+    "ingredients": "햅쌀, 찹쌀, 물, 누룩",
+    "features": "전복구이와 잘 어울린다.",
+    "brewery": "해창주조장",
+    "region": "전남 해남군 화산면 해창길 1",
+    "homepage": "https://haechangjujo.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_44",
+    "name": "우렁이쌀 손막걸리 DRY",
+    "description": "우렁이 찹쌀을 발효 소재로 골라 화학첨가제가 들어가지 않은 순수한 술이다. 장기 저온숙성하여 부드러운 목넘김과 감칠맛을 가지고 있다. 달달한 ",
+    "abv": 7.5,
+    "volume": "500ml",
+    "ingredients": "정제수, 찹쌀(국내산), 쌀(국내산), 효모, 종국",
+    "features": "양념이 강하지 않은 부드럽고 담백한 생선회 및 한식 요리와 잘 어울린다.",
+    "brewery": "양촌양조",
+    "region": "충남 논산시 양촌면 매죽헌로1665번길 14-9",
+    "homepage": "http://www.yangchon.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_45",
+    "name": "희양산 막걸리 15도",
+    "description": "옅은 단맛과 약간의 신맛이 느껴지는 막걸리다. 담백하고 깔끔한 맛을 가지고 있으며 15도의 높은 도수를 가지고 있음에도 부드러운 목넘김이 일품",
+    "abv": 15.0,
+    "volume": "500ml",
+    "ingredients": "정제수, 쌀(국내산), 누룩(국내산), 효모",
+    "features": "매콤한 볶음류의 음식와 잘 어울린다.",
+    "brewery": "두술도가",
+    "region": "경북 문경시 가은읍 가은5길 7 아자개장터",
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 3.7,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_46",
+    "name": "희양산 막걸리 9도",
+    "description": "친환경 재료만을 사용한 알코올 감과 멥쌀만으로 술을 빚음에도 불구하고 옅은 단맛과 약간의 신맛이 조화로워 깔끔하고 담백한 맛이 일품이며 부드러",
+    "abv": 9.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 쌀(국내산), 누룩(국내산), 효모",
+    "features": "생굴, 두부, 육류 안주를 추천한다.",
+    "brewery": "두술도가",
+    "region": "경북 문경시 가은읍 가은5길 7 아자개장터",
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_47",
+    "name": "술공방 9.0 막걸리",
+    "description": "수제 누룩과 청양 햅쌀의 진하고 풍부한 맛을 느낄 수 있으며 살짝만 흔들어도 될 정도로 걸쭉한 느낌을 가지고 있다. 발효의 조화만으로 바나나 ",
+    "abv": 9.0,
+    "volume": "500ml",
+    "ingredients": "정제수, 쌀(국내산), 국(쌀, 국내산), 누룩(밀)",
+    "features": "국물 떡볶이, 매운탕, 고기전과 잘 어울린다.",
+    "brewery": "아리랑주조",
+    "region": "충남 청양군 대치면 방죽곡길 46-19",
+    "homepage": "https://ystar.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 8.5,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "tropical": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_48",
+    "name": "나루 생 막걸리 11.5도",
+    "description": "높은 쌀 함유량으로 원재료인 쌀 본연의 단맛을 살려 깔끔한 목넘김을 가지고 있다. 묵직한 텍스처, 청사과와 배의 향이 나며 시트러스 계열의 여",
+    "abv": 11.5,
+    "volume": "500ml",
+    "ingredients": "정제수, 쌀(국내산), 국, 효모(밀함유)",
+    "features": "매콤한 쭈꾸미 볶음류와 잘 어울린다.",
+    "brewery": "한강주조",
+    "region": "서울특별시 성동구 둘레15길 12, 2층",
+    "homepage": "https://hangangbrewery.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.8,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 4.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_49",
+    "name": "나루 생 막걸리 6도",
+    "description": "원재료인 쌀 본연의 맛을 살려 깔금하게 넘어가는 목넘김이 좋은 인공 감미료 및 천연감미료 무첨가 막걸리다. 시간의 지남에 따라 주차별로 맛이 ",
+    "abv": 6.0,
+    "volume": "935ml",
+    "ingredients": "정제수, 쌀(국내산), 국, 효모(밀함유)",
+    "features": "매콤한 쭈꾸미 볶음류와 잘 어울린다.",
+    "brewery": "한강주조",
+    "region": "서울특별시 성동구 둘레15길 12, 2층",
+    "homepage": "https://hangangbrewery.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_50",
+    "name": "호두땅콩막걸리",
+    "description": "쌀로 만든 막걸리에 고소한 땅콩이 그대로 들어 있는 듯한 느낌이다. 땅콩에 호두 향을 더해 담백하고, 풍미가 가득하며 부드러운 맛을 느낄 수 ",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "물, 쌀(국내산), 고과당, 국(밀), 땅콩(국내산)",
+    "features": "불닭갈비와 잘 어울린다.",
+    "brewery": "배혜정도가",
+    "region": "경기도 화성시 정남면 서봉로 835",
+    "homepage": "http://www.baedoga.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 3.7,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_51",
+    "name": "복순도가 탁주",
+    "description": "옛 항아리에서 100일 이상 저온숙성으로 직접 빚은 전통 누룩 사용해 더욱 진하고 부드러운 바디감이 느껴진다. 언양 쌀의 구수한 곡물맛과 잘 ",
+    "abv": 10.0,
+    "volume": "935ml",
+    "ingredients": "정제수, 쌀(국산), 곡자(밀), 밀함유",
+    "features": "고추장찌개가 떠오르는 바디감을 가졌다. 혹은 항정살 수육 무침과 함께 해도 좋다.",
+    "brewery": "복순도가",
+    "region": "울산광역시 울주군 상북면 향산리 439",
+    "homepage": "http://www.boksoon.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 6.4,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_52",
+    "name": "복순도가 손막걸리",
+    "description": "손으로 직접 빚은 순수 생막걸리, 복순도가 손막걸리는 전통 방식으로 빚은 가양주 형식의 전통주로써, 비옥한 토양에서 자란 국내산 쌀만을 사용,",
+    "abv": 6.5,
+    "volume": "935ml",
+    "ingredients": "정제수, 쌀(국산), 곡자(밀), 물엿, 설탕, 아스파탐(감미료,페닐알라닌함유)",
+    "features": "파전, 치킨, 보쌈, 족발, 해산물 등 다채로운 페어링이 가능하다.",
+    "brewery": "복순도가",
+    "region": "울산광역시 울주군 상북면 향산리 439",
+    "homepage": "http://www.boksoon.com/",
+    "awards": "2015년 샌프란시스코 국제 와인 주류 품평회 (금상), 2018년 K-DESIGN AWARD 수상",
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_53",
+    "name": "장수 생막걸리",
+    "description": "국내산 백미를 사용해 장기저온숙성 방식으로 만들어져 영양이 풍부하고 자연발효에 의한 탄산과 어울려 감칠맛과 청량감이 일품입니다. 또한, 트림과",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "백미(국내산), 말토올리고당, 홍삼분말",
+    "features": "일반적인 서울장수막걸리에서 느껴지는 익숙한 단맛과 과일향과 함께 상쾌한 탄산기운을 느낄 수 있다. 전체적으로 순하고 부드러운 맛이다. 목으로 ",
+    "brewery": "서울장수주식회사",
+    "region": "충청북도 진천군 광혜원면 죽현길 141",
+    "homepage": "https://seouljangsu.modoo.at/",
+    "awards": "2019 대한민국 우리술품평회 탁주 우수상, 2020 대한민국 주류대상 대상 수상",
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 1.7,
+      "carbonation": 6.8,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "other_fruit": 4.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {
+        "other_herbal": 2.0
+      }
+    }
+  },
+  {
+    "id": "makgeolli_54",
+    "name": "대대포 막걸리",
+    "description": "대대포 막걸리는 담양에서 생산된 100% 유기농 쌀을 원료로 사용하여 쌀의 아밀로스를 최적화시킨 향미가 살아있는 생막걸리다.각종 미네랄, 비타",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀, 벌꿀, 정제수, 정제효소, 스테비올배당체, 젖산, 종국, 효모",
+    "features": "시원하고 아삭한 오이소박이, 오이 달걀 볶음, 소고기 오이 볶음과 잘 어울린다.",
+    "brewery": "농업회사법인 (주)담양죽향도가",
+    "region": "담양군 담양읍 외다길30",
+    "homepage": "http://jhdg.co.kr/",
+    "awards": "2019 우리술품평회 탁주부문 최우수상, 2020 우리술품평회 탁주부문 대상",
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_55",
+    "name": "심술6 막걸리",
+    "description": "포천쌀로 빚은 생막걸리로 크리미한 목 넘김과 은은한 과일향이 매력적인 막걸리다. 적당한 탄산과 은은한 단맛이 잘 어우러진다. 500ml 저용량",
+    "abv": 6.0,
+    "volume": "500ml",
+    "ingredients": "쌀(국내산), 국(입국), 건조효모, 아세설팜칼륨, 아스파탐",
+    "features": NaN,
+    "brewery": "배상면주가",
+    "region": "경기도 포천시 화현면 화현리 512",
+    "homepage": "http://www.sansawon.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.8,
+      "body": 5.1,
+      "carbonation": 6.4,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.1,
+      "finish": 5.1
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "other_fruit": 4.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_56",
+    "name": "광양 생 막걸리 골드",
+    "description": "한국식품연구원에서 개발된 국산효모로 만든 막걸리로 햅쌀, 토종 앉은뱅이 밀누룩 등 국내산 좋은 재료를 100% 사용하여 목 넘김이 부드럽고 깔",
+    "abv": 5.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 쌀(국산100%), 입국(국산), 곡자(국산누룩), 아스파탐(감미료, 페닐알라닌 함유), 정제효소, 효모, 젖산, 액화효소",
+    "features": "깔끔하고 청량감 높은 광양생막걸리 골드는 치킨, 피자, 치즈 등과 어울린다.",
+    "brewery": "광양주조공사",
+    "region": "전남 광양시 광양읍 예구8길 13-4",
+    "homepage": "http://kyju.inpiad.net/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.7,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 3.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_57",
+    "name": "광양 생 막걸리",
+    "description": "국산 햅쌀을 사용한 목 넘김이 부드럽고 깔끔한 맛이 살아있는 막걸리이다. 가장 대중적인 맛으로 빨간 뚜겅 광양막걸리 이미지로 고객들의 꾸준한 ",
+    "abv": 5.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 쌀(국산100%), 입국(국산), 곡자(국산누룩), 아스파탐(감미료, 페닐알라닌 함유), 정제효소, 효모, 젖산, 액화효소",
+    "features": "맛이 깊고 목넘김이 부드러운 광양생막걸리는 전, 두부김치, 골뱅이 소면무침 등 우리나라의 음식과 어울린다.",
+    "brewery": "광양주조공사",
+    "region": "전남 광양시 광양읍 예구8길 13-4",
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.7,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 3.5,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_58",
+    "name": "가평 잣 생막걸리",
+    "description": "가평의 잣을 막걸리에 그대로 담아 특유의 고소한 맛으로 목 넘김이 부드럽고, 은은한 향까지 느낄 수 있어 누구나 부담 없이 마시고 느낄 수 있",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀, 정제수, 쌀입국, 잣, 효모, 정제효소 등",
+    "features": "반찬으로 나오는 우리음식과 모두 잘 어울린다.",
+    "brewery": "우리술",
+    "region": "경기 가평군 하면 대보간선로 26, 29",
+    "homepage": "http://www.woorisool.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 6.4,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_59",
+    "name": "세종청주생막걸리",
+    "description": "국내산 쌀과 함께 소맥분을 사용하여 소맥분 특유의 목 넘김과 함께 진한 맛을 느낄수 있는 청주의 대표 막걸리. 직접 배양한 효모와 100% 국",
+    "abv": 6.0,
+    "volume": "750ml / 1200ml",
+    "ingredients": "쌀, 소맥분",
+    "features": "김치전은 잘 익은 김치의 맛이 배어나와 막걸리와 잘 어울리는 음식이다. 생막걸리 특유의 향이 김치의 텁텁한 맛을 감해주어 더욱 좋다.",
+    "brewery": "조은술 세종",
+    "region": "충북 청주시 청원구 사천로 18길 5-2",
+    "homepage": "http://www.joeunsulsj.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_60",
+    "name": "지리산 정담 생쌀 막걸리",
+    "description": "&quot;지리산 정담 생쌀 막걸리&quot;는 40년 가까이 청정지역 지리산에서 술을 빚어온 &quot;운봉주조&quot;의 대표 막걸리이다",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀(국내산), 종국, 정제수, 누룩, 효모",
+    "features": "색의 희고 맑으며 곡물에 압력을 가했을 때 나오는 고소한 향이 올라온다. 단맛이 적고 맑은 산미가 입안 전체에 침이 고이게 하고 산뜻하게 만든",
+    "brewery": "지리산 운봉주조",
+    "region": "전북 남원시 운봉읍 서천리 622번지",
+    "homepage": "http://www.herbsul.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "other_grain": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_61",
+    "name": "편백숲 산소막걸리 스파클링",
+    "description": "편백숲 산소막걸리 스파클링은 멥쌀, 찹쌀, 누룩, 물로만 빚어 막걸리 본연의 맛을 찾은 무첨가 프리미엄 막걸리다. 샴페인과 같은 강렬한 탄산감",
+    "abv": 6.8,
+    "volume": "940ml",
+    "ingredients": "찹쌀, 맵쌀, 누룩",
+    "features": "묵은 김치를 곁들인 홍어삼합이나 겉절이 김치를 곁들인 보쌈, 부침이나 전류와도 잘 어울린다.",
+    "brewery": "청산녹수",
+    "region": "전라남도 장성군 장섭읍 남양촌길 19",
+    "homepage": "http://www.bluegreenkorea.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 8.5,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_62",
+    "name": "편백숲 산소막걸리 딸기 스파클링",
+    "description": "전남 장성군에서 재배한 쌀과, 장성군 특산물 딸기를 사용하여 빚은 막걸리. 딸기를 저온에서 쌀과 함께 발효시켜 딸기의 향기와 함께 새콤 달콤한",
+    "abv": 6.8,
+    "volume": "940ml",
+    "ingredients": "찹쌀, 멥쌀, 누룩, 딸기, 올리고당",
+    "features": "묵은 김치를 곁들인 홍어삼합이나 겉절이 김치를 곁들인 보쌈, 부침이나 전류와도 잘 어울린다.",
+    "brewery": "청산녹수",
+    "region": "전라남도 장성군 장섭읍 남양촌길 19",
+    "homepage": "http://www.bluegreenkorea.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 9.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "berry": 2.0,
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_63",
+    "name": "편백숲 산소막걸리 순수령 8%",
+    "description": "오직 멥쌀, 찹쌀, 누룩, 물로만 빚어 막걸리 본연의 맛을 찾은 무첨가 프리미엄 막걸리. 순수령 5.8도와 비교하여 보다 무게감 있는 바디감이",
+    "abv": 8.0,
+    "volume": "750ml",
+    "ingredients": "찹쌀, 맵쌀, 누룩",
+    "features": "묵은 김치를 곁들인 홍어삼합이나 겉절이 김치를 곁들인 보쌈, 부침이나 전류와도 잘 어울린다.",
+    "brewery": "청산녹수",
+    "region": "전라남도 장성군 장섭읍 남양촌길 19",
+    "homepage": "http://www.bluegreenkorea.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 6.8,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_64",
+    "name": "편백숲 산소막걸리 순수령",
+    "description": "편백숲 산소막걸리 순수령은 오직 멥쌀, 찹쌀, 누룩, 물로만 빚어 막걸리 본연의 맛을 찾은 무첨가 프리미엄 막걸리다. 청산녹수 기업부설연구소의",
+    "abv": 5.8,
+    "volume": "750ml",
+    "ingredients": "찹쌀, 맵쌀, 누룩",
+    "features": "묵은 김치를 곁들인 홍어삼합이나 겉절이 김치를 곁들인 보쌈, 부침이나 전류와도 잘 어울린다.",
+    "brewery": "청산녹수",
+    "region": "전라남도 장성군 장섭읍 남양촌길 19",
+    "homepage": "http://www.bluegreenkorea.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_65",
+    "name": "편백숲 산소막걸리",
+    "description": "청산녹수 기업부설연구소의 O2 발효 기술과 한국식품연구원이 전통누룩에서 찾은 토종효모를 사용하여 만든 막걸리. 저온에서 장기 발효를 거쳐 부드",
+    "abv": 5.2,
+    "volume": "750ml",
+    "ingredients": "쌀, 사과농축액,누룩,올리고당,아스파탐",
+    "features": "묵은 김치를 곁들인 홍어삼합이나 겉절이 김치를 곁들인 보쌈, 부침이나 전류와도 잘 어울린다.",
+    "brewery": "청산녹수",
+    "region": "전라남도 장성군 장섭읍 남양촌길 19",
+    "homepage": "http://www.bluegreenkorea.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_66",
+    "name": "옛날막걸리 古",
+    "description": "국순당 ‘옛날막걸리 古’는 1960년대에 즐기던 정통 쌀막걸리 본래의 맛을 재현한 막걸리다. 1960년대의 쌀막걸리 본래의 맛을 복원하여 빚은",
+    "abv": 8.0,
+    "volume": "750ml",
+    "ingredients": "국내산쌀, 누룩",
+    "features": "술을 마시고 난 후에 옅은 쓴맛이 혀에 남아 여운을 길게 한다. 오리 주물럭과 잘 어울린다.",
+    "brewery": "국순당",
+    "region": "강원도 횡성군 둔내면 현천리 120",
+    "homepage": "http://drink.ksdb.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 3.7,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_67",
+    "name": "1000억 유산균 막걸리",
+    "description": "1000억 유산균 막걸리는 국순당이 최초로 선보인 유산균 강화 막걸리다. 식물성 유산균이 막걸리 한 병(750mL)에 1000억 마리 이상이 ",
+    "abv": 5.0,
+    "volume": "750ml",
+    "ingredients": "국내산쌀, 누룩",
+    "features": "적당한 감칠맛과 청량미가 있어 전, 회무침과 잘 어울린다.",
+    "brewery": "국순당",
+    "region": "강원도 횡성군 둔내면 현천리 120",
+    "homepage": "http://www.ksdb.co.kr",
+    "awards": "2021 대한민국 주류대상우리술 탁주 생막걸리 부문 3년 연속 대상",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.1,
+      "carbonation": 5.0,
+      "flavor": 5.1,
+      "alcohol": 3.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.1,
+      "finish": 5.1
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_68",
+    "name": "국순당 생막걸리 대박",
+    "description": "국순당의 생막걸리 ‘대박’은 막걸리 제조에 가장 중요한 원료인 누룩과 효모를 막걸리 빚기에 가장 적합하도록 국순당에서 직접 배양한 전통식 누룩",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀",
+    "features": "단맛과 곡물의 부드러움이 입 전체를 감싸준다. 돼지고기 등의 수육과 잘 어울린다.",
+    "brewery": "국순당",
+    "region": "강원도 횡성군 둔내면 현천리 120",
+    "homepage": "http://www.ksdb.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "other_grain": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_69",
+    "name": "술그리다 생탁주",
+    "description": "미생물의 배양을 극대화하여 깊고 풍부한 맛과 향을 자랑하는 제품이다. 술그리다 생탁주는 차갑게 보관 했다가 와인잔에 따라 마신다. 얼음 한 두",
+    "abv": 10.0,
+    "volume": "500ml",
+    "ingredients": "국내산쌀, 누룩",
+    "features": "음식은 양념된 맛이 강한 음식보다는 양념이 되지 않은 백숙 등과 잘 어울린다.",
+    "brewery": "좋은술",
+    "region": "경기 평택시 오성면 숙성뜰길 108",
+    "homepage": "https://jsul.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_70",
+    "name": "천비향 오양주 탁주",
+    "description": "천비향 오양주 탁주는 국내산 누룩과 1등급 평택 슈퍼오닝쌀만을 이용해 오양주로 빚고 100일간의 발효과정과 9개월간의 장기 저온숙성 과정을 거",
+    "abv": 14.0,
+    "volume": "500ml",
+    "ingredients": "국내산쌀, 누룩",
+    "features": "발효 기간이 길어 탄산에 의한 청량감은 없지만 술 맛은 산뜻한 산미가 전체적인 맛을 이끌고 있지만 어느 하나 맛이 튀지 않고 단맛, 신맛 등 ",
+    "brewery": "좋은술",
+    "region": "경기 평택시 오성면 숙성뜰길 108",
+    "homepage": "https://jsul.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 1.7,
+      "carbonation": 6.8,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 6.8,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_71",
+    "name": "오희 스파클링 막걸리",
+    "description": "오희 스파클링 막걸리는 문경시 특산물 오미자로 만든 천연탄산이 가득한 프리미엄 막걸리이다. 오희란 오미자에서 느낄 수 있는 다섯 가지 맛의 즐",
+    "abv": 8.5,
+    "volume": "500ml",
+    "ingredients": "백미, 건오미자, 조효소제, 효모, 정제수",
+    "features": "오미자 특유의 산뜻한 산미가 소고기와 잘 어울린다.",
+    "brewery": "문경주조",
+    "region": "경상북도 문경시 동로면 노은리 192번지",
+    "homepage": "https://mgomijasul.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 8.5,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 6.8,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "berry": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_72",
+    "name": "술아 핸드메이드 막걸리",
+    "description": "술아 핸드메이드 막걸리는 오래전 집집마다 가양주 형태로 어머니들이 빚었던 전통방식 그대로 쌀과, 누룩, 물로만 만든 인공첨가물이 전혀 없는 순",
+    "abv": 8.0,
+    "volume": "450ml",
+    "ingredients": "국내산 찹쌀, 누룩, 정제수",
+    "features": "진한 쌀 맛과 묵직한 술 맛이 그대로 살아있는 약주. 달콤함과 진함의 극치를 이룬다. 알코올 도수가 20로도 높은 만큼 맑은 장국 등 하고도 ",
+    "brewery": "술아원",
+    "region": "경기 여주 점봉길 93-12",
+    "homepage": "https://soolawon.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 6.8,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_73",
+    "name": "송명섭 막걸리",
+    "description": "‘막걸리 마니아’들이 흔쾌히 국내 최고의 막걸리라고 손꼽는 ‘송명섭막걸리’의 대표 송명섭 명인이 빚는 막걸리로 흔히 ‘송막’이라고 부르는 막걸",
+    "abv": 6.0,
+    "volume": "500ml",
+    "ingredients": "국내산쌀, 곡자, 정제수",
+    "features": "송명섭 막걸리는 빚는 이를 닮아 소박한 맛이 난다. 어떠한 첨가물로 넣지 않았기 때문에 대중적인 막걸리와는 달리 단맛과 신맛이 거의 느껴지지 ",
+    "brewery": "태인합동주조장",
+    "region": "전북 정읍시 태인면 태흥리 392-1",
+    "homepage": "http://www.태인양조장.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_74",
+    "name": "선호 생막걸리",
+    "description": "선호 생막걸리\"는 최상급 풀질로 인정 받고 있는 \"김포금쌀\"을 원료로 만든 제품이다. 인공적인 감미료 대신 술 맛을 살려줄 천연감미료를 첨가한",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "국내산 쌀, 누룩, 효모, 정제효소, 천연감미료, 정제수",
+    "features": "쌀 특유의 풍미가 살아있는 막걸리. 개운한 맛으로 다양한 음식과 잘 어울리는 스타일. 칼칼한 맛이 살아있어 다양한 음식과 식중주로 잘 어울리는",
+    "brewery": "김포금쌀탁주영농조합법인",
+    "region": "경기도 김포시 하성면 하성로 622",
+    "homepage": "gpgstz.modoo.at",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_75",
+    "name": "안성맞춤 생막걸리",
+    "description": "쌀 본연의 맛이 살아 있는 생쌀발효법(무증자기법) 양조기술을 적용하여 만든 안성맞춤 생막걸리는 옛 막걸리의 향수를 불러 일으키는 정통 막걸리이",
+    "abv": 6.0,
+    "volume": "1000ml",
+    "ingredients": "국내산 쌀, 누룩, 효모, 젖산, 정제효소, 정제수",
+    "features": "생쌀발효법 특유의 가볍고 경쾌한 맛이 특징. 향을 자세히 맡아보면 바나나 우유와 같은 향이 느껴진다. 가벼운 맛을 자랑하는 만큼 묵직한 고기류",
+    "brewery": "한주양조",
+    "region": "경기도 안성시 서운면 서운로 241-14",
+    "homepage": "http://hanjuy.kr.ecplaza.net",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "tropical": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_76",
+    "name": "양촌 생 동동주",
+    "description": "양촌 생 동동주는 100년을 이어온 전통방식으로 국내산 쌀과 누룩, 대둔산 자락 천연암반수로 빚어진 술. 백미와 누룩만을 원료로 사용하며, 3",
+    "abv": 10.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 백미 효소제, 효모 등",
+    "features": "최대한 여과되어 바디감이 매우 깔끔하고 목넘김이 부드러운 것이 특징이며 산미가 약하고 입안에 단맛의 여운이 많이 남아 김치전과 함께 하면 좋다",
+    "brewery": "양촌양조",
+    "region": "충남 논산시 양촌면 매죽헌로1665번길 14-9",
+    "homepage": "http://www.yangchon.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 6.4,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_77",
+    "name": "양촌 생 막걸리",
+    "description": "양촌 생 막걸리는 국내산 쌀과 소맥분과 누룩, 대둔산 자락의 천연암반수로 빚어 오랜 세월 논산 지역민들에게 사랑 받아온 전통방식의 토속 막걸리",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "팽화미, 소맥분, 정제수, 물엿, 효소, 국 등",
+    "features": "쌀을 튀겼을 때 나는 고소한 향이 특징이다. 색이 진하고 적절한 단맛과 산미의 조화가 좋다. 두부에 겉절이 김치를 함께하면 좋다.",
+    "brewery": "양촌양조",
+    "region": "충남 논산시 양촌면 매죽헌로1665번길 14-9",
+    "homepage": "http://www.yangchon.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_78",
+    "name": "김포 막걸리",
+    "description": "1962년에 설립하여 현재 66년의 양조장 역사를 자랑하는 경기도 김포의 대표적인 양조장인 김포양조에서 생산한 막걸리이다. 엄선된 원료로 전통",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀, 누룩, 정제수",
+    "features": "신선한 발효향이 은은하게 올라오고 단맛과 신맛, 쓴맛 등 전체적으로 오미의 조화가 잘 갖춰져 있는 막걸리다. 일반적인 막걸리 알코올 도수로 자",
+    "brewery": "김포양조",
+    "region": "경기도 김포시 월곶면 김포대로 2763",
+    "homepage": "www.kimpo.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_79",
+    "name": "술예쁘다 생탁주",
+    "description": "술예쁘다 생탁주는 시중에 출시되어 있는 전통주와는 원료와 제조방법에서 완전히 차별화를 기하고 국내산 누룩과 1등급 평택 슈퍼오닝쌀만을 이용해 ",
+    "abv": 13.0,
+    "volume": "500ml",
+    "ingredients": "국내산 쌀, 누룩",
+    "features": "일체 첨가물을 넣지 않은 제품으로 고유의 부드러운 맛과 풍부한 유산균을 함유하고 있어 담백한 맛의 전류과 같은 한식과 매우 잘 어울린다.",
+    "brewery": "좋은술",
+    "region": "경기 평택시 오성면 숙성뜰길 108",
+    "homepage": "https://jsul.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_80",
+    "name": "삼양춘 생탁주",
+    "description": "삼양춘(三釀春)은 세 번 빚어 맛과 향이 뛰어난 최고급 발효주의 의미를 가지고 있다. 삼양춘은 ‘세 번 빚는다’라는 의미로서 삼양(三釀)을, ",
+    "abv": 12.5,
+    "volume": "500ml",
+    "ingredients": "강화섬쌀, 전통누룩, 정제수",
+    "features": "일반 막걸리에 비해 알코올 도수가 높아 술이 가볍지 않고 묵직하며 술을 마시고 난 후에는 옅은 쓴맛이 양념된 낙지나 주꾸미 볶음류와 매우 잘 ",
+    "brewery": "송도향전통주조",
+    "region": "인천광역시 남동구 호구포로 50, 8층 819-1호",
+    "homepage": "www.samyangchoon.com",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 3.7,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_81",
+    "name": "미인탁주",
+    "description": "미인탁주는 국내산 찹쌀과 우리밀누룩으로 빚고 일체의 인공첨가물이 들어가지 않은 프리미엄 막걸리이다. 일반적인 막걸리와 비교해 텁텁하지 않고 깔",
+    "abv": 10.0,
+    "volume": "500ml",
+    "ingredients": "찹쌀, 누룩, 정제수",
+    "features": "술을 입에 넣으면 처음 단맛이 느껴지지만 오래가지 않고 곡물의 부드러움이 입 전체를 감싸주면서 산뜻한 신맛이 음식을 당기게 만들어 돼지고기 등",
+    "brewery": "최행숙전통주가",
+    "region": "경기도 파주시 법원읍 사임당로 763",
+    "homepage": "파주전통주.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_82",
+    "name": "도문대작 생막걸리",
+    "description": "방풍도가에서 생산하고 있는 방풍막걸리 &quot;도문대작&quot;은 강릉 지역의 특산품인 방풍나물을 첨가해서 빚는 향약주이다. 도문대작 막걸",
+    "abv": 10.0,
+    "volume": "750ml",
+    "ingredients": "강릉 쌀, 누룩, 갯방풍나물, 정제수",
+    "features": "타 막걸리에 비해 도수가 높지만(10%) 자극적이지 않고 목 넘김이 부드럽다. 갈비찜과 잘 어울린다.",
+    "brewery": "방풍도가",
+    "region": "강원도 강릉시 미노길 103",
+    "homepage": "http://www.bangpungdoga.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_83",
+    "name": "아이원 막걸리",
+    "description": "아이원 막걸리는 충북 옥천을 대표하는 막걸리로 알코올 도수 6도로 쌀과 밀을 혼합하여 생산하고 있다. 초기에는 제품명이 이원막걸리였으나 201",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀, 밀, 입국, 누룩, 정제수",
+    "features": "경쾌함과 발랄함, 그리고 생 특유의 신선함이 그대로 느껴지는 막걸리로 이원 양조장의 막걸리 중에서 대중적인 맛에 속한다. 옥천의 금강 상류에서",
+    "brewery": "이원양조장",
+    "region": "충청북도 옥천군 이원면 묘목로 113",
+    "homepage": "http://iwonwine.com/new/index.php",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_84",
+    "name": "월매 쌀막걸리(캔)",
+    "description": "월매쌀막걸리는 탄산과 막걸리의 절묘한 만남으로 탄생한 신세대 맞춤용 막걸리이다. 저온에서 완전숙성시킨 후 첨단 설비로 살균처리하고 천연탄산을 ",
+    "abv": 6.0,
+    "volume": "350ml",
+    "ingredients": "백미, 말토올리고당, 정제수",
+    "features": "백색의 살균 캔 막걸리로 신선한 발효 향이 은은하게 올라오고 단맛과 신맛, 쓴맛 등 전체적으로 오미의 조화가 잘 갖춰져 있는 막걸리다. 일반적",
+    "brewery": "서울장수㈜",
+    "region": "충청북도 진천군 광혜원면 죽현길141",
+    "homepage": "http://www.koreawine.co.kr",
+    "awards": "2017년 대한민국 우리술품평회 살균막걸리 부문 우수상",
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_85",
+    "name": "호담 산양산삼 막걸리",
+    "description": "호담 산양산삼 막걸리는 천해의 자연에서 재배된 산양산삼과 경기미로 저온 숙성 발효시켜 산양산삼의 깊은 향과 진한 맛이 특징으로 숙취감이 적고 ",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀(경기미), 입국, 산양산삼, 정제수, 아스파탐",
+    "features": "입 안에 넣으면 삼의 느낌이 꽉 차고 알코올 도수가 높지 않아 자극적이지 않고 편하게 즐길 수 있다. 김치전과 잘 어울린다.",
+    "brewery": "대농바이오우리산삼",
+    "region": "경기도 광주시 퇴촌면 천진암로 684",
+    "homepage": "http://www.woorisansam.com",
+    "awards": "2017 대한민국 우리술품평회 대통령상",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_86",
+    "name": "생탁주",
+    "description": "농업회사법인㈜청산녹수에서 생산하고 있는 제품으로 막걸리 본연의 맛을 간직한 제품이다. 전남 장성군의 자랑인 편백나무숲 맑은 공기와 청정한 물,",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀, 올리고당, 사과농축액, 아스파탐, 효모, 정제수",
+    "features": "단맛이 적어 다양한 음식과의 조화를 만들 수 있다. 닭도리탕이나 양념된 고기류와 잘 어울린다.",
+    "brewery": "청산녹수",
+    "region": "전라남도 장성군 장섭읍 남양촌길 19",
+    "homepage": "http://www.bluegreenkorea.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_87",
+    "name": "꿀막걸리",
+    "description": "청산녹수만의 전통 누룩을 사용하여 전통적인 막걸리 맛을 지키면서 트랜디한 단맛을 자랑하는 제품이다. 청산녹수 꿀막걸리는 청산녹수 생탁에 천연 ",
+    "abv": 8.0,
+    "volume": "750ml",
+    "ingredients": "쌀(국내산), 벌꿀(국내산), 사과농축액, 효모, 정제효소",
+    "features": "목넘김은 매우 부드럽지만 쓴맛이 입 안의 느낌을 묵직하게 만들어 양념 갈비와 잘 어울린다.",
+    "brewery": "청산녹수",
+    "region": "전라남도 장성군 장섭읍 남양촌길 19",
+    "homepage": "http://www.bluegreenkorea.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 7.2,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 3.7,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_88",
+    "name": "백련 생막걸리 snow (스노우)",
+    "description": "간척지 토양에 서해안 해풍을 맞고 자란 충남 당진 쌀을 주원료로 깔끔한 맛을 내기 위해 백련잎을 첨가해 80년 전통의 발효전통으로 빚어낸 고품",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "백미, 연잎, 정제수, 종국, 효모, 아스파탐, 물엿 등",
+    "features": "숯불바베큐와 잘 어울린다.",
+    "brewery": "신평양조장",
+    "region": "충남 당진시 신평면 신평로 813",
+    "homepage": "http://www.koreansul.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_89",
+    "name": "매화마름 호랑이 막걸리",
+    "description": "매화마름 호랑이 막걸리는 선조부터 물려받은 누룩과 양조기술로 빚은 발효과학이 많이 집약 되어 있는 프리미엄 막걸리다. 사용 된 누룩은 독자적으",
+    "abv": 7.0,
+    "volume": "375ml",
+    "ingredients": "쌀",
+    "features": "파전과 잘 어울린다.",
+    "brewery": "배혜정도가",
+    "region": "경기도 화성시 정남면 서봉로 835",
+    "homepage": "http://www.baedoga.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_90",
+    "name": "느린마을 막걸리",
+    "description": "느린 마을 막걸리는 계절마다 맛이 약간씩 다르다. 쌀과 물, 누룩만을 이용해서 빚는 술이기 때문에 계절에 따라 온도와 습도 등 계절마다 다른 ",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀, 국, 효모, 정제수",
+    "features": "막걸이와 전 조합도 좋지만 크리미함과 달콤함이 느껴져 매콤, 새콤한 음식과 궁합이 좋다.",
+    "brewery": "배상면주가",
+    "region": "경기도 포천시 화현면 화현리 512",
+    "homepage": "https://www.soolsool.co.kr/",
+    "awards": "2014 대한민국 우리술품평회 생막걸리 우수상, 2017 대한민국 우리술품평회 탁주 최우수상",
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_91",
+    "name": "왕피천을 품은 미소생막걸리",
+    "description": "울진 왕피천에서 올라오는 맑은 물 맛과 쌀 막걸리 특유의 부드러움과 하늘하늘한 가벼움이 느껴지는 막걸리다. 경상북도 울진군에서 생산되는 막걸리",
+    "abv": 7.0,
+    "volume": "750ml",
+    "ingredients": "쌀, 누룩, 정제수",
+    "features": "대게 또는 홍게찜과 잘 어울린다.",
+    "brewery": "울진술도가",
+    "region": "경상북도 울진군 근남면 노음2길 4",
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_92",
+    "name": "미소 생막걸리",
+    "description": "경상북도 울진군에서 생산되는 막걸리이며 할아버지에서 손자에 이르기까지 3대에 걸쳐 약 90여년이라는 시간을 통해 그 내력을 이어오고 있는 제품",
+    "abv": 7.0,
+    "volume": "750ml",
+    "ingredients": "쌀(국내산), 누룩, 정제수",
+    "features": "대게 또는 홍게찜과 잘 어울린다.",
+    "brewery": "울진술도가",
+    "region": "경상북도 울진군 근남면 노음2길 4",
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_93",
+    "name": "홍천강 탁주",
+    "description": "홍천강 탁주는 강원도 골짜기에서 골골히 모여 내려오는 계곡물로 이루어진 홍천강의 청정한 이미지를 형상화 했다. 홍천의 쌀과 누룩으로 숙성시킨 ",
+    "abv": 11.0,
+    "volume": "500ml",
+    "ingredients": "홍천 쌀, 정제수, 국(밀 누룩)",
+    "features": "연하게 올라오는 바닐라 향기가 술이 오래 숙성되었음을 말해주고, 청량미는 적으나 입안에 맴도는 깨끗한 산미가 음식을 부른다. 양념갈비와 잘 어",
+    "brewery": "예술주조",
+    "region": "강원도 홍천군 내촌면 물걸리 508-2",
+    "homepage": "http://www.ye-sul.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 1.7,
+      "body": 1.7,
+      "carbonation": 5.0,
+      "flavor": 6.8,
+      "alcohol": 7.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_94",
+    "name": "우리밀 막걸리 향수",
+    "description": "향수 우리밀 막걸리는 충북 옥천을 대표하는 막걸리로 알코올 도수 9도로 충북에서 자란 금강밀로 생산하고 있다. 1930년대 증조부 때부터 옥천",
+    "abv": 9.0,
+    "volume": "700ml",
+    "ingredients": "쌀, 밀, 입국, 누룩, 정제수",
+    "features": "도리뱅뱅이. 도토리묵, 겉절이, 나물과 잘 어울린다.",
+    "brewery": "이원양조장",
+    "region": "충청북도 옥천군 이원면 묘목로 113",
+    "homepage": "http://iwonwine.com/new/index.php",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_95",
+    "name": "부안참뽕막걸리",
+    "description": "막걸리와 오디를 넣은 과실막걸리다. 탄산이 첨가되어 청량감을 주며 텁텁함이 없이 깔끔한 것이 특징으로 오디가 첨가되어 색깔이 보랏빛을 띄고 있",
+    "abv": 6.0,
+    "volume": "950ml",
+    "ingredients": "쌀(국내산) 오디과즙,스테비올배당체,스쿠랄로스",
+    "features": "매운 볶음요리, 부침개와 잘 어울린다.",
+    "brewery": "동진주조",
+    "region": "전라북도 부안군 행안면 부안농공단지길 14-11",
+    "homepage": "http://www.dongjinwine.co.kr/",
+    "awards": "2013 대한민국 우리술 품평회&amp;#039; 살균막걸리 부문 우수상",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.7,
+      "carbonation": 6.8,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0,
+        "other_fruit": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_96",
+    "name": "금정산성막걸리",
+    "description": "금정산성막걸리는 술빚기에 적합한 온도와 습도가 유지되는 해발 400m의 청정 환경을 갖춘 금정산성마을에서 제조된다. 깨끗한 자연환경속에서 발효",
+    "abv": 8.0,
+    "volume": "750ml",
+    "ingredients": "백미, 밀(누룩), 정제수",
+    "features": "파전, 두부김치와 잘 어울린다.",
+    "brewery": "금정산성 토산주",
+    "region": "부산 금정구 산성로 453",
+    "homepage": "http://www.sanmak.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_97",
+    "name": "문희 탁주",
+    "description": "프리미엄 탁주인 문희는 문경주조가 위치한 문경의 옛 이름인 문희에서 따온 술로 기쁜 소식을 전한다는 의미를 담고 있다. 모든 술 빚는 과정 하",
+    "abv": 13.0,
+    "volume": "700ml",
+    "ingredients": "국내산 쌀",
+    "features": "수육, 순대 볶음, 닭갈비와 잘 어울린다.",
+    "brewery": "문경주조",
+    "region": "경상북도 문경시 동로면 노은리 192번지",
+    "homepage": "https://mgomijasul.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_98",
+    "name": "우렁이쌀 손 막걸리",
+    "description": "양촌 우렁이쌀 손 막걸리는 우렁이 농법으로 100% 무농약 재배한 논산 햅쌀로 빚은 수제 막걸리다. 기존 생 막걸리 3배 이상 긴 시간 동안의",
+    "abv": 7.5,
+    "volume": "750ml",
+    "ingredients": "쌀, 정제수 효모, 정제효소, 효소처리 스테비아",
+    "features": "새콤달콤한 골뱅이 무침, 혹은 쑥버무리와 함께 즐기면 좋다.",
+    "brewery": "양촌양조",
+    "region": "충남 논산시 양촌면 매죽헌로1665번길 14-9",
+    "homepage": "http://www.yangchon.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 8.5,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {
+        "other_herbal": 2.0
+      }
+    }
+  },
+  {
+    "id": "makgeolli_99",
+    "name": "안양동동주",
+    "description": "국내산 친환경 햇 찹쌀과 햅쌀에 당화력이 좋은 밀 누룩과 보리누룩을 발효제로 사용해 빚은 막걸리로 다양한 재료들이 술의 향과 맛의 조화를 이룬",
+    "abv": 6.0,
+    "volume": "1700ml",
+    "ingredients": "국내산 햅쌀, 국내산 친환경 햇찹쌀",
+    "features": "키조개 회 무침 안양은 키조개, 한우, 표고버섯이 유명한곳이다. 키조개는 단백질이 많은 저칼로리식품으로 필수아미노산과 철분이 많아 동맥경화와 ",
+    "brewery": "안양주조장",
+    "region": "전남 장흥군 안양면 주교비동로 4",
+    "homepage": NaN,
+    "awards": "2013 대한민국 우리술품평회 장려상",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0,
+        "other_grain": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_100",
+    "name": "줄포 생막걸리",
+    "description": "1980년대 부안군 줄포면 동진주조장에서 첫 출시하여 2014년 현재까지 꾸준하게 주질 향상을 위해 품질개선과 공정관리, 위생관리 등에 노력하",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "국내산 쌀",
+    "features": "주꾸미볶음, 홍어무침 칼칼한 주꾸미볶음에 줄포 생 막걸리를 곁들이면 청량감과 어울려지는 깔끔한 맛을 느낄 수 있으며 홍어무침과 곁들이면 홍어 ",
+    "brewery": "내변산(동진주조)",
+    "region": "전북 부안군 행안면 부안농공단지길 14-11",
+    "homepage": "https://shopping.naver.com/fresh/traditionalalcohol/stores/100068999",
+    "awards": "2014 대한민국우리술품평회 최우수상 (생막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.7,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_101",
+    "name": "천마이야기 막걸리",
+    "description": "한방에서는 혈액순환, 두뇌활동개선, 두통에 천마를 처방한다. 100% 무주산 천마와 쌀을 발효하여 만든 프리미엄 막걸리이다. 전통막걸리에 프랑",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "팽화미, 입국미, 무주천마분말, 오미자추출액",
+    "features": "도토리묵, 골뱅이무침 소화기능을 촉진시켜 입맛을 돋우어주는 도토리와 타우린이 풍부하여 노화방지에도 탁월한 골뱅이를 새콤달콤하게 무쳐서 천마이야",
+    "brewery": "농업회사법인산들벗(주)",
+    "region": "전라북도 무주군 적상면 서창로 72",
+    "homepage": "https://shopping.naver.com/fresh/traditionalalcohol/stores/100074042",
+    "awards": "2014 대한민국우리술품평회 장려상 (생막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 6.8,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 8.5,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "berry": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_102",
+    "name": "자연담은 복분자막걸리",
+    "description": "고창산 쌀과 고창산 1등급 복분자로 빚은 고급막걸리로 국순당의 특허기술인 생쌀발효법으로 빚어 필수아미노산이 풍부하다. 복분자와 쌀이 혼합된 막",
+    "abv": 6.0,
+    "volume": "360ml",
+    "ingredients": "국내산 복분자(고창), 정제수",
+    "features": "복분자 막걸리에 장어구이가 기본이다.",
+    "brewery": "(농)국순당고창명주㈜",
+    "region": "전북 고창군 심원면 선운대로 2197",
+    "homepage": "https://shopping.naver.com/fresh/traditionalalcohol/stores/100077970",
+    "awards": "2012 대한민국우리술품평회 우수상 (살균막걸리 부문), 2014 대한민국우리술품평회 우수상 (살균막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "berry": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_103",
+    "name": "팔공산미나리 생막걸리",
+    "description": "미나리 생막걸리는 혈압을 내리고 중금속해독능력이 뛰어난 친환경 미나리를 사용하여 빚은 막걸리로 대구 팔공산 일대의 농가에서 생산하여 5년간 숙",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀, 소맥분, 전분당, 정제수, 무농약 미나리추출액, 정제효소, 종국, 효모, 아스파탐, 밀 함유",
+    "features": "생 미나리 두부무침, 미나리 전미나리는 비타민이 풍부한 알칼리성 식품으로 혈압강하, 해열, 일사병 및 변비 등에 효과가 좋다. 미나리를 활용한",
+    "brewery": "성포양조장",
+    "region": "경상남도 거제시 사등면 지석3길3",
+    "homepage": "http://www.xn--oj4b23fvzbgxa733b.kr/",
+    "awards": "2013 대한민국우리술품평회 대상 (생막걸리 부문), 2014 SIWC 동상, 2014 Monde-selection 금상",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_104",
+    "name": "백년친구 쌀막걸리",
+    "description": "술맛이 부드럽고 뒷 향이 은은하게 느껴지는 것이 마시는 이로 하여금 부담을 주지 않으며 또한 뒷맛이 깔끔하고 목 넘김이 좋은 막걸리이다.",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "백미, 소맥분",
+    "features": "가지나물 가지를 식물성 기름으로 요리를 하면 불포화지방산과 비타민E를 많이 섭취할 수 있어서 좋은데 막걸리의 부드러운 목 넘김과 은은한 향을 ",
+    "brewery": "만수주조(영농조합법인)",
+    "region": "경북 영주시 안정면 용주로1364번길 12 베지밀영주대리점",
+    "homepage": NaN,
+    "awards": "2012 대한민국우리술품평회 장려상 (생막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.7,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 3.7,
+      "aroma_intensity": 6.4,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_105",
+    "name": "불로생우리쌀막걸리",
+    "description": "불로생 우리쌀 막걸리는 50년 전통의 생 막걸리로 효모가 살아있어 특유의 감칠맛을 느낄 수 있을 뿐만아니라 효모에 함유된 판토텐산이 대장의 운",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "국내산 쌀",
+    "features": "두부김치, 해물전 두부김치는 따뜻하게 데친 두부에 익은 김치와 돼지고기를 볶아 곁들인 음식으로 아삭한 김치의 맛이 조화를 이루어 막걸리안주로 ",
+    "brewery": "불로생우리쌀막걸리",
+    "region": "대구 중구 명륜로 12길 16",
+    "homepage": "http://www.daegutakju.co.kr/main/main.htm",
+    "awards": "2011 대한민국우리술품평회 최우수상(생막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_106",
+    "name": "하얀연꽃 백련생막걸리",
+    "description": "신평양조장은 막걸리를 옛날의 술로 머물게 하지 않고 오늘날 우리 삶 속에서 같이 호흡할 수 있도록 막걸리의 모던 프리미엄주의를 지향한다. 간척",
+    "abv": 7.0,
+    "volume": "375ml, 750ml",
+    "ingredients": "국내산 백미, 국내산 백련잎",
+    "features": "스테이크 프리미엄 막걸리인 하얀연꽃 백련 생 막걸리는 스테이크와도 거부감 없이 잘 어울리며 감자, 당근, 콩, 옥수수, 시금치 같은 채소요리를",
+    "brewery": "신평양조장",
+    "region": "충남 당진시 신평면 신평로 813",
+    "homepage": "http://www.koreansul.co.kr",
+    "awards": "2014 대한민국 우리술품평회 생막걸리 부문 대상",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 6.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_107",
+    "name": "울금생막걸리 정",
+    "description": "쌀을 주재료로 한 막걸리에 울금을 첨가하여 특허를 받은 막걸리이다. 입안에서 감도는 울금 특유의 향과 마시고난 후 오랫동안 여운을 주는 감미로",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "국내산 쌀, 국내산 울금",
+    "features": "김치전 김치전은 잘 익은 김치의 맛이 배어나와 막걸리와 잘 어울리는 음식인데, 울금 생막걸리 특유의 향이 김치의 텁텁한 맛을 감해주어 더욱 좋",
+    "brewery": "영덕주조",
+    "region": "경북 영덕군 강구면 소월1길 16-10",
+    "homepage": "http://www.ydjujo.co.kr",
+    "awards": "2013 대한민국우리술품평회 우수상 (생막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_108",
+    "name": "세종 쌀막걸리",
+    "description": "세종 쌀 막걸리는 부드러운 맛을 음미할 수 있고 달달하며 청량감이 살아있다. 특히 밀을 넣어 감칠맛을 돋우어준 충북청주의 유명막걸리로 부드러운",
+    "abv": 6.0,
+    "volume": "750ml, 1200ml, 1700ml",
+    "ingredients": "국내산 쌀",
+    "features": "해물 찜 해물 찜은 각종해물과 콩나물을 매콤한 양념에 버무려 푸짐하게 만들면 여럿이 둘러앉아 먹기 좋은 막걸리 안주가 된다. 콩나물은 아스파라",
+    "brewery": "조은술 세종",
+    "region": "충북 청주시 청원구 사천로 18길 5-2",
+    "homepage": "http://www.joeunsulsj.co.kr",
+    "awards": "2013 대한민국우리술품평회 장려상 (살균막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 1.7,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_109",
+    "name": "구암대추막걸리",
+    "description": "청송의 맑은 물과 수목이 가득한 자연 속에서 직접 재배한 양질의 대추로 만든 대추엑기스, 국내산 100% 쌀로 정성껏 빚어 목 넘김이 부드러운",
+    "abv": 6.0,
+    "volume": "1000ml",
+    "ingredients": "쌀, 대추",
+    "features": "가벼운 안주와 어울린다.",
+    "brewery": "구암농산",
+    "region": "경북 청송군 얼음골로340-65",
+    "homepage": NaN,
+    "awards": "2010 대한민국우리술품평회 대상 (살균막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.4,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_110",
+    "name": "백년친구 풍기홍삼막걸리",
+    "description": "경북 영주시(풍기)는 토질이 대부분 사질양토로 배수가 잘되어 타지방 인삼보다 육질이 단단하고 사포닌 함량이 우수한데 백년친구 풍기홍삼 막걸리는",
+    "abv": 6.0,
+    "volume": "750ml, 900ml",
+    "ingredients": "국내산 쌀, 홍삼",
+    "features": "호박전 호박은 소화가 잘되므로 위가 약하고 마른 사람, 회복기 환자에게 좋은 음식인데, 사포닌이 함유된 홍삼막걸리와 궁합이 잘 맞는다. 애호박",
+    "brewery": "만수주조(영농조합법인)",
+    "region": "경북 영주시 안정면 용주로1364번길 12 베지밀영주대리점",
+    "homepage": NaN,
+    "awards": "2012 대한민국우리술품평회 최우수상 (살균막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {
+        "other_herbal": 4.0
+      }
+    }
+  },
+  {
+    "id": "makgeolli_111",
+    "name": "하얀연꽃 백련막걸리",
+    "description": "신평양조장은 막걸리를 옛날의 술로 머물게 하지 않고 오늘날 우리삶속에서 같이 호흡할 수 있도록 막걸리의 모던프리미엄주의를 지향한다. 하얀연꽃 ",
+    "abv": 7.0,
+    "volume": "375ml",
+    "ingredients": "국내산 쌀",
+    "features": "스테이크 스테이크는 감자, 당근, 콩, 옥수수, 시금치 같은 채소요리를 곁들이고 소스 없이 막걸리와 함께 먹으면 담백한 막걸리의 맛이 은은하게",
+    "brewery": "신평양조장",
+    "region": "충남 당진시 신평면 신평로 813",
+    "homepage": "http://www.koreansul.co.kr",
+    "awards": "2012 대한민국우리술품평회 대상 (살균막걸리 부문), 2013 IWSC 동상, 2013 NYWSC 동상",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 6.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_112",
+    "name": "새송이 쌀막걸리 정",
+    "description": "쌀을 주재료로 한 막걸리에 새송이버섯을 첨가하여 특허를 받은 막걸리이다. 과하지 않은 단맛과 탄산의 상쾌한 맛이 적당하며 한 여름에 시원하게 ",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "국내산 쌀, 새송이버섯",
+    "features": "감자전 노릇하고 고소한 감자전은 술안주로 좋은데 새송이 쌀막걸리의 상쾌한 탄산 맛이 전의 느끼함을 없애주어 시원하게 즐길 수 있다.",
+    "brewery": "영덕주조",
+    "region": "경북 영덕군 강구면 소월1길 16-10",
+    "homepage": "http://www.ydjujo.co.kr",
+    "awards": "2012 대한민국우리술품평회 장려상 (살균막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.1,
+      "carbonation": 6.8,
+      "flavor": 5.1,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.1,
+      "finish": 5.1
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_113",
+    "name": "톡쏘는 쌀 막걸리",
+    "description": "국내산 쌀 100%로 빚은 막걸리로 사과 막걸리 등으로 유명한 경기 가평의 우리술의 일본수출 주력 막걸리이다. 살균막걸리지만 톡쏘는 탄산에 생",
+    "abv": 6.0,
+    "volume": "750ml, 950ml",
+    "ingredients": "국내산 쌀",
+    "features": "새우전, 녹두전 새우전과 녹두전 등 고소하지만 기름진 전류와 함께 마시면 톡 쏘는 맛이 입을 개운하게 해주어 전의 맛을 돋궈준다.",
+    "brewery": "우리술",
+    "region": "경기 가평군 하면 대보간선로 29",
+    "homepage": "http://www.woorisool.kr",
+    "awards": "2010 소믈리에 햅쌀막걸리 품평회 1위선정, 2011 대한민국우리술품평회 우수상 (살균막걸리 부문), 2011 농식품부 수출전진대회 건배주",
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_114",
+    "name": "산천어막걸리",
+    "description": "첫 담금을 입국미의 함량을 높여 저온 장기 발효하여 입국미와 토종효모의 향긋한 향과 두번째 담금의 팽화미로 장기간 발효하고 거른 후 1도에서 ",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수,팽화미(쌀/외국산),입국(쌀),국(밀),설탕,정제효소제, 효모,아스파탐(감미료,페닐알라닌 함유)",
+    "features": "산천어회, 산천어 구이, 쏘가리 매운탕 등 화천의 음식에 곁들이는 것을 추천한다.",
+    "brewery": "화천주가",
+    "region": "강원 화천군 하남면 공단길 18",
+    "homepage": NaN,
+    "awards": "2012년 대한민국 우리술 품평회 대상 ,2013년 IWSC 은상 수상",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_115",
+    "name": "지장수 호박막걸리",
+    "description": "지장수 호박막걸리는 국내산 쌀과 천연 지장수를 원수로 하여 발효과정에 국내산 호박을 첨가하여 영양성을 높였으며 고유의 노란빛깔로 맛을 돋구어 ",
+    "abv": 6.0,
+    "volume": "550ml",
+    "ingredients": "정제수(지장수), 쌀, 효모, 누룩, 과당 등",
+    "features": "두부김치 잘 익은 김치와 담백한 맛의 두부를 호박막걸리와 함께하면 깊고 부드러운 맛과 어울러져서 호박막걸리의 맛을 더욱 돋구어준다.",
+    "brewery": "낙천",
+    "region": "강원도 동해시 공단2로 73",
+    "homepage": "https://nakchun.modoo.at/",
+    "awards": "2014 대한민국우리술품평회 최우수상 (살균막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_116",
+    "name": "고향생막걸리",
+    "description": "100% 국내산 쌀과 303m 천연지하암반수를 사용하여 자연발효 후 온도와 습도가 일정한 지하저온저장고에서 장기저온숙성시켜 맛이 부드럽고 숙취",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "국내산 쌀",
+    "features": "김치잡채 김치잡채는 당면과 함께 김치를 넣어서 만드는데, 김치와 돼지고기, 각종야채가 들어가 담백하면서 아삭한 씹히는 맛이 막걸리의 맛을 살려",
+    "brewery": "(주) 찬우물",
+    "region": "인천시 강화군 선원면 강화동로 990번지",
+    "homepage": NaN,
+    "awards": "2010 대한민국우리술품평회 장려상 (생막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_117",
+    "name": "왕매실 막걸리",
+    "description": "2002년도에 1,400여 농민들이 매실 10만본을 식재한 후 수확량이 현재 연간 100여 톤에 이르며 농식품부지원하에 가공, 생산하게 되었다",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "국내산쌀, 매실원액1%",
+    "features": "꼬막전꼬막전은 삶아낸 꼬막의 살을 발라 달걀옷을 입혀 전을 부치는데 꼬막전의 기름기와 약간의 비릿한 냄새를 매실의 신맛과 탄산이 잡아주어 깔끔",
+    "brewery": "순성왕매실영농조합",
+    "region": "충남 당진시 순성면 매실로 398",
+    "homepage": NaN,
+    "awards": "2012 대한민국우리술품평회 최우수상 (생막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 3.7,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.8,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "berry": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_118",
+    "name": "입장탁주",
+    "description": "쌀을 익히지 않고 자연그대로 발효시키는 생쌀발효법으로 만들어진 생막걸리로 순수쌀 100%로 빚은 술이다. 9~10일간 저온발효하여 숙취와 트림",
+    "abv": 7.0,
+    "volume": "750ml",
+    "ingredients": "국내산 쌀",
+    "features": "매운 갈비찜입안에서 불이 날 정도로 매운 갈비찜은 약간의 단맛과 신맛, 그리고 톡 쏘는 청량감이 있는 입장탁주에 잘 어울린다.",
+    "brewery": "(농) 입장주조㈜",
+    "region": "충남 천안시 서북구 입장면 성진로 808",
+    "homepage": "https://yeonmiju.modoo.at/",
+    "awards": "2010 대한민국우리술품평회 우수상 (생막걸리 부문), 2012 대한민국 우리술품평회 우수상 (생막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 1.7,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_119",
+    "name": "이천쌀생막걸리",
+    "description": "내륙 중앙에 위치한 이천은 분지형 지형으로 일교차가 크고 일조량이 많아 임금님진상미로 유명한 국내제일의 쌀 생산지역이다. 이천쌀생막걸리는 10",
+    "abv": 6.0,
+    "volume": "750ml, 1,500ml",
+    "ingredients": "국내산 쌀",
+    "features": "두부김치 두부김치는 완전히 익은 김치로 만들어야 제 맛을 느낄 수 있는데 잘 익은 김치의 깊은 맛과 담백한 두부가 이천쌀생막걸리 깊은 맛과 탄",
+    "brewery": "오성주조장",
+    "region": "경기 이천시 단월로28번길 3",
+    "homepage": NaN,
+    "awards": "2011 대한민국우리술품평회 장려상 (생막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_120",
+    "name": "고향인삼막걸리",
+    "description": "국내산 쌀과 303m 천연지하암반수를 사용하여 자연발효 후 온도와 습도가 일정한 지하저온저장고에서 장기 저온 숙성시켜 맛이 부드럽고 숙취가 없",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "국내산쌀90%, 국내산인삼10%",
+    "features": "고등어조림 고등어를 묵은지와 함께 푹 익혀서 먹는 고등어조림은 감칠맛이 좋아 밥반찬으로도 좋은데, 인삼 특유의 맛과 향이 고등어의 비린 맛을 ",
+    "brewery": "(주) 찬우물",
+    "region": "인천시 강화군 선원면 강화동로 990번지",
+    "homepage": NaN,
+    "awards": "2010 대한민국우리술품평회 우수상 (살균막걸리부문)",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {
+        "other_herbal": 2.0
+      }
+    }
+  },
+  {
+    "id": "makgeolli_121",
+    "name": "황도배기 햅쌀막걸리",
+    "description": "국내 최초로 원적외선이 방출되는 황토 토굴에서 발효, 숙성시키며 100% 국내산 햅쌀을 증자후 저온에서 장기간 발효시키는 방법으로 빚어 막걸리",
+    "abv": 6.0,
+    "volume": "900ml",
+    "ingredients": "고창 황토배기 햅쌀",
+    "features": "꼬막무침 오동통한 살이 입맛을 자극하는 싱싱한 꼬막무침은 한입베어물면 톡 터지는 육즙이 예술인데 햅쌀막걸리의 향이 푸짐한 꼬막무침의 맛을 돋운",
+    "brewery": "우리술",
+    "region": "경기 가평군 하면 대보간선로 26, 29",
+    "homepage": "http://www.woorisool.kr",
+    "awards": "2011 대한민국우리술품평회 장려상 (살균막걸리 부문)",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_122",
+    "name": "맑은내일 스파클링 막걸리",
+    "description": "맑은내일 스파클링 막걸리는 자연탄산으로 제조일로부터 15일 전과 후에 다른 매력을 느낄 수 있다는 것이 가장 큰 특징이다. 제조일로부터 15일",
+    "abv": 5.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 멥쌀(수입산), 누룩, 정제효소, 아스파탐(감미료/페닐알라닌 함유), 밀함유",
+    "features": "어느 음식과 마셔도 잘 어울리지만 특히 해물파전, 김치전, 피자, 떡볶이 처럼 느끼하거나 매콤한 음식과 함께 드시는 것을 추천한다.",
+    "brewery": "우포의아침",
+    "region": "경상남도 창녕군 대지면 대지농공단지길 40",
+    "homepage": "www.good-tomorrow.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.7,
+      "carbonation": 8.5,
+      "flavor": 5.0,
+      "alcohol": 3.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_123",
+    "name": "관악산생막걸리",
+    "description": "어떤 첨가물이나 감미료 없이 경기미 햅쌀로 빚어 달지 않고 담백하며 언제 어니서나 편안히 즐길 수 있다. 처음에는 풋사과, 청포도 향이 싱그럽",
+    "abv": 6.0,
+    "volume": "1000ml",
+    "ingredients": "정제수, 멥쌀(국내산), 국, 효모, 밀함유",
+    "features": "제육두부 김치 등 매콤한 음식과 먹으면 매운 맛을 달래준다. 디저트류, 과일류와도 잘 어울린다.",
+    "brewery": "별네트웍스 과천도가",
+    "region": "경기 과천시 남태령옛길 65 1층",
+    "homepage": "https://www.instagram.com/gwacheondoga/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.8,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0,
+        "other_fruit": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_124",
+    "name": "냥이탁주 9도",
+    "description": "고양시 최초의 프리미엄 지역특산주. 인공감미료 없이 고양시에서만 생산되는 품질 좋은 가와지쌀을 주재료로 만든 막걸리. 고양시의 대표 캐릭터 고",
+    "abv": 9.0,
+    "volume": "350ml / 500ml",
+    "ingredients": "정제수, 쌀(국내산), 찰보리(국내산), 찰수수(국내산), 벌꿀(국내산), 오미자(국내산), 송순(국내산), 누룩, 개량누룩, 밀함유",
+    "features": "떡갈비, 불고기와 잘 어울린다.",
+    "brewery": "행주산성주가",
+    "region": "경기도 고양시 덕양구 충장로 122, 블레스타운 202호",
+    "homepage": "https://smartstore.naver.com/hjssjuga",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.8,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "berry": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_125",
+    "name": "냥이탁주 fresh",
+    "description": "고양시 최초의 프리미엄 지역특산주. 인공감미료 없이 고양시에서만 생산되는 품질 좋은 가와지쌀을 주재료로 만든 막걸리. 고양시의 대표 캐릭터 고",
+    "abv": 5.0,
+    "volume": "350ml",
+    "ingredients": "정제수, 쌀(국내산), 찰보리(국내산), 찰수수(국내산), 벌꿀(국내산), 오미자(국내산), 송순(국내산), 누룩, 개량누룩, 밀함유",
+    "features": "리코타 치즈 샐러드, 훈제연어와 페어링하기 좋다.",
+    "brewery": "행주산성주가",
+    "region": "경기도 고양시 덕양구 충장로 122, 블레스타운 202호",
+    "homepage": "https://smartstore.naver.com/hjssjuga",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.8,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 3.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "berry": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_126",
+    "name": "말이야 막걸리야",
+    "description": "무감미료 무첨가 곡성의 쌀과 토란만을 고집하여 만든 프리미엄생막걸리로 음용성이 좋다. 부드럽고 은은한 요쿠르트 산미의 깔끔한 라이트버젼과 청량",
+    "abv": 6.0,
+    "volume": "200ml / 3000ml",
+    "ingredients": "건조토란(국내산), 쌀(국내산), 정제수, 젖산(산도조절제), 효모",
+    "features": "치킨, 피자와 잘 어울린다.",
+    "brewery": "시향가",
+    "region": "전라남도 곡성군 곡성읍 낙동원로 20",
+    "homepage": "https://smartstore.naver.com/sihyangga",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 1.7,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_127",
+    "name": "봇뜰 막걸리 10도",
+    "description": "국내산 쌀과 직접디딘 누룩(백곡-밀가루+쌀가루)과 물만을 이용하여 빚은 탁주이다. 두 번 빚은 이양주이며 약간의 산미와 함께 단맛이 특징은 술",
+    "abv": 10.0,
+    "volume": "750ml",
+    "ingredients": "쌀, 정제수, 누룩, 밀 함유",
+    "features": "똠냥꿍, 토마토 해물 스파게티와 잘 어울린다.",
+    "brewery": "봇뜰",
+    "region": "경기도 남양주시 진접읍 팔야로 91-41",
+    "homepage": "http://bot-ttle.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_128",
+    "name": "북극곰 막걸리",
+    "description": "POSCO 용광로에서 나오는 규소로 만든 규산질비료를 쓴 유기농쌀로 빚은 막걸리이다. 규산질비료 경작시 메탄가스가 현저히 줄어 북극곰 살리기에",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 쌀(국내산_포항유기농쌀), 물엿, 효모, 국, 정제효소제, 아스파탐(합성감미료, 페닐알라닌함유), 아세설팜칼륨(합성감미료), 젖산(산도조절제), 밀 함유",
+    "features": "김치전, 해물 파전 등의 전 종류와 매우 잘 어울린다.",
+    "brewery": "동해명주",
+    "region": "경상북도 포항시 남구 동해면 일월로 51-1",
+    "homepage": "https://yangjo.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_129",
+    "name": "지란지교 무화과 탁주",
+    "description": "100일 발표 90일 숙성으로 깊고 부드러운 맛과 순창에서 재배한 고품질 무화과와 햅찹쌀 100%를 사용해 무화과의 향긋함과 찹쌀의 달달한 맛",
+    "abv": 12.0,
+    "volume": "500ml",
+    "ingredients": "찹쌀, 멥쌀(국내산), 전통누룩(국내산 밀), 정제수, 무화과청, 레드비트분말, 밀함유",
+    "features": "갈치조림, 고등어무조림, 무화과타르트",
+    "brewery": "(유)친구들의술지란지교",
+    "region": "전라북도 순창군 순창읍 순창7길 5-1",
+    "homepage": "https://smartstore.naver.com/limsugzu",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_130",
+    "name": "청주신선주탁주",
+    "description": "식품첨가물 일체 없이 생지황, 숙지황, 인삼, 당귀, 감국, 구기자, 육계, 맥문동, 하수오, 우슬 등 10가지 약재를 사용한다. 국내산 쌀과",
+    "abv": 10.0,
+    "volume": "500ml",
+    "ingredients": "청원생명쌀(청주산), 정제수, 찹쌀(국내산), 전통누룩(국내산)(밀함유), 약재(국화, 쇠무릅, 당귀, 하수오, 구기자, 맥문동, 인삼, 육계(계피), 숙지황, 생지황)",
+    "features": "대나무 연잎밥, 산채비빔밥과 잘 어울린다.",
+    "brewery": "농업회사법인㈜신선",
+    "region": "충북 청주시 상당구 것대로 5 1층",
+    "homepage": "https://smartstore.naver.com/sinseon",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {
+        "spice": 2.0,
+        "other_herbal": 2.0
+      }
+    }
+  },
+  {
+    "id": "makgeolli_131",
+    "name": "팔팔막걸리",
+    "description": "팔팔막걸리는 특 등급의 김포금쌀만을 사용해서 빚으며 감미료 없이 만들어졌다. 발효곡주 고유의 부드러움, 은은한 단맛, 산미가 어우러져 시트러스",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 쌀(김포산, 김포금쌀), 국, 산도조절제, 효모, 밀함유",
+    "features": "살라미 크래커, 매콤한 오리 주물럭이나 제육볶음, 두루치기와 잘 어울린다.",
+    "brewery": "팔팔양조장",
+    "region": "경기도 김포시 김포대로1216번길 84-74",
+    "homepage": "https://smartstore.naver.com/88yangjojang",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_132",
+    "name": "곤드레생막걸리",
+    "description": "국내산 쌀과 메밀로 빚은 생막걸리로 메밀쌀로 빚어 메밀향이 그대로 살아있다. 산나물 자생에 최적지인 강원도 정선의 대표 나물인 곤드레를 첨가한",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "백미(국내산), 감자(정선산), 곤드레(정선산)",
+    "features": "곤드레나물을 안주로 즐기기 좋다.",
+    "brewery": "정선명주",
+    "region": "강원도 정선군 북평면 송석길 146-7",
+    "homepage": "https://ararisool.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_133",
+    "name": "도구막걸리",
+    "description": "도구 막걸리는 1955년 도구양조장이 설립되면서 처음으로 만들어진 막걸리이다. 양조장이 위치한 포항시 남구 동해면이 옛 지명으로는 도구리라서 ",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "밀(외국산), 쌀(국내산, 외국산), 물엿, 효모, 조제종국, 정제효소제, 아스파탐, 젖산",
+    "features": "적절한 단맛과 산미를 가지고 있어 양념이 많이 된 생선 조림과 잘 어울린다.",
+    "brewery": "동해명주",
+    "region": "경상북도 포항시 남구 동해면 일월로 51-1",
+    "homepage": "https://yangjo.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_134",
+    "name": "빨간쌀막걸리",
+    "description": "매력적인 붉은색을 띄면서 복순도가 손막걸리만의 탄산이 그대로 살아있는 홍국쌀 막걸리이다. 울주쌀에 홍국균을 흩뿌려 7일동안 한 번, 복순도가 ",
+    "abv": 6.5,
+    "volume": "935ml",
+    "ingredients": NaN,
+    "features": "족발과 잘 어울린다.",
+    "brewery": "복순도가",
+    "region": "울산광역시 울주군 상북면 향산리 439",
+    "homepage": "http://www.boksoon.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_135",
+    "name": "시향가 미니캔막걸리",
+    "description": "언제 어디서나(여행, 캠핑, 차박, 골프,낚시 등) 가볍게 즐길 수 있는 200ml 캔 막걸리로, 발효를 위한 시간을 계획하여 일정량만 직접 ",
+    "abv": 8.0,
+    "volume": "200ml",
+    "ingredients": "물, 쌀, 건조토란, 젖산, 누룩, 효모, 정제효소제",
+    "features": NaN,
+    "brewery": "시향가주식회사",
+    "region": "전라남도 곡성군 곡성읍 낙동원로 20",
+    "homepage": "https://smartstore.naver.com/sihyangga",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_136",
+    "name": "악양생막걸리",
+    "description": "지리산 청정수와 국내산 햅쌀 그리고 우리밀 누룩으로 저온숙성하여 빚어낸 다양한 유익균이 살아 숨쉬는 전통주이자 경남 하동의 지역특산주이다.",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 백미(국내산), 입국(국내산), 누룩(국내산), 조효소제(밀), 젖산(산도조절제), 혼합제제(효모, 덱스트린, 유당), 혼합제제(스테비올 배당체, 덱스트린), 혼합제제(효소:아밀라아제, 효소:글루코아밀라아제, 탄산칼슘, 황산칼슘)",
+    "features": "전류와 육회와 어울린다.",
+    "brewery": "악양주조",
+    "region": "경남 하동군 악양면 악양서로 363",
+    "homepage": "https://smartstore.naver.com/akyangjujo",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_137",
+    "name": "정감생막걸리",
+    "description": "깊은 산골 청정수와 신토불이 하동산 쌀과 찹쌀 그리고 우리밀 누룩으로 장기 저온에서 발효숙성하여 장인의 정성이 빚어낸 한 잔에 오미를 담아 달",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 백미(국내산), 찹쌀(국내산), 입국(국내산), 누룩(국내산), 조효소제(밀), 미강(쌀겨), 젖산(산도조절제), 혼합제제(효모, 덱스트린, 유당), 혼합제제(스테비올 배당체, 덱스트린), 혼합제제(효소:아밀라아제, 효소:글루코아밀라아제, 탄산칼슘, 황산칼슘)",
+    "features": NaN,
+    "brewery": "악양주조",
+    "region": "경남 하동군 악양면 악양서로 363",
+    "homepage": "https://smartstore.naver.com/akyangjujo",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_138",
+    "name": "딸링 막걸리",
+    "description": "다도참주가에서는 개량된 입국의 단조로움을 보완하고 전통누룩의 풍부함을 이끌어내기 위해  손수 입국을 직접 만들어 사용한다. 딸링은 딸기를 듬뿍",
+    "abv": 5.5,
+    "volume": "650ml",
+    "ingredients": "물, 쌀, 올리고당, 딸기, 누룩, 조제종국, 효모, 아스파탐(감미료, 페닐알라닌 함유)",
+    "features": "특별한 날 케이크와 같이 새콤달콤하게 즐기기 좋다.",
+    "brewery": "다도참주가",
+    "region": "전남 나주시 다도면 신동리 426-6번지",
+    "homepage": "https://smartstore.naver.com/chamjuga/products/5938288887",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 8.5,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "berry": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_139",
+    "name": "별산오디 스파클링 막걸리",
+    "description": "우수한 품질의 양주쌀과 국내산 오디 100%로 만든 막걸리로 짜릿한 천연탄산의 청량감과 상큼한 오디 맛의 조화가 어우러지는 술이다.",
+    "abv": 6.0,
+    "volume": "800ml",
+    "ingredients": "정제수, 쌀(국내산), 당류가공품(원당, 올리고), 오디(국내산), 종국, 효모",
+    "features": "한식, 양식 등 다양한 요리와 잘 어울린다.",
+    "brewery": "양주도가",
+    "region": "경기도 양주시 광적면 부흥로 21번길 60",
+    "homepage": "https://smartstore.naver.com/yangjudoga",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 1.7,
+      "carbonation": 6.8,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_140",
+    "name": "맑은내일 발효막걸리 Signature",
+    "description": "프리미엄 막걸리 맑은내일 발효막걸리 Signature 는 한국 전통 누룩으로 빚어 걸쭉하면서 진하고 누룩 함량이 높아 부드럽고 깊은 향이 일품",
+    "abv": 6.5,
+    "volume": "930ml",
+    "ingredients": "정제수, 백미(국내산), 누룩, 정제효소, 아스파탐(합성감미료/페닐알라닌함유), 밀함유",
+    "features": "해물파전, 두부김치 또는 떡볶이, 김치전처럼 매콤한 음식과 잘 어울린다.",
+    "brewery": "농업회사법인 우포의아침 주식회사",
+    "region": "경상남도 창녕군 대지면 대지농공단지길 40",
+    "homepage": "www.good-tomorrow.co.kr",
+    "awards": "2022 국제주류대상 탁주-생막걸리 부문 “대상” 수상작",
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_141",
+    "name": "맑은내일 스파클링막걸리 Signature",
+    "description": "전체적으로 산뜻한 과일이 떠오르는 풍부한 향과 청량한 느낌의 풍미가 좋다. 맑고 청량한 탄산감이 입안을 상쾌하게 해주며 쌀에서 오는 자연스러운",
+    "abv": 6.0,
+    "volume": "970ml",
+    "ingredients": "정제수, 맵쌀(국내산), 누룩, 정제효소, 아스파탐(합성감미료 / 페닐알라닌함유), 밀함유",
+    "features": "어느 음식과 마셔도 잘 어울리지만 특히 밀푀유나베나 닭발, 김치전 등 매콤한 음식과 함께 즐기는 것을 추천한다. 치즈 등의 발효식품 및 기름기",
+    "brewery": "농업회사법인 우포의아침 주식회사",
+    "region": "경상남도 창녕군 대지면 대지농공단지길 40",
+    "homepage": "www.good-tomorrow.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 1.7,
+      "carbonation": 6.8,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "other_fruit": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_142",
+    "name": "백구막걸리",
+    "description": "백구, 109 막걸리는 눈처럼 하얀 빛깔과 독특한 향기를 가진 누룩 설향곡으로 빚어진 막걸리다. 수익 중 1.9%를 유기견 보호에 후원하고 있",
+    "abv": 8.0,
+    "volume": "330ml",
+    "ingredients": "쌀. 설향곡(누룩), 시나몬(스리랑카), 벌꿀, 둥글레, 감초",
+    "features": "두부김치, 육회, 김치삼겹살, 골뱅이, 김치찌개, 오징어볶음, 알리오 올리오 파스타, 햄버거, 피자 와 잘 어울린다.",
+    "brewery": "한통술양조장",
+    "region": "경기 동두천시 쇠목길 325-2 한통술 B/D 전관",
+    "homepage": "http://www.hantongsool.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_143",
+    "name": "자작막걸리",
+    "description": "자작막걸리는 누룩으로 빚은 삼양주 원주에 자작나무 수액을 넣어서 2달 숙성시켜 빚어진 탁주다. 자작나무 수액이 더해져 담백하면서도 깊은 맛의 ",
+    "abv": 12.0,
+    "volume": "500ml",
+    "ingredients": "자작나무 수액, 누룩으로 빚은 삼양주 원주",
+    "features": "잘 삶은 문어숙회와 어울린다.",
+    "brewery": "양온소온양조장",
+    "region": "강원도 횡성군 갑천면 청정로매일2길 31 1층",
+    "homepage": "https://www.instagram.com/ricewine_on/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {},
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_144",
+    "name": "메들리손막걸리",
+    "description": "쌀과 누룩으로 발효하여 꾸밈없이 수수한 맛을 냈다. 상큼한 향을 따라 고슬한 밥의 향이 은은하게 피어오르며, 진피가 느껴지는 새금하고 쌉쌀한 ",
+    "abv": 8.0,
+    "volume": "375ml",
+    "ingredients": "쌀, 누룩",
+    "features": "고등어와 전갱이 가타은 기름이 많은 생선과 잘 어울리고, 육전이나 감자전과도 궁합이 좋다.",
+    "brewery": "메들리 주식회사",
+    "region": "경기도 김포시 태장로 741, 361호(장기동)",
+    "homepage": "https://www.ourmedley.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_145",
+    "name": "가와지탁주",
+    "description": "가와지탁주만의 묵직한 텍스쳐 속 바나나, 배, 포도껍질, 멜론 등 산뜻한 과일 향까지 느낄수 있다. 특히나 삼양주의 특징을 극대화한 새콤한 사",
+    "abv": 7.5,
+    "volume": "500ml",
+    "ingredients": "효모, 입국, 가와지쌀",
+    "features": "파전과 잘어울리며 기름진 음식과 궁합이 좋다.",
+    "brewery": "배다리도가",
+    "region": "경기 고양시 일산서구 가좌로 14 201호 배다리도가",
+    "homepage": "https://www.baedaridistillery.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0,
+        "tropical": 2.0,
+        "other_fruit": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_146",
+    "name": "골목막걸리 프리미엄 12",
+    "description": "골목막걸리는 SBS 백종원의 골목식당을 인연으로 외식전문가 백종원 대표와 양조연구가 박유덕 사장이 콜라보레이션하여 만들어낸 프리미엄 막걸리이다",
+    "abv": 12.0,
+    "volume": "350ml",
+    "ingredients": "정제수, 쌀(국내산), 국, 효모",
+    "features": "밸런스 있는 맛에 은은한 단맛과 산미로 어떤 음식과 함께해도 잘 어울리며, 고기와 페어링 하면 좋다.",
+    "brewery": "골목양조장",
+    "region": "충청남도 예산군 예산읍 형제고개로 967 다동 3~8호",
+    "homepage": "https://backstreetbrewery.modoo.at/?NaPm=ct%3Dl8ecli9t%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3D%7Chk%3D1b1a6c6712d2cee4ffbf9972c84e2a4cf74daa1e",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_147",
+    "name": "바텐더의막걸리",
+    "description": "바텐더의 막걸리는 칵테일을 만들기에 좋은 막걸리다. 막걸리의 특징은 잃지 않는 동시에, 다른 재료들의 특징까지 포용할 수 있는 술이다. 흔히 ",
+    "abv": 14.0,
+    "volume": "500ml",
+    "ingredients": "정제수, 멥쌀, 국, 효모, 기타과당, 물엿, 구연산, 아스파탐",
+    "features": "요거트와 과일 등을 활용해 칵테일을 만들어 드시면 좋다.",
+    "brewery": "술담화",
+    "region": "서울특별시 서초구 강남대로 527, 10층(브랜드칸타워, 술담화)",
+    "homepage": "https://www.sooldamhwa.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 9.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "other_fruit": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_148",
+    "name": "보석막걸리",
+    "description": "크래프트 막걸리를 만드는 도심 속 양조장 보석양조 막걸리 입니다.고소한 향이 나며, 끝 맛이 깔끔합니다.",
+    "abv": 12.0,
+    "volume": "500ml",
+    "ingredients": "정제수, 쌀(국내산), 국, 효모",
+    "features": "어떤 음식에도 잘 어울리지만, 양갈비, 문어숙회 등 고기나 해산물과 함께 하면 좋습니다.",
+    "brewery": "보석양조장",
+    "region": "서울 성북구 보문로 44 1층",
+    "homepage": "https://www.instagram.com/bosuk_brewery/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_149",
+    "name": "옹근달 본막걸리",
+    "description": "강화섬 쌀 100%, 물, 누룩만을 사용하여 밑술과 덧술을 다섯번 반복하는 오양주 기법으로 정성스럽게 빚었다. 크림을 가득 머금은 듯한 질감과",
+    "abv": 15.0,
+    "volume": "375ml",
+    "ingredients": "쌀(강화섬 쌀), 정제수, 누룩",
+    "features": "닭볶음탕과 함께 했을 때 텁텁하게 느껴질 수 있는 닭 살코기의 부분을 깨끗하게 잡아주어 잘 어울린다.",
+    "brewery": "옹근달양조장",
+    "region": "인천 남동구 백범로 176 3층(엄에스빌딩)",
+    "homepage": "https://www.instagram.com/onggendal/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_150",
+    "name": "호호막걸리",
+    "description": "드시는 모든 분들이 항상 ‘하하호호’ 행복하기를 바라는 마음을 담은 호호는 4대째 술을 빚고 있는 ‘중원당’의 단호박 막걸리이다. 밑술은 구멍",
+    "abv": 9.0,
+    "volume": "375ml",
+    "ingredients": "정제수, 찹쌀(국내산), 멥쌀(국내산), 단호박(국내산), 누룩(국내산), 밀함유",
+    "features": "전과 두부 등 간이 약한 음식과 함께 곁들여 먹으면 잘 어울린다.",
+    "brewery": "중원당",
+    "region": "충북 충주시 가금면 창동리 243",
+    "homepage": "http://www.청명주.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_151",
+    "name": "강냉이 막걸리",
+    "description": "용두산 조은술 양조장은 충북 제천에서 100년의 시간 동안 술을 빚었다. 긴 시간동안 쌓아온 노하우를 막걸리, 약주 등 전 주종 제품에 적용하",
+    "abv": 6.0,
+    "volume": "1,000ml",
+    "ingredients": "정제수, 쌀, 소맥분, 옥분, 입국, 올리고당, 치자분말, 정제효소제, 효모, 아스파탐, 아세설팜칼륨, 밀함유",
+    "features": "단맛이 진한 강냉이 막걸리는 매운 음식과 페어링하면 좋다.",
+    "brewery": "용두산 조은술",
+    "region": "충북 제천시 송학주천로 647",
+    "homepage": "https://smartstore.naver.com/woorisool",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 4.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_152",
+    "name": "낙천 옥수수 생동동주",
+    "description": "낙천 탁주 제조장은 막걸리의 맛과 영양학적 우수성을 높이고자 지장수를 활용하여 술을 제조한다. 또한, 주조에 들어가는 쌀을 모두 국내산으로 활",
+    "abv": 5.0,
+    "volume": "1700ml",
+    "ingredients": "정제수, 쌀, 옥수수분말, 치자, 입국, 효모, 올리고당, 정제효소, 아스파탐, 사카린나트륨, 밀함유",
+    "features": "옥수수 생동동주는 시골막걸리 맛과 비슷합니다. 전통 음식인 전과 페어링하면 좋다.",
+    "brewery": "낙천 탁주제조장",
+    "region": "강원도 동해시",
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 3.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 6.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_153",
+    "name": "생 옥수수 동동주",
+    "description": "배혜정도가 생 옥수수 동동주는 쌀을 찌지 않고 생쌀을 갈아 담금하는 방식인 100% 생쌀 발효제법으로 빚었다. 우리쌀과 옥수수로 빚어 풍미와 ",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "쌀, 옥수수분말, 물엿, 국, 효모, 젖산, 치자분말추출물, 아스파탐, 구연산, 효소처리 스테미아 밀함유",
+    "features": "전통적인 음식인 김치전과 함께 페어링하면 좋다.",
+    "brewery": "배혜정도가",
+    "region": "경기도 화성시 정남면 서봉로 835",
+    "homepage": "http://www.baedoga.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_154",
+    "name": "우주멜론미 스파클링 막걸리",
+    "description": "막걸리와 멜론, 우주멜론미 스파클링 막걸리는 곡성의 자랑이다. 당도 높은 머스크멜론을 넣은 진짜 멜론 막걸리다. 멜론뿐만 아니라 찹쌀, 신동진",
+    "abv": 5.0,
+    "volume": "300ml",
+    "ingredients": "정제수, 멥쌀, 찹쌀, 멜론과즙, 누룩, 설탕, 밀함유",
+    "features": "가벼운 스파클링 막걸리라 어떤 음식과도 잘 어울리지만 순대볶음, 치킨 등과 함께하면 청량함이 느끼함을 잘 잡아준다. 차갑게 드시면 더욱 맛있게",
+    "brewery": "농업회사법인 시향가",
+    "region": "전남 곡성군 곡성읍 낙동원로 20",
+    "homepage": "https://www.sihyangga.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 3.7,
+      "carbonation": 8.5,
+      "flavor": 5.0,
+      "alcohol": 3.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "other_fruit": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_155",
+    "name": "냥이탁주 화이트",
+    "description": "세 번 빚어서 만든 삼양주로 단맛과 신맛이 잘 어우러져 있고 부드러운 목넘김이 일품으로 프리미엄 막걸리의 품격을 느끼실 수 있다.",
+    "abv": 10.5,
+    "volume": "350ml",
+    "ingredients": "정제수, 쌀, 누룩, 밀함유",
+    "features": "한식과 페어링하면 좋다.",
+    "brewery": "농업회사법인 행주산성주가",
+    "region": "경기도 고양시 덕양구 충장로 122, 블레스타운 202호",
+    "homepage": "https://www.instagram.com/sanglkh.khl/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_156",
+    "name": "소백산생막걸리",
+    "description": "청와대 만찬주로 잘 알려져 있다. 쌀과 밀가루를 모두 사용한 옛날식 막걸리로 드라이하지 않고 단맛이 감돌며, 걸쭉하지 않고 가볍게 청량하게 계",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 쌀, 소맥분, 평화미",
+    "features": "곡물의 발효향이 강하고 단맛과 신맛의 균형이 잘 갖춰져 있으며, 원료인 밀가루에서 나오는 입 안의 텁텁함이 있지만 목넘김이 깔끔해 버섯전골과 ",
+    "brewery": "용두산조은술",
+    "region": "충북 제천시 송학면 송학주천로 647",
+    "homepage": "https://smartstore.naver.com/woorisool",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 6.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_157",
+    "name": "송도막걸리",
+    "description": "레몬과 고구마가 첨가된 새콤달콤한 스파클링 막걸리다. 막걸리가 일반적으로 가지는 누룩향을 덜어내고 은은하게 퍼지는 레몬향이기분 좋은 산뜻함이 ",
+    "abv": 6.0,
+    "volume": "700ml",
+    "ingredients": "정제수, 쌀(국내산), 쌀보리(국내산), 고구마(국내산), 레몬, 자일리톨, 종국, 효모, 정제효소",
+    "features": "기름지고 고소한 삼겹살과 탁주는 최고의 궁합을 자랑한다.",
+    "brewery": "농업회사법인송도향(유)",
+    "region": "인천시 남동구 호구포로 50, 엘아이센터 8층 819-1호",
+    "homepage": "https://www.samyangchoon.com/index.html",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 8.5,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 8.5,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "citrus": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_158",
+    "name": "참주가 솔 막걸리",
+    "description": "국내산 전통재료와 솔잎을 직접 손질하여 발효시킨 한국형 쌀와인으로 은은한 솔향기와 기분좋은 산뜻함이 더해졌다. 솔잎에  함유된 성분이 발효를 ",
+    "abv": 5.5,
+    "volume": "650ml",
+    "ingredients": "물, 쌀(국내산), 솔잎(국내산), 당귀(국내산), 한라봉(국내산), 누룩, 올리고당, 아스파탐(감미료, 페닐알라닌함유), 조제종국, 효모 밀,우유함유",
+    "features": "다도참주가의 막걸리는 깔끔한 끝맺음을 기본으로 하여 안주없이 마셔도 좋은 막걸리로 일상 식사에 곁들이기 좋다.",
+    "brewery": "다도참주가",
+    "region": "전라남도 나주시 다도면 신촌2길 9",
+    "homepage": "http://chamjuga.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "citrus": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_159",
+    "name": "솜솜 막걸리",
+    "description": "솜솜막걸리는 뭉게 구름을 머금은 듯한 부드러움과 적당한 단맛, 산미의 조화가 특징이다. 감미료를 일체 넣지 않고 오직 쌀, 물, 전통누룩만으로",
+    "abv": 8.0,
+    "volume": "375ml",
+    "ingredients": "쌀, 누룩, 물",
+    "features": "감자전, 보쌈, 돼지갈비찜, 떡볶이, 쭈꾸미볶음 등 기름지거나 양념된 음식 또는 매콤한 음식과 잘 어울린다.",
+    "brewery": "마깨주",
+    "region": "강원도 춘천시 퇴계로 89 강원전문건설회관",
+    "homepage": "https://smartstore.naver.com/makkaejoo_market?",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.1,
+      "carbonation": 5.0,
+      "flavor": 5.1,
+      "alcohol": 6.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.1,
+      "finish": 5.1
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_160",
+    "name": "감천막걸리",
+    "description": "균형감이 무척 돋보이는 제품. 우유와 같은 매끈한 질감에 고소한 청량감을 가진 막걸리로, 시원하게 마시면 더욱 그 진가가 드러난다. 경쾌한 자",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 멥쌀(국내산), 누룩, 효모, 밀함유",
+    "features": "떡볶이, 치즈, 과일, 보쌈, 치킨, 피자와 궁합이 좋다.",
+    "brewery": "농업회사법인 주식회사 벗드림",
+    "region": "부산시 강서구 대저로 259 A동",
+    "homepage": "https://butdream.modoo.at/",
+    "awards": "우리술 품평회 탁주부문 우수상 수상",
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 1.7,
+      "carbonation": 6.8,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "other_fruit": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_161",
+    "name": "완도유자막걸리",
+    "description": "완도유자막걸리는 유자 재배 적지로 꼽히는 고금도에서 생산한 유자즙을 활용한 탁주이다, 고금주조장에서 생산되는 모든 술은 이 완도쌀을 사용하고 ",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 완도쌀,소맥분,입국,효모,정제효소,유자즙,",
+    "features": "들기름 막국수, 돼지수육, 굴전 등과 함께하면 잘 어울릴 수 있는 술이다.",
+    "brewery": "고금주조장",
+    "region": "전남 완도군 고금면 고금로 552",
+    "homepage": "http://ggjjj.tistory.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "citrus": 2.0,
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_162",
+    "name": "도갓집 막걸리",
+    "description": "잘 익은 곡물향과 누룩향, 약한 바닐라 향과 풋사과 향을 느낄 수 있는다. 일반적으로 생각하는 막걸리의 표본과 같은 제품으로 4가지맛 감(단맛",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 쌀(국내산), 국(국내산), 물엿, 누룩(밀함유), 효모, 아세설팜칼륨(감미료)",
+    "features": "닭볶음탕, 돼지갈비찜, 자반 고등어 등 맛과 향이 강한 음식, 대부분의 한식과 좋은 궁합을 가진다.",
+    "brewery": "삼호주조장",
+    "region": "전남 영암군 삼호읍 대불주거5로 154",
+    "homepage": "https://smartstore.naver.com/dogasjib/profile",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 6.4,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_163",
+    "name": "스톰탁주",
+    "description": "세계적인 인기 캐릭터 와 오리지널 스톰트루퍼 와 90년 전통의 밀양 클래식 술도가 가 협업하여 제작된 글로벌 막걸리 프로젝트입니다.기분 좋",
+    "abv": 6.0,
+    "volume": "500ml",
+    "ingredients": "국내산 쌀 (밀양),정제수,쌀,입국,스테비올 배당체",
+    "features": NaN,
+    "brewery": "밀양클래식술도가",
+    "region": "경상남도 밀양시 단장면 표총로 176-5 밀양클래식술도가",
+    "homepage": "https://djclassicstore.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_164",
+    "name": "생딸기 막걸리",
+    "description": "단맛을 내기 위하여 아스파탐 등 화학첨가물을 일체 넣지 않습니다. 햅쌀과 생딸기에서 우러난 천연의 건강한 단맛을 만끽합니다.",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "햅쌀(국내산 신동진품종),쌀,쌀가루,국내산 딸기,효모,효소,정제수,프락토올리고당",
+    "features": "1 매콤한 안주와 한께!2 각종 전과 즐겨 보세요!3 더운날엔 상큼하고 달달한 슬러쉬로 드실 수 있어요!",
+    "brewery": "농업회사법인 상주주조(주)",
+    "region": "경북 상주시 남성로 73-15",
+    "homepage": "https://smartstore.naver.com/topbrewery",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "berry": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_165",
+    "name": "짝꿍막걸리",
+    "description": "기존 막걸리에서 즐길 수 없었던 다양하고 복잡한 맛이 매력적인 술입니다.",
+    "abv": 8.0,
+    "volume": "620ml",
+    "ingredients": "정제수 ,쌀(국내산),국,효모,밀합유",
+    "features": "짭쪼롬한 안주, 나쵸",
+    "brewery": "한강주조",
+    "region": "서울특별시 성동구 둘레15길 12",
+    "homepage": "https://hangangbrewery.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_166",
+    "name": "옛날 생동동주",
+    "description": "깨지지 않고 동동 떠있는 쌀알들이 강하지 않은 자연 탄산과 함께 부드럽게 입 안을 넘어갑니다.",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "물, 쌀(국내산), 쌀가루(국내산), 효모, 조제종국, 정제효소제, 젖산, 아스파탐(감미료,페닐알라닌 함유), 아세셀팜칼륨(감미료)",
+    "features": "부침개, 전,달콤한 떡볶이, 삼계탕, 양녑치킨, 대하구이, 감자튀김 등",
+    "brewery": "남도탁주",
+    "region": "전라남도 나주시 노안면 노안로 379",
+    "homepage": "https://smartstore.naver.com/jeonggojib",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 6.4,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_167",
+    "name": "옹기 막걸리",
+    "description": "단맛보다는 산미가 풍부해 느린마을 막걸리와는 다른 매력을 느낄 수 있고, 인공감미료 없이 우리 쌀로만 빚어 목넘김이 더욱 부드럽고 꾸밈없는 막",
+    "abv": 7.0,
+    "volume": "1980ml",
+    "ingredients": "정제수,쌀가루(국내산),백설탕,활성건조효모(건조효모,유화제),국[조효소제(밀),정제효소],구연산,밀함유",
+    "features": "한식 ,전류 ,육류.",
+    "brewery": "배상면주가",
+    "region": "경기도 포천시 화현면 화현리 512",
+    "homepage": "https://www.soolsool.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_168",
+    "name": "방풍 막걸리",
+    "description": "여수 금오도 방풍막걸리는 방풍 잎에서 추출한 방풍즙이 7.7% 첨가된 막걸리입니다.옛부터 풍을 예방한다고 하여 이름붙여진 방풍나물은 뛰어난 약",
+    "abv": 10.0,
+    "volume": "500ml",
+    "ingredients": "정제수,쌀(국내산),방풍(국산)7.7%,누룩,수크랄로스(감미료)",
+    "features": "보쌈,두부김치,골뱅이무침,파전 등등 ...",
+    "brewery": "금오도섬마을",
+    "region": "전남 여수시 대유윗길47",
+    "homepage": "https://campgold.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_169",
+    "name": "청탁막걸리",
+    "description": "100% 우리쌀로 만들어  더 건강하고 깊은 풍미를 느낄 수 있는 막걸리입니다.",
+    "abv": 5.0,
+    "volume": "750ml",
+    "ingredients": "정제수,쌀(국산),곡자(누룩),아스파탐(감미료,페닐알라닌 함유)밀함유",
+    "features": NaN,
+    "brewery": "금정산성 토산주",
+    "region": "부산 금정구 산성로 453",
+    "homepage": "http://www.sanmak.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 3.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_170",
+    "name": "해창 생막걸리",
+    "description": "땅끝마을 해남에서 온 프리미엄 생 막걸리 찹쌀과 멥쌀 그리고 물,원재료의 고요한 맛과 향을 그대로 담아 자연 발효로 장기간 숙성시켜 만듭니다.",
+    "abv": 12.0,
+    "volume": "900ml",
+    "ingredients": "정제수.참쌀(국내산)15.3%,멥쌀(국내산),입국,곡자(밀) 밀합유 효모",
+    "features": "전복구이 ,홍어무침, 김치찜, 빈대떡..",
+    "brewery": NaN,
+    "region": NaN,
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_171",
+    "name": "하늘담6 생막걸리",
+    "description": "구수하고 달달한 맛에 살짝 쏘는 탄산감이 좋은, 전통 생막걸리의 진수입니다.",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "국내산 햅쌀",
+    "features": NaN,
+    "brewery": "순천주조",
+    "region": "전라남도 순천시 이수로 97",
+    "homepage": "https://smartstore.naver.com/mayday82",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 6.8,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_172",
+    "name": "희양산 생막걸리 9도",
+    "description": "담백하고 깔끔한 맛이 특징으로,단맛과 신맛,알코올이 균형을 갖춘 술입니다.",
+    "abv": 9.0,
+    "volume": "650ml",
+    "ingredients": "쌀(국내산/무농약),효모,누록(밀/국내산),정제수",
+    "features": "한식류 , 한정식 ..",
+    "brewery": "두술도가",
+    "region": "경북 문경시 가은읍 가은5길 7",
+    "homepage": "https://www.instagram.com/doosooldoga/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_173",
+    "name": "경기 쌀 막걸리",
+    "description": "국내산 세마쌀을 100%원료로 합성 첨가물 없이 순수 재료로 깨끗하고 정직하게 만들어 깔끔하고 깊은 맛을 느끼실 수 있습니다.",
+    "abv": 7.7,
+    "volume": "600ml",
+    "ingredients": "물,쌀(경기미 세마쌀26.67%),국,효모,밀함유",
+    "features": NaN,
+    "brewery": NaN,
+    "region": NaN,
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_174",
+    "name": "감성 막걸리",
+    "description": "감성 막걸리는 천연 감미료와 국내산 100% 경기미를 사용하여 빚은 용인 지역특산주입니다.",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수,쌀(경기산),에리스리톨,국,효모",
+    "features": "피자 ,족발,수욕,치킨",
+    "brewery": "주다솜",
+    "region": "경기 용인시 처인구 모현읍 곡현로 680-2",
+    "homepage": "http://judasom.cafe24.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_175",
+    "name": "포도 막걸리",
+    "description": "리얼 100% 포도만 100% 천연발효 수제 막걸리입니다. 아스파탐은 물론 그 어떤 화학물질도 들어가지 않은 순수한 막걸리입니다.",
+    "abv": 12.0,
+    "volume": "500ml",
+    "ingredients": "쌀(국내산-포천 으뜸쌀), 포도(국내산-포천), 누룩(국내산), 정제수",
+    "features": "견과류,샐러드",
+    "brewery": "민주술도가",
+    "region": "경기도 포천시 소흘읍 거친봉이길 58-35",
+    "homepage": "https://smartstore.naver.com/minjusool",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_176",
+    "name": "여수밤바다 옥수수막걸리",
+    "description": "지하 200m 청정 암반수에 국내산 쌀로 빚은 살균 막걸리입니다.",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 옥수수분말, 자일리톨, 효모, 누룩, 물엿, 정제효소",
+    "features": NaN,
+    "brewery": "새순천양조영농조합법인",
+    "region": "전남 여수시 진남상가길 6(중앙동567-1)",
+    "homepage": "https://yeosubambadagifishop.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_177",
+    "name": "14도 자색고구마 막걸리",
+    "description": "자색고구마막걸리는 누룩과 쌀로 처음 밑술을 만들어 발효시킨 후,고두밥과 자색고구마를 넣어 두 번 발효시키는 이양주 방식으로 빚어진 탁주입니다",
+    "abv": 14.0,
+    "volume": "375ml",
+    "ingredients": "쌀, 국, 물, 효모, 자색고구마",
+    "features": "모든전, 두부김치.",
+    "brewery": "12월의 양조장",
+    "region": "강원도 원주시 신림면 삼봉2길 27",
+    "homepage": "https://ssalosul2016.modoo.at/?link=aas2x3wu",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_178",
+    "name": "청명탁주",
+    "description": "청명탁주는 일체의 첨가물 없이 찹쌀과 누룩으로만 만들었습니다.기존의 청명주와 달리 구멍떡으로 밑술을 빚는데 다른 밑술에 비교하면 쉽지 ",
+    "abv": 12.0,
+    "volume": "375ml",
+    "ingredients": "국내산 찹쌀, 국내산 누룩, 국내산 소맥분",
+    "features": "양념육, 돼지갈비 등이 잘 어울립니다.",
+    "brewery": "중원당",
+    "region": "충북 충주시 가금면 창동리 243",
+    "homepage": "http://www.청명주.com/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_179",
+    "name": "사일로 막걸리",
+    "description": "사일로 막걸리는 3번의 담금 과정을 거친 삼양주입니다.원재료 이외의 어떠한 첨가물도 들어가지 않은 막걸리입니다.",
+    "abv": 10.0,
+    "volume": "500ml",
+    "ingredients": "찹쌀(국내산), 멥쌀(국내산), 개량누룩, 정제수",
+    "features": NaN,
+    "brewery": "사일로 브루어리",
+    "region": "세종시 연동면 청연로 716",
+    "homepage": "https://silobrewery.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_180",
+    "name": "와구리 막걸리 세미스위트",
+    "description": "은은한 쌀꽃향이 나는 가볍고 부드러운 막걸리입니다.",
+    "abv": 5.0,
+    "volume": "480ml",
+    "ingredients": "정제수,쌀(국내산),입국,누룩,효모,정제효소제,기타과당(옥수수전분100%)",
+    "features": "한식,육류,식사류.",
+    "brewery": NaN,
+    "region": NaN,
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 3.7,
+      "carbonation": 3.7,
+      "flavor": 6.4,
+      "alcohol": 3.5,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {
+        "flower": 2.0
+      },
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_181",
+    "name": "민주허브막걸리",
+    "description": "민주허브막걸리는 인공 첨가물 대신 허브를 사용했기 때문에 허브의 향긋함과 깊은 맛을 강조했습니다.특히 잉글리쉬 라벤더와 로즈마리, 레몬",
+    "abv": 14.0,
+    "volume": "500ml",
+    "ingredients": "쌀(국내산-포천 으뜸쌀), 허브(국내산-포천), 누룩(국내산), 정제수",
+    "features": NaN,
+    "brewery": "농업회사법인 민주술도가 주식회사",
+    "region": "경기도 포천시 소흘읍 거친봉이길 58-35 나동 민주술도가 (우 : 11183)",
+    "homepage": "https://smartstore.naver.com/minjusool",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.8,
+      "alcohol": 8.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "citrus": 2.0
+      },
+      "floral_notes": {
+        "flower": 2.0,
+        "herbal_floral": 4.0
+      },
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {
+        "herb": 4.0
+      }
+    }
+  },
+  {
+    "id": "makgeolli_182",
+    "name": "숨은골 탁주",
+    "description": "지역(완주 동상면)찹쌀과 누룩,물로만 빚은 1번 발효한 단양주입니다.부드러운 단맛과 상큼함을 담았으며 마시는 잔마다 맛과 향이 달라지는 재미가",
+    "abv": 12.0,
+    "volume": "500ml",
+    "ingredients": "찹쌀 28.9%, 누룩 2.9%, 정제수 68.2%",
+    "features": "차돌박이 숙주볶음,백김치,고추전,과일",
+    "brewery": "주식회사 공동체공간 수작",
+    "region": "전라북도 완주군 동상면 단지길 37, 1층",
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.8,
+      "body": 5.0,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "other_fruit": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_183",
+    "name": "이상헌 탁주",
+    "description": "곡물의 향이 좋고 적당한 단 맛과 드라이한 맛,부드러운 목 넘김을 좋습니다.",
+    "abv": 14.0,
+    "volume": "500ml",
+    "ingredients": "아산쌀, 국(국내산 밀누룩), 정제수",
+    "features": "불고기,꼬막 무침,김치찜,모든전",
+    "brewery": "이가수불",
+    "region": "충청남도 아산시 도고면 기곡로77번길 30-7 (우 : 31551)",
+    "homepage": "https://smartstore.naver.com/leegasubul",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 3.7,
+      "body": 5.1,
+      "carbonation": 3.7,
+      "flavor": 5.1,
+      "alcohol": 8.5,
+      "acidity": 3.7,
+      "aroma_intensity": 5.1,
+      "finish": 5.1
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_184",
+    "name": "맵시 막걸리 화이트",
+    "description": "24시간 합 720시간 이상의,7차례의 과정을 지닌 품질 검증을 끝낸 최고금 백국 누룩이기에 일반 전통주에서 맛볼 수 없던 특유의 감칠맛을 맛",
+    "abv": 6.0,
+    "volume": "770ml",
+    "ingredients": "정제수,쌀(국내산),기타과당,누룩,효모,효소제,아스파탐",
+    "features": NaN,
+    "brewery": "기억브루어리",
+    "region": "경기도 김포시 하성면 누산봉성로237번길 163 3동 (우 : 10013)",
+    "homepage": "https://smartstore.naver.com/mapcykorea",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_185",
+    "name": "맵시 막걸리 레드라벨",
+    "description": "상큼한 레몬바닐라의 맛을 즐길 수 있는 새콤한 맛입니다.",
+    "abv": 5.0,
+    "volume": "770ml",
+    "ingredients": "정제수,쌀(국내산),기타과당,소다맛시럽,물엿,",
+    "features": NaN,
+    "brewery": "기억브루어리",
+    "region": "경기도 김포시 하성면 누산봉성로237번길 163 3동 (우 : 10013)",
+    "homepage": "https://smartstore.naver.com/mapcykorea",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 9.5,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.8,
+      "alcohol": 3.5,
+      "acidity": 6.8,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "citrus": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_186",
+    "name": "맵시 막걸리 블랙라벨",
+    "description": "고집스러운 전통방식을 통해 귀하게 만들어진 집중도 높은 전통주입니다.",
+    "abv": 10.0,
+    "volume": "750ml",
+    "ingredients": "정제수,쌀(국내산),누룩,효소제,효모",
+    "features": NaN,
+    "brewery": "기억브루어리",
+    "region": "경기도 김포시 하성면 누산봉성로237번길 163 3동 (우 : 10013)",
+    "homepage": "https://smartstore.naver.com/mapcykorea",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_187",
+    "name": "복순도가 찹쌀탁주 9도",
+    "description": "참쌀에서 배어나온 단맛이 기분 좋게 혀를 감돕니다.영양가 높은 찹쌀의 찰기는 더욱 깊고 진한 맛을 선사합니다.",
+    "abv": 9.0,
+    "volume": "935ml",
+    "ingredients": "정제수,찹쌀(국산).27.4%,곡자(밀)",
+    "features": "고소한 전 ,튀김류,해산물요리.",
+    "brewery": NaN,
+    "region": NaN,
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_188",
+    "name": "경탁주 12도",
+    "description": "첫 모금에서는 향긋한 사과, 배의 과실향과 새콤달콤한 요거트 맛이 연상되며, 마지막에 느껴지는 드라이한 술 맛이 조화롭다. 본연의 맛은 묵직하",
+    "abv": 12.0,
+    "volume": "500ml",
+    "ingredients": "쌀(국내산), 정제수, 국(밀함유), 효모, 산도조절제",
+    "features": "수육&amp;김치, 브리치즈, 제철회",
+    "brewery": "제이1 농업회사법인㈜",
+    "region": "경기도 수지구 광교중앙로 338 에이동 105호",
+    "homepage": "https://smartstore.naver.com/j1inc",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 6.4,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 8.5,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 4.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_189",
+    "name": "대몽재 1779 생막걸리 12",
+    "description": "원재료의 맛과 향을 가장 진하게 느낄 수 있다. 높은 질감의 바디감은 산미가 강하게 느껴지기보다 적절한 당도로 입안 가득히 묵직하게 생막걸리 ",
+    "abv": 12.0,
+    "volume": "750ml",
+    "ingredients": "쌀, 누룩, 정제수",
+    "features": "한국 가정식 탕. 고기찜, 전 등 기름진 음식",
+    "brewery": "경주교촌도가 영농조합법인",
+    "region": "경상북도 경주시 교촌안길 25",
+    "homepage": "https://smartstore.naver.com/1779choi",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 6.8,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_190",
+    "name": "우리WRY 분홍소금 막걸리",
+    "description": "딸기우유처럼 분홍빛깔이 예쁜 12도 막걸리. 미네랄이 풍부한 히말랴아 핑크솔트 함유. 은은한 과실향과 풍부한 바디감과 농밀하면서도 부드러운 질",
+    "abv": 12.0,
+    "volume": "700ml",
+    "ingredients": "정제수, 쌀(국내산), 국(누룩), 효모, 히말라야핑크솔트, 천연색소, 유산균",
+    "features": "김치전, 모듬전, 김치볶음, 연어스테이크",
+    "brewery": "농업회사법인 주식회사 우리서막",
+    "region": "서울특별시 성동구 성수일로 111 103호 우리서막",
+    "homepage": "https://smartstore.naver.com/wryseomak",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 8.5,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "berry": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_191",
+    "name": "순창 지란지교 프리미엄 캐모마일 탁주",
+    "description": "직접 농사지은 유기농 무화과로 빚은 막걸리. 캐모마일의 기품있는 향이 깊고 짙은 달콤함에 그윽하게 묻어나와 향긋함을 느낄 수 있다.",
+    "abv": 12.0,
+    "volume": "500ml",
+    "ingredients": "찹쌀 멥쌀(국내산), 전통누룩(국내산), 정제수, 무화과청 3.26%(국내산), 레드비트문발(국내산) (밀함유)",
+    "features": NaN,
+    "brewery": "지란지교",
+    "region": "전라북도 순창군 순창읍 순창7길 5-1, 지란지교",
+    "homepage": "https://smartstore.naver.com/limsugzu",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 7.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_192",
+    "name": "상쾌한 막걸리 숲으로 7",
+    "description": "경기미햅쌀로 만든 막걸리로 새큼한 과실향을 느낄 수 있다.",
+    "abv": 7.0,
+    "volume": "700ml",
+    "ingredients": "정제수, 경기미햅쌀, 국, 효모",
+    "features": "치즈, 크래커",
+    "brewery": "과천도가",
+    "region": "경기도 과천시 남태령옛길 65",
+    "homepage": "https://buly.kr/15Mv0E2",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_193",
+    "name": "덕두도가 탁주 15도",
+    "description": "국내산 재료만을 사용하여 세번 빚은 탁주로 찹쌀의 깊은 단맛이 특징입니다. 100일간의 저온숙성으로 단맛과 은은한 산미가 밸런스좋게 어우러져있",
+    "abv": 15.0,
+    "volume": "500ml",
+    "ingredients": "찹쌀(완도산), 쌀(완도산), 누룩(국내산), 국(완도산), 효모, 정제수 / 밀 함유",
+    "features": "흑돼지하몽, 새우치즈구이, 두부강정, 산뜻한 안주류",
+    "brewery": "농업회사법인 (주)덕두도가",
+    "region": "제주시 한림읍 광산로 491-1, 2동",
+    "homepage": "https://smartstore.naver.com/deokdoo",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 6.4
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_194",
+    "name": "뽐내탁주",
+    "description": "복합적이고 다채로운 맛과 향을 느낄 수 있다. 쌀에서 얻을 수 있는 단맛을 가지면서도 산미를 더해 산뜻하게 마실 수 있다. 수박같이 싱그럽고 ",
+    "abv": 8.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 쌀(춘천산), 국, 효모, 밀함유",
+    "features": NaN,
+    "brewery": "봄내양조장",
+    "region": "강원도 춘천시 춘추로 187번길 11, 1층",
+    "homepage": "https://url.kr/kasf3n",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_195",
+    "name": "강냉이 막걸리",
+    "description": "옥수수의 달짝지근하면서도 구수한 맛이 특징인 막걸리이다. 미세한 탄산감이 있고 깔끔한 마무리된다.",
+    "abv": 6.0,
+    "volume": "1000ml",
+    "ingredients": "정제수, 쌀, 소맥분, 옥분, 입국, 올리고당, 치자분말, 정제효소제, 효모, 아스파탐, 아세설팜칼륨",
+    "features": "전, 두부요리",
+    "brewery": "용두산 조은술 영농조합법인",
+    "region": NaN,
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 3.7,
+      "carbonation": 6.8,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0,
+        "other_grain": 4.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_196",
+    "name": "평창 감자 막걸리",
+    "description": "강원도 평창에서 재배한 감자를 이용해 만든 막걸리로 감자의 담백하면서도 달달한 맛을 그대로 느낄 수 있다. 통감자를 그대로 쪄서 쌀과 함께 낮",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 쌀, 입국, 감자, 효모, 정제효소, 아스파탐",
+    "features": "감자전, 보쌈",
+    "brewery": NaN,
+    "region": NaN,
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_197",
+    "name": "밀물 탁주",
+    "description": "전라남도의 햇통밀을 사용하여 부드러우면서도 드라이한 풍미가 특징인 탁주. 높은 밀도감과 깔끔한 끝 맛을 가지고 있다.",
+    "abv": 8.0,
+    "volume": "480ml",
+    "ingredients": "정제수, 통밀쌀, 국, 효모",
+    "features": "홍어회, 치즈, 견과류, 곱창볶음",
+    "brewery": "농업회사법인 상선주조 주식회사",
+    "region": "전라남도 목포시 노적봉길 19 1층 102호",
+    "homepage": "https://smartstore.naver.com/milmulbrewery",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 3.7,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "wheat": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_198",
+    "name": "사일로 막걸리 복숭아",
+    "description": "&lt;사일로 막걸리 복숭아&gt;는 조치원 농가에서 정성껏 키운 복숭아를 넣어 만든 술이다. 기존의 사일로 막걸리에 복숭아를 블렌딩해서 만든",
+    "abv": 8.0,
+    "volume": "500ml",
+    "ingredients": "찹쌀, 맵쌀, 복숭아과즙액, 개량누룩, 효모, 정제수",
+    "features": "부드러운 타르트",
+    "brewery": "사일로브루어리",
+    "region": "세종특별자치시 조치원읍 충현1길 60 제 1동, 2동",
+    "homepage": "https://smartstore.naver.com/silobrewery",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 6.5,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "stone_fruit": 2.0,
+        "other_fruit": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_199",
+    "name": "다도참주가 생막걸리",
+    "description": "깔끔하고 단백한 맛으로, 바닐라향, 연한 쌀향이 느껴지고 중간에서 단향이 있다. 마지막에는 연한 누룩향이 느껴진다. 첫맛에 단맛이 적고 산미가",
+    "abv": 5.5,
+    "volume": "650 / 750ml",
+    "ingredients": "정제수, 쌀(국내산), 올리고당, 누룩, 아스파탐, 조제종국, 효모",
+    "features": "파전, 호박전, 두부김치",
+    "brewery": "다도참주가",
+    "region": "전라남도 나주시 다도면 신촌길 9",
+    "homepage": "https://smartstore.naver.com/chamjuga/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 5.1,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 6.4,
+      "aroma_intensity": 5.0,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_200",
+    "name": "참주가생막걸리",
+    "description": "수제입국을 사용하여 전통에 현대적인 감성을 더한 막걸리입니다. 60년의 노하우로 오미의 조화가 뛰어나고 은은한 향기가 나며 달지 않고 깔끔한 ",
+    "abv": 5.5,
+    "volume": "650ml",
+    "ingredients": "물, 쌀(국내산), 올리고당, 누룩, 조제종국, 효모",
+    "features": NaN,
+    "brewery": "다도참주가",
+    "region": "전남 나주시 다도면 신촌2길 9",
+    "homepage": "http://chamjuga.com",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 8.5,
+      "body": 3.7,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 6.4,
+      "finish": 3.7
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_201",
+    "name": "찰진 막걸리",
+    "description": "남도가양주 찰진막걸리는 고문헌에 나와 있는 ‘석탄향’ 제조법을 현대 양조 기술로 다시 재현하여 매력적인 우리술의 풍미를 잘 살려낸 전통방식 우",
+    "abv": 7.0,
+    "volume": "750ml",
+    "ingredients": "정제수, 멥쌀(국내산), 찹쌀(국내산), 누룩(밀) [밀함유]",
+    "features": "두부김치, 김치전, 제육볶음, 숯불닭발",
+    "brewery": "남도가양주",
+    "region": "전남 목포시 동명로 58, 1층",
+    "homepage": "https://smartstore.naver.com/namdobrewery/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 6.4,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 6.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_202",
+    "name": "해남찹쌀생막걸리",
+    "description": "해남찹쌀생막걸리 9도는 질좋은 해남산 찹쌀, 멥쌀, 누룩을 적절히 배합하여 장기 발효한 無감미료 프리미엄 生막걸리이다. 곡물향, 누룩향, 과실",
+    "abv": 9.0,
+    "volume": "750ml",
+    "ingredients": "찹쌀(해남산), 멥쌀(해남산), 누룩",
+    "features": "미나리 전, 쑥갓 두부무",
+    "brewery": "삼산주조장",
+    "region": "전남 해남군 삼산면 고산로 583-1",
+    "homepage": "https://samsanjujo.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 3.7,
+      "alcohol": 6.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 8.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {
+        "other_herbal": 2.0
+      }
+    }
+  },
+  {
+    "id": "makgeolli_203",
+    "name": "서촌막걸리15",
+    "description": "서촌막걸리는 고려시대부터 조선시대 말까지 우리 선조들이 가장 즐겨 빚어 마셔 왔던 부의주를 저온에서 장기 발효하는 방식으로 발전시킨 술로, 6",
+    "abv": 15.0,
+    "volume": "500ml",
+    "ingredients": "정제수,찹쌀(국내산),누룩(밀함유)",
+    "features": "브리치즈, 카나페",
+    "brewery": "온지술도가",
+    "region": "서울특별시 은평구 통일로65길 26",
+    "homepage": "https://onzisul.modoo.at/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 8.5,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0,
+        "wheat": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_204",
+    "name": "매료막걸리 ver.1",
+    "description": "오로지 쌀과 누룩만을 사용한 프리미엄 막걸리. 덧술을 세 번 더하는 삼양주 방식으로 주조, 설탕 및 일체의 첨가제 없이 만들어진 고급스러운 단",
+    "abv": 6.0,
+    "volume": "650ml",
+    "ingredients": "쌀(국내산),누룩, 효모, 정제수, 젖산(산도조절제)",
+    "features": "치즈, 로제 떡볶이",
+    "brewery": "제이케이크래프트 기다림양조장",
+    "region": "부산 해운대구 좌동로 10번길 51-5 1층",
+    "homepage": "https://maeryo-gidarim.co.kr/",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {},
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0,
+        "other_grain": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_205",
+    "name": "독수리막걸리",
+    "description": "인공감미료를 전혀 첨가하진 않고 단맛을 내기위해 쌀을 일반막걸리의 두배 이상 사용한 프리미엄 막걸리다. 자연스러운 단맛과 부드러운 목넘김에서 ",
+    "abv": 6.0,
+    "volume": "750ml",
+    "ingredients": "국내산쌀, 백국, 황국, 정제수 효모",
+    "features": "닭강정, 떡볶이",
+    "brewery": "농업회사법인 신탄진주조㈜",
+    "region": "대전광역시 대덕구 신탄진로738번길 128",
+    "homepage": "www.stjjujo.co.kr",
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 6.4,
+      "body": 5.0,
+      "carbonation": 3.7,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 3.7,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 2.0
+      },
+      "herbal_notes": {}
+    }
+  },
+  {
+    "id": "makgeolli_206",
+    "name": "새냉이길 막걸리",
+    "description": "강릉찹쌀과 전통누룩으로 빚어 만든 프리미엄 막걸리. 전통누룩을 사용하여 발효한 찹쌀에서 피어나는 감귤, 모과, 참외 같은 과실향과 복합적인 풍",
+    "abv": 6.0,
+    "volume": "600ml",
+    "ingredients": "정제수, 찹쌀, 누룩",
+    "features": "소고기 육전, 굴전",
+    "brewery": "주식회사 진정브루잉",
+    "region": "강원특별자치도 강릉시 새냉이길 23-2, 1층",
+    "homepage": NaN,
+    "awards": null,
+    "taste_vector": {
+      "sweetness": 5.0,
+      "body": 5.0,
+      "carbonation": 5.0,
+      "flavor": 5.0,
+      "alcohol": 5.0,
+      "acidity": 5.0,
+      "aroma_intensity": 5.0,
+      "finish": 5.0
+    },
+    "taste_notes": {
+      "fruit_notes": {
+        "citrus": 4.0,
+        "apple_pear": 2.0
+      },
+      "floral_notes": {},
+      "grain_notes": {
+        "rice": 4.0
+      },
+      "herbal_notes": {}
+    }
+  }
+]
