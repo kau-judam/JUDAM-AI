@@ -43,6 +43,7 @@ jobs:
             "echo \"GEMINI_API_KEY=$GEMINI_API_KEY\" >> \"$ENV_TMP\"",
             "chmod 600 \"$ENV_TMP\"",
             "mv \"$ENV_TMP\" .env",
+            "chown ubuntu:ubuntu .env",
             "pm2 restart judam-ai-server --update-env",
             "pm2 status",
             "curl -f http://localhost:8000/health"
