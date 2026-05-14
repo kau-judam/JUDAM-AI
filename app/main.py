@@ -20,7 +20,7 @@ from app.law_client import LawClient, ContentType, FilterResult
 from app.insight import InsightDashboard, InsightRequest, InsightResponse
 from app.rag import TraditionalAlcoholRAG, RAGSearchRequest, RAGSearchResponse
 from app.recipe import RecipeAI
-# from app.chat import TraditionalAlcoholChat, ChatRequest, ChatResponse
+from app.chat import router as chat_router
 from app.models import (
     TasteVector, RecommendRequest, RecommendResponse,
     TasteUpdateRequest, TasteUpdateResponse,
@@ -43,7 +43,6 @@ _law_client = LawClient()
 _insight_dashboard = InsightDashboard()
 _rag_system = TraditionalAlcoholRAG()
 _recipe_ai = RecipeAI()
-# _chat_bot = TraditionalAlcoholChat(recommender=_recommender, rag_system=_rag_system)
 
 # FastAPI 인스턴스 생성
 app = FastAPI(
@@ -59,7 +58,8 @@ app.state.law_client = _law_client
 app.state.insight_dashboard = _insight_dashboard
 app.state.rag_system = _rag_system
 app.state.recipe_ai = _recipe_ai
-#app.state.chat_bot = _chat_bot
+
+app.include_router(chat_router, prefix="/api")
 
 
 @app.on_event("startup")
@@ -695,28 +695,6 @@ def get_rag_documents_by_category(category: str):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-# @app.post("/api/chat", response_model=ChatResponse)
-# async def chat(request: ChatRequest):
-#     """
-#     전통주 챗봇
-#
-#     Args:
-#         request: 챗봇 요청
-#
-#     Returns:
-#         챗봇 응답
-#     """
-#     try:
-#         chat_bot = app.state.chat_bot
-#
-#         response = await chat_bot.chat(request)
-#
-#         return response
-#
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":

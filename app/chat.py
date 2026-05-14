@@ -31,7 +31,7 @@ class ChatResponse(BaseModel):
     context: str
 
 
-@router.post("/api/chat", response_model=ChatResponse)
+@router.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest) -> ChatResponse:
     """
     Process user message and return response
@@ -50,7 +50,7 @@ async def chat(request: ChatRequest) -> ChatResponse:
             raise HTTPException(status_code=500, detail="GEMINI_API_KEY not configured")
 
         genai.configure(api_key=gemini_api_key)
-        model = genai.GenerativeModel('gemini-2.0-flash')
+        model = genai.GenerativeModel('gemini-2.5-flash-lite')
 
         # Build conversation context
         context_parts = []
