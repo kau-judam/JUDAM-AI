@@ -4,6 +4,7 @@
 
 import logging
 import os
+from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Dict, Optional
@@ -346,7 +347,8 @@ async def taste_update(request: TasteUpdateRequest):
             user_id=request.user_id,
             drink_id=request.drink_id,
             rating=request.rating,
-            tags=request.tags
+            tags=request.tags,
+            ratings=request.ratings
         )
 
         return {
@@ -772,6 +774,146 @@ def get_rag_documents_by_category(category: str):
         }
 
     except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# =====================================================
+# 3단계: 크롤러 모니터 API
+# =====================================================
+
+@app.post("/api/crawler/check")
+def crawler_check():
+    """
+    koreansool.co.kr 에서 새로운 전통주를 감지하고 auto_pipeline 을 트리거합니다.
+
+    Returns:
+        감지 결과 (new_count, new_items, total_seen)
+    """
+    try:
+        from app.crawler.traditional_alcohol_monitor import check_new_entries
+        from app.auto_pipeline import AutoPipeline
+
+        auto_pipeline = AutoPipeline()
+        result = check_new_entries(auto_pipeline=auto_pipeline)
+        return result
+
+    except Exception as e:
+        logger.error(f"크롤러 체크 실패: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# =====================================================
+# 4단계: 전통주 등록 요청 API (메모리 기반)
+# =====================================================
+
+# 메모리 기반 등록 요청 저장소
+_drink_requests: List[Dict] = []
+_drink_request_id_counter = [0]
+
+
+class DrinkRequestCreate(BaseModel):
+    user_id: str = Field(..., description="요청자 사용자 ID")
+    name: str = Field(..., description="전통주 이름")
+    brewery: Optional[str] = Field(None, description="양조장")
+    region: Optional[str] = Field(None, description="지역")
+    description: Optional[str] = Field(None, description="설명")
+
+
+@app.post("/api/drinks/request")
+def create_drink_request(request: DrinkRequestCreate):
+    """
+    사용자 전통주 등록 요청 접수
+
+    Args:
+        request: 등록 요청 정보
+
+    Returns:
+        접수 결과 및 요청 ID
+    """
+    _drink_request_id_counter[0] += 1
+    req_id = _drink_request_id_counter[0]
+
+    record = {
+        "id": req_id,
+        "user_id": request.user_id,
+        "name": request.name,
+        "brewery": request.brewery or "",
+        "region": request.region or "",
+        "description": request.description or "",
+        "status": "pending",
+        "requested_at": datetime.now().isoformat(),
+        "approved_at": None,
+        "taste_vector": None,
+    }
+    _drink_requests.append(record)
+
+    logger.info(f"전통주 등록 요청 접수: #{req_id} {request.name} (by {request.user_id})")
+
+    return {"status": "success", "message": "등록 요청이 접수되었습니다.", "request_id": req_id}
+
+
+@app.get("/api/drinks/requests")
+def list_drink_requests(status: Optional[str] = None):
+    """
+    전통주 등록 요청 목록 조회 (관리자용)
+
+    Args:
+        status: 필터 (pending / approved / all)
+
+    Returns:
+        등록 요청 목록
+    """
+    if status and status != "all":
+        filtered = [r for r in _drink_requests if r["status"] == status]
+    else:
+        filtered = list(_drink_requests)
+
+    return {"status": "success", "total": len(filtered), "requests": filtered}
+
+
+@app.post("/api/drinks/requests/{request_id}/approve")
+def approve_drink_request(request_id: int):
+    """
+    전통주 등록 요청 승인 + auto_pipeline 실행
+
+    Args:
+        request_id: 요청 ID
+
+    Returns:
+        승인 결과 (taste_vector 포함)
+    """
+    record = next((r for r in _drink_requests if r["id"] == request_id), None)
+    if not record:
+        raise HTTPException(status_code=404, detail=f"요청 ID {request_id} 를 찾을 수 없습니다.")
+
+    if record["status"] == "approved":
+        return {"status": "already_approved", "message": "이미 승인된 요청입니다.", "request": record}
+
+    try:
+        from app.auto_pipeline import AutoPipeline
+
+        pipeline = AutoPipeline()
+        drink_data = {
+            "name": record["name"],
+            "brewery": record["brewery"],
+            "region": record["region"],
+            "description": record["description"],
+            "features": record["description"],
+            "ingredients": "",
+            "abv": 0.0,
+        }
+        vector = pipeline.create_taste_vector(drink_data, use_gemini=True)
+
+        record["status"] = "approved"
+        record["approved_at"] = datetime.now().isoformat()
+        record["taste_vector"] = vector
+
+        logger.info(f"전통주 등록 요청 승인 완료: #{request_id} {record['name']}")
+
+        return {"status": "success", "message": "승인 완료. 맛 벡터가 생성되었습니다.", "request": record}
+
+    except Exception as e:
+        logger.error(f"승인 처리 중 오류: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

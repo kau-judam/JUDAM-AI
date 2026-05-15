@@ -150,15 +150,7 @@ class AutoPipeline:
             import google.generativeai as genai
 
             genai.configure(api_key=self.gemini_api_key)
-            model = genai.GenerativeModel('gemini-pro')
-
-            # 앙커 데이터를 프롬프트에 포함
-            anchor_text = "\n".join([
-                f"- {anchor['name']}: 단맛={anchor['sweetness']}, 바디감={anchor['body']}, "
-                f"탄산={anchor['carbonation']}, 풍미={anchor['flavor']}, 도수={anchor['alcohol']}, "
-                f"산미={anchor['acidity']}, 향기={anchor['aroma_intensity']}, 여운={anchor['finish']}"
-                for anchor in self.anchors
-            ])
+            model = genai.GenerativeModel('gemini-2.5-flash-lite')
 
             # 전통주 정보 구성
             drink_info = f"""
@@ -171,29 +163,26 @@ class AutoPipeline:
 지역: {drink_data.get('region', '')}
 """
 
-            # 프롬프트 구성
+            # 프롬프트 구성 (앙커 제거, 직접 평가 방식)
             prompt = f"""
-다음은 전통주에 대한 정보입니다:
+다음은 한국 전통주에 대한 정보입니다:
 
 {drink_info}
 
-앙커 데이터 (실제 시음 기반 기준점):
-{anchor_text}
-
 이 전통주의 맛 벡터를 0~10 점으로 평가해주세요.
-앙커 데이터를 참고하여 일관성 있게 평가해주세요.
+각 항목을 전통주 카테고리 전체에서의 상대적 위치로 평가합니다 (0=매우 낮음, 5=보통, 10=매우 높음).
 
 평가 항목:
 - sweetness (단맛): 0~10
 - body (바디감): 0~10
 - carbonation (탄산): 0~10
 - flavor (풍미): 0~10
-- alcohol (도수): 0~10
+- alcohol (도수감): 0~10
 - acidity (산미): 0~10
 - aroma_intensity (향기 강도): 0~10
 - finish (여운): 0~10
 
-답변 형식 (JSON):
+JSON 형식으로만 답변하세요:
 {{
   "sweetness": 0.0,
   "body": 0.0,
@@ -285,23 +274,17 @@ class AutoPipeline:
         return vector
 
     def _abv_to_score(self, abv: float) -> float:
-        """알콜 도수를 0~10 점으로 변환"""
-        if abv <= 0:
-            return 0.0
-        elif abv <= 3:
+        """알콜 도수를 0~10 점으로 변환 (직접 매핑)"""
+        if abv <= 3:
             return 2.0
-        elif abv <= 5:
-            return 3.5
-        elif abv <= 7:
-            return 5.0
-        elif abv <= 10:
-            return 6.5
-        elif abv <= 12:
+        elif abv <= 6:
+            return 4.0
+        elif abv <= 9:
+            return 6.0
+        elif abv <= 13:
             return 7.5
-        elif abv <= 15:
+        elif abv <= 17:
             return 8.5
-        elif abv <= 18:
-            return 9.0
         else:
             return 10.0
 

@@ -161,7 +161,8 @@ class TasteUpdateRequest(BaseModel):
     """취향 업데이트 요청 모델"""
     user_id: str = Field(..., min_length=1, max_length=50, description="사용자 ID")
     drink_id: str = Field(..., min_length=1, max_length=50, description="전통주 ID")
-    rating: int = Field(..., ge=1, le=5, description="별점 (1~5)")
+    rating: Optional[int] = Field(None, ge=1, le=5, description="별점 (1~5)")
+    ratings: Optional[Dict[str, float]] = Field(None, description="축별 평가 (sweetness, body, carbonation, flavor, alcohol, acidity, aroma_intensity, finish 각 0~10)")
     tags: List[str] = Field(default_factory=list, description="태그")
 
 
@@ -285,6 +286,7 @@ class InsightResponse(BaseModel):
     statistics: Dict
     predictions: Dict
     clusters: List[Dict]
+    ai_report: str = ""
 
 
 # ========== RAG 관련 ==========

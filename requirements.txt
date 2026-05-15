@@ -18,6 +18,10 @@ redis>=5.0.0
 
 # HTTP 클라이언트
 httpx>=0.25.0
+requests>=2.31.0
+
+# 크롤러
+beautifulsoup4>=4.12.0
 
 # AWS SDK
 boto3>=1.34.0

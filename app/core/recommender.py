@@ -330,17 +330,25 @@ class AdvancedMakgeolliRecommender:
 
         return recommendations[:top_k]
 
-    async def update_user_taste(self, user_id: str, drink_id: str, rating: int, tags: List[str] = None):
+    async def update_user_taste(
+        self,
+        user_id: str,
+        drink_id: str,
+        rating: int = None,
+        tags: List[str] = None,
+        ratings: Dict[str, float] = None,
+    ):
         """
         사용자 취향 업데이트 (취향 진화 트래킹)
 
         Args:
             user_id: 사용자 ID
             drink_id: 막걸리 ID
-            rating: 별점 (1~5)
+            rating: 별점 (1~5), optional
             tags: 태그 리스트
+            ratings: 축별 평가 dict (sweetness, body, ... 각 0~10), optional
         """
-        # 막걸리 찾기
+        # 막걸리 찾기 (메모리 fallback: drink_id 로 검색, 없으면 임시 생성)
         drink = None
         for d in self.drinks:
             if d['id'] == drink_id:
@@ -348,16 +356,20 @@ class AdvancedMakgeolliRecommender:
                 break
 
         if not drink:
-            logger.warning(f"막걸리 찾기 실패: {drink_id}")
-            return
+            logger.warning(f"막걸리 찾기 실패: {drink_id} — 임시 레코드 사용")
+            drink = {'id': drink_id, 'name': drink_id, 'taste_vector': {}}
+
+        # ratings dict 가 있으면 그걸 taste_vector 로 사용, 없으면 drink 의 기본값 사용
+        effective_vector = ratings if ratings else drink.get('taste_vector', {})
 
         # 취향 히스토리에 추가 (메모리)
         self.user_taste_history[user_id].append({
             'drink_id': drink_id,
             'drink_name': drink['name'],
             'rating': rating,
+            'ratings': ratings or {},
             'tags': tags or [],
-            'taste_vector': drink['taste_vector'],
+            'taste_vector': effective_vector,
             'timestamp': datetime.now().isoformat()
         })
 
@@ -367,15 +379,15 @@ class AdvancedMakgeolliRecommender:
                 await self.db.insert_taste_history({
                     'user_id': user_id,
                     'drink_id': drink_id,
-                    'rating': rating,
+                    'rating': rating or 0,
                     'tags': tags or [],
-                    'taste_vector': drink['taste_vector']
+                    'taste_vector': effective_vector
                 })
-                logger.info(f"DB에 취향 히스토리 저장 완료: {user_id} - {drink['name']} ({rating}점)")
+                logger.info(f"DB에 취향 히스토리 저장 완료: {user_id} - {drink['name']}")
             except Exception as e:
                 logger.error(f"DB 저장 실패: {e}")
 
-        logger.info(f"사용자 취향 업데이트: {user_id} - {drink['name']} ({rating}점)")
+        logger.info(f"사용자 취향 업데이트: {user_id} - {drink['name']} (rating={rating}, ratings={ratings})")
 
     def get_evolved_taste_vector(self, user_id: str) -> Dict[str, float]:
         """
@@ -435,10 +447,22 @@ class AdvancedMakgeolliRecommender:
         total_weight = 0.0
 
         for record in history:
-            rating = record['rating']
-            taste_vector = record['taste_vector']
+            rating = record.get('rating')
+            ratings = record.get('ratings', {})
+            taste_vector = record.get('taste_vector', {})
 
-            # 별점에 따른 가중치
+            # ratings dict 가 있으면 직접 사용 (per-axis)
+            if ratings:
+                weight = 1.0
+                for axis in base_vector.keys():
+                    axis_val = ratings.get(axis, taste_vector.get(axis, 5.0))
+                    rating_vector[axis] += axis_val * weight
+                total_weight += abs(weight)
+                continue
+
+            # 별점에 따른 가중치 (기존 방식)
+            if rating is None:
+                continue
             if rating == 5:
                 weight = 1.0
             elif rating == 4:
@@ -452,7 +476,8 @@ class AdvancedMakgeolliRecommender:
 
             # 벡터 업데이트
             for axis in base_vector.keys():
-                rating_vector[axis] += taste_vector[axis] * weight
+                axis_val = taste_vector.get(axis, 5.0) if taste_vector else 5.0
+                rating_vector[axis] += axis_val * weight
 
             total_weight += abs(weight)
 
