@@ -354,7 +354,10 @@ class InsightDashboard:
 
         except Exception as e:
             logger.error(f"AI 리포트 생성 실패: {e}")
-            return f"AI 리포트 생성 중 오류가 발생했습니다: {str(e)[:100]}"
+            s = str(e)
+            if '429' in s or 'quota exceeded' in s.lower() or 'resource_exhausted' in s.lower():
+                return "현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요."
+            return "AI 서비스에 연결할 수 없습니다. 잠시 후 다시 시도해주세요."
 
     async def get_insights(self, period: str = "week") -> InsightResponse:
         """

@@ -32,7 +32,8 @@ from app.models import (
     BTITypeRequest, BTITypeResponse,
     SubIngredientsRequest, SubIngredientsResponse,
     FlavorTagsRequest, FlavorTagsResponse,
-    SummaryRequest, SummaryResponse
+    SummaryRequest, SummaryResponse,
+    SurveyRecommendResponse, SurveyRecommendItem
 )
 from app.db import db
 
@@ -93,6 +94,15 @@ def clean_string(value) -> str:
     if value is None or (isinstance(value, float) and str(value) == 'nan'):
         return ""
     return str(value) if value else ""
+
+
+def raise_api_error(e: Exception, default_msg: str = "서비스 오류가 발생했습니다. 잠시 후 다시 시도해주세요.") -> None:
+    """Gemini 에러 → 명확한 한글 HTTPException 변환"""
+    s = str(e)
+    is_quota = '429' in s or 'quota exceeded' in s.lower() or 'resource_exhausted' in s.lower()
+    if is_quota or '현재 AI 서비스' in s or 'AI 서비스에 연결' in s:
+        raise HTTPException(status_code=503, detail="현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요.")
+    raise HTTPException(status_code=500, detail=default_msg)
 
 
 # 술BTI 16가지 유형 매핑
@@ -238,17 +248,33 @@ def root():
 
 @app.get("/health")
 def health():
-    """헬스체크 엔드포인트"""
+    """헬스체크 엔드포인트 (기능별 상태 포함)"""
     try:
         recommender = app.state.recommender
-        api_key = os.getenv("GEMINI_API_KEY")
+        api_key    = os.getenv("GEMINI_API_KEY")
+        law_key    = os.getenv("LAW_API_KEY")
+
+        # 기능별 상태 판정
+        recommend_ok = "ok" if len(recommender.drinks) > 0 else "no_data"
+        recipe_ok    = "ok" if api_key else "no_gemini_key"
+        law_ok       = "ok" if api_key else "no_gemini_key"   # Gemini 분석 의존
+        chat_ok      = "ok" if api_key else "no_gemini_key"
+        insight_ok   = "ok" if len(recommender.drinks) > 0 else "no_data"
 
         return {
             "status": "ok",
             "data_count": len(recommender.drinks),
             "user_count": len(recommender.user_taste_history),
             "gemini_key_loaded": bool(api_key),
-            "db_connected": recommender.db_connected
+            "law_key_loaded": bool(law_key),
+            "db_connected": recommender.db_connected,
+            "api_status": {
+                "recommend": recommend_ok,
+                "recipe":    recipe_ok,
+                "law":       law_ok,
+                "chat":      chat_ok,
+                "insight":   insight_ok
+            }
         }
     except Exception as e:
         return {
@@ -424,6 +450,57 @@ def survey_convert(survey: SurveyResponse):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.post("/api/survey/recommend", response_model=SurveyRecommendResponse)
+def survey_recommend(survey: SurveyResponse):
+    """
+    술BTI 설문 → 맛 벡터 변환 + 추천 원스텝 API
+
+    Args:
+        survey: 25문항 설문 응답 (survey/convert와 동일)
+
+    Returns:
+        taste_vector + top 5 추천 결과 (match_reason 포함)
+    """
+    try:
+        survey_converter = app.state.survey_converter
+        recommender = app.state.recommender
+
+        # 1단계: 설문 → 맛 벡터 변환
+        vector_dict = survey_converter.convert(survey)
+        if hasattr(vector_dict, 'model_dump'):
+            vector_dict = vector_dict.model_dump()
+        food_pairing = vector_dict.pop('food_pairing', []) if isinstance(vector_dict, dict) else []
+
+        # 2단계: 맛 벡터 → 추천 (top_k=5)
+        recommendations = recommender.recommend(user_vector=vector_dict, top_k=5)
+
+        # 응답 조립
+        rec_items = [
+            SurveyRecommendItem(
+                id=rec['id'],
+                name=rec['name'],
+                similarity=rec['similarity'],
+                abv=rec['abv'],
+                brewery=clean_string(rec.get('brewery')),
+                region=clean_string(rec.get('region')),
+                features=clean_string(rec.get('features')),
+                taste_vector=TasteVector(**rec['taste_vector']),
+                match_reason=rec.get('match_reason', [])
+            )
+            for rec in recommendations
+        ]
+
+        return SurveyRecommendResponse(
+            status="success",
+            taste_vector=vector_dict,
+            food_pairing=food_pairing,
+            recommendations=rec_items
+        )
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/api/survey/bti-type", response_model=BTITypeResponse)
 def get_bti_type(request: BTITypeRequest):
     """
@@ -484,7 +561,7 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
         return SubIngredientsResponse(sub_ingredients=result["sub_ingredients"])
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise_api_error(e, "서브재료 추천 중 오류가 발생했습니다.")
 
 
 @app.post("/api/recipe/suggest-flavor-tags", response_model=FlavorTagsResponse)
@@ -511,7 +588,7 @@ async def suggest_flavor_tags(request: FlavorTagsRequest):
         return FlavorTagsResponse(flavor_tags=result["flavor_tags"])
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise_api_error(e, "맛 태그 추천 중 오류가 발생했습니다.")
 
 
 @app.post("/api/recipe/suggest-summary", response_model=SummaryResponse)
@@ -540,7 +617,7 @@ async def suggest_summary(request: SummaryRequest):
         return SummaryResponse(summary=result["summary"])
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise_api_error(e, "요약문 생성 중 오류가 발생했습니다.")
 
 
 @app.post("/api/law/filter")
@@ -582,7 +659,7 @@ async def law_filter(request: LawFilterRequest):
         }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise_api_error(e, "법률 필터링 중 오류가 발생했습니다.")
 
 
 @app.get("/api/law/info")

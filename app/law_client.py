@@ -7,6 +7,19 @@ import logging
 import os
 import json
 import hashlib
+
+# Gemini 에러 관련 상수
+_QUOTA_MSG = "현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요."
+_CONN_MSG  = "AI 서비스에 연결할 수 없습니다. 잠시 후 다시 시도해주세요."
+
+
+def _is_quota_error(e: Exception) -> bool:
+    s = str(e)
+    return '429' in s or 'quota exceeded' in s.lower() or 'resource_exhausted' in s.lower()
+
+
+def _gemini_error_message(e: Exception) -> str:
+    return _QUOTA_MSG if _is_quota_error(e) else _CONN_MSG
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime, timedelta
@@ -470,12 +483,12 @@ class LawClient:
                 )]
 
         except Exception as e:
+            msg = _gemini_error_message(e)
             logger.error(f"Gemini 분석 실패: {e}")
-            # 분석 실패 시 보수적으로 true 반환
             return [ViolationDetail(
-                category="분석오류",
+                category="AI분석불가",
                 law="알 수 없음",
-                reason="분석 실패로 보수적으로 차단합니다",
+                reason=msg,
                 article=""
             )]
 

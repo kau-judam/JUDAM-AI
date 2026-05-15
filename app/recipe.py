@@ -14,6 +14,23 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Gemini 에러 관련 상수
+_QUOTA_MSG = "현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요."
+_CONN_MSG  = "AI 서비스에 연결할 수 없습니다. 잠시 후 다시 시도해주세요."
+
+
+def _is_quota_error(e: Exception) -> bool:
+    """429 / quota exceeded 에러 감지"""
+    s = str(e)
+    return '429' in s or 'quota exceeded' in s.lower() or 'resource_exhausted' in s.lower()
+
+
+def _gemini_error_message(e: Exception) -> str:
+    """에러 종류에 맞는 한글 메시지 반환"""
+    if _is_quota_error(e):
+        return _QUOTA_MSG
+    return _CONN_MSG
+
 
 class RecipeAI:
     """레시피 AI 클라이언트"""
@@ -76,8 +93,9 @@ class RecipeAI:
                 raise e
 
         except Exception as e:
+            msg = _gemini_error_message(e)
             logger.error(f"서브재료 추천 실패: {e}")
-            return {"sub_ingredients": []}
+            raise RuntimeError(msg) from e
 
     async def suggest_flavor_tags(
         self,
@@ -134,8 +152,9 @@ class RecipeAI:
                 return {"flavor_tags": []}
 
         except Exception as e:
+            msg = _gemini_error_message(e)
             logger.error(f"맛 태그 추천 실패: {e}")
-            return {"flavor_tags": []}
+            raise RuntimeError(msg) from e
 
     async def suggest_summary(
         self,
@@ -181,5 +200,6 @@ class RecipeAI:
             return {"summary": result_text}
 
         except Exception as e:
+            msg = _gemini_error_message(e)
             logger.error(f"요약문 생성 실패: {e}")
-            return {"summary": ""}
+            raise RuntimeError(msg) from e

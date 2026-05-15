@@ -395,3 +395,26 @@ class SummaryRequest(BaseModel):
 class SummaryResponse(BaseModel):
     """요약문 생성 응답 모델"""
     summary: str
+
+
+# ========== 설문→추천 원스텝 관련 ==========
+
+class SurveyRecommendItem(BaseModel):
+    """설문→추천 결과 개별 항목"""
+    id: str
+    name: str
+    similarity: float
+    abv: float
+    brewery: Optional[str]
+    region: Optional[str]
+    features: Optional[str]
+    taste_vector: TasteVector
+    match_reason: List[str] = []
+
+
+class SurveyRecommendResponse(BaseModel):
+    """설문→추천 원스텝 응답 모델"""
+    status: str
+    taste_vector: Dict[str, float]
+    food_pairing: List[str] = []
+    recommendations: List[SurveyRecommendItem]
