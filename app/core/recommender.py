@@ -19,6 +19,18 @@ logger = logging.getLogger(__name__)
 class AdvancedMakgeolliRecommender:
     """고도화된 막걸리 추천 시스템"""
 
+    # 축별 한글 매칭 이유
+    AXIS_REASONS = {
+        'sweetness':      '단맛이 잘 맞아요',
+        'body':           '바디감이 비슷해요',
+        'carbonation':    '탄산감이 잘 맞아요',
+        'flavor':         '풍미가 비슷해요',
+        'alcohol':        '도수가 잘 맞아요',
+        'acidity':        '산미가 비슷해요',
+        'aroma_intensity':'향이 잘 맞아요',
+        'finish':         '여운이 비슷해요',
+    }
+
     def __init__(self, data_file: str = None):
         # 절대경로로 데이터 파일 설정
         if data_file is None:
@@ -140,6 +152,25 @@ class AdvancedMakgeolliRecommender:
         else:
             logger.warning(f"데이터 파일 없음: {self.data_file}")
 
+    def generate_match_reason(self, user_vector: Dict[str, float], drink_vector: Dict[str, float]) -> List[str]:
+        """
+        사용자 벡터와 전통주 벡터를 비교해서 가장 유사한 상위 2개 축 기반 한글 이유 생성
+
+        Args:
+            user_vector: 사용자 맛 벡터
+            drink_vector: 전통주 맛 벡터
+
+        Returns:
+            한글 매칭 이유 리스트 (2개)
+        """
+        axes = list(self.AXIS_REASONS.keys())
+        diffs = [
+            (axis, abs(user_vector.get(axis, 5.0) - drink_vector.get(axis, 5.0)))
+            for axis in axes
+        ]
+        diffs.sort(key=lambda x: x[1])
+        return [self.AXIS_REASONS[axis] for axis, _ in diffs[:2]]
+
     def cosine_similarity(self, vec1: Dict[str, float], vec2: Dict[str, float]) -> float:
         """코사인 유사도 계산"""
         axes = ['sweetness', 'body', 'carbonation', 'flavor', 'alcohol', 'acidity', 'aroma_intensity', 'finish']
@@ -256,7 +287,8 @@ class AdvancedMakgeolliRecommender:
                 'region': drink['region'],
                 'features': drink['features'],
                 'ingredients': drink['ingredients'],
-                'taste_vector': drink['taste_vector']
+                'taste_vector': drink['taste_vector'],
+                'match_reason': self.generate_match_reason(user_vector, drink['taste_vector'])
             })
 
         # 유사도 순으로 정렬

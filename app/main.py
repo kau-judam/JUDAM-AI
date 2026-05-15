@@ -292,7 +292,8 @@ def recommend(request: RecommendRequest):
                 brewery=clean_string(rec.get('brewery')),
                 region=clean_string(rec.get('region')),
                 features=clean_string(rec.get('features')),
-                taste_vector=TasteVector(**rec['taste_vector'])
+                taste_vector=TasteVector(**rec['taste_vector']),
+                match_reason=rec.get('match_reason', [])
             ))
 
         return response
@@ -615,7 +616,7 @@ def get_law_info():
 
 
 @app.get("/api/insight")
-def get_insights(period: str = "week"):
+async def get_insights(period: str = "week"):
     """
     인사이트 대시보드
 
@@ -623,12 +624,12 @@ def get_insights(period: str = "week"):
         period: 기간 (day, week, month)
 
     Returns:
-        인사이트 결과
+        인사이트 결과 (ai_report 포함)
     """
     try:
         insight_dashboard = app.state.insight_dashboard
 
-        insights = insight_dashboard.get_insights(period=period)
+        insights = await insight_dashboard.get_insights(period=period)
 
         return insights
 

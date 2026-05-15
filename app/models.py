@@ -151,6 +151,7 @@ class RecommendResponse(BaseModel):
     region: Optional[str]
     features: Optional[str]
     taste_vector: TasteVector
+    match_reason: List[str] = []
 
     class Config:
         from_attributes = True
