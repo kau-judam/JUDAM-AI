@@ -38,6 +38,11 @@ from app.models import (
 )
 from app.db import db
 
+TASTE_AXES = {'sweetness', 'body', 'carbonation', 'flavor', 'alcohol', 'acidity', 'aroma_intensity', 'finish'}
+
+# 인메모리 사용자 프로필 저장소
+_user_profiles: Dict[str, Dict] = {}
+
 # 추천 시스템 초기화
 _recommender = AdvancedMakgeolliRecommender()
 _survey_converter = SurveyToVectorConverter()
@@ -290,7 +295,7 @@ def recommend(request: RecommendRequest):
     맛 벡터 기반 추천
 
     Args:
-        request: 추천 요청
+        request: 추천 요청 (user_vector 또는 user_id 중 하나 필수)
 
     Returns:
         추천 결과 리스트
@@ -298,8 +303,16 @@ def recommend(request: RecommendRequest):
     try:
         recommender = app.state.recommender
 
-        # 맛 벡터 변환
-        user_vector = request.user_vector.model_dump()
+        # 맛 벡터 결정: user_vector 우선, 없으면 user_id로 프로필 조회
+        if request.user_vector is not None:
+            user_vector = request.user_vector.model_dump()
+        elif request.user_id and request.user_id in _user_profiles:
+            user_vector = _user_profiles[request.user_id]['taste_vector']
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail="user_vector 또는 저장된 user_id 중 하나를 제공해주세요."
+            )
 
         # 추천
         recommendations = recommender.recommend(
@@ -430,26 +443,62 @@ def food_recommend(request: FoodRecommendRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/api/survey/convert")
-def survey_convert(survey: SurveyResponse):
+@app.post("/api/survey/convert", response_model=SurveyConvertResponse)
+def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
     """
     술BTI 설문 → 맛 벡터 변환
 
     Args:
         survey: 설문 응답
+        user_id: 저장할 사용자 ID (선택)
 
     Returns:
-        맛 벡터
+        맛 벡터 + BTI 유형 정보
     """
     try:
         survey_converter = app.state.survey_converter
-        vector_dict = survey_converter.convert(survey)
-        if hasattr(vector_dict, 'model_dump'):
-            vector_dict = vector_dict.model_dump()
-        food_pairing = vector_dict.pop('food_pairing', []) if isinstance(vector_dict, dict) else []
-        return {"status": "success", "taste_vector": vector_dict, "food_pairing": food_pairing}
+        full = survey_converter.convert(survey)
+        taste_vector = {k: v for k, v in full.items() if k in TASTE_AXES}
+
+        full.pop('food_pairing', None)
+
+        response = SurveyConvertResponse(
+            status="success",
+            taste_vector=taste_vector,
+            bti_code=full.get('bti_code', ''),
+            character_name=full.get('character_name', ''),
+            experience_level=full.get('experience_level', ''),
+            preferred_abv=full.get('preferred_abv', ''),
+            preferred_body=full.get('preferred_body', ''),
+            preferred_fruit=full.get('preferred_fruit', ''),
+            preferred_food_pairing=full.get('preferred_food_pairing', []),
+            preferred_aroma=full.get('preferred_aroma', []),
+            taste_profile_summary=full.get('taste_profile_summary', ''),
+        )
+
+        if user_id:
+            _user_profiles[user_id] = response.model_dump()
+            logger.info(f"사용자 프로필 저장: {user_id}")
+
+        return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/taste/profile/{user_id}")
+def get_taste_profile(user_id: str):
+    """
+    저장된 사용자 취향 프로필 조회
+
+    Args:
+        user_id: 사용자 ID
+
+    Returns:
+        survey/convert 결과 전체
+    """
+    if user_id not in _user_profiles:
+        raise HTTPException(status_code=404, detail=f"사용자 '{user_id}'의 프로필이 없습니다. survey/convert를 먼저 호출해주세요.")
+    return _user_profiles[user_id]
 
 
 @app.post("/api/survey/recommend", response_model=SurveyRecommendResponse)
@@ -468,10 +517,9 @@ def survey_recommend(survey: SurveyResponse):
         recommender = app.state.recommender
 
         # 1단계: 설문 → 맛 벡터 변환
-        vector_dict = survey_converter.convert(survey)
-        if hasattr(vector_dict, 'model_dump'):
-            vector_dict = vector_dict.model_dump()
-        food_pairing = vector_dict.pop('food_pairing', []) if isinstance(vector_dict, dict) else []
+        full = survey_converter.convert(survey)
+        food_pairing = full.get('food_pairing', [])
+        vector_dict = {k: v for k, v in full.items() if k in TASTE_AXES}
 
         # 2단계: 맛 벡터 → 추천 (top_k=5)
         recommendations = recommender.recommend(user_vector=vector_dict, top_k=5)
