@@ -132,7 +132,8 @@ class TasteHistoryResponse(BaseModel):
 
 class RecommendRequest(BaseModel):
     """추천 요청 모델"""
-    user_vector: TasteVector
+    user_vector: Optional[TasteVector] = None
+    user_id: Optional[str] = None
     top_k: int = Field(10, ge=1, le=50, description="추천할 상위 k개")
     exclude_ids: List[str] = Field(default_factory=list, description="제외할 ID 리스트")
     weights: Optional[Dict[str, float]] = Field(
@@ -151,6 +152,7 @@ class RecommendResponse(BaseModel):
     region: Optional[str]
     features: Optional[str]
     taste_vector: TasteVector
+    match_reason: List[str] = []
 
     class Config:
         from_attributes = True
@@ -160,7 +162,8 @@ class TasteUpdateRequest(BaseModel):
     """취향 업데이트 요청 모델"""
     user_id: str = Field(..., min_length=1, max_length=50, description="사용자 ID")
     drink_id: str = Field(..., min_length=1, max_length=50, description="전통주 ID")
-    rating: int = Field(..., ge=1, le=5, description="별점 (1~5)")
+    rating: Optional[int] = Field(None, ge=1, le=5, description="별점 (1~5)")
+    ratings: Optional[Dict[str, float]] = Field(None, description="축별 평가 (sweetness, body, carbonation, flavor, alcohol, acidity, aroma_intensity, finish 각 0~10)")
     tags: List[str] = Field(default_factory=list, description="태그")
 
 
@@ -246,7 +249,15 @@ class SurveyConvertResponse(BaseModel):
     """설문 변환 응답 모델"""
     status: str
     taste_vector: Dict[str, float]
-    food_pairing: List[str] = []
+    bti_code: str = ""
+    character_name: str = ""
+    experience_level: str = ""
+    preferred_abv: str = ""
+    preferred_body: str = ""
+    preferred_fruit: str = ""
+    preferred_food_pairing: List[str] = []
+    preferred_aroma: List[str] = []
+    taste_profile_summary: str = ""
 
 
 # ========== 법률 필터링 관련 ==========
@@ -284,6 +295,7 @@ class InsightResponse(BaseModel):
     statistics: Dict
     predictions: Dict
     clusters: List[Dict]
+    ai_report: str = ""
 
 
 # ========== RAG 관련 ==========
@@ -394,3 +406,26 @@ class SummaryRequest(BaseModel):
 class SummaryResponse(BaseModel):
     """요약문 생성 응답 모델"""
     summary: str
+
+
+# ========== 설문→추천 원스텝 관련 ==========
+
+class SurveyRecommendItem(BaseModel):
+    """설문→추천 결과 개별 항목"""
+    id: str
+    name: str
+    similarity: float
+    abv: float
+    brewery: Optional[str]
+    region: Optional[str]
+    features: Optional[str]
+    taste_vector: TasteVector
+    match_reason: List[str] = []
+
+
+class SurveyRecommendResponse(BaseModel):
+    """설문→추천 원스텝 응답 모델"""
+    status: str
+    taste_vector: Dict[str, float]
+    food_pairing: List[str] = []
+    recommendations: List[SurveyRecommendItem]

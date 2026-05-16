@@ -4,6 +4,7 @@
 
 import logging
 import os
+from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Dict, Optional
@@ -20,7 +21,7 @@ from app.law_client import LawClient, ContentType, FilterResult
 from app.insight import InsightDashboard, InsightRequest, InsightResponse
 from app.rag import TraditionalAlcoholRAG, RAGSearchRequest, RAGSearchResponse
 from app.recipe import RecipeAI
-# from app.chat import TraditionalAlcoholChat, ChatRequest, ChatResponse
+from app.chat import router as chat_router
 from app.models import (
     TasteVector, RecommendRequest, RecommendResponse,
     TasteUpdateRequest, TasteUpdateResponse,
@@ -32,9 +33,15 @@ from app.models import (
     BTITypeRequest, BTITypeResponse,
     SubIngredientsRequest, SubIngredientsResponse,
     FlavorTagsRequest, FlavorTagsResponse,
-    SummaryRequest, SummaryResponse
+    SummaryRequest, SummaryResponse,
+    SurveyRecommendResponse, SurveyRecommendItem
 )
 from app.db import db
+
+TASTE_AXES = {'sweetness', 'body', 'carbonation', 'flavor', 'alcohol', 'acidity', 'aroma_intensity', 'finish'}
+
+# 인메모리 사용자 프로필 저장소
+_user_profiles: Dict[str, Dict] = {}
 
 # 추천 시스템 초기화
 _recommender = AdvancedMakgeolliRecommender()
@@ -43,7 +50,6 @@ _law_client = LawClient()
 _insight_dashboard = InsightDashboard()
 _rag_system = TraditionalAlcoholRAG()
 _recipe_ai = RecipeAI()
-# _chat_bot = TraditionalAlcoholChat(recommender=_recommender, rag_system=_rag_system)
 
 # FastAPI 인스턴스 생성
 app = FastAPI(
@@ -59,7 +65,8 @@ app.state.law_client = _law_client
 app.state.insight_dashboard = _insight_dashboard
 app.state.rag_system = _rag_system
 app.state.recipe_ai = _recipe_ai
-#app.state.chat_bot = _chat_bot
+
+app.include_router(chat_router, prefix="/api")
 
 
 @app.on_event("startup")
@@ -93,6 +100,15 @@ def clean_string(value) -> str:
     if value is None or (isinstance(value, float) and str(value) == 'nan'):
         return ""
     return str(value) if value else ""
+
+
+def raise_api_error(e: Exception, default_msg: str = "서비스 오류가 발생했습니다. 잠시 후 다시 시도해주세요.") -> None:
+    """Gemini 에러 → 명확한 한글 HTTPException 변환"""
+    s = str(e)
+    is_quota = '429' in s or 'quota exceeded' in s.lower() or 'resource_exhausted' in s.lower()
+    if is_quota or '현재 AI 서비스' in s or 'AI 서비스에 연결' in s:
+        raise HTTPException(status_code=503, detail="현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요.")
+    raise HTTPException(status_code=500, detail=default_msg)
 
 
 # 술BTI 16가지 유형 매핑
@@ -238,17 +254,33 @@ def root():
 
 @app.get("/health")
 def health():
-    """헬스체크 엔드포인트"""
+    """헬스체크 엔드포인트 (기능별 상태 포함)"""
     try:
         recommender = app.state.recommender
-        api_key = os.getenv("GEMINI_API_KEY")
+        api_key    = os.getenv("GEMINI_API_KEY")
+        law_key    = os.getenv("LAW_API_KEY")
+
+        # 기능별 상태 판정
+        recommend_ok = "ok" if len(recommender.drinks) > 0 else "no_data"
+        recipe_ok    = "ok" if api_key else "no_gemini_key"
+        law_ok       = "ok" if api_key else "no_gemini_key"   # Gemini 분석 의존
+        chat_ok      = "ok" if api_key else "no_gemini_key"
+        insight_ok   = "ok" if len(recommender.drinks) > 0 else "no_data"
 
         return {
             "status": "ok",
             "data_count": len(recommender.drinks),
             "user_count": len(recommender.user_taste_history),
             "gemini_key_loaded": bool(api_key),
-            "db_connected": recommender.db_connected
+            "law_key_loaded": bool(law_key),
+            "db_connected": recommender.db_connected,
+            "api_status": {
+                "recommend": recommend_ok,
+                "recipe":    recipe_ok,
+                "law":       law_ok,
+                "chat":      chat_ok,
+                "insight":   insight_ok
+            }
         }
     except Exception as e:
         return {
@@ -263,7 +295,7 @@ def recommend(request: RecommendRequest):
     맛 벡터 기반 추천
 
     Args:
-        request: 추천 요청
+        request: 추천 요청 (user_vector 또는 user_id 중 하나 필수)
 
     Returns:
         추천 결과 리스트
@@ -271,8 +303,16 @@ def recommend(request: RecommendRequest):
     try:
         recommender = app.state.recommender
 
-        # 맛 벡터 변환
-        user_vector = request.user_vector.model_dump()
+        # 맛 벡터 결정: user_vector 우선, 없으면 user_id로 프로필 조회
+        if request.user_vector is not None:
+            user_vector = request.user_vector.model_dump()
+        elif request.user_id and request.user_id in _user_profiles:
+            user_vector = _user_profiles[request.user_id]['taste_vector']
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail="user_vector 또는 저장된 user_id 중 하나를 제공해주세요."
+            )
 
         # 추천
         recommendations = recommender.recommend(
@@ -292,7 +332,8 @@ def recommend(request: RecommendRequest):
                 brewery=clean_string(rec.get('brewery')),
                 region=clean_string(rec.get('region')),
                 features=clean_string(rec.get('features')),
-                taste_vector=TasteVector(**rec['taste_vector'])
+                taste_vector=TasteVector(**rec['taste_vector']),
+                match_reason=rec.get('match_reason', [])
             ))
 
         return response
@@ -319,7 +360,8 @@ async def taste_update(request: TasteUpdateRequest):
             user_id=request.user_id,
             drink_id=request.drink_id,
             rating=request.rating,
-            tags=request.tags
+            tags=request.tags,
+            ratings=request.ratings
         )
 
         return {
@@ -401,24 +443,110 @@ def food_recommend(request: FoodRecommendRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/api/survey/convert")
-def survey_convert(survey: SurveyResponse):
+@app.post("/api/survey/convert", response_model=SurveyConvertResponse)
+def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
     """
     술BTI 설문 → 맛 벡터 변환
 
     Args:
         survey: 설문 응답
+        user_id: 저장할 사용자 ID (선택)
 
     Returns:
-        맛 벡터
+        맛 벡터 + BTI 유형 정보
     """
     try:
         survey_converter = app.state.survey_converter
-        vector_dict = survey_converter.convert(survey)
-        if hasattr(vector_dict, 'model_dump'):
-            vector_dict = vector_dict.model_dump()
-        food_pairing = vector_dict.pop('food_pairing', []) if isinstance(vector_dict, dict) else []
-        return {"status": "success", "taste_vector": vector_dict, "food_pairing": food_pairing}
+        full = survey_converter.convert(survey)
+        taste_vector = {k: v for k, v in full.items() if k in TASTE_AXES}
+
+        full.pop('food_pairing', None)
+
+        response = SurveyConvertResponse(
+            status="success",
+            taste_vector=taste_vector,
+            bti_code=full.get('bti_code', ''),
+            character_name=full.get('character_name', ''),
+            experience_level=full.get('experience_level', ''),
+            preferred_abv=full.get('preferred_abv', ''),
+            preferred_body=full.get('preferred_body', ''),
+            preferred_fruit=full.get('preferred_fruit', ''),
+            preferred_food_pairing=full.get('preferred_food_pairing', []),
+            preferred_aroma=full.get('preferred_aroma', []),
+            taste_profile_summary=full.get('taste_profile_summary', ''),
+        )
+
+        if user_id:
+            _user_profiles[user_id] = response.model_dump()
+            logger.info(f"사용자 프로필 저장: {user_id}")
+
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/taste/profile/{user_id}")
+def get_taste_profile(user_id: str):
+    """
+    저장된 사용자 취향 프로필 조회
+
+    Args:
+        user_id: 사용자 ID
+
+    Returns:
+        survey/convert 결과 전체
+    """
+    if user_id not in _user_profiles:
+        raise HTTPException(status_code=404, detail=f"사용자 '{user_id}'의 프로필이 없습니다. survey/convert를 먼저 호출해주세요.")
+    return _user_profiles[user_id]
+
+
+@app.post("/api/survey/recommend", response_model=SurveyRecommendResponse)
+def survey_recommend(survey: SurveyResponse):
+    """
+    술BTI 설문 → 맛 벡터 변환 + 추천 원스텝 API
+
+    Args:
+        survey: 25문항 설문 응답 (survey/convert와 동일)
+
+    Returns:
+        taste_vector + top 5 추천 결과 (match_reason 포함)
+    """
+    try:
+        survey_converter = app.state.survey_converter
+        recommender = app.state.recommender
+
+        # 1단계: 설문 → 맛 벡터 변환
+        full = survey_converter.convert(survey)
+        food_pairing = full.get('food_pairing', [])
+        vector_dict = {k: v for k, v in full.items() if k in TASTE_AXES}
+
+        # 2단계: 맛 벡터 → 추천 (top_k=5)
+        recommendations = recommender.recommend(user_vector=vector_dict, top_k=5)
+
+        # 응답 조립
+        rec_items = [
+            SurveyRecommendItem(
+                id=rec['id'],
+                name=rec['name'],
+                similarity=rec['similarity'],
+                abv=rec['abv'],
+                brewery=clean_string(rec.get('brewery')),
+                region=clean_string(rec.get('region')),
+                features=clean_string(rec.get('features')),
+                taste_vector=TasteVector(**rec['taste_vector']),
+                match_reason=rec.get('match_reason', [])
+            )
+            for rec in recommendations
+        ]
+
+        return SurveyRecommendResponse(
+            status="success",
+            taste_vector=vector_dict,
+            food_pairing=food_pairing,
+            recommendations=rec_items
+        )
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -483,7 +611,7 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
         return SubIngredientsResponse(sub_ingredients=result["sub_ingredients"])
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise_api_error(e, "서브재료 추천 중 오류가 발생했습니다.")
 
 
 @app.post("/api/recipe/suggest-flavor-tags", response_model=FlavorTagsResponse)
@@ -510,7 +638,7 @@ async def suggest_flavor_tags(request: FlavorTagsRequest):
         return FlavorTagsResponse(flavor_tags=result["flavor_tags"])
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise_api_error(e, "맛 태그 추천 중 오류가 발생했습니다.")
 
 
 @app.post("/api/recipe/suggest-summary", response_model=SummaryResponse)
@@ -539,7 +667,7 @@ async def suggest_summary(request: SummaryRequest):
         return SummaryResponse(summary=result["summary"])
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise_api_error(e, "요약문 생성 중 오류가 발생했습니다.")
 
 
 @app.post("/api/law/filter")
@@ -581,7 +709,7 @@ async def law_filter(request: LawFilterRequest):
         }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise_api_error(e, "법률 필터링 중 오류가 발생했습니다.")
 
 
 @app.get("/api/law/info")
@@ -615,7 +743,7 @@ def get_law_info():
 
 
 @app.get("/api/insight")
-def get_insights(period: str = "week"):
+async def get_insights(period: str = "week"):
     """
     인사이트 대시보드
 
@@ -623,12 +751,12 @@ def get_insights(period: str = "week"):
         period: 기간 (day, week, month)
 
     Returns:
-        인사이트 결과
+        인사이트 결과 (ai_report 포함)
     """
     try:
         insight_dashboard = app.state.insight_dashboard
 
-        insights = insight_dashboard.get_insights(period=period)
+        insights = await insight_dashboard.get_insights(period=period)
 
         return insights
 
@@ -697,26 +825,144 @@ def get_rag_documents_by_category(category: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# @app.post("/api/chat", response_model=ChatResponse)
-# async def chat(request: ChatRequest):
-#     """
-#     전통주 챗봇
-#
-#     Args:
-#         request: 챗봇 요청
-#
-#     Returns:
-#         챗봇 응답
-#     """
-#     try:
-#         chat_bot = app.state.chat_bot
-#
-#         response = await chat_bot.chat(request)
-#
-#         return response
-#
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
+# =====================================================
+# 3단계: 크롤러 모니터 API
+# =====================================================
+
+@app.post("/api/crawler/check")
+def crawler_check():
+    """
+    koreansool.co.kr 에서 새로운 전통주를 감지하고 auto_pipeline 을 트리거합니다.
+
+    Returns:
+        감지 결과 (new_count, new_items, total_seen)
+    """
+    try:
+        from app.crawler.traditional_alcohol_monitor import check_new_entries
+        from app.auto_pipeline import AutoPipeline
+
+        auto_pipeline = AutoPipeline()
+        result = check_new_entries(auto_pipeline=auto_pipeline)
+        return result
+
+    except Exception as e:
+        logger.error(f"크롤러 체크 실패: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# =====================================================
+# 4단계: 전통주 등록 요청 API (메모리 기반)
+# =====================================================
+
+# 메모리 기반 등록 요청 저장소
+_drink_requests: List[Dict] = []
+_drink_request_id_counter = [0]
+
+
+class DrinkRequestCreate(BaseModel):
+    user_id: str = Field(..., description="요청자 사용자 ID")
+    name: str = Field(..., description="전통주 이름")
+    brewery: Optional[str] = Field(None, description="양조장")
+    region: Optional[str] = Field(None, description="지역")
+    description: Optional[str] = Field(None, description="설명")
+
+
+@app.post("/api/drinks/request")
+def create_drink_request(request: DrinkRequestCreate):
+    """
+    사용자 전통주 등록 요청 접수
+
+    Args:
+        request: 등록 요청 정보
+
+    Returns:
+        접수 결과 및 요청 ID
+    """
+    _drink_request_id_counter[0] += 1
+    req_id = _drink_request_id_counter[0]
+
+    record = {
+        "id": req_id,
+        "user_id": request.user_id,
+        "name": request.name,
+        "brewery": request.brewery or "",
+        "region": request.region or "",
+        "description": request.description or "",
+        "status": "pending",
+        "requested_at": datetime.now().isoformat(),
+        "approved_at": None,
+        "taste_vector": None,
+    }
+    _drink_requests.append(record)
+
+    logger.info(f"전통주 등록 요청 접수: #{req_id} {request.name} (by {request.user_id})")
+
+    return {"status": "success", "message": "등록 요청이 접수되었습니다.", "request_id": req_id}
+
+
+@app.get("/api/drinks/requests")
+def list_drink_requests(status: Optional[str] = None):
+    """
+    전통주 등록 요청 목록 조회 (관리자용)
+
+    Args:
+        status: 필터 (pending / approved / all)
+
+    Returns:
+        등록 요청 목록
+    """
+    if status and status != "all":
+        filtered = [r for r in _drink_requests if r["status"] == status]
+    else:
+        filtered = list(_drink_requests)
+
+    return {"status": "success", "total": len(filtered), "requests": filtered}
+
+
+@app.post("/api/drinks/requests/{request_id}/approve")
+def approve_drink_request(request_id: int):
+    """
+    전통주 등록 요청 승인 + auto_pipeline 실행
+
+    Args:
+        request_id: 요청 ID
+
+    Returns:
+        승인 결과 (taste_vector 포함)
+    """
+    record = next((r for r in _drink_requests if r["id"] == request_id), None)
+    if not record:
+        raise HTTPException(status_code=404, detail=f"요청 ID {request_id} 를 찾을 수 없습니다.")
+
+    if record["status"] == "approved":
+        return {"status": "already_approved", "message": "이미 승인된 요청입니다.", "request": record}
+
+    try:
+        from app.auto_pipeline import AutoPipeline
+
+        pipeline = AutoPipeline()
+        drink_data = {
+            "name": record["name"],
+            "brewery": record["brewery"],
+            "region": record["region"],
+            "description": record["description"],
+            "features": record["description"],
+            "ingredients": "",
+            "abv": 0.0,
+        }
+        vector = pipeline.create_taste_vector(drink_data, use_gemini=True)
+
+        record["status"] = "approved"
+        record["approved_at"] = datetime.now().isoformat()
+        record["taste_vector"] = vector
+
+        logger.info(f"전통주 등록 요청 승인 완료: #{request_id} {record['name']}")
+
+        return {"status": "success", "message": "승인 완료. 맛 벡터가 생성되었습니다.", "request": record}
+
+    except Exception as e:
+        logger.error(f"승인 처리 중 오류: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":

@@ -4,12 +4,16 @@
 """
 
 import logging
+import os
 from typing import Dict, List, Optional
 from datetime import datetime, timedelta
 from collections import defaultdict
 from pydantic import BaseModel
 import json
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -28,6 +32,7 @@ class InsightResponse(BaseModel):
     statistics: Dict
     predictions: Dict
     clusters: List[Dict]
+    ai_report: str = ""
 
 
 class InsightDashboard:
@@ -302,7 +307,59 @@ class InsightDashboard:
 
         return clusters
 
-    def get_insights(self, period: str = "week") -> InsightResponse:
+    async def _generate_ai_report(self, statistics: Dict, predictions: Dict, clusters: List[Dict]) -> str:
+        """
+        Gemini를 사용해 양조장용 자연어 인사이트 리포트 생성
+
+        Args:
+            statistics: 집계 통계
+            predictions: 트렌드 예측
+            clusters: 사용자 군집
+
+        Returns:
+            AI 자연어 리포트 (3~5문장)
+        """
+        gemini_api_key = os.getenv("GEMINI_API_KEY")
+        if not gemini_api_key:
+            return "GEMINI_API_KEY가 설정되지 않아 AI 리포트를 생성할 수 없습니다."
+
+        try:
+            import google.generativeai as genai
+            genai.configure(api_key=gemini_api_key)
+            model = genai.GenerativeModel('gemini-2.5-flash-lite')
+
+            top_drinks = statistics.get('top_drinks', [])[:3]
+            taste_dist = statistics.get('taste_distribution', {})
+            trend = predictions.get('trend', 'stable')
+            growth = predictions.get('predicted_growth', 0.0)
+            largest_cluster = max(clusters, key=lambda x: x['user_count']) if clusters else {}
+
+            top_drinks_str = ', '.join([f"{d['name']}({d['count']}회)" for d in top_drinks]) if top_drinks else '없음'
+            taste_summary = ', '.join([f"{k}:{v:.1f}" for k, v in list(taste_dist.items())[:4]])
+            cluster_name = largest_cluster.get('name', '알 수 없음')
+            cluster_pct = largest_cluster.get('percentage', 0)
+
+            prompt = f"""당신은 전통주 양조장 컨설턴트입니다. 다음 플랫폼 데이터를 바탕으로 양조장 운영자를 위한 인사이트 리포트를 3~5문장으로 작성해주세요. 한국어로, 실용적인 비즈니스 조언 위주로 작성하세요.
+
+[플랫폼 데이터]
+- 인기 전통주: {top_drinks_str}
+- 맛 분포 (평균): {taste_summary}
+- 트렌드: {trend} (성장률 {growth:.1f}%)
+- 주요 고객 취향: {cluster_name} ({cluster_pct:.1f}%)
+
+리포트:"""
+
+            response = model.generate_content(prompt)
+            return response.text.strip()
+
+        except Exception as e:
+            logger.error(f"AI 리포트 생성 실패: {e}")
+            s = str(e)
+            if '429' in s or 'quota exceeded' in s.lower() or 'resource_exhausted' in s.lower():
+                return "현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요."
+            return "AI 서비스에 연결할 수 없습니다. 잠시 후 다시 시도해주세요."
+
+    async def get_insights(self, period: str = "week") -> InsightResponse:
         """
         인사이트 대시보드 메인 함수
 
@@ -324,12 +381,16 @@ class InsightDashboard:
         # 요약 생성
         summary = self._generate_summary(statistics, predictions, clusters)
 
+        # Gemini AI 리포트 생성
+        ai_report = await self._generate_ai_report(statistics, predictions, clusters)
+
         return InsightResponse(
             period=period,
             summary=summary,
             statistics=statistics,
             predictions=predictions,
-            clusters=clusters
+            clusters=clusters,
+            ai_report=ai_report
         )
 
     def _generate_summary(self, statistics: Dict, predictions: Dict, clusters: List[Dict]) -> str:

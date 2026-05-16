@@ -14,6 +14,23 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Gemini 에러 관련 상수
+_QUOTA_MSG = "현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요."
+_CONN_MSG  = "AI 서비스에 연결할 수 없습니다. 잠시 후 다시 시도해주세요."
+
+
+def _is_quota_error(e: Exception) -> bool:
+    """429 / quota exceeded 에러 감지"""
+    s = str(e)
+    return '429' in s or 'quota exceeded' in s.lower() or 'resource_exhausted' in s.lower()
+
+
+def _gemini_error_message(e: Exception) -> str:
+    """에러 종류에 맞는 한글 메시지 반환"""
+    if _is_quota_error(e):
+        return _QUOTA_MSG
+    return _CONN_MSG
+
 
 class RecipeAI:
     """레시피 AI 클라이언트"""
@@ -43,7 +60,7 @@ class RecipeAI:
 
             prompt = f"막걸리/탁주 양조 시 {main_ingredient}와 어울리는 서브재료를 {region} 지역 특산물 중심으로 5개 추천해줘. JSON 배열로만 답변."
 
-            response = client.models.generate_content(model='gemini-2.5-flash', contents=prompt)
+            response = client.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
             result_text = response.text
             logger.info(f"Gemini 응답: {result_text}")
 
@@ -63,7 +80,7 @@ class RecipeAI:
                     # 딕셔너리 배열인 경우 name 값만 추출
                     if result and isinstance(result[0], dict):
                         print(f"[DEBUG] 딕셔너리 배열 감지, name 추출")
-                        return {"sub_ingredients": [item.get("name") or item.get("ingredient") or item.get("재료명", "") for item in result if item.get("name") or item.get("ingredient") or item.get("재료명")]}
+                        return {"sub_ingredients": [item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료", "") for item in result if item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료")]}
                     print(f"[DEBUG] 문자열 배열 반환")
                     return {"sub_ingredients": result}
                 else:
@@ -76,8 +93,9 @@ class RecipeAI:
                 raise e
 
         except Exception as e:
+            msg = _gemini_error_message(e)
             logger.error(f"서브재료 추천 실패: {e}")
-            return {"sub_ingredients": []}
+            raise RuntimeError(msg) from e
 
     async def suggest_flavor_tags(
         self,
@@ -111,7 +129,7 @@ class RecipeAI:
 
             prompt = f"다음 막걸리 레시피를 보고 지향하는 맛 태그를 5개 이내로 생성해줘. JSON 배열로만 답변. 제목:{title} 메인재료:{main_ingredient} 서브재료:{sub_ingredients_str} 도수:{abv_range}"
 
-            response = client.models.generate_content(model='gemini-2.5-flash', contents=prompt)
+            response = client.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
             result_text = response.text
 
             # JSON 파싱
@@ -134,8 +152,9 @@ class RecipeAI:
                 return {"flavor_tags": []}
 
         except Exception as e:
+            msg = _gemini_error_message(e)
             logger.error(f"맛 태그 추천 실패: {e}")
-            return {"flavor_tags": []}
+            raise RuntimeError(msg) from e
 
     async def suggest_summary(
         self,
@@ -175,11 +194,12 @@ class RecipeAI:
 
             prompt = f"다음 전통주 레시피/펀딩 프로젝트의 요약문을 3문장으로 작성해줘. 텍스트로만 답변. 제목:{title} 메인재료:{main_ingredient} 서브재료:{sub_ingredients_str} 도수:{abv_range} 맛태그:{flavor_tags_str} 컨셉:{concept_str}"
 
-            response = client.models.generate_content(model='gemini-2.5-flash', contents=prompt)
+            response = client.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
             result_text = response.text.strip()
 
             return {"summary": result_text}
 
         except Exception as e:
+            msg = _gemini_error_message(e)
             logger.error(f"요약문 생성 실패: {e}")
-            return {"summary": ""}
+            raise RuntimeError(msg) from e
