@@ -237,6 +237,7 @@ def root():
             "taste_history": "/api/taste/history/{user_id}",
             "food_recommend": "/api/food/recommend",
             "survey_convert": "/api/survey/convert",
+            "taste_profile": "/api/taste/profile/{user_id}",
             "survey_bti_type": "/api/survey/bti-type",
             "recipe_suggest_sub_ingredients": "/api/recipe/suggest-sub-ingredients",
             "recipe_suggest_flavor_tags": "/api/recipe/suggest-flavor-tags",
@@ -245,7 +246,6 @@ def root():
             "law_info": "/api/law/info",
             "insight": "/api/insight",
             "rag_search": "/api/rag/search",
-            "rag_category": "/api/rag/category/{category}",
             "chat": "/api/chat",
             "health": "/health"
         }
@@ -789,40 +789,6 @@ def rag_search(request: RAGSearchRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-@app.get("/api/rag/category/{category}")
-def get_rag_documents_by_category(category: str):
-    """
-    카테고리별 RAG 문서 조회
-
-    Args:
-        category: 카테고리
-
-    Returns:
-        문서 리스트
-    """
-    try:
-        rag_system = app.state.rag_system
-
-        docs = rag_system.get_documents_by_category(category)
-
-        return {
-            "status": "success",
-            "category": category,
-            "documents": [
-                {
-                    "id": doc.id,
-                    "title": doc.title,
-                    "source": doc.source,
-                    "metadata": doc.metadata
-                }
-                for doc in docs
-            ],
-            "total": len(docs)
-        }
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 # =====================================================
