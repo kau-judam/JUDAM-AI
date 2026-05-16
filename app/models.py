@@ -249,7 +249,6 @@ class SurveyConvertResponse(BaseModel):
     """설문 변환 응답 모델"""
     status: str
     taste_vector: Dict[str, float]
-    food_pairing: List[str] = []
     bti_code: str = ""
     character_name: str = ""
     experience_level: str = ""

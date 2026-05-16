@@ -460,10 +460,11 @@ def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
         full = survey_converter.convert(survey)
         taste_vector = {k: v for k, v in full.items() if k in TASTE_AXES}
 
+        full.pop('food_pairing', None)
+
         response = SurveyConvertResponse(
             status="success",
             taste_vector=taste_vector,
-            food_pairing=full.get('food_pairing', []),
             bti_code=full.get('bti_code', ''),
             character_name=full.get('character_name', ''),
             experience_level=full.get('experience_level', ''),
