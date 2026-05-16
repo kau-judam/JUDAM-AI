@@ -17,7 +17,8 @@
 
 | 기능 | 설명 |
 |------|------|
-| **술BTI 추천** | 25문항 설문 → 8축 맛 벡터 → 코사인 유사도 추천 + match_reason |
+| **술BTI 추천** | 25문항 설문 → 8축 맛 벡터 + BTI 유형(16종) + 취향 요약 → 코사인 유사도 추천 + match_reason |
+| **취향 프로필 저장** | survey/convert 결과를 user_id로 저장 → 이후 user_id만으로 추천 가능 |
 | **취향 진화 트래킹** | 축별 평가(ratings) 누적 → 맛 벡터 자동 진화 |
 | **전통주 채팅** | Gemini 기반 전통주 전문 Q&A + 후속 질문 추천 |
 | **레시피 AI** | 서브재료 추천 · 맛 태그 생성 · 요약문 자동 생성 |
@@ -104,17 +105,18 @@ http://localhost:8000/docs
 ### 추천
 | 메서드 | 경로 | 설명 |
 |--------|------|------|
-| POST | `/api/recommend` | 맛 벡터 기반 추천 (match_reason 포함) |
+| POST | `/api/recommend` | 맛 벡터 또는 user_id 기반 추천 (match_reason 포함) |
 | POST | `/api/survey/recommend` | 설문 → 맛 벡터 → 추천 원스텝 |
 | POST | `/api/food/recommend` | 음식 이름 기반 추천 |
 
 ### 설문 · 취향
 | 메서드 | 경로 | 설명 |
 |--------|------|------|
-| POST | `/api/survey/convert` | 25문항 설문 → 맛 벡터 변환 |
+| POST | `/api/survey/convert` | 25문항 설문 → 맛 벡터 + BTI 유형 + 취향 요약 (user_id로 프로필 저장) |
 | POST | `/api/survey/bti-type` | 맛 벡터 → 술BTI 유형 판정 |
 | POST | `/api/taste/update` | 취향 업데이트 (별점 or 축별 ratings dict) |
 | GET | `/api/taste/history/{user_id}` | 취향 히스토리 + 진화된 맛 벡터 조회 |
+| GET | `/api/taste/profile/{user_id}` | 설문 기반 저장된 취향 프로필 조회 |
 
 ### 채팅
 | 메서드 | 경로 | 설명 |
@@ -142,8 +144,7 @@ http://localhost:8000/docs
 ### RAG 검색
 | 메서드 | 경로 | 설명 |
 |--------|------|------|
-| POST | `/api/rag/search` | 전통주 전문 문서 검색 |
-| GET | `/api/rag/category/{category}` | 카테고리별 문서 조회 |
+| POST | `/api/rag/search` | 전통주 전문 문서 검색 (category 필터 지원) |
 
 ### 크롤러
 | 메서드 | 경로 | 설명 |

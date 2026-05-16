@@ -22,20 +22,20 @@
 1. [GET /health](#1-get-health)
 2. [POST /api/recommend](#2-post-apirecommend)
 3. [POST /api/survey/convert](#3-post-apisurveyconvert)
-4. [POST /api/survey/recommend](#4-post-apisurveyrecommend)
-5. [POST /api/survey/bti-type](#5-post-apisurveybti-type)
-6. [POST /api/taste/update](#6-post-apitasteupdate)
-7. [GET /api/taste/history/{user_id}](#7-get-apitastehistoryuser_id)
-8. [POST /api/chat](#8-post-apichat)
-9. [POST /api/food/recommend](#9-post-apifoodrecommend)
-10. [POST /api/recipe/suggest-sub-ingredients](#10-post-apirecipesuggest-sub-ingredients)
-11. [POST /api/recipe/suggest-flavor-tags](#11-post-apirecipesuggest-flavor-tags)
-12. [POST /api/recipe/suggest-summary](#12-post-apirecipesuggest-summary)
-13. [POST /api/law/filter](#13-post-apilawfilter)
-14. [GET /api/law/info](#14-get-apilawinfo)
-15. [GET /api/insight](#15-get-apiinsight)
-16. [POST /api/rag/search](#16-post-apiragsearch)
-17. [GET /api/rag/category/{category}](#17-get-apiragsearch)
+4. [GET /api/taste/profile/{user_id}](#4-get-apitasteprofileuser_id)
+5. [POST /api/survey/recommend](#5-post-apisurveyrecommend)
+6. [POST /api/survey/bti-type](#6-post-apisurveybti-type)
+7. [POST /api/taste/update](#7-post-apitasteupdate)
+8. [GET /api/taste/history/{user_id}](#8-get-apitastehistoryuser_id)
+9. [POST /api/chat](#9-post-apichat)
+10. [POST /api/food/recommend](#10-post-apifoodrecommend)
+11. [POST /api/recipe/suggest-sub-ingredients](#11-post-apirecipesuggest-sub-ingredients)
+12. [POST /api/recipe/suggest-flavor-tags](#12-post-apirecipesuggest-flavor-tags)
+13. [POST /api/recipe/suggest-summary](#13-post-apirecipesuggest-summary)
+14. [POST /api/law/filter](#14-post-apilawfilter)
+15. [GET /api/law/info](#15-get-apilawinfo)
+16. [GET /api/insight](#16-get-apiinsight)
+17. [POST /api/rag/search](#17-post-apiragsearch)
 18. [POST /api/crawler/check](#18-post-apicrawlercheck)
 19. [POST /api/drinks/request](#19-post-apidrinksrequest)
 20. [GET /api/drinks/requests](#20-get-apidrinksrequests)
@@ -85,9 +85,11 @@ curl http://localhost:8000/health
 
 ## 2. POST /api/recommend
 
-맛 벡터 기반 전통주 추천. 코사인 유사도 + match_reason(추천 이유 2가지) 반환.
+맛 벡터 또는 저장된 user_id 기반 전통주 추천. 코사인 유사도 + match_reason(추천 이유 2가지) 반환.
 
-### Request Body
+`user_vector`와 `user_id` 중 하나 필수. 둘 다 있으면 `user_vector` 우선.
+
+### Request Body — 맛 벡터 직접 입력
 
 ```json
 {
@@ -106,9 +108,19 @@ curl http://localhost:8000/health
 }
 ```
 
+### Request Body — user_id로 저장된 프로필 사용
+
+```json
+{
+  "user_id": "user123",
+  "top_k": 5
+}
+```
+
 | 필드 | 타입 | 필수 | 설명 |
 |------|------|------|------|
-| user_vector | object | O | 사용자 맛 벡터 (각 축 0~10) |
+| user_vector | object | △ | 사용자 맛 벡터 (각 축 0~10). user_id와 둘 중 하나 필수 |
+| user_id | string | △ | survey/convert로 저장한 프로필 ID. user_vector와 둘 중 하나 필수 |
 | top_k | number | X | 추천 개수 (기본값: 10, 최대: 50) |
 | exclude_ids | array | X | 제외할 전통주 ID 목록 |
 
@@ -161,30 +173,40 @@ curl -X POST http://localhost:8000/api/recommend \
 
 ## 3. POST /api/survey/convert
 
-술BTI 25문항 설문 응답 → 8축 맛 벡터 변환.
+술BTI 25문항 설문 응답 → 8축 맛 벡터 + BTI 유형 + 취향 요약 변환.
+
+`?user_id=xxx` 쿼리 파라미터를 붙이면 결과가 서버 메모리에 저장되어, 이후 `recommend`나 `taste/profile`에서 user_id만으로 조회 가능.
+
+### Query Parameter
+
+| 파라미터 | 타입 | 필수 | 설명 |
+|----------|------|------|------|
+| user_id | string | X | 저장할 사용자 ID. 제공 시 프로필 저장 |
 
 ### Request Body
 
 ```json
 {
-  "q1": 3, "q2": 3, "q3": 3,
-  "q4": 5, "q5": 4, "q6": 4, "q7": 5, "q8": 4, "q9": 4,
-  "q10": 4, "q11": 4, "q12": 4, "q13": 4, "q14": 3,
-  "q15": 4, "q16": 4, "q17": 3, "q18": 5, "q19": 4,
-  "q20": 3, "q21": 3, "q22": 4,
+  "q1": 2, "q2": 2, "q3": 2,
+  "q4": 6, "q5": 2, "q6": 7, "q7": 5, "q8": 5, "q9": 5,
+  "q10": 2, "q11": 2, "q12": 2, "q13": 2, "q14": 7,
+  "q15": 3, "q16": 3, "q17": 3, "q18": 5, "q19": 4,
+  "q20": 3, "q21": 5, "q22": 5,
   "q23": 1,
-  "q24": [1, 2, 3],
+  "q24": [1, 4],
   "q25": [1, 2]
 }
 ```
 
 | 문항 | 범위 | 설명 |
 |------|------|------|
-| q1~q3 | 1~5 | 서열척도 (경험 수준, 선호 도수, 선호 바디감) |
+| q1 | 1~5 | 전통주 경험 수준 (1~2: 입문자, 3: 중급자, 4~5: 전문가) |
+| q2 | 1~5 | 선호 도수 (1: 3도↓, 2: 4~6도, 3: 7~9도, 4: 10~13도, 5: 14도↑) |
+| q3 | 1~5 | 선호 바디감 (1: 매우 가벼움 ~ 5: 매우 묵직함) |
 | q4~q22 | 1~7 | 등간척도 Likert (맛/향/바디감 선호도) |
-| q23 | 1~5 | 선호 과일 (명목척도) |
-| q24 | 배열 | 음식 페어링 선호 (복수선택) |
-| q25 | 배열 | 관심 향 (복수선택) |
+| q23 | 1~5 | 선호 과일 (1: 감귤류, 2: 베리류, 3: 사과, 4: 포도, 5: 망고) |
+| q24 | 배열 | 음식 페어링 (1: 고기, 2: 해산물, 3: 매운음식, 4: 디저트, 5: 치즈) |
+| q25 | 배열 | 관심 향 (1: 과일향, 2: 감귤향, 3: 꽃향, 4: 허브향, 5: 쌀향) |
 
 ### Response
 
@@ -192,22 +214,94 @@ curl -X POST http://localhost:8000/api/recommend \
 {
   "status": "success",
   "taste_vector": {
-    "sweetness": 5.5,
-    "body": 5.0,
-    "carbonation": 4.5,
-    "flavor": 5.5,
-    "alcohol": 5.0,
-    "acidity": 5.0,
-    "aroma_intensity": 5.0,
-    "finish": 5.0
+    "sweetness": 8.14,
+    "body": 2.64,
+    "carbonation": 8.29,
+    "flavor": 7.84,
+    "alcohol": 3.6,
+    "acidity": 7.71,
+    "aroma_intensity": 7.21,
+    "finish": 4.43
   },
-  "food_pairing": ["파전", "치킨", "삼겹살"]
+  "bti_code": "SLFU",
+  "character_name": "팝핑 과일 에이드",
+  "experience_level": "입문자",
+  "preferred_abv": "약한 도수(4~6도)",
+  "preferred_body": "가벼움",
+  "preferred_fruit": "감귤류",
+  "preferred_food_pairing": ["고기", "디저트"],
+  "preferred_aroma": ["과일향", "감귤향"],
+  "taste_profile_summary": "청량하고 달콤하고 산미 있는 취향"
 }
+```
+
+| 필드 | 설명 |
+|------|------|
+| taste_vector | 8축 맛 벡터 (각 0~10) |
+| bti_code | 4글자 술BTI 코드 (sweetness/body/carbonation/flavor 기준 5.0 이진분류) |
+| character_name | BTI 유형 캐릭터명 (16종 중 하나) |
+| experience_level | 경험 수준 (입문자 / 중급자 / 전문가) |
+| preferred_abv | 선호 도수 (한글) |
+| preferred_body | 선호 바디감 (한글) |
+| preferred_fruit | 선호 과일 (한글) |
+| preferred_food_pairing | 선호 음식 페어링 (한글 리스트) |
+| preferred_aroma | 관심 향 (한글 리스트) |
+| taste_profile_summary | 맛 벡터 기반 한 줄 취향 요약 |
+
+```bash
+# user_id 없이 변환만
+curl -X POST "http://localhost:8000/api/survey/convert" \
+  -H "Content-Type: application/json" \
+  -d '{"q1":2,"q2":2,"q3":2,"q4":6,"q5":2,"q6":7,"q7":5,"q8":5,"q9":5,"q10":2,"q11":2,"q12":2,"q13":2,"q14":7,"q15":3,"q16":3,"q17":3,"q18":5,"q19":4,"q20":3,"q21":5,"q22":5,"q23":1,"q24":[1,4],"q25":[1,2]}'
+
+# user_id 포함 → 프로필 저장
+curl -X POST "http://localhost:8000/api/survey/convert?user_id=user123" \
+  -H "Content-Type: application/json" \
+  -d '{"q1":2,"q2":2,"q3":2,...}'
 ```
 
 ---
 
-## 4. POST /api/survey/recommend
+## 4. GET /api/taste/profile/{user_id}
+
+`survey/convert?user_id=xxx` 로 저장한 취향 프로필 조회. 서버 재시작 시 초기화됨 (인메모리).
+
+### Path Parameter
+
+| 파라미터 | 설명 |
+|----------|------|
+| user_id | survey/convert 시 사용한 사용자 ID |
+
+### Response
+
+`survey/convert` 응답과 동일한 구조 반환.
+
+```json
+{
+  "status": "success",
+  "taste_vector": { "sweetness": 8.14, "body": 2.64, "..." : "..." },
+  "bti_code": "SLFU",
+  "character_name": "팝핑 과일 에이드",
+  "experience_level": "입문자",
+  "preferred_abv": "약한 도수(4~6도)",
+  "preferred_body": "가벼움",
+  "preferred_fruit": "감귤류",
+  "preferred_food_pairing": ["고기", "디저트"],
+  "preferred_aroma": ["과일향", "감귤향"],
+  "taste_profile_summary": "청량하고 달콤하고 산미 있는 취향"
+}
+```
+
+### 에러 케이스
+- 404: 해당 user_id로 저장된 프로필 없음 (survey/convert를 먼저 호출해야 함)
+
+```bash
+curl http://localhost:8000/api/taste/profile/user123
+```
+
+---
+
+## 5. POST /api/survey/recommend
 
 설문 응답 → 맛 벡터 변환 → 추천까지 원스텝으로 처리.
 
@@ -249,7 +343,7 @@ curl -X POST http://localhost:8000/api/recommend \
 
 ---
 
-## 5. POST /api/survey/bti-type
+## 6. POST /api/survey/bti-type
 
 맛 벡터 → 술BTI 4글자 코드 + 캐릭터명 판정.
 
@@ -313,7 +407,7 @@ curl -X POST http://localhost:8000/api/survey/bti-type \
 
 ---
 
-## 6. POST /api/taste/update
+## 7. POST /api/taste/update
 
 전통주를 마신 후 취향 평가 입력. 별점 방식과 축별 직접 평가 방식 모두 지원.
 
@@ -375,7 +469,7 @@ curl -X POST http://localhost:8000/api/taste/update \
 
 ---
 
-## 7. GET /api/taste/history/{user_id}
+## 8. GET /api/taste/history/{user_id}
 
 사용자 취향 히스토리 + 누적된 평가 기반 진화된 맛 벡터 조회.
 
@@ -427,7 +521,7 @@ curl http://localhost:8000/api/taste/history/user123
 
 ---
 
-## 8. POST /api/chat
+## 9. POST /api/chat
 
 전통주 전문 AI 채팅. 막걸리·청주·탁주 등 전통주 관련 질문에만 답변하며, 후속 질문 2개를 추천합니다.
 
@@ -483,7 +577,7 @@ curl -X POST http://localhost:8000/api/chat \
 
 ---
 
-## 9. POST /api/food/recommend
+## 10. POST /api/food/recommend
 
 음식 이름 기반 어울리는 전통주 추천.
 
@@ -521,7 +615,7 @@ curl -X POST http://localhost:8000/api/food/recommend \
 
 ---
 
-## 10. POST /api/recipe/suggest-sub-ingredients
+## 11. POST /api/recipe/suggest-sub-ingredients
 
 메인재료 + 지역 입력 시 지역 특산물 기반 서브재료 5개 추천 (Gemini 사용).
 
@@ -550,7 +644,7 @@ curl -X POST http://localhost:8000/api/recipe/suggest-sub-ingredients \
 
 ---
 
-## 11. POST /api/recipe/suggest-flavor-tags
+## 12. POST /api/recipe/suggest-flavor-tags
 
 레시피 정보 기반 맛 태그 5개 자동 생성 (Gemini 사용).
 
@@ -581,7 +675,7 @@ curl -X POST http://localhost:8000/api/recipe/suggest-flavor-tags \
 
 ---
 
-## 12. POST /api/recipe/suggest-summary
+## 13. POST /api/recipe/suggest-summary
 
 레시피 정보 기반 프로젝트 요약문 3문장 자동 생성 (Gemini 사용).
 
@@ -614,7 +708,7 @@ curl -X POST http://localhost:8000/api/recipe/suggest-summary \
 
 ---
 
-## 13. POST /api/law/filter
+## 14. POST /api/law/filter
 
 레시피/펀딩 콘텐츠 법률 위반 여부 3단계 자동 검토.
 
@@ -679,7 +773,7 @@ curl -X POST http://localhost:8000/api/law/filter \
 
 ---
 
-## 14. GET /api/law/info
+## 15. GET /api/law/info
 
 전통주 관련 주요 법령 목록 조회.
 
@@ -705,7 +799,7 @@ curl http://localhost:8000/api/law/info
 
 ---
 
-## 15. GET /api/insight
+## 16. GET /api/insight
 
 양조장용 인사이트 대시보드. 통계 집계 + 예측 + 군집화 + Gemini AI 리포트 제공.
 
@@ -758,7 +852,7 @@ curl "http://localhost:8000/api/insight?period=week"
 
 ---
 
-## 16. POST /api/rag/search
+## 17. POST /api/rag/search
 
 전통주 전문 문서 기반 RAG 검색.
 
@@ -797,17 +891,7 @@ curl -X POST http://localhost:8000/api/rag/search \
 
 ---
 
-## 17. GET /api/rag/category/{category}
-
-카테고리별 RAG 문서 조회.
-
-```bash
-curl http://localhost:8000/api/rag/category/makgeolli
-```
-
----
-
-## 18. POST /api/crawler/check
+## 18. POST /api/crawler/check  
 
 koreansool.co.kr에서 신규 전통주를 감지하고, 새로운 항목이 있으면 auto_pipeline으로 맛 벡터를 자동 생성합니다. 중복 방지를 위해 이미 처리된 항목은 캐시(`data/crawler_seen.json`)에 저장됩니다.
 
@@ -838,7 +922,7 @@ curl -X POST http://localhost:8000/api/crawler/check
 
 ---
 
-## 19. POST /api/drinks/request
+## 19. POST /api/drinks/request  
 
 사용자가 플랫폼에 없는 전통주 등록을 요청합니다. 메모리 기반 저장.
 
@@ -880,7 +964,7 @@ curl -X POST http://localhost:8000/api/drinks/request \
 
 ---
 
-## 20. GET /api/drinks/requests
+## 20. GET /api/drinks/requests  
 
 전통주 등록 요청 목록 조회 (관리자용).
 
@@ -919,7 +1003,7 @@ curl "http://localhost:8000/api/drinks/requests?status=pending"
 
 ---
 
-## 21. POST /api/drinks/requests/{id}/approve
+## 21. POST /api/drinks/requests/{id}/approve  
 
 등록 요청을 승인하고 auto_pipeline으로 맛 벡터를 자동 생성합니다.
 
@@ -1014,7 +1098,20 @@ open http://localhost:8000/docs
 # 헬스체크
 curl http://localhost:8000/health
 
-# 추천 (맛 벡터 직접 입력)
+# 설문 → 맛 벡터 + BTI 유형 + 취향 요약 (프로필 저장 포함)
+curl -X POST "http://localhost:8000/api/survey/convert?user_id=user123" \
+  -H "Content-Type: application/json" \
+  -d '{"q1":2,"q2":2,"q3":2,"q4":6,"q5":2,"q6":7,"q7":5,"q8":5,"q9":5,"q10":2,"q11":2,"q12":2,"q13":2,"q14":7,"q15":3,"q16":3,"q17":3,"q18":5,"q19":4,"q20":3,"q21":5,"q22":5,"q23":1,"q24":[1,4],"q25":[1,2]}'
+
+# 저장된 프로필 조회
+curl http://localhost:8000/api/taste/profile/user123
+
+# 추천 — user_id로 (survey/convert 후 사용 가능)
+curl -X POST http://localhost:8000/api/recommend \
+  -H "Content-Type: application/json" \
+  -d '{"user_id":"user123","top_k":3}'
+
+# 추천 — 맛 벡터 직접 입력
 curl -X POST http://localhost:8000/api/recommend \
   -H "Content-Type: application/json" \
   -d '{"user_vector":{"sweetness":7,"body":5,"carbonation":3,"flavor":6,"alcohol":4,"acidity":5,"aroma_intensity":5,"finish":5},"top_k":3}'
