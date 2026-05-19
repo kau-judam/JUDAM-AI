@@ -23,23 +23,21 @@
 2. [POST /api/recommend](#2-post-apirecommend)
 3. [POST /api/survey/convert](#3-post-apisurveyconvert)
 4. [GET /api/taste/profile/{user_id}](#4-get-apitasteprofileuser_id)
-5. [POST /api/survey/recommend](#5-post-apisurveyrecommend)
-6. [POST /api/survey/bti-type](#6-post-apisurveybti-type)
-7. [POST /api/taste/update](#7-post-apitasteupdate)
-8. [GET /api/taste/history/{user_id}](#8-get-apitastehistoryuser_id)
-9. [POST /api/chat](#9-post-apichat)
-10. [POST /api/food/recommend](#10-post-apifoodrecommend)
-11. [POST /api/recipe/suggest-sub-ingredients](#11-post-apirecipesuggest-sub-ingredients)
-12. [POST /api/recipe/suggest-flavor-tags](#12-post-apirecipesuggest-flavor-tags)
-13. [POST /api/recipe/suggest-summary](#13-post-apirecipesuggest-summary)
-14. [POST /api/law/filter](#14-post-apilawfilter)
-15. [GET /api/law/info](#15-get-apilawinfo)
-16. [GET /api/insight](#16-get-apiinsight)
-17. [POST /api/rag/search](#17-post-apiragsearch)
-18. [POST /api/crawler/check](#18-post-apicrawlercheck)
-19. [POST /api/drinks/request](#19-post-apidrinksrequest)
-20. [GET /api/drinks/requests](#20-get-apidrinksrequests)
-21. [POST /api/drinks/requests/{id}/approve](#21-post-apidrinksrequestsidapprove)
+5. [POST /api/taste/update](#5-post-apitasteupdate)
+6. [GET /api/taste/history/{user_id}](#6-get-apitastehistoryuser_id)
+7. [POST /api/chat](#7-post-apichat)
+8. [POST /api/food/recommend](#8-post-apifoodrecommend)
+9. [POST /api/recipe/suggest-sub-ingredients](#9-post-apirecipesuggest-sub-ingredients)
+10. [POST /api/recipe/suggest-flavor-tags](#10-post-apirecipesuggest-flavor-tags)
+11. [POST /api/recipe/suggest-summary](#11-post-apirecipesuggest-summary)
+12. [POST /api/law/filter](#12-post-apilawfilter)
+13. [GET /api/law/info](#13-get-apilawinfo)
+14. [GET /api/insight](#14-get-apiinsight)
+15. [POST /api/rag/search](#15-post-apiragsearch)
+16. [POST /api/crawler/check](#16-post-apicrawlercheck)
+17. [POST /api/drinks/request](#17-post-apidrinksrequest)
+18. [GET /api/drinks/requests](#18-get-apidrinksrequests)
+19. [POST /api/drinks/requests/{id}/approve](#19-post-apidrinksrequestsidapprove)
 
 ---
 
@@ -301,113 +299,7 @@ curl http://localhost:8000/api/taste/profile/user123
 
 ---
 
-## 5. POST /api/survey/recommend
-
-설문 응답 → 맛 벡터 변환 → 추천까지 원스텝으로 처리.
-
-### Request Body
-
-`/api/survey/convert`와 동일한 25문항 설문 형식.
-
-### Response
-
-```json
-{
-  "status": "success",
-  "taste_vector": {
-    "sweetness": 5.5,
-    "body": 5.0,
-    "carbonation": 4.5,
-    "flavor": 5.5,
-    "alcohol": 5.0,
-    "acidity": 5.0,
-    "aroma_intensity": 5.0,
-    "finish": 5.0
-  },
-  "food_pairing": ["파전", "치킨"],
-  "recommendations": [
-    {
-      "id": "makgeolli_0",
-      "name": "이동 생 쌀 막걸리",
-      "similarity": 0.975,
-      "abv": 6.0,
-      "brewery": "이동양조",
-      "region": "경기도",
-      "features": "맑고 깨끗한 맛",
-      "taste_vector": { "sweetness": 7.0, "body": 5.0, "..." : "..." },
-      "match_reason": ["단맛이 잘 맞아요", "풍미가 비슷해요"]
-    }
-  ]
-}
-```
-
----
-
-## 6. POST /api/survey/bti-type
-
-맛 벡터 → 술BTI 4글자 코드 + 캐릭터명 판정.
-
-### 판정 로직
-
-| 자리 | 조건 | 설명 |
-|------|------|------|
-| 1번째 | sweetness >= 5 → S, < 5 → D | 달콤/드라이 |
-| 2번째 | body >= 5 → H, < 5 → L | 무거움/가벼움 |
-| 3번째 | carbonation >= 5 → F, < 5 → M | 탄산/부드러움 |
-| 4번째 | flavor >= 5 → U, < 5 → C | 복잡/깔끔 |
-
-### 16가지 술BTI 유형
-
-| 코드 | 캐릭터명 |
-|------|----------|
-| SHFU | 탄산 톡톡 딸기 요거트 |
-| SHFC | 꿀단지에 빠진 인절미 |
-| SHMU | 포근포근 꽃복숭아 |
-| SHMC | 쫀득쫀득 꿀 찹쌀떡 |
-| SLFU | 팝핑 과일 에이드 |
-| SLFC | 청량함 가득 사과 푸딩 |
-| SLMU | 산들바람 머금은 화전 |
-| SLMC | 햇살 머금은 식혜 |
-| DHFU | 반전매력 고추냉이 |
-| DHFC | 바삭하게 터지는 현미 누룽지 |
-| DHMU | 안개 낀 숲속의 황금사과 |
-| DHMC | 묵묵한 바위 속 숭늉 |
-| DLFU | 차가운 도시의 샹그리아 |
-| DLFC | 청량한 대나무 숲의 차 |
-| DLMU | 빗소리 들리는 다실의 꽃차 |
-| DLMC | 대숲에 앉은 맑은 백설기 |
-
-### Request Body
-
-```json
-{
-  "sweetness": 8.0,
-  "body": 7.0,
-  "carbonation": 3.0,
-  "flavor": 4.0
-}
-```
-
-### Response
-
-```json
-{
-  "code": "SHMC",
-  "character_name": "쫀득쫀득 꿀 찹쌀떡",
-  "tags": ["#부드러운단맛", "#화사한과일향"],
-  "recommended_drinks": ["찹쌀탁주", "원주 막걸리", "고구마 막걸리"]
-}
-```
-
-```bash
-curl -X POST http://localhost:8000/api/survey/bti-type \
-  -H "Content-Type: application/json" \
-  -d '{"sweetness":8,"body":7,"carbonation":3,"flavor":4}'
-```
-
----
-
-## 7. POST /api/taste/update
+## 5. POST /api/taste/update
 
 전통주를 마신 후 취향 평가 입력. 별점 방식과 축별 직접 평가 방식 모두 지원.
 
@@ -469,7 +361,7 @@ curl -X POST http://localhost:8000/api/taste/update \
 
 ---
 
-## 8. GET /api/taste/history/{user_id}
+## 6. GET /api/taste/history/{user_id}
 
 사용자 취향 히스토리 + 누적된 평가 기반 진화된 맛 벡터 조회.
 
@@ -521,7 +413,7 @@ curl http://localhost:8000/api/taste/history/user123
 
 ---
 
-## 9. POST /api/chat
+## 7. POST /api/chat
 
 전통주 전문 AI 채팅. 막걸리·청주·탁주 등 전통주 관련 질문에만 답변하며, 후속 질문 2개를 추천합니다.
 
@@ -577,7 +469,7 @@ curl -X POST http://localhost:8000/api/chat \
 
 ---
 
-## 10. POST /api/food/recommend
+## 8. POST /api/food/recommend
 
 음식 이름 기반 어울리는 전통주 추천.
 
@@ -615,7 +507,7 @@ curl -X POST http://localhost:8000/api/food/recommend \
 
 ---
 
-## 11. POST /api/recipe/suggest-sub-ingredients
+## 9. POST /api/recipe/suggest-sub-ingredients
 
 메인재료 + 지역 입력 시 지역 특산물 기반 서브재료 5개 추천 (Gemini 사용).
 
@@ -644,7 +536,7 @@ curl -X POST http://localhost:8000/api/recipe/suggest-sub-ingredients \
 
 ---
 
-## 12. POST /api/recipe/suggest-flavor-tags
+## 10. POST /api/recipe/suggest-flavor-tags
 
 레시피 정보 기반 맛 태그 5개 자동 생성 (Gemini 사용).
 
@@ -675,7 +567,7 @@ curl -X POST http://localhost:8000/api/recipe/suggest-flavor-tags \
 
 ---
 
-## 13. POST /api/recipe/suggest-summary
+## 11. POST /api/recipe/suggest-summary
 
 레시피 정보 기반 프로젝트 요약문 3문장 자동 생성 (Gemini 사용).
 
@@ -708,7 +600,7 @@ curl -X POST http://localhost:8000/api/recipe/suggest-summary \
 
 ---
 
-## 14. POST /api/law/filter
+## 12. POST /api/law/filter
 
 레시피/펀딩 콘텐츠 법률 위반 여부 3단계 자동 검토.
 
@@ -773,7 +665,7 @@ curl -X POST http://localhost:8000/api/law/filter \
 
 ---
 
-## 15. GET /api/law/info
+## 13. GET /api/law/info
 
 전통주 관련 주요 법령 목록 조회.
 
@@ -799,7 +691,7 @@ curl http://localhost:8000/api/law/info
 
 ---
 
-## 16. GET /api/insight
+## 14. GET /api/insight
 
 양조장용 인사이트 대시보드. 통계 집계 + 예측 + 군집화 + Gemini AI 리포트 제공.
 
@@ -852,7 +744,7 @@ curl "http://localhost:8000/api/insight?period=week"
 
 ---
 
-## 17. POST /api/rag/search
+## 15. POST /api/rag/search
 
 전통주 전문 문서 기반 RAG 검색.
 
@@ -891,7 +783,7 @@ curl -X POST http://localhost:8000/api/rag/search \
 
 ---
 
-## 18. POST /api/crawler/check  
+## 16. POST /api/crawler/check
 
 koreansool.co.kr에서 신규 전통주를 감지하고, 새로운 항목이 있으면 auto_pipeline으로 맛 벡터를 자동 생성합니다. 중복 방지를 위해 이미 처리된 항목은 캐시(`data/crawler_seen.json`)에 저장됩니다.
 
@@ -922,7 +814,7 @@ curl -X POST http://localhost:8000/api/crawler/check
 
 ---
 
-## 19. POST /api/drinks/request  
+## 17. POST /api/drinks/request
 
 사용자가 플랫폼에 없는 전통주 등록을 요청합니다. 메모리 기반 저장.
 
@@ -964,7 +856,7 @@ curl -X POST http://localhost:8000/api/drinks/request \
 
 ---
 
-## 20. GET /api/drinks/requests  
+## 18. GET /api/drinks/requests
 
 전통주 등록 요청 목록 조회 (관리자용).
 
@@ -1003,7 +895,7 @@ curl "http://localhost:8000/api/drinks/requests?status=pending"
 
 ---
 
-## 21. POST /api/drinks/requests/{id}/approve  
+## 19. POST /api/drinks/requests/{id}/approve
 
 등록 요청을 승인하고 auto_pipeline으로 맛 벡터를 자동 생성합니다.
 

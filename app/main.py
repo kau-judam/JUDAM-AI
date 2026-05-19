@@ -30,11 +30,9 @@ from app.models import (
     HealthResponse,
     LawFilterRequest,
     SurveyConvertResponse,
-    BTITypeRequest, BTITypeResponse,
     SubIngredientsRequest, SubIngredientsResponse,
     FlavorTagsRequest, FlavorTagsResponse,
     SummaryRequest, SummaryResponse,
-    SurveyRecommendResponse, SurveyRecommendItem
 )
 from app.db import db
 
@@ -238,7 +236,6 @@ def root():
             "food_recommend": "/api/food/recommend",
             "survey_convert": "/api/survey/convert",
             "taste_profile": "/api/taste/profile/{user_id}",
-            "survey_bti_type": "/api/survey/bti-type",
             "recipe_suggest_sub_ingredients": "/api/recipe/suggest-sub-ingredients",
             "recipe_suggest_flavor_tags": "/api/recipe/suggest-flavor-tags",
             "recipe_suggest_summary": "/api/recipe/suggest-summary",
@@ -501,92 +498,6 @@ def get_taste_profile(user_id: str):
     return _user_profiles[user_id]
 
 
-@app.post("/api/survey/recommend", response_model=SurveyRecommendResponse)
-def survey_recommend(survey: SurveyResponse):
-    """
-    술BTI 설문 → 맛 벡터 변환 + 추천 원스텝 API
-
-    Args:
-        survey: 25문항 설문 응답 (survey/convert와 동일)
-
-    Returns:
-        taste_vector + top 5 추천 결과 (match_reason 포함)
-    """
-    try:
-        survey_converter = app.state.survey_converter
-        recommender = app.state.recommender
-
-        # 1단계: 설문 → 맛 벡터 변환
-        full = survey_converter.convert(survey)
-        food_pairing = full.get('food_pairing', [])
-        vector_dict = {k: v for k, v in full.items() if k in TASTE_AXES}
-
-        # 2단계: 맛 벡터 → 추천 (top_k=5)
-        recommendations = recommender.recommend(user_vector=vector_dict, top_k=5)
-
-        # 응답 조립
-        rec_items = [
-            SurveyRecommendItem(
-                id=rec['id'],
-                name=rec['name'],
-                similarity=rec['similarity'],
-                abv=rec['abv'],
-                brewery=clean_string(rec.get('brewery')),
-                region=clean_string(rec.get('region')),
-                features=clean_string(rec.get('features')),
-                taste_vector=TasteVector(**rec['taste_vector']),
-                match_reason=rec.get('match_reason', [])
-            )
-            for rec in recommendations
-        ]
-
-        return SurveyRecommendResponse(
-            status="success",
-            taste_vector=vector_dict,
-            food_pairing=food_pairing,
-            recommendations=rec_items
-        )
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/api/survey/bti-type", response_model=BTITypeResponse)
-def get_bti_type(request: BTITypeRequest):
-    """
-    맛 벡터 기반 술BTI 유형 판정
-
-    Args:
-        request: 맛 벡터 요청
-
-    Returns:
-        술BTI 유형 정보
-    """
-    try:
-        # 술BTI 코드 판정
-        code = determine_bti_code(
-            sweetness=request.sweetness,
-            body=request.body,
-            carbonation=request.carbonation,
-            flavor=request.flavor
-        )
-
-        # 유형 정보 조회
-        type_info = BTI_TYPE_MAPPING.get(code, {
-            "name": "알 수 없는 유형",
-            "tags": [],
-            "drinks": []
-        })
-
-        return BTITypeResponse(
-            code=code,
-            character_name=type_info["name"],
-            tags=type_info["tags"],
-            recommended_drinks=type_info["drinks"]
-        )
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/api/recipe/suggest-sub-ingredients", response_model=SubIngredientsResponse)
