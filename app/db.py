@@ -29,6 +29,8 @@ class Database:
             logger.warning("DATABASE_URL이 설정되지 않음")
             return
 
+        self.database_url = self.database_url.replace("postgresql+asyncpg://", "postgresql://")
+
         try:
             self.pool = await asyncpg.create_pool(
                 self.database_url,
