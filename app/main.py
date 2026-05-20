@@ -4,7 +4,7 @@
 
 import logging
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Dict, Optional
@@ -40,6 +40,23 @@ TASTE_AXES = {'sweetness', 'body', 'carbonation', 'flavor', 'alcohol', 'acidity'
 
 # 인메모리 사용자 프로필 저장소
 _user_profiles: Dict[str, Dict] = {}
+
+# 인메모리 응답 캐시
+_cache: Dict[str, Dict] = {}
+
+
+def get_cache(key: str):
+    entry = _cache.get(key)
+    if entry and datetime.now() < entry['expires']:
+        return entry['value']
+    return None
+
+
+def set_cache(key: str, value, ttl_minutes: int = 60):
+    _cache[key] = {
+        'value': value,
+        'expires': datetime.now() + timedelta(minutes=ttl_minutes),
+    }
 
 # 추천 시스템 초기화
 _recommender = AdvancedMakgeolliRecommender()
@@ -90,6 +107,38 @@ async def startup_event():
     except Exception as e:
         logger.warning(f"DB 연결 실패 (JSON fallback 사용): {e}")
         _recommender.db_connected = False
+
+    app.state.user_profiles = _user_profiles
+
+    # 캐시 워밍업 (백그라운드)
+    async def warm_cache():
+        try:
+            warm_targets = [
+                {'main_ingredient': '이천 쌀', 'region': '경기도 이천'},
+                {'main_ingredient': '여주 쌀', 'region': '경기도 여주'},
+                {'main_ingredient': '김제 쌀', 'region': '전라북도 김제'},
+                {'main_ingredient': '해남 고구마', 'region': '전라남도 해남'},
+                {'main_ingredient': '제주 감귤', 'region': '제주도'},
+                {'main_ingredient': '안동 쌀', 'region': '경상북도 안동'},
+                {'main_ingredient': '홍성 쌀', 'region': '충청남도 홍성'},
+                {'main_ingredient': '철원 쌀', 'region': '강원도 철원'},
+            ]
+            for target in warm_targets:
+                cache_key = f"recipe_sub_{hash(target['main_ingredient']+target['region'])}"
+                if not get_cache(cache_key):
+                    try:
+                        result = await _recipe_ai.suggest_sub_ingredients(
+                            target['main_ingredient'], target['region']
+                        )
+                        set_cache(cache_key, result, ttl_minutes=1440)
+                        logger.info(f"캐시 워밍업 완료: {target['region']}")
+                    except Exception as e:
+                        logger.warning(f"캐시 워밍업 실패: {target['region']} - {e}")
+        except Exception as e:
+            logger.warning(f"캐시 워밍업 전체 실패: {e}")
+
+    import asyncio as _asyncio
+    _asyncio.create_task(warm_cache())
 
 
 # 헬퍼 함수
@@ -287,7 +336,7 @@ def health():
 
 
 @app.post("/api/recommend", response_model=List[RecommendResponse])
-def recommend(request: RecommendRequest):
+async def recommend(request: RecommendRequest):
     """
     맛 벡터 기반 추천
 
@@ -300,11 +349,25 @@ def recommend(request: RecommendRequest):
     try:
         recommender = app.state.recommender
 
-        # 맛 벡터 결정: user_vector 우선, 없으면 user_id로 프로필 조회
+        # 맛 벡터 결정: user_vector 우선, user_id로 메모리→DB 순서로 조회
         if request.user_vector is not None:
             user_vector = request.user_vector.model_dump()
-        elif request.user_id and request.user_id in _user_profiles:
-            user_vector = _user_profiles[request.user_id]['taste_vector']
+        elif request.user_id:
+            mem = _user_profiles.get(request.user_id)
+            if mem:
+                user_vector = mem['taste_vector']
+            else:
+                db_profile = await db.get_user_profile(request.user_id)
+                if db_profile and db_profile.get('taste_vector'):
+                    import json as _json
+                    tv = db_profile['taste_vector']
+                    user_vector = _json.loads(tv) if isinstance(tv, str) else tv
+                    _user_profiles[request.user_id] = {'taste_vector': user_vector}
+                else:
+                    raise HTTPException(
+                        status_code=400,
+                        detail="user_vector 또는 저장된 user_id 중 하나를 제공해주세요."
+                    )
         else:
             raise HTTPException(
                 status_code=400,
@@ -412,6 +475,12 @@ def food_recommend(request: FoodRecommendRequest):
         추천 결과 리스트
     """
     try:
+        cache_key = f"food:{request.food}:{request.top_k}"
+        cached = get_cache(cache_key)
+        if cached is not None:
+            logger.info(f"음식 캐시 히트: {cache_key}")
+            return cached
+
         recommender = app.state.recommender
 
         # 추천
@@ -434,6 +503,7 @@ def food_recommend(request: FoodRecommendRequest):
                 reason=rec['reason']
             ))
 
+        set_cache(cache_key, response, ttl_minutes=1440)
         return response
 
     except Exception as e:
@@ -441,7 +511,7 @@ def food_recommend(request: FoodRecommendRequest):
 
 
 @app.post("/api/survey/convert", response_model=SurveyConvertResponse)
-def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
+async def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
     """
     술BTI 설문 → 맛 벡터 변환
 
@@ -474,8 +544,14 @@ def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
         )
 
         if user_id:
-            _user_profiles[user_id] = response.model_dump()
-            logger.info(f"사용자 프로필 저장: {user_id}")
+            profile_data = response.model_dump()
+            _user_profiles[user_id] = profile_data
+            logger.info(f"사용자 프로필 메모리 저장: {user_id}")
+            try:
+                await db.upsert_user_profile(user_id, profile_data)
+                logger.info(f"사용자 프로필 DB 저장: {user_id}")
+            except Exception as db_err:
+                logger.warning(f"DB 저장 실패 (메모리만 유지): {db_err}")
 
         return response
     except Exception as e:
@@ -483,9 +559,9 @@ def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
 
 
 @app.get("/api/taste/profile/{user_id}")
-def get_taste_profile(user_id: str):
+async def get_taste_profile(user_id: str):
     """
-    저장된 사용자 취향 프로필 조회
+    저장된 사용자 취향 프로필 조회 (메모리 → DB 순)
 
     Args:
         user_id: 사용자 ID
@@ -493,9 +569,28 @@ def get_taste_profile(user_id: str):
     Returns:
         survey/convert 결과 전체
     """
-    if user_id not in _user_profiles:
-        raise HTTPException(status_code=404, detail=f"사용자 '{user_id}'의 프로필이 없습니다. survey/convert를 먼저 호출해주세요.")
-    return _user_profiles[user_id]
+    # 메모리 우선
+    if user_id in _user_profiles:
+        return _user_profiles[user_id]
+
+    # DB fallback
+    try:
+        db_profile = await db.get_user_profile(user_id)
+        if db_profile:
+            import json as _json
+            for field in ('taste_vector', 'preferred_food_pairing', 'preferred_aroma'):
+                v = db_profile.get(field)
+                if isinstance(v, str):
+                    db_profile[field] = _json.loads(v)
+            _user_profiles[user_id] = db_profile
+            return db_profile
+    except Exception as e:
+        logger.warning(f"DB 프로필 조회 실패: {e}")
+
+    raise HTTPException(
+        status_code=404,
+        detail=f"사용자 '{user_id}'의 프로필이 없습니다. survey/convert를 먼저 호출해주세요."
+    )
 
 
 
@@ -512,6 +607,12 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
         서브재료 리스트
     """
     try:
+        cache_key = f"recipe_sub_{hash(request.main_ingredient + request.region)}"
+        cached = get_cache(cache_key)
+        if cached is not None:
+            logger.info(f"서브재료 캐시 히트: {request.main_ingredient}/{request.region}")
+            return cached
+
         recipe_ai = app.state.recipe_ai
 
         result = await recipe_ai.suggest_sub_ingredients(
@@ -519,7 +620,9 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
             region=request.region
         )
 
-        return SubIngredientsResponse(sub_ingredients=result["sub_ingredients"])
+        response_obj = SubIngredientsResponse(sub_ingredients=result["sub_ingredients"])
+        set_cache(cache_key, response_obj, ttl_minutes=1440)
+        return response_obj
 
     except Exception as e:
         raise_api_error(e, "서브재료 추천 중 오류가 발생했습니다.")
@@ -593,6 +696,12 @@ async def law_filter(request: LawFilterRequest):
         필터링 결과
     """
     try:
+        cache_key = f"law:{request.content_type}:{request.title}:{request.description}"
+        cached = get_cache(cache_key)
+        if cached is not None:
+            logger.info(f"법률 캐시 히트: {cache_key[:60]}")
+            return cached
+
         law_client = app.state.law_client
 
         # 콘텐츠 타입 변환
@@ -605,7 +714,7 @@ async def law_filter(request: LawFilterRequest):
             content_type=ct
         )
 
-        return {
+        response_data = {
             "violation": result.violation,
             "details": [
                 {
@@ -618,6 +727,8 @@ async def law_filter(request: LawFilterRequest):
             ],
             "recommendation": result.recommendation
         }
+        set_cache(cache_key, response_data, ttl_minutes=60)
+        return response_data
 
     except Exception as e:
         raise_api_error(e, "법률 필터링 중 오류가 발생했습니다.")
@@ -687,6 +798,12 @@ def rag_search(request: RAGSearchRequest):
         검색 결과
     """
     try:
+        cache_key = f"rag:{request.query}:{request.top_k}:{request.category}"
+        cached = get_cache(cache_key)
+        if cached is not None:
+            logger.info(f"RAG 캐시 히트: {cache_key[:60]}")
+            return cached
+
         rag_system = app.state.rag_system
 
         results = rag_system.search(
@@ -695,6 +812,7 @@ def rag_search(request: RAGSearchRequest):
             category=request.category
         )
 
+        set_cache(cache_key, results, ttl_minutes=60)
         return results
 
     except Exception as e:

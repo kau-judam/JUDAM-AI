@@ -444,7 +444,7 @@ class LawClient:
 }}
 """
 
-            response = model.generate_content(prompt)
+            response = await model.generate_content_async(prompt)
             result_text = response.text
 
             # JSON 파싱

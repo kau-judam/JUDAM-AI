@@ -6,7 +6,7 @@ Handles user queries with context-aware responses
 import logging
 import os
 from typing import List, Dict, Optional
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -83,12 +83,13 @@ class ChatResponse(BaseModel):
 
 
 @router.post("/chat", response_model=ChatResponse)
-async def chat(request: ChatRequest) -> ChatResponse:
+async def chat(request: ChatRequest, req: Request) -> ChatResponse:
     """
     Process user message and return response
 
     Args:
         request: Chat request with message, user_id, and history
+        req: FastAPI Request (app.state 접근용)
 
     Returns:
         Chat response with answer, context, and suggested_questions
@@ -115,6 +116,27 @@ async def chat(request: ChatRequest) -> ChatResponse:
                 suggested_questions=suggested
             )
 
+        # 사용자 프로필 조회 (app.state.user_profiles)
+        profile_context = ""
+        try:
+            user_profiles = getattr(req.app.state, 'user_profiles', {})
+            profile = user_profiles.get(request.user_id)
+            if profile:
+                bti = profile.get('bti_code', '')
+                char = profile.get('character_name', '')
+                summary = profile.get('taste_profile_summary', '')
+                abv = profile.get('preferred_abv', '')
+                body = profile.get('preferred_body', '')
+                if bti or summary:
+                    profile_context = (
+                        f"\n\n[사용자 취향 프로필]\n"
+                        f"술BTI: {bti} ({char})\n"
+                        f"선호 도수: {abv} / 선호 바디감: {body}\n"
+                        f"취향 요약: {summary}"
+                    )
+        except Exception:
+            pass
+
         # 대화 히스토리 구성 (content 키 지원)
         context_parts = []
         if request.history:
@@ -129,11 +151,11 @@ async def chat(request: ChatRequest) -> ChatResponse:
 
         context_str = "\n".join(context_parts) if context_parts else "이전 대화 없음"
 
-        # 시스템 프롬프트 (한국어, 전통주 특화)
-        system_prompt = """당신은 주담(Juddam) 전통주 플랫폼의 전문 AI 어시스턴트입니다.
+        # 시스템 프롬프트 (한국어, 전통주 특화 + 개인화)
+        system_prompt = f"""당신은 주담(Juddam) 전통주 플랫폼의 전문 AI 어시스턴트입니다.
 막걸리, 청주, 탁주, 약주, 소주, 동동주 등 한국 전통주에 관한 질문에만 답변하세요.
 답변은 간결하고 실용적으로, 한국어로 작성하세요.
-전통주와 무관한 질문에는 정중히 거절하세요."""
+전통주와 무관한 질문에는 정중히 거절하세요.{profile_context}"""
 
         full_prompt = f"""{system_prompt}
 
@@ -144,7 +166,7 @@ async def chat(request: ChatRequest) -> ChatResponse:
 
 답변:"""
 
-        response = model.generate_content(full_prompt)
+        response = await model.generate_content_async(full_prompt)
         result_text = response.text.strip()
 
         # 키워드 기반 후속 질문 생성

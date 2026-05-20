@@ -23,11 +23,17 @@ class Database:
         self.database_url = os.getenv("DATABASE_URL")
         self.pool: Optional[asyncpg.Pool] = None
 
+    @property
+    def db_connected(self) -> bool:
+        return self.pool is not None
+
     async def connect(self):
         """데이터베이스 연결"""
         if not self.database_url:
             logger.warning("DATABASE_URL이 설정되지 않음")
             return
+
+        self.database_url = self.database_url.replace("postgresql+asyncpg://", "postgresql://")
 
         try:
             self.pool = await asyncpg.create_pool(
@@ -167,6 +173,22 @@ class Database:
             """,
             """
             CREATE INDEX IF NOT EXISTS idx_food_pairings_food_name ON food_pairings(food_name)
+            """,
+            """
+            CREATE TABLE IF NOT EXISTS user_profiles (
+                user_id VARCHAR(50) PRIMARY KEY,
+                taste_vector JSONB,
+                bti_code VARCHAR(20),
+                character_name VARCHAR(100),
+                experience_level VARCHAR(50),
+                preferred_abv VARCHAR(50),
+                preferred_body VARCHAR(50),
+                preferred_fruit VARCHAR(50),
+                preferred_food_pairing JSONB,
+                preferred_aroma JSONB,
+                taste_profile_summary TEXT,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
             """
         ]
 
@@ -357,6 +379,53 @@ class Database:
         similar_drinks.sort(key=lambda x: x['similarity'], reverse=True)
 
         return similar_drinks[:limit]
+
+    async def upsert_user_profile(self, user_id: str, profile: dict):
+        """사용자 프로필 저장/갱신 (user_profiles 테이블)"""
+        if not self.db_connected:
+            return
+        import json as _json
+        await self.execute(
+            """
+            INSERT INTO user_profiles (
+                user_id, taste_vector, bti_code, character_name,
+                experience_level, preferred_abv, preferred_body, preferred_fruit,
+                preferred_food_pairing, preferred_aroma, taste_profile_summary, updated_at
+            ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,NOW())
+            ON CONFLICT (user_id) DO UPDATE SET
+                taste_vector          = EXCLUDED.taste_vector,
+                bti_code              = EXCLUDED.bti_code,
+                character_name        = EXCLUDED.character_name,
+                experience_level      = EXCLUDED.experience_level,
+                preferred_abv         = EXCLUDED.preferred_abv,
+                preferred_body        = EXCLUDED.preferred_body,
+                preferred_fruit       = EXCLUDED.preferred_fruit,
+                preferred_food_pairing= EXCLUDED.preferred_food_pairing,
+                preferred_aroma       = EXCLUDED.preferred_aroma,
+                taste_profile_summary = EXCLUDED.taste_profile_summary,
+                updated_at            = NOW()
+            """,
+            user_id,
+            _json.dumps(profile.get('taste_vector', {})),
+            profile.get('bti_code', ''),
+            profile.get('character_name', ''),
+            profile.get('experience_level', ''),
+            profile.get('preferred_abv', ''),
+            profile.get('preferred_body', ''),
+            profile.get('preferred_fruit', ''),
+            _json.dumps(profile.get('preferred_food_pairing', [])),
+            _json.dumps(profile.get('preferred_aroma', [])),
+            profile.get('taste_profile_summary', ''),
+        )
+
+    async def get_user_profile(self, user_id: str) -> Optional[Dict]:
+        """사용자 프로필 조회 (user_profiles 테이블)"""
+        if not self.db_connected:
+            return None
+        return await self.fetchrow(
+            "SELECT * FROM user_profiles WHERE user_id = $1",
+            user_id
+        )
 
 
 # 전역 DB 인스턴스

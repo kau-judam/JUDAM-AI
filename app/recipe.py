@@ -55,42 +55,53 @@ class RecipeAI:
 
         try:
             import google.genai as genai
+            import re
 
             client = genai.Client(api_key=self.gemini_api_key)
 
-            prompt = f"막걸리/탁주 양조 시 {main_ingredient}와 어울리는 서브재료를 {region} 지역 특산물 중심으로 5개 추천해줘. JSON 배열로만 답변."
+            prompt = (
+                f"전통주 지리적 표시제 기준으로 {region} 내 시/군 단위 특산물 기반 "
+                f"서브재료 5개 추천해줘. 인접 지역 특산물은 제외하고 해당 지역 내 "
+                f"특산물만 추천. 각 재료 옆에 원산지 시/군명 포함.\n"
+                f"입력: 메인재료={main_ingredient}, 지역={region}\n"
+                f'출력: {{"sub_ingredients": ["이천 쌀", "여주 고구마", ...]}}\n'
+                f"다른 말 없이 JSON만 반환."
+            )
 
-            response = client.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
-            result_text = response.text
-            logger.info(f"Gemini 응답: {result_text}")
+            response = await client.aio.models.generate_content(
+                model='gemini-2.5-flash-lite',
+                contents=prompt,
+                config={"max_output_tokens": 200}
+            )
+            result_text = response.text.strip()
+            logger.info(f"Gemini 서브재료 응답: {result_text}")
 
-            # JSON 파싱
             try:
-                import re
-                json_match = re.search(r'\[[\s\S]*\]', result_text)
-                print(f"[DEBUG] json_match: {json_match}")
-                if json_match:
-                    result_text = json_match.group(0)
-                    print(f"[DEBUG] 추출된 JSON: {result_text}")
+                # 객체 형태 {"sub_ingredients": [...]} 우선 파싱
+                obj_match = re.search(r'\{[\s\S]*\}', result_text)
+                if obj_match:
+                    parsed = json.loads(obj_match.group(0))
+                    if "sub_ingredients" in parsed and isinstance(parsed["sub_ingredients"], list):
+                        return {"sub_ingredients": parsed["sub_ingredients"]}
 
-                result = json.loads(result_text)
-                print(f"[DEBUG] 파싱된 result: {result}")
+                # fallback: 배열 형태 [...]
+                arr_match = re.search(r'\[[\s\S]*\]', result_text)
+                if arr_match:
+                    parsed = json.loads(arr_match.group(0))
+                    if isinstance(parsed, list):
+                        if parsed and isinstance(parsed[0], dict):
+                            return {"sub_ingredients": [
+                                item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료", "")
+                                for item in parsed
+                                if item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료")
+                            ]}
+                        return {"sub_ingredients": parsed}
 
-                if isinstance(result, list):
-                    # 딕셔너리 배열인 경우 name 값만 추출
-                    if result and isinstance(result[0], dict):
-                        print(f"[DEBUG] 딕셔너리 배열 감지, name 추출")
-                        return {"sub_ingredients": [item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료", "") for item in result if item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료")]}
-                    print(f"[DEBUG] 문자열 배열 반환")
-                    return {"sub_ingredients": result}
-                else:
-                    print(f"[DEBUG] 리스트 아님, 빈 배열 반환")
-                    return {"sub_ingredients": []}
+                return {"sub_ingredients": []}
 
             except json.JSONDecodeError as e:
-                logger.error(f"JSON 파싱 실패: {e}")
-                logger.error(f"원본 응답: {result_text}")
-                raise e
+                logger.error(f"JSON 파싱 실패: {e}, 원본: {result_text}")
+                return {"sub_ingredients": []}
 
         except Exception as e:
             msg = _gemini_error_message(e)
@@ -129,7 +140,7 @@ class RecipeAI:
 
             prompt = f"다음 막걸리 레시피를 보고 지향하는 맛 태그를 5개 이내로 생성해줘. JSON 배열로만 답변. 제목:{title} 메인재료:{main_ingredient} 서브재료:{sub_ingredients_str} 도수:{abv_range}"
 
-            response = client.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
+            response = await client.aio.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
             result_text = response.text
 
             # JSON 파싱
@@ -194,7 +205,7 @@ class RecipeAI:
 
             prompt = f"다음 전통주 레시피/펀딩 프로젝트의 요약문을 3문장으로 작성해줘. 텍스트로만 답변. 제목:{title} 메인재료:{main_ingredient} 서브재료:{sub_ingredients_str} 도수:{abv_range} 맛태그:{flavor_tags_str} 컨셉:{concept_str}"
 
-            response = client.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
+            response = await client.aio.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
             result_text = response.text.strip()
 
             return {"summary": result_text}
