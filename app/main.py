@@ -108,6 +108,8 @@ async def startup_event():
         logger.warning(f"DB 연결 실패 (JSON fallback 사용): {e}")
         _recommender.db_connected = False
 
+    app.state.user_profiles = _user_profiles
+
     # 캐시 워밍업 (백그라운드)
     async def warm_cache():
         try:
@@ -334,7 +336,7 @@ def health():
 
 
 @app.post("/api/recommend", response_model=List[RecommendResponse])
-def recommend(request: RecommendRequest):
+async def recommend(request: RecommendRequest):
     """
     맛 벡터 기반 추천
 
@@ -347,11 +349,25 @@ def recommend(request: RecommendRequest):
     try:
         recommender = app.state.recommender
 
-        # 맛 벡터 결정: user_vector 우선, 없으면 user_id로 프로필 조회
+        # 맛 벡터 결정: user_vector 우선, user_id로 메모리→DB 순서로 조회
         if request.user_vector is not None:
             user_vector = request.user_vector.model_dump()
-        elif request.user_id and request.user_id in _user_profiles:
-            user_vector = _user_profiles[request.user_id]['taste_vector']
+        elif request.user_id:
+            mem = _user_profiles.get(request.user_id)
+            if mem:
+                user_vector = mem['taste_vector']
+            else:
+                db_profile = await db.get_user_profile(request.user_id)
+                if db_profile and db_profile.get('taste_vector'):
+                    import json as _json
+                    tv = db_profile['taste_vector']
+                    user_vector = _json.loads(tv) if isinstance(tv, str) else tv
+                    _user_profiles[request.user_id] = {'taste_vector': user_vector}
+                else:
+                    raise HTTPException(
+                        status_code=400,
+                        detail="user_vector 또는 저장된 user_id 중 하나를 제공해주세요."
+                    )
         else:
             raise HTTPException(
                 status_code=400,
@@ -495,7 +511,7 @@ def food_recommend(request: FoodRecommendRequest):
 
 
 @app.post("/api/survey/convert", response_model=SurveyConvertResponse)
-def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
+async def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
     """
     술BTI 설문 → 맛 벡터 변환
 
@@ -528,8 +544,14 @@ def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
         )
 
         if user_id:
-            _user_profiles[user_id] = response.model_dump()
-            logger.info(f"사용자 프로필 저장: {user_id}")
+            profile_data = response.model_dump()
+            _user_profiles[user_id] = profile_data
+            logger.info(f"사용자 프로필 메모리 저장: {user_id}")
+            try:
+                await db.upsert_user_profile(user_id, profile_data)
+                logger.info(f"사용자 프로필 DB 저장: {user_id}")
+            except Exception as db_err:
+                logger.warning(f"DB 저장 실패 (메모리만 유지): {db_err}")
 
         return response
     except Exception as e:
@@ -537,9 +559,9 @@ def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
 
 
 @app.get("/api/taste/profile/{user_id}")
-def get_taste_profile(user_id: str):
+async def get_taste_profile(user_id: str):
     """
-    저장된 사용자 취향 프로필 조회
+    저장된 사용자 취향 프로필 조회 (메모리 → DB 순)
 
     Args:
         user_id: 사용자 ID
@@ -547,9 +569,28 @@ def get_taste_profile(user_id: str):
     Returns:
         survey/convert 결과 전체
     """
-    if user_id not in _user_profiles:
-        raise HTTPException(status_code=404, detail=f"사용자 '{user_id}'의 프로필이 없습니다. survey/convert를 먼저 호출해주세요.")
-    return _user_profiles[user_id]
+    # 메모리 우선
+    if user_id in _user_profiles:
+        return _user_profiles[user_id]
+
+    # DB fallback
+    try:
+        db_profile = await db.get_user_profile(user_id)
+        if db_profile:
+            import json as _json
+            for field in ('taste_vector', 'preferred_food_pairing', 'preferred_aroma'):
+                v = db_profile.get(field)
+                if isinstance(v, str):
+                    db_profile[field] = _json.loads(v)
+            _user_profiles[user_id] = db_profile
+            return db_profile
+    except Exception as e:
+        logger.warning(f"DB 프로필 조회 실패: {e}")
+
+    raise HTTPException(
+        status_code=404,
+        detail=f"사용자 '{user_id}'의 프로필이 없습니다. survey/convert를 먼저 호출해주세요."
+    )
 
 
 
