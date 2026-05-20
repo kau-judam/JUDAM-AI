@@ -108,6 +108,34 @@ async def startup_event():
         logger.warning(f"DB 연결 실패 (JSON fallback 사용): {e}")
         _recommender.db_connected = False
 
+    # 캐시 워밍업 (백그라운드)
+    async def warm_cache():
+        try:
+            warm_targets = [
+                {'main_ingredient': '경기도 쌀', 'region': '경기도'},
+                {'main_ingredient': '전라도 쌀', 'region': '전라도'},
+                {'main_ingredient': '충청도 쌀', 'region': '충청도'},
+                {'main_ingredient': '강원도 쌀', 'region': '강원도'},
+                {'main_ingredient': '제주도 감귤', 'region': '제주도'},
+                {'main_ingredient': '경상도 사과', 'region': '경상도'},
+            ]
+            for target in warm_targets:
+                cache_key = f"recipe_sub_{hash(target['main_ingredient']+target['region'])}"
+                if not get_cache(cache_key):
+                    try:
+                        result = await _recipe_ai.suggest_sub_ingredients(
+                            target['main_ingredient'], target['region']
+                        )
+                        set_cache(cache_key, result, ttl_minutes=1440)
+                        logger.info(f"캐시 워밍업 완료: {target['region']}")
+                    except Exception as e:
+                        logger.warning(f"캐시 워밍업 실패: {target['region']} - {e}")
+        except Exception as e:
+            logger.warning(f"캐시 워밍업 전체 실패: {e}")
+
+    import asyncio as _asyncio
+    _asyncio.create_task(warm_cache())
+
 
 # 헬퍼 함수
 def clean_string(value) -> str:
