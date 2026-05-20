@@ -55,42 +55,51 @@ class RecipeAI:
 
         try:
             import google.genai as genai
+            import re
 
             client = genai.Client(api_key=self.gemini_api_key)
 
-            prompt = f"막걸리/탁주 양조 시 {main_ingredient}와 어울리는 서브재료를 {region} 지역 특산물 중심으로 5개 추천해줘. JSON 배열로만 답변."
+            prompt = (
+                f"{region} 특산물 기반 전통주 서브재료 5개만 JSON으로 반환해줘.\n"
+                f"입력: 메인재료={main_ingredient}, 지역={region}\n"
+                f'출력 형식: {{"sub_ingredients": ["재료1", "재료2", "재료3", "재료4", "재료5"]}}\n'
+                f"다른 말 없이 JSON만 반환."
+            )
 
-            response = await client.aio.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
-            result_text = response.text
-            logger.info(f"Gemini 응답: {result_text}")
+            response = await client.aio.models.generate_content(
+                model='gemini-2.5-flash-lite',
+                contents=prompt,
+                config={"max_output_tokens": 200}
+            )
+            result_text = response.text.strip()
+            logger.info(f"Gemini 서브재료 응답: {result_text}")
 
-            # JSON 파싱
             try:
-                import re
-                json_match = re.search(r'\[[\s\S]*\]', result_text)
-                print(f"[DEBUG] json_match: {json_match}")
-                if json_match:
-                    result_text = json_match.group(0)
-                    print(f"[DEBUG] 추출된 JSON: {result_text}")
+                # 객체 형태 {"sub_ingredients": [...]} 우선 파싱
+                obj_match = re.search(r'\{[\s\S]*\}', result_text)
+                if obj_match:
+                    parsed = json.loads(obj_match.group(0))
+                    if "sub_ingredients" in parsed and isinstance(parsed["sub_ingredients"], list):
+                        return {"sub_ingredients": parsed["sub_ingredients"]}
 
-                result = json.loads(result_text)
-                print(f"[DEBUG] 파싱된 result: {result}")
+                # fallback: 배열 형태 [...]
+                arr_match = re.search(r'\[[\s\S]*\]', result_text)
+                if arr_match:
+                    parsed = json.loads(arr_match.group(0))
+                    if isinstance(parsed, list):
+                        if parsed and isinstance(parsed[0], dict):
+                            return {"sub_ingredients": [
+                                item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료", "")
+                                for item in parsed
+                                if item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료")
+                            ]}
+                        return {"sub_ingredients": parsed}
 
-                if isinstance(result, list):
-                    # 딕셔너리 배열인 경우 name 값만 추출
-                    if result and isinstance(result[0], dict):
-                        print(f"[DEBUG] 딕셔너리 배열 감지, name 추출")
-                        return {"sub_ingredients": [item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료", "") for item in result if item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료")]}
-                    print(f"[DEBUG] 문자열 배열 반환")
-                    return {"sub_ingredients": result}
-                else:
-                    print(f"[DEBUG] 리스트 아님, 빈 배열 반환")
-                    return {"sub_ingredients": []}
+                return {"sub_ingredients": []}
 
             except json.JSONDecodeError as e:
-                logger.error(f"JSON 파싱 실패: {e}")
-                logger.error(f"원본 응답: {result_text}")
-                raise e
+                logger.error(f"JSON 파싱 실패: {e}, 원본: {result_text}")
+                return {"sub_ingredients": []}
 
         except Exception as e:
             msg = _gemini_error_message(e)

@@ -536,6 +536,12 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
         서브재료 리스트
     """
     try:
+        cache_key = f"recipe_sub_{hash(request.main_ingredient + request.region)}"
+        cached = get_cache(cache_key)
+        if cached is not None:
+            logger.info(f"서브재료 캐시 히트: {request.main_ingredient}/{request.region}")
+            return cached
+
         recipe_ai = app.state.recipe_ai
 
         result = await recipe_ai.suggest_sub_ingredients(
@@ -543,7 +549,9 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
             region=request.region
         )
 
-        return SubIngredientsResponse(sub_ingredients=result["sub_ingredients"])
+        response_obj = SubIngredientsResponse(sub_ingredients=result["sub_ingredients"])
+        set_cache(cache_key, response_obj, ttl_minutes=1440)
+        return response_obj
 
     except Exception as e:
         raise_api_error(e, "서브재료 추천 중 오류가 발생했습니다.")
