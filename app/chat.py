@@ -144,7 +144,7 @@ async def chat(request: ChatRequest) -> ChatResponse:
 
 답변:"""
 
-        response = model.generate_content(full_prompt)
+        response = await model.generate_content_async(full_prompt)
         result_text = response.text.strip()
 
         # 키워드 기반 후속 질문 생성

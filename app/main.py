@@ -4,7 +4,7 @@
 
 import logging
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Dict, Optional
@@ -40,6 +40,23 @@ TASTE_AXES = {'sweetness', 'body', 'carbonation', 'flavor', 'alcohol', 'acidity'
 
 # 인메모리 사용자 프로필 저장소
 _user_profiles: Dict[str, Dict] = {}
+
+# 인메모리 응답 캐시
+_cache: Dict[str, Dict] = {}
+
+
+def get_cache(key: str):
+    entry = _cache.get(key)
+    if entry and datetime.now() < entry['expires']:
+        return entry['value']
+    return None
+
+
+def set_cache(key: str, value, ttl_minutes: int = 60):
+    _cache[key] = {
+        'value': value,
+        'expires': datetime.now() + timedelta(minutes=ttl_minutes),
+    }
 
 # 추천 시스템 초기화
 _recommender = AdvancedMakgeolliRecommender()
@@ -412,6 +429,12 @@ def food_recommend(request: FoodRecommendRequest):
         추천 결과 리스트
     """
     try:
+        cache_key = f"food:{request.food}:{request.top_k}"
+        cached = get_cache(cache_key)
+        if cached is not None:
+            logger.info(f"음식 캐시 히트: {cache_key}")
+            return cached
+
         recommender = app.state.recommender
 
         # 추천
@@ -434,6 +457,7 @@ def food_recommend(request: FoodRecommendRequest):
                 reason=rec['reason']
             ))
 
+        set_cache(cache_key, response, ttl_minutes=1440)
         return response
 
     except Exception as e:
@@ -593,6 +617,12 @@ async def law_filter(request: LawFilterRequest):
         필터링 결과
     """
     try:
+        cache_key = f"law:{request.content_type}:{request.title}:{request.description}"
+        cached = get_cache(cache_key)
+        if cached is not None:
+            logger.info(f"법률 캐시 히트: {cache_key[:60]}")
+            return cached
+
         law_client = app.state.law_client
 
         # 콘텐츠 타입 변환
@@ -605,7 +635,7 @@ async def law_filter(request: LawFilterRequest):
             content_type=ct
         )
 
-        return {
+        response_data = {
             "violation": result.violation,
             "details": [
                 {
@@ -618,6 +648,8 @@ async def law_filter(request: LawFilterRequest):
             ],
             "recommendation": result.recommendation
         }
+        set_cache(cache_key, response_data, ttl_minutes=60)
+        return response_data
 
     except Exception as e:
         raise_api_error(e, "법률 필터링 중 오류가 발생했습니다.")
@@ -687,6 +719,12 @@ def rag_search(request: RAGSearchRequest):
         검색 결과
     """
     try:
+        cache_key = f"rag:{request.query}:{request.top_k}:{request.category}"
+        cached = get_cache(cache_key)
+        if cached is not None:
+            logger.info(f"RAG 캐시 히트: {cache_key[:60]}")
+            return cached
+
         rag_system = app.state.rag_system
 
         results = rag_system.search(
@@ -695,6 +733,7 @@ def rag_search(request: RAGSearchRequest):
             category=request.category
         )
 
+        set_cache(cache_key, results, ttl_minutes=60)
         return results
 
     except Exception as e:

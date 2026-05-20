@@ -349,7 +349,7 @@ class InsightDashboard:
 
 리포트:"""
 
-            response = model.generate_content(prompt)
+            response = await model.generate_content_async(prompt)
             return response.text.strip()
 
         except Exception as e:

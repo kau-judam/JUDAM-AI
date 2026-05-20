@@ -60,7 +60,7 @@ class RecipeAI:
 
             prompt = f"막걸리/탁주 양조 시 {main_ingredient}와 어울리는 서브재료를 {region} 지역 특산물 중심으로 5개 추천해줘. JSON 배열로만 답변."
 
-            response = client.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
+            response = await client.aio.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
             result_text = response.text
             logger.info(f"Gemini 응답: {result_text}")
 
@@ -129,7 +129,7 @@ class RecipeAI:
 
             prompt = f"다음 막걸리 레시피를 보고 지향하는 맛 태그를 5개 이내로 생성해줘. JSON 배열로만 답변. 제목:{title} 메인재료:{main_ingredient} 서브재료:{sub_ingredients_str} 도수:{abv_range}"
 
-            response = client.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
+            response = await client.aio.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
             result_text = response.text
 
             # JSON 파싱
@@ -194,7 +194,7 @@ class RecipeAI:
 
             prompt = f"다음 전통주 레시피/펀딩 프로젝트의 요약문을 3문장으로 작성해줘. 텍스트로만 답변. 제목:{title} 메인재료:{main_ingredient} 서브재료:{sub_ingredients_str} 도수:{abv_range} 맛태그:{flavor_tags_str} 컨셉:{concept_str}"
 
-            response = client.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
+            response = await client.aio.models.generate_content(model='gemini-2.5-flash-lite', contents=prompt)
             result_text = response.text.strip()
 
             return {"summary": result_text}
