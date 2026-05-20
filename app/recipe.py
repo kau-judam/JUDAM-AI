@@ -60,9 +60,11 @@ class RecipeAI:
             client = genai.Client(api_key=self.gemini_api_key)
 
             prompt = (
-                f"{region} 특산물 기반 전통주 서브재료 5개만 JSON으로 반환해줘.\n"
+                f"전통주 지리적 표시제 기준으로 {region} 내 시/군 단위 특산물 기반 "
+                f"서브재료 5개 추천해줘. 인접 지역 특산물은 제외하고 해당 지역 내 "
+                f"특산물만 추천. 각 재료 옆에 원산지 시/군명 포함.\n"
                 f"입력: 메인재료={main_ingredient}, 지역={region}\n"
-                f'출력 형식: {{"sub_ingredients": ["재료1", "재료2", "재료3", "재료4", "재료5"]}}\n'
+                f'출력: {{"sub_ingredients": ["이천 쌀", "여주 고구마", ...]}}\n'
                 f"다른 말 없이 JSON만 반환."
             )
 

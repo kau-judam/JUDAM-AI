@@ -112,12 +112,14 @@ async def startup_event():
     async def warm_cache():
         try:
             warm_targets = [
-                {'main_ingredient': '경기도 쌀', 'region': '경기도'},
-                {'main_ingredient': '전라도 쌀', 'region': '전라도'},
-                {'main_ingredient': '충청도 쌀', 'region': '충청도'},
-                {'main_ingredient': '강원도 쌀', 'region': '강원도'},
-                {'main_ingredient': '제주도 감귤', 'region': '제주도'},
-                {'main_ingredient': '경상도 사과', 'region': '경상도'},
+                {'main_ingredient': '이천 쌀', 'region': '경기도 이천'},
+                {'main_ingredient': '여주 쌀', 'region': '경기도 여주'},
+                {'main_ingredient': '김제 쌀', 'region': '전라북도 김제'},
+                {'main_ingredient': '해남 고구마', 'region': '전라남도 해남'},
+                {'main_ingredient': '제주 감귤', 'region': '제주도'},
+                {'main_ingredient': '안동 쌀', 'region': '경상북도 안동'},
+                {'main_ingredient': '홍성 쌀', 'region': '충청남도 홍성'},
+                {'main_ingredient': '철원 쌀', 'region': '강원도 철원'},
             ]
             for target in warm_targets:
                 cache_key = f"recipe_sub_{hash(target['main_ingredient']+target['region'])}"
