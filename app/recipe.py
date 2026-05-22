@@ -232,7 +232,7 @@ class RecipeAI:
             response = await client.aio.models.generate_content(
                 model='gemini-2.5-flash-lite',
                 contents=prompt,
-                config={"max_output_tokens": 500}
+                config={"max_output_tokens": 300}
             )
             result_text = response.text.strip()
             logger.info(f"Gemini 레시피 검토 응답: {result_text[:200]}")

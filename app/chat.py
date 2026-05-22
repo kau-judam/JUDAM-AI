@@ -151,22 +151,20 @@ async def chat(request: ChatRequest, req: Request) -> ChatResponse:
 
         context_str = "\n".join(context_parts) if context_parts else "이전 대화 없음"
 
-        # 시스템 프롬프트 (한국어, 전통주 특화 + 개인화)
-        system_prompt = f"""당신은 주담(Juddam) 전통주 플랫폼의 전문 AI 어시스턴트입니다.
-막걸리, 청주, 탁주, 약주, 소주, 동동주 등 한국 전통주에 관한 질문에만 답변하세요.
-답변은 간결하고 실용적으로, 한국어로 작성하세요.
-전통주와 무관한 질문에는 정중히 거절하세요.{profile_context}"""
+        # 시스템 프롬프트 (간결화 버전)
+        system_prompt = f"한국 전통주 전문 AI. 막걸리·청주·탁주·약주 관련 질문만 답변. 3~5문장으로 간결하게 한국어로 답변.{profile_context}"
 
         full_prompt = f"""{system_prompt}
 
-이전 대화:
-{context_str}
+이전 대화: {context_str}
 
-현재 질문: {request.message}
-
+질문: {request.message}
 답변:"""
 
-        response = await model.generate_content_async(full_prompt)
+        response = await model.generate_content_async(
+            full_prompt,
+            generation_config={"max_output_tokens": 500}
+        )
         result_text = response.text.strip()
 
         # 키워드 기반 후속 질문 생성

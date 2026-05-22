@@ -298,8 +298,41 @@ class AdvancedMakgeolliRecommender:
         # 유사도 순으로 정렬
         recommendations.sort(key=lambda x: x['similarity'], reverse=True)
 
-        # 상위 k개 반환
-        return recommendations[:top_k]
+        # 같은 양조장 최대 2개 제한 (다양성 확보)
+        brewery_count: Dict[str, int] = {}
+        filtered = []
+        for item in recommendations:
+            brewery = item.get('brewery', '') or ''
+            if brewery_count.get(brewery, 0) < 2:
+                filtered.append(item)
+                brewery_count[brewery] = brewery_count.get(brewery, 0) + 1
+            if len(filtered) >= top_k:
+                break
+
+        # 펀딩 전통주 최소 1개 포함
+        has_funding = any(item.get('is_funding') for item in filtered)
+        if not has_funding:
+            funding_drinks = [d for d in self.drinks if d.get('is_funding')]
+            if funding_drinks:
+                best_funding = max(
+                    funding_drinks,
+                    key=lambda d: self.cosine_similarity(user_vector, d['taste_vector'])
+                )
+                sim = self.cosine_similarity(user_vector, best_funding['taste_vector'])
+                funding_entry = {
+                    **best_funding,
+                    'similarity': sim,
+                    'similarity_percent': round(sim * 100, 1),
+                    'match_reason': self.generate_match_reason(user_vector, best_funding['taste_vector']),
+                    'is_funding': True,
+                    'status': 'funding',
+                }
+                if len(filtered) >= top_k:
+                    filtered[-1] = funding_entry
+                else:
+                    filtered.append(funding_entry)
+
+        return filtered
 
     def recommend_by_food(self, food: str, top_k: int = 5) -> List[Dict]:
         """
