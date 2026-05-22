@@ -4,7 +4,7 @@
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 import json
 from pathlib import Path
 import os
@@ -12,6 +12,7 @@ import os
 # 기존 모듈 임포트
 from app.core.recommender import AdvancedMakgeolliRecommender
 from app.core.survey_converter import SurveyToVectorConverter, SurveyResponse
+from app.core.vector_extractor import EnhancedTasteVectorExtractor
 from app.law_client import LawClient, ContentType, FilterResult
 from app.insight import InsightDashboard, InsightRequest, InsightResponse
 from app.rag import TraditionalAlcoholRAG, RAGSearchRequest, RAGSearchResponse
@@ -27,6 +28,7 @@ from app.models import (
 # 추천 시스템 초기화
 _recommender = AdvancedMakgeolliRecommender()
 _survey_converter = SurveyToVectorConverter()
+_vector_extractor = EnhancedTasteVectorExtractor()
 _law_client = LawClient()
 _insight_dashboard = InsightDashboard()
 _rag_system = TraditionalAlcoholRAG()
@@ -41,6 +43,7 @@ app = FastAPI(
 # 추천 시스템을 app에 연결
 app.state.recommender = _recommender
 app.state.survey_converter = _survey_converter
+app.state.vector_extractor = _vector_extractor
 app.state.law_client = _law_client
 app.state.insight_dashboard = _insight_dashboard
 app.state.rag_system = _rag_system
@@ -55,6 +58,70 @@ def clean_string(value) -> str:
 
 
 # Pydantic 모델
+TASTE_VECTOR_KEYS = [
+    "sweetness",
+    "body",
+    "carbonation",
+    "flavor",
+    "alcohol",
+    "acidity",
+    "aroma_intensity",
+    "finish",
+]
+
+DEFAULT_TASTE_VECTOR = {key: 5.0 for key in TASTE_VECTOR_KEYS}
+
+
+def normalize_required_string(value, field_name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise HTTPException(
+            status_code=400,
+            detail=f"필수값이 누락되었습니다: {field_name}"
+        )
+
+    return value.strip()
+
+
+def normalize_abv(value) -> float:
+    if value is None:
+        raise HTTPException(status_code=400, detail="필수값이 누락되었습니다: abv")
+
+    try:
+        abv = float(value)
+    except (TypeError, ValueError):
+        raise HTTPException(status_code=400, detail="abv는 0 이상 100 이하이어야 합니다.")
+
+    if abv < 0 or abv > 100:
+        raise HTTPException(status_code=400, detail="abv는 0 이상 100 이하이어야 합니다.")
+
+    return abv
+
+
+def normalize_taste_vector(values: Dict[str, Any]) -> Dict[str, float]:
+    return {
+        key: float(values.get(key, DEFAULT_TASTE_VECTOR[key]))
+        for key in TASTE_VECTOR_KEYS
+    }
+
+
+def create_auto_taste_vector(request: "FundingRegisterRequest") -> tuple[Dict[str, float], str]:
+    try:
+        vector_extractor = app.state.vector_extractor
+        text = " ".join(
+            value
+            for value in [
+                request.name or "",
+                request.main_ingredient or "",
+                request.description or "",
+            ]
+            if value
+        )
+        vector = vector_extractor.extract_vector(text, float(request.abv or 0))
+        return normalize_taste_vector(vector), "fallback"
+    except Exception:
+        return DEFAULT_TASTE_VECTOR.copy(), "fallback"
+
+
 class TasteVector(BaseModel):
     """맛 벡터 모델"""
     sweetness: float
@@ -113,6 +180,27 @@ class FoodRecommendResponse(BaseModel):
 
 
 # 엔드포인트
+class FundingRegisterRequest(BaseModel):
+    funding_id: Optional[str] = None
+    name: Optional[str] = None
+    brewery: Optional[str] = None
+    brewery_user_id: Optional[str] = None
+    region: Optional[str] = None
+    abv: Optional[Any] = None
+    main_ingredient: Optional[str] = None
+    description: Optional[str] = None
+    taste_input: Optional[Dict[str, Any]] = None
+
+
+class FundingRegisterResponse(BaseModel):
+    status: str
+    funding_id: str
+    name: str
+    taste_vector: TasteVector
+    source: str
+    message: str
+
+
 @app.get("/")
 def root():
     """루트 엔드포인트"""
@@ -152,6 +240,62 @@ def health():
             "status": "error",
             "error": str(e)
         }
+
+
+@app.post("/api/funding/register", response_model=FundingRegisterResponse)
+def register_funding(request: FundingRegisterRequest):
+    try:
+        recommender = app.state.recommender
+
+        funding_id = normalize_required_string(request.funding_id, "funding_id")
+        name = normalize_required_string(request.name, "name")
+        brewery = normalize_required_string(request.brewery, "brewery")
+        brewery_user_id = normalize_required_string(request.brewery_user_id, "brewery_user_id")
+        abv = normalize_abv(request.abv)
+
+        if any(
+            drink.get("funding_id") == funding_id or drink.get("id") == funding_id
+            for drink in recommender.drinks
+        ):
+            raise HTTPException(status_code=400, detail="이미 등록된 funding_id입니다.")
+
+        if request.taste_input is not None:
+            taste_vector = normalize_taste_vector(request.taste_input)
+            source = "direct_input"
+        else:
+            taste_vector, source = create_auto_taste_vector(request)
+
+        funding_drink = {
+            "id": funding_id,
+            "drink_id": funding_id,
+            "funding_id": funding_id,
+            "name": name,
+            "brewery": brewery,
+            "brewery_user_id": brewery_user_id,
+            "region": clean_string(request.region),
+            "abv": abv,
+            "main_ingredient": clean_string(request.main_ingredient),
+            "description": clean_string(request.description),
+            "features": clean_string(request.description),
+            "ingredients": clean_string(request.main_ingredient),
+            "awards": "",
+            "taste_vector": taste_vector,
+            "is_funding": True,
+        }
+        recommender.drinks.append(funding_drink)
+
+        return FundingRegisterResponse(
+            status="success",
+            funding_id=funding_id,
+            name=name,
+            taste_vector=TasteVector(**taste_vector),
+            source=source,
+            message="펀딩 전통주가 추천 풀에 편입되었습니다."
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/api/recommend", response_model=List[RecommendResponse])
