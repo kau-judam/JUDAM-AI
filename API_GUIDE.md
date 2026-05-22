@@ -35,10 +35,60 @@
 | 23 | POST | `/api/funding/register` | 펀딩 전통주 등록 | 선택 |
 | 24 | GET | `/api/funding/{funding_id}` | 펀딩 정보 조회 | |
 | 25 | POST | `/api/funding/{funding_id}/taste-update` | 시음 후 맛벡터 보정 | |
+| 26 | POST | `/api/image/generate` | 전통주 이미지 생성 | ✓ |
 
 ---
 
 ## 공통 사항
+
+### 술BTI 코드 구조 (5글자)
+
+`[단맛 S/D][바디 H/L][탄산 F/M][풍미 C/U][도수 H/L]`
+
+| 축 | H | L |
+|----|---|---|
+| 단맛 (S/D) | Sweet ≥ 5 | Dry < 5 |
+| 바디 (H/L) | Heavy ≥ 5 | Light < 5 |
+| 탄산 (F/M) | Fizzy ≥ 5 | Mellow < 5 |
+| 풍미 (C/U) | Unique ≥ 5 | Classic < 5 |
+| **도수 (H/L)** | **고도수(7도↑) ≥ 5** | **저도수(6도↓) < 5** |
+
+| 코드 | 캐릭터명 |
+|------|---------|
+| SHFCH | 꿀단지에 빠진 인절미 (고도수) |
+| SHFCL | 꿀단지에 빠진 인절미 (저도수) |
+| SHFUH | 탄산 톡톡 딸기 요거트 (고도수) |
+| SHFUL | 탄산 톡톡 딸기 요거트 (저도수) |
+| SHMCH | 쫀득쫀득 꿀 찹쌀떡 (고도수) |
+| SHMCL | 쫀득쫀득 꿀 찹쌀떡 (저도수) |
+| SHMUH | 포근포근 꽃복숭아 (고도수) |
+| SHMUL | 포근포근 꽃복숭아 (저도수) |
+| SLFCH | 청량함 가득 사과 푸딩 (고도수) |
+| SLFCL | 청량함 가득 사과 푸딩 (저도수) |
+| SLFUH | 팝핑 과일 에이드 (고도수) |
+| SLFUL | 팝핑 과일 에이드 (저도수) |
+| SLMCH | 햇살 머금은 식혜 (고도수) |
+| SLMCL | 햇살 머금은 식혜 (저도수) |
+| SLMUH | 산들바람 머금은 화전 (고도수) |
+| SLMUL | 산들바람 머금은 화전 (저도수) |
+| DHFCH | 바삭하게 터지는 현미 누룽지 (고도수) |
+| DHFCL | 바삭하게 터지는 현미 누룽지 (저도수) |
+| DHFUH | 반전매력 고추냉이 (고도수) |
+| DHFUL | 반전매력 고추냉이 (저도수) |
+| DHMCH | 묵묵한 바위 속 숭늉 (고도수) |
+| DHMCL | 묵묵한 바위 속 숭늉 (저도수) |
+| DHMUH | 안개 낀 숲속의 황금사과 (고도수) |
+| DHMUL | 안개 낀 숲속의 황금사과 (저도수) |
+| DLFCH | 청량한 대나무 숲의 차 (고도수) |
+| DLFCL | 청량한 대나무 숲의 차 (저도수) |
+| DLFUH | 차가운 도시의 샹그리아 (고도수) |
+| DLFUL | 차가운 도시의 샹그리아 (저도수) |
+| DLMCH | 대숲에 앉은 맑은 백설기 (고도수) |
+| DLMCL | 대숲에 앉은 맑은 백설기 (저도수) |
+| DLMUH | 빗소리 들리는 다실의 꽃차 (고도수) |
+| DLMUL | 빗소리 들리는 다실의 꽃차 (저도수) |
+
+---
 
 ### 맛벡터 구조 (TasteVector)
 모든 값은 `0.0 ~ 10.0` 범위의 float.
@@ -257,28 +307,53 @@ curl http://localhost:8000/api/taste/history/user_001
 술BTI 설문 응답을 맛벡터와 BTI 유형으로 변환.  
 `user_id` 쿼리 파라미터 제공 시 프로필 자동 저장.
 
+**요청 필드**
+
+| 필드 | 척도 | 범위 | 설명 |
+|------|------|------|------|
+| q1 | 서열 | 1~5 | 전통주 경험 수준 |
+| q2 | 서열 | 1~5 | 선호 도수 수준 |
+| q3 | 서열 | 1~5 | 선호 바디감/색상 수준 |
+| q4~q22 | Likert | 1~7 | 단맛·신맛·청량감 등 선호도 |
+| q23 | 명목 | 1~5 | 선호 과일 (1감귤/2베리/3사과/4포도/5망고) |
+| q24 | 복수선택 | 1~5 | 음식 페어링 (1고기/2해산물/3매운음식/4디저트/5치즈) |
+| q25 | 복수선택 | 1~5 | 관심 향 (1과일향/2감귤향/3꽃향/4허브향/5쌀향) |
+
 ```bash
 curl -X POST "http://localhost:8000/api/survey/convert?user_id=user_001" \
   -H "Content-Type: application/json" \
-  -d '{ "answers": { "q1": "A", "q2": "B" } }'
+  -d '{
+    "q1":3,"q2":3,"q3":3,
+    "q4":6,"q5":2,"q6":5,"q7":6,"q8":5,"q9":5,
+    "q10":5,"q11":5,"q12":4,"q13":4,
+    "q14":6,"q15":3,"q16":4,"q17":3,"q18":6,"q19":4,"q20":3,"q21":4,"q22":5,
+    "q23":3,"q24":[1,4],"q25":[1,3]
+  }'
 ```
 
 **응답**
 ```json
 {
   "status": "success",
-  "taste_vector": { "sweetness": 6.0, "body": 5.0, "...": 0 },
-  "bti_code": "SCLF",
-  "character_name": "봄의 막걸리",
-  "experience_level": "중급",
-  "preferred_abv": "5~8%",
-  "preferred_body": "미디엄",
-  "preferred_fruit": "복숭아",
-  "preferred_food_pairing": ["해물파전", "두부김치"],
-  "preferred_aroma": ["과일향", "곡물향"],
-  "taste_profile_summary": "산미 있고 청량한 막걸리를 선호하는 타입"
+  "taste_vector": {
+    "sweetness": 6.21, "body": 5.12, "carbonation": 5.48,
+    "flavor": 5.83, "alcohol": 4.71, "acidity": 4.52,
+    "aroma_intensity": 5.24, "finish": 5.71
+  },
+  "bti_code": "SHFCL",
+  "character_name": "꿀단지에 빠진 인절미 (저도수)",
+  "alcohol_label": "저도수(6도 이하)",
+  "experience_level": "중급자",
+  "preferred_abv": "중간 도수(7~9도)",
+  "preferred_body": "보통",
+  "preferred_fruit": "사과",
+  "preferred_food_pairing": ["고기", "디저트"],
+  "preferred_aroma": ["과일향", "꽃향"],
+  "taste_profile_summary": "달콤하고 청량한 취향"
 }
 ```
+
+> `bti_code`는 5글자 코드. 마지막 `H`/`L`은 도수 선호 (H=고도수, L=저도수).
 
 ---
 
@@ -769,6 +844,93 @@ curl http://localhost:8000/api/funding/funding_001
 
 **에러**
 - 404: 존재하지 않는 `funding_id`
+
+---
+
+## 26. POST `/api/image/generate` ✦ Gemini
+
+전통주 정보를 기반으로 Gemini가 이미지 생성 프롬프트를 작성하고,  
+`HUGGINGFACE_TOKEN` 설정 시 Stable Diffusion으로 실제 이미지를 생성.
+
+**요청**
+```json
+{
+  "name": "이천 쌀 막걸리",
+  "description": "이천 쌀로 만든 달콤한 막걸리",
+  "flavor_tags": ["달콤한", "고소한"],
+  "region": "경기도 이천"
+}
+```
+
+| 필드 | 타입 | 필수 | 설명 |
+|------|------|------|------|
+| name | string | Y | 전통주 이름 |
+| description | string | Y | 전통주 설명 |
+| flavor_tags | string[] | N | 맛 태그 목록 |
+| region | string | N | 지역 |
+
+**응답 — 이미지 생성 성공**
+```json
+{
+  "status": "success",
+  "image_base64": "iVBORw0KGgoAAAANS...",
+  "prompt_used": "A beautiful Korean traditional rice wine bottle...",
+  "format": "jpeg"
+}
+```
+
+**응답 — 프롬프트만 생성 (HUGGINGFACE_TOKEN 미설정)**
+```json
+{
+  "status": "prompt_only",
+  "prompt_used": "A beautiful Korean traditional rice wine bottle with ceramic cup, bamboo background, soft natural lighting, warm tones, product photography style",
+  "message": "HUGGINGFACE_TOKEN 설정 시 이미지 자동 생성 가능합니다."
+}
+```
+
+**응답 — Gemini 키 없음**
+```json
+{
+  "status": "disabled",
+  "message": "이미지 생성 기능이 비활성화되어 있습니다."
+}
+```
+
+| status | 의미 |
+|--------|------|
+| `success` | 이미지 생성 완료 (base64 포함) |
+| `prompt_only` | Gemini 프롬프트만 생성 (HF 토큰 필요) |
+| `disabled` | GEMINI_API_KEY 미설정 |
+| `error` | 생성 중 오류 |
+
+**펀딩/레시피 등록 시 자동 이미지 생성**
+
+`/api/funding/register` 또는 `/api/recipe/register` 요청에 `auto_generate_image: true` 추가 시 이미지 생성 결과가 응답에 포함됩니다.
+
+```json
+{
+  "funding_id": "funding_001",
+  "name": "제주 한라봉 막걸리",
+  "auto_generate_image": true
+}
+```
+
+응답에 `"image"` 키 추가:
+```json
+{
+  "status": "success",
+  "funding_id": "funding_001",
+  "...": "...",
+  "image": {
+    "status": "prompt_only",
+    "prompt_used": "Korean traditional citrus rice wine...",
+    "message": "HUGGINGFACE_TOKEN 설정 시 이미지 자동 생성 가능합니다."
+  }
+}
+```
+
+**에러**
+- 503: `GEMINI_AVAILABLE: false`일 때
 
 ---
 

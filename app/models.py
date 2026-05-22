@@ -254,6 +254,7 @@ class SurveyConvertResponse(BaseModel):
     taste_vector: Dict[str, float]
     bti_code: str = ""
     character_name: str = ""
+    alcohol_label: str = ""
     experience_level: str = ""
     preferred_abv: str = ""
     preferred_body: str = ""
@@ -447,6 +448,7 @@ class FundingRegisterRequest(BaseModel):
     main_ingredient: Optional[str] = Field(None, description="메인 재료")
     taste_input: Optional[TasteVector] = Field(None, description="맛지표 직접 입력 (없으면 Gemini 자동 생성)")
     brewery_user_id: Optional[str] = Field(None, description="양조장 사용자 ID")
+    auto_generate_image: bool = False
 
 
 class FundingRegisterResponse(BaseModel):
@@ -457,6 +459,7 @@ class FundingRegisterResponse(BaseModel):
     taste_vector: TasteVector
     source: str
     message: str
+    image: Optional[Dict] = None
 
 
 class FundingGetResponse(BaseModel):
@@ -519,6 +522,7 @@ class RecipeRegisterRequest(BaseModel):
     flavor_tags: List[str] = Field(default_factory=list, description="맛 태그")
     description: Optional[str] = Field(None, description="추가 설명")
     taste_input: Optional[TasteVector] = Field(None, description="맛벡터 직접 입력 (없으면 Gemini 자동 생성)")
+    auto_generate_image: bool = False
 
 
 class RecipeRegisterResponse(BaseModel):
@@ -529,3 +533,4 @@ class RecipeRegisterResponse(BaseModel):
     taste_vector: TasteVector
     source: str
     message: str
+    image: Optional[Dict] = None

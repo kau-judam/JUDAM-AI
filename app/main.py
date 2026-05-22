@@ -22,6 +22,7 @@ from app.law_client import LawClient, ContentType, FilterResult
 from app.insight import InsightDashboard, InsightRequest, InsightResponse
 from app.rag import TraditionalAlcoholRAG, RAGSearchRequest, RAGSearchResponse
 from app.recipe import RecipeAI
+from app.image_generator import ImageGenerator
 from app.chat import router as chat_router
 from app.models import (
     TasteVector, RecommendRequest, RecommendResponse,
@@ -77,6 +78,7 @@ _law_client = LawClient()
 _insight_dashboard = InsightDashboard()
 _rag_system = TraditionalAlcoholRAG()
 _recipe_ai = RecipeAI()
+_image_generator = ImageGenerator()
 
 # FastAPI 인스턴스 생성
 app = FastAPI(
@@ -261,7 +263,7 @@ BTI_TYPE_MAPPING = {
 }
 
 
-def determine_bti_code(sweetness: float, body: float, carbonation: float, flavor: float) -> str:
+def determine_bti_code(sweetness: float, body: float, carbonation: float, flavor: float, alcohol: float = 5.0) -> str:
     """
     맛 벡터에서 술BTI 코드 판정
 
@@ -270,23 +272,17 @@ def determine_bti_code(sweetness: float, body: float, carbonation: float, flavor
         body: 바디감 (0~10)
         carbonation: 탄산 (0~10)
         flavor: 풍미 (0~10)
+        alcohol: 도수 (0~10)
 
     Returns:
-        4자리 술BTI 코드 (예: SHMC)
+        5자리 술BTI 코드 (예: SHMCH)
     """
-    # S/D: sweetness >= 5 → S (Sweet), < 5 → D (Dry)
     s_d = 'S' if sweetness >= 5 else 'D'
-
-    # H/L: body >= 5 → H (Heavy), < 5 → L (Light)
     h_l = 'H' if body >= 5 else 'L'
-
-    # F/M: carbonation >= 5 → F (Fizzy), < 5 → M (Mellow)
     f_m = 'F' if carbonation >= 5 else 'M'
-
-    # C/U: flavor >= 5 → U (Unique), < 5 → C (Classic)
     c_u = 'U' if flavor >= 5 else 'C'
-
-    return f"{s_d}{h_l}{f_m}{c_u}"
+    a   = 'H' if alcohol >= 5 else 'L'
+    return f"{s_d}{h_l}{f_m}{c_u}{a}"
 
 
 # 엔드포인트
@@ -576,6 +572,7 @@ async def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
             taste_vector=taste_vector,
             bti_code=full.get('bti_code', ''),
             character_name=full.get('character_name', ''),
+            alcohol_label=full.get('alcohol_label', ''),
             experience_level=full.get('experience_level', ''),
             preferred_abv=full.get('preferred_abv', ''),
             preferred_body=full.get('preferred_body', ''),
@@ -904,6 +901,13 @@ _drink_requests: List[Dict] = []
 _drink_request_id_counter = [0]
 
 
+class ImageGenerateRequest(BaseModel):
+    name: str
+    description: str
+    flavor_tags: List[str] = []
+    region: Optional[str] = None
+
+
 class DrinkRequestCreate(BaseModel):
     user_id: str = Field(..., description="요청자 사용자 ID")
     name: str = Field(..., description="전통주 이름")
@@ -1097,14 +1101,25 @@ async def funding_register(request: FundingRegisterRequest):
 
         logger.info(f"펀딩 등록 완료: {request.funding_id} ({request.name}) source={source}")
 
-        return FundingRegisterResponse(
-            status="success",
-            funding_id=request.funding_id,
-            name=request.name,
-            taste_vector=TasteVector(**taste_vector),
-            source=source,
-            message="펀딩 전통주가 추천 풀에 편입되었습니다."
-        )
+        response_data = {
+            "status": "success",
+            "funding_id": request.funding_id,
+            "name": request.name,
+            "taste_vector": TasteVector(**taste_vector),
+            "source": source,
+            "message": "펀딩 전통주가 추천 풀에 편입되었습니다.",
+        }
+
+        if request.auto_generate_image:
+            image_result = await _image_generator.generate(
+                name=request.name,
+                description=request.description or "",
+                flavor_tags=[],
+                region=request.region
+            )
+            response_data["image"] = image_result
+
+        return response_data
 
     except Exception as e:
         logger.error(f"펀딩 등록 실패: {e}")
@@ -1266,14 +1281,25 @@ async def recipe_register(request: RecipeRegisterRequest):
 
         logger.info(f"레시피 등록 완료: {request.recipe_id} ({request.title}) source={source}")
 
-        return RecipeRegisterResponse(
-            status="success",
-            recipe_id=request.recipe_id,
-            title=request.title,
-            taste_vector=TasteVector(**taste_vector),
-            source=source,
-            message="레시피가 추천 풀에 편입되었습니다."
-        )
+        response_data = {
+            "status": "success",
+            "recipe_id": request.recipe_id,
+            "title": request.title,
+            "taste_vector": TasteVector(**taste_vector),
+            "source": source,
+            "message": "레시피가 추천 풀에 편입되었습니다.",
+        }
+
+        if request.auto_generate_image:
+            image_result = await _image_generator.generate(
+                name=request.title,
+                description=request.description or "",
+                flavor_tags=request.flavor_tags or [],
+                region=None
+            )
+            response_data["image"] = image_result
+
+        return response_data
 
     except HTTPException:
         raise
@@ -1321,6 +1347,20 @@ async def recipe_validate(request: RecipeValidateRequest):
 
     except Exception as e:
         raise_api_error(e, "레시피 검토 중 오류가 발생했습니다.")
+
+
+@app.post("/api/image/generate")
+async def generate_image(request: ImageGenerateRequest):
+    """전통주 이미지 생성 (Gemini 프롬프트 + Stable Diffusion)"""
+    if not GEMINI_AVAILABLE:
+        raise HTTPException(status_code=503, detail="AI 서비스 점검 중입니다.")
+    result = await _image_generator.generate(
+        name=request.name,
+        description=request.description,
+        flavor_tags=request.flavor_tags,
+        region=request.region
+    )
+    return result
 
 
 if __name__ == "__main__":
