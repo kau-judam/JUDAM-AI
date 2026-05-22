@@ -33,6 +33,10 @@ from app.models import (
     SubIngredientsRequest, SubIngredientsResponse,
     FlavorTagsRequest, FlavorTagsResponse,
     SummaryRequest, SummaryResponse,
+    FundingRegisterRequest, FundingRegisterResponse,
+    FundingGetResponse,
+    FundingTasteUpdateRequest, FundingTasteUpdateResponse,
+    RecipeValidateRequest, RecipeValidateResponse,
 )
 from app.db import db
 
@@ -958,6 +962,215 @@ def approve_drink_request(request_id: int):
     except Exception as e:
         logger.error(f"승인 처리 중 오류: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# =====================================================
+# 펀딩 맛지표 API
+# =====================================================
+
+# 인메모리 펀딩 저장소: funding_id → 등록 데이터
+_fundings: Dict[str, Dict] = {}
+
+
+@app.post("/api/funding/register", response_model=FundingRegisterResponse)
+async def funding_register(request: FundingRegisterRequest):
+    """
+    펀딩 전통주 등록: 맛지표 입력 → 맛벡터 생성 → 추천 풀 편입
+
+    Args:
+        request: 펀딩 등록 요청
+
+    Returns:
+        등록 결과 + 생성된 맛벡터
+    """
+    try:
+        recommender = app.state.recommender
+
+        if request.taste_input is not None:
+            # 직접 입력된 맛지표 사용
+            taste_vector = request.taste_input.model_dump()
+            source = "direct_input"
+        else:
+            # Gemini auto_pipeline으로 자동 생성
+            from app.auto_pipeline import AutoPipeline
+            pipeline = AutoPipeline()
+            drink_data = {
+                "name": request.name,
+                "brewery": request.brewery or "",
+                "region": request.region or "",
+                "description": request.description or "",
+                "features": request.description or "",
+                "ingredients": request.main_ingredient or "",
+                "abv": request.abv or 0.0,
+            }
+            taste_vector = pipeline.create_taste_vector(drink_data, use_gemini=True)
+            source = "gemini_auto"
+
+        # 추천 풀 편입
+        drink_entry = {
+            "id": request.funding_id,
+            "name": request.name,
+            "abv": request.abv or 0.0,
+            "brewery": request.brewery or "",
+            "region": request.region or "",
+            "features": request.description or "",
+            "description": request.description or "",
+            "ingredients": request.main_ingredient or "",
+            "taste_vector": taste_vector,
+        }
+        existing_ids = {d["id"] for d in recommender.drinks}
+        if request.funding_id not in existing_ids:
+            recommender.drinks.append(drink_entry)
+        else:
+            for i, d in enumerate(recommender.drinks):
+                if d["id"] == request.funding_id:
+                    recommender.drinks[i] = drink_entry
+                    break
+
+        # DB 저장 시도
+        if recommender.db_connected:
+            try:
+                await db.upsert_drink(drink_entry)
+            except Exception as db_err:
+                logger.warning(f"펀딩 DB 저장 실패 (메모리만 유지): {db_err}")
+
+        # 인메모리 저장
+        _fundings[request.funding_id] = {
+            **drink_entry,
+            "main_ingredient": request.main_ingredient or "",
+            "brewery_user_id": request.brewery_user_id or "",
+            "source": source,
+            "registered_at": datetime.now().isoformat(),
+        }
+
+        logger.info(f"펀딩 등록 완료: {request.funding_id} ({request.name}) source={source}")
+
+        return FundingRegisterResponse(
+            status="success",
+            funding_id=request.funding_id,
+            name=request.name,
+            taste_vector=TasteVector(**taste_vector),
+            source=source,
+            message="펀딩 전통주가 추천 풀에 편입되었습니다."
+        )
+
+    except Exception as e:
+        logger.error(f"펀딩 등록 실패: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/funding/{funding_id}", response_model=FundingGetResponse)
+def funding_get(funding_id: str):
+    """
+    등록된 펀딩 정보 + 맛벡터 조회
+
+    Args:
+        funding_id: 펀딩 ID
+
+    Returns:
+        펀딩 정보 + 맛벡터
+    """
+    record = _fundings.get(funding_id)
+    if not record:
+        raise HTTPException(status_code=404, detail=f"펀딩 '{funding_id}'를 찾을 수 없습니다.")
+
+    return FundingGetResponse(
+        funding_id=funding_id,
+        name=record["name"],
+        brewery=record.get("brewery"),
+        region=record.get("region"),
+        description=record.get("description"),
+        abv=record.get("abv"),
+        main_ingredient=record.get("main_ingredient"),
+        brewery_user_id=record.get("brewery_user_id"),
+        taste_vector=TasteVector(**record["taste_vector"]),
+        registered_at=record.get("registered_at", "")
+    )
+
+
+@app.post("/api/funding/{funding_id}/taste-update", response_model=FundingTasteUpdateResponse)
+async def funding_taste_update(funding_id: str, request: FundingTasteUpdateRequest):
+    """
+    샘플 시음 후 맛벡터 보정
+
+    Args:
+        funding_id: 펀딩 ID
+        request: 보정된 맛지표 (8축)
+
+    Returns:
+        보정 결과
+    """
+    record = _fundings.get(funding_id)
+    if not record:
+        raise HTTPException(status_code=404, detail=f"펀딩 '{funding_id}'를 찾을 수 없습니다.")
+
+    updated_vector = request.taste_input.model_dump()
+
+    # 인메모리 업데이트
+    record["taste_vector"] = updated_vector
+    _fundings[funding_id] = record
+
+    # 추천 풀 업데이트
+    recommender = app.state.recommender
+    for d in recommender.drinks:
+        if d["id"] == funding_id:
+            d["taste_vector"] = updated_vector
+            break
+
+    # DB 업데이트 시도
+    if recommender.db_connected:
+        try:
+            await db.upsert_drink({**record, "taste_vector": updated_vector})
+        except Exception as db_err:
+            logger.warning(f"펀딩 맛벡터 DB 업데이트 실패: {db_err}")
+
+    logger.info(f"펀딩 맛벡터 보정 완료: {funding_id}")
+
+    return FundingTasteUpdateResponse(
+        status="success",
+        funding_id=funding_id,
+        taste_vector=TasteVector(**updated_vector),
+        message="맛벡터가 보정되어 추천 풀에 반영되었습니다."
+    )
+
+
+# =====================================================
+# 레시피 제작 가능성 검토 API
+# =====================================================
+
+@app.post("/api/recipe/validate", response_model=RecipeValidateResponse)
+async def recipe_validate(request: RecipeValidateRequest):
+    """
+    레시피 제작 가능성 검토 (Gemini 양조 전문가 분석)
+
+    Args:
+        request: 레시피 검토 요청
+
+    Returns:
+        feasibility, score, issues, suggestions, summary
+    """
+    try:
+        cache_key = f"recipe_validate_{hash(request.title + request.main_ingredient + ''.join(sorted(request.sub_ingredients)))}"
+        cached = get_cache(cache_key)
+        if cached is not None:
+            logger.info(f"레시피 검토 캐시 히트: {request.title}")
+            return RecipeValidateResponse(**cached, cached=True)
+
+        recipe_ai = app.state.recipe_ai
+        result = await recipe_ai.validate_recipe(
+            title=request.title,
+            main_ingredient=request.main_ingredient,
+            sub_ingredients=request.sub_ingredients,
+            abv_range=request.abv_range,
+            flavor_tags=request.flavor_tags,
+            description=request.description
+        )
+
+        set_cache(cache_key, result, ttl_minutes=60)
+        return RecipeValidateResponse(**result)
+
+    except Exception as e:
+        raise_api_error(e, "레시피 검토 중 오류가 발생했습니다.")
 
 
 if __name__ == "__main__":

@@ -167,6 +167,100 @@ class RecipeAI:
             logger.error(f"맛 태그 추천 실패: {e}")
             raise RuntimeError(msg) from e
 
+    async def validate_recipe(
+        self,
+        title: str,
+        main_ingredient: str,
+        sub_ingredients: List[str],
+        abv_range: str,
+        flavor_tags: List[str],
+        description: str = None
+    ) -> Dict:
+        """
+        레시피 제작 가능성 검토
+
+        Args:
+            title: 레시피 제목
+            main_ingredient: 메인 재료
+            sub_ingredients: 서브 재료 리스트
+            abv_range: 목표 도수 범위
+            flavor_tags: 맛 태그
+            description: 추가 설명
+
+        Returns:
+            feasibility, score, issues, suggestions, summary
+        """
+        if not self.gemini_api_key:
+            logger.warning("GEMINI_API_KEY가 설정되지 않음")
+            return {
+                "feasibility": "unknown",
+                "score": 0,
+                "issues": ["Gemini API 키가 설정되지 않았습니다."],
+                "suggestions": [],
+                "summary": "검토 불가"
+            }
+
+        try:
+            import google.genai as genai
+            import re
+
+            client = genai.Client(api_key=self.gemini_api_key)
+
+            sub_str = ", ".join(sub_ingredients) if sub_ingredients else "없음"
+            tags_str = ", ".join(flavor_tags) if flavor_tags else "없음"
+            desc_str = description or "없음"
+
+            prompt = (
+                "전통주 양조 전문가로서 아래 레시피의 제작 가능성을 검토해줘.\n"
+                "재료 조합의 적절성, 도수 실현 가능성, 맛 밸런스를 분석하고\n"
+                "JSON으로만 반환해줘.\n"
+                "{\n"
+                '  "feasibility": "high/medium/low",\n'
+                '  "score": 0~100,\n'
+                '  "issues": ["문제점1", "문제점2"],\n'
+                '  "suggestions": ["개선안1", "개선안2"],\n'
+                '  "summary": "한 줄 검토 결과"\n'
+                "}\n\n"
+                f"제목: {title}\n"
+                f"메인재료: {main_ingredient}\n"
+                f"서브재료: {sub_str}\n"
+                f"목표도수: {abv_range}\n"
+                f"맛태그: {tags_str}\n"
+                f"설명: {desc_str}"
+            )
+
+            response = await client.aio.models.generate_content(
+                model='gemini-2.5-flash-lite',
+                contents=prompt,
+                config={"max_output_tokens": 500}
+            )
+            result_text = response.text.strip()
+            logger.info(f"Gemini 레시피 검토 응답: {result_text[:200]}")
+
+            obj_match = re.search(r'\{[\s\S]*\}', result_text)
+            if obj_match:
+                parsed = json.loads(obj_match.group(0))
+                return {
+                    "feasibility": parsed.get("feasibility", "unknown"),
+                    "score": int(parsed.get("score", 0)),
+                    "issues": parsed.get("issues", []),
+                    "suggestions": parsed.get("suggestions", []),
+                    "summary": parsed.get("summary", "")
+                }
+
+            return {
+                "feasibility": "unknown",
+                "score": 0,
+                "issues": ["응답 파싱 실패"],
+                "suggestions": [],
+                "summary": result_text[:100]
+            }
+
+        except Exception as e:
+            msg = _gemini_error_message(e)
+            logger.error(f"레시피 검토 실패: {e}")
+            raise RuntimeError(msg) from e
+
     async def suggest_summary(
         self,
         title: str,

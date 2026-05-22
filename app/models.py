@@ -429,3 +429,77 @@ class SurveyRecommendResponse(BaseModel):
     taste_vector: Dict[str, float]
     food_pairing: List[str] = []
     recommendations: List[SurveyRecommendItem]
+
+
+# ========== 펀딩 관련 ==========
+
+class FundingRegisterRequest(BaseModel):
+    """펀딩 등록 요청 모델"""
+    funding_id: str = Field(..., description="펀딩 ID")
+    name: str = Field(..., description="전통주 이름")
+    brewery: Optional[str] = Field(None, description="양조장")
+    region: Optional[str] = Field(None, description="지역")
+    description: Optional[str] = Field(None, description="설명")
+    abv: Optional[float] = Field(None, ge=0, le=100, description="알콜 도수")
+    main_ingredient: Optional[str] = Field(None, description="메인 재료")
+    taste_input: Optional[TasteVector] = Field(None, description="맛지표 직접 입력 (없으면 Gemini 자동 생성)")
+    brewery_user_id: Optional[str] = Field(None, description="양조장 사용자 ID")
+
+
+class FundingRegisterResponse(BaseModel):
+    """펀딩 등록 응답 모델"""
+    status: str
+    funding_id: str
+    name: str
+    taste_vector: TasteVector
+    source: str
+    message: str
+
+
+class FundingGetResponse(BaseModel):
+    """펀딩 조회 응답 모델"""
+    funding_id: str
+    name: str
+    brewery: Optional[str]
+    region: Optional[str]
+    description: Optional[str]
+    abv: Optional[float]
+    main_ingredient: Optional[str]
+    brewery_user_id: Optional[str]
+    taste_vector: TasteVector
+    registered_at: str
+
+
+class FundingTasteUpdateRequest(BaseModel):
+    """펀딩 맛벡터 보정 요청 모델"""
+    taste_input: TasteVector = Field(..., description="보정된 맛지표 (8축 수치)")
+
+
+class FundingTasteUpdateResponse(BaseModel):
+    """펀딩 맛벡터 보정 응답 모델"""
+    status: str
+    funding_id: str
+    taste_vector: TasteVector
+    message: str
+
+
+# ========== 레시피 검증 관련 ==========
+
+class RecipeValidateRequest(BaseModel):
+    """레시피 제작 가능성 검토 요청 모델"""
+    title: str = Field(..., description="레시피 제목")
+    main_ingredient: str = Field(..., description="메인 재료")
+    sub_ingredients: List[str] = Field(default_factory=list, description="서브 재료 리스트")
+    abv_range: str = Field(..., description="목표 도수 범위")
+    flavor_tags: List[str] = Field(default_factory=list, description="맛 태그")
+    description: Optional[str] = Field(None, description="추가 설명")
+
+
+class RecipeValidateResponse(BaseModel):
+    """레시피 제작 가능성 검토 응답 모델"""
+    feasibility: str
+    score: int
+    issues: List[str]
+    suggestions: List[str]
+    summary: str
+    cached: bool = False
