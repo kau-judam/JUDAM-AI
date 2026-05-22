@@ -903,32 +903,6 @@ curl http://localhost:8000/api/funding/funding_001
 | `disabled` | GEMINI_API_KEY 미설정 |
 | `error` | 생성 중 오류 |
 
-**펀딩/레시피 등록 시 자동 이미지 생성**
-
-`/api/funding/register` 또는 `/api/recipe/register` 요청에 `auto_generate_image: true` 추가 시 이미지 생성 결과가 응답에 포함됩니다.
-
-```json
-{
-  "funding_id": "funding_001",
-  "name": "제주 한라봉 막걸리",
-  "auto_generate_image": true
-}
-```
-
-응답에 `"image"` 키 추가:
-```json
-{
-  "status": "success",
-  "funding_id": "funding_001",
-  "...": "...",
-  "image": {
-    "status": "prompt_only",
-    "prompt_used": "Korean traditional citrus rice wine...",
-    "message": "HUGGINGFACE_TOKEN 설정 시 이미지 자동 생성 가능합니다."
-  }
-}
-```
-
 **에러**
 - 503: `GEMINI_AVAILABLE: false`일 때
 

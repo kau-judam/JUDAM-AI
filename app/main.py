@@ -1101,25 +1101,14 @@ async def funding_register(request: FundingRegisterRequest):
 
         logger.info(f"펀딩 등록 완료: {request.funding_id} ({request.name}) source={source}")
 
-        response_data = {
-            "status": "success",
-            "funding_id": request.funding_id,
-            "name": request.name,
-            "taste_vector": TasteVector(**taste_vector),
-            "source": source,
-            "message": "펀딩 전통주가 추천 풀에 편입되었습니다.",
-        }
-
-        if request.auto_generate_image:
-            image_result = await _image_generator.generate(
-                name=request.name,
-                description=request.description or "",
-                flavor_tags=[],
-                region=request.region
-            )
-            response_data["image"] = image_result
-
-        return response_data
+        return FundingRegisterResponse(
+            status="success",
+            funding_id=request.funding_id,
+            name=request.name,
+            taste_vector=TasteVector(**taste_vector),
+            source=source,
+            message="펀딩 전통주가 추천 풀에 편입되었습니다."
+        )
 
     except Exception as e:
         logger.error(f"펀딩 등록 실패: {e}")
@@ -1281,25 +1270,14 @@ async def recipe_register(request: RecipeRegisterRequest):
 
         logger.info(f"레시피 등록 완료: {request.recipe_id} ({request.title}) source={source}")
 
-        response_data = {
-            "status": "success",
-            "recipe_id": request.recipe_id,
-            "title": request.title,
-            "taste_vector": TasteVector(**taste_vector),
-            "source": source,
-            "message": "레시피가 추천 풀에 편입되었습니다.",
-        }
-
-        if request.auto_generate_image:
-            image_result = await _image_generator.generate(
-                name=request.title,
-                description=request.description or "",
-                flavor_tags=request.flavor_tags or [],
-                region=None
-            )
-            response_data["image"] = image_result
-
-        return response_data
+        return RecipeRegisterResponse(
+            status="success",
+            recipe_id=request.recipe_id,
+            title=request.title,
+            taste_vector=TasteVector(**taste_vector),
+            source=source,
+            message="레시피가 추천 풀에 편입되었습니다."
+        )
 
     except HTTPException:
         raise
