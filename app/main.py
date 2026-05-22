@@ -142,7 +142,7 @@ async def startup_event():
             logger.warning(f"캐시 워밍업 전체 실패: {e}")
 
     import asyncio as _asyncio
-    _asyncio.create_task(warm_cache())
+    # _asyncio.create_task(warm_cache())
 
 
 # 헬퍼 함수
