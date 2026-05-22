@@ -51,7 +51,7 @@
 | 바디 (H/L) | Heavy ≥ 5 | Light < 5 |
 | 탄산 (F/M) | Fizzy ≥ 5 | Mellow < 5 |
 | 풍미 (C/U) | Unique ≥ 5 | Classic < 5 |
-| **도수 (H/L)** | **고도수(7도↑) ≥ 5** | **저도수(6도↓) < 5** |
+| **도수 (H/L)** | **고도수(9도↑) ≥ 9** | **저도수(8도↓) < 9** |
 
 | 코드 | 캐릭터명 |
 |------|---------|
@@ -342,7 +342,7 @@ curl -X POST "http://localhost:8000/api/survey/convert?user_id=user_001" \
   },
   "bti_code": "SHFCL",
   "character_name": "꿀단지에 빠진 인절미 (저도수)",
-  "alcohol_label": "저도수(6도 이하)",
+  "alcohol_label": "저도수(8도 이하)",
   "experience_level": "중급자",
   "preferred_abv": "중간 도수(7~9도)",
   "preferred_body": "보통",
@@ -852,6 +852,9 @@ curl http://localhost:8000/api/funding/funding_001
 전통주 정보를 기반으로 Gemini가 이미지 생성 프롬프트를 작성하고,  
 `HUGGINGFACE_TOKEN` 설정 시 Stable Diffusion으로 실제 이미지를 생성.
 
+> **현재 상태**: `HUGGINGFACE_TOKEN` 미설정으로 Gemini 프롬프트 생성까지만 동작 (`status: "prompt_only"`).  
+> `.env`에 `HUGGINGFACE_TOKEN` 추가 시 base64 이미지 자동 생성 활성화.
+
 **요청**
 ```json
 {
@@ -869,22 +872,22 @@ curl http://localhost:8000/api/funding/funding_001
 | flavor_tags | string[] | N | 맛 태그 목록 |
 | region | string | N | 지역 |
 
-**응답 — 이미지 생성 성공**
+**응답 — 현재 동작 (프롬프트만 생성)**
+```json
+{
+  "status": "prompt_only",
+  "prompt_used": "An elegant product photo of Icheon Rice Makgeolli, a sweet and nutty Korean rice wine. Feature it in traditional pottery or a bottle, against a backdrop of Korean traditional elements like hanji, bamboo, or ceramics. Shot with warm, natural light for a luxurious feel.",
+  "message": "HUGGINGFACE_TOKEN 설정 시 이미지 자동 생성 가능합니다."
+}
+```
+
+**응답 — 이미지 생성 성공 (HUGGINGFACE_TOKEN 설정 후)**
 ```json
 {
   "status": "success",
   "image_base64": "iVBORw0KGgoAAAANS...",
-  "prompt_used": "A beautiful Korean traditional rice wine bottle...",
+  "prompt_used": "An elegant product photo of Icheon Rice Makgeolli...",
   "format": "jpeg"
-}
-```
-
-**응답 — 프롬프트만 생성 (HUGGINGFACE_TOKEN 미설정)**
-```json
-{
-  "status": "prompt_only",
-  "prompt_used": "A beautiful Korean traditional rice wine bottle with ceramic cup, bamboo background, soft natural lighting, warm tones, product photography style",
-  "message": "HUGGINGFACE_TOKEN 설정 시 이미지 자동 생성 가능합니다."
 }
 ```
 
@@ -898,8 +901,8 @@ curl http://localhost:8000/api/funding/funding_001
 
 | status | 의미 |
 |--------|------|
-| `success` | 이미지 생성 완료 (base64 포함) |
-| `prompt_only` | Gemini 프롬프트만 생성 (HF 토큰 필요) |
+| `success` | 이미지 생성 완료 (base64 포함) — HUGGINGFACE_TOKEN 필요 |
+| `prompt_only` | Gemini 프롬프트만 생성 — **현재 서버 상태** |
 | `disabled` | GEMINI_API_KEY 미설정 |
 | `error` | 생성 중 오류 |
 

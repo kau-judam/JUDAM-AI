@@ -281,7 +281,7 @@ def determine_bti_code(sweetness: float, body: float, carbonation: float, flavor
     h_l = 'H' if body >= 5 else 'L'
     f_m = 'F' if carbonation >= 5 else 'M'
     c_u = 'U' if flavor >= 5 else 'C'
-    a   = 'H' if alcohol >= 5 else 'L'
+    a   = 'H' if alcohol >= 9 else 'L'
     return f"{s_d}{h_l}{f_m}{c_u}{a}"
 
 
