@@ -503,3 +503,26 @@ class RecipeValidateResponse(BaseModel):
     suggestions: List[str]
     summary: str
     cached: bool = False
+
+
+class RecipeRegisterRequest(BaseModel):
+    """레시피 등록 요청 모델"""
+    recipe_id: str = Field(..., description="레시피 ID")
+    title: str = Field(..., description="레시피 제목")
+    user_id: str = Field(..., description="작성자 사용자 ID")
+    main_ingredient: str = Field(..., description="메인 재료")
+    sub_ingredients: List[str] = Field(default_factory=list, description="서브 재료 리스트")
+    abv_range: str = Field(..., description="목표 도수 범위")
+    flavor_tags: List[str] = Field(default_factory=list, description="맛 태그")
+    description: Optional[str] = Field(None, description="추가 설명")
+    taste_input: Optional[TasteVector] = Field(None, description="맛벡터 직접 입력 (없으면 Gemini 자동 생성)")
+
+
+class RecipeRegisterResponse(BaseModel):
+    """레시피 등록 응답 모델"""
+    status: str
+    recipe_id: str
+    title: str
+    taste_vector: TasteVector
+    source: str
+    message: str

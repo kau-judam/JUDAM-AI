@@ -37,10 +37,14 @@ from app.models import (
     FundingGetResponse,
     FundingTasteUpdateRequest, FundingTasteUpdateResponse,
     RecipeValidateRequest, RecipeValidateResponse,
+    RecipeRegisterRequest, RecipeRegisterResponse,
 )
 from app.db import db
 
 TASTE_AXES = {'sweetness', 'body', 'carbonation', 'flavor', 'alcohol', 'acidity', 'aroma_intensity', 'finish'}
+
+# Gemini API 가용성 플래그 (한도 초과 시 False로 설정)
+GEMINI_AVAILABLE = True
 
 # 인메모리 사용자 프로필 저장소
 _user_profiles: Dict[str, Dict] = {}
@@ -322,6 +326,7 @@ def health():
             "data_count": len(recommender.drinks),
             "user_count": len(recommender.user_taste_history),
             "gemini_key_loaded": bool(api_key),
+            "gemini_available": GEMINI_AVAILABLE,
             "law_key_loaded": bool(law_key),
             "db_connected": recommender.db_connected,
             "api_status": {
@@ -610,6 +615,8 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
     Returns:
         서브재료 리스트
     """
+    if not GEMINI_AVAILABLE:
+        raise HTTPException(status_code=503, detail="AI 서비스 점검 중입니다. 잠시 후 다시 시도해주세요.")
     try:
         cache_key = f"recipe_sub_{hash(request.main_ingredient + request.region)}"
         cached = get_cache(cache_key)
@@ -643,6 +650,8 @@ async def suggest_flavor_tags(request: FlavorTagsRequest):
     Returns:
         맛 태그 리스트
     """
+    if not GEMINI_AVAILABLE:
+        raise HTTPException(status_code=503, detail="AI 서비스 점검 중입니다. 잠시 후 다시 시도해주세요.")
     try:
         recipe_ai = app.state.recipe_ai
 
@@ -670,6 +679,8 @@ async def suggest_summary(request: SummaryRequest):
     Returns:
         요약문
     """
+    if not GEMINI_AVAILABLE:
+        raise HTTPException(status_code=503, detail="AI 서비스 점검 중입니다. 잠시 후 다시 시도해주세요.")
     try:
         recipe_ai = app.state.recipe_ai
 
@@ -699,6 +710,8 @@ async def law_filter(request: LawFilterRequest):
     Returns:
         필터링 결과
     """
+    if not GEMINI_AVAILABLE:
+        raise HTTPException(status_code=503, detail="AI 서비스 점검 중입니다. 잠시 후 다시 시도해주세요.")
     try:
         cache_key = f"law:{request.content_type}:{request.title}:{request.description}"
         cached = get_cache(cache_key)
@@ -1135,6 +1148,102 @@ async def funding_taste_update(funding_id: str, request: FundingTasteUpdateReque
 
 
 # =====================================================
+# 레시피 등록 → 추천 풀 연동 API
+# =====================================================
+
+# 인메모리 레시피 저장소: recipe_id → 등록 데이터
+_recipes: Dict[str, Dict] = {}
+
+
+@app.post("/api/recipe/register", response_model=RecipeRegisterResponse)
+async def recipe_register(request: RecipeRegisterRequest):
+    """
+    레시피 등록: 맛지표 입력 → 맛벡터 생성 → 추천 풀 편입
+
+    Args:
+        request: 레시피 등록 요청
+
+    Returns:
+        등록 결과 + 생성된 맛벡터
+    """
+    try:
+        recommender = app.state.recommender
+
+        if request.taste_input is not None:
+            taste_vector = request.taste_input.model_dump()
+            source = "direct_input"
+        elif GEMINI_AVAILABLE:
+            from app.auto_pipeline import AutoPipeline
+            pipeline = AutoPipeline()
+            drink_data = {
+                "name": request.title,
+                "brewery": "",
+                "region": "",
+                "description": request.description or "",
+                "features": ", ".join(request.flavor_tags),
+                "ingredients": request.main_ingredient + (
+                    ", " + ", ".join(request.sub_ingredients) if request.sub_ingredients else ""
+                ),
+                "abv": 0.0,
+            }
+            taste_vector = pipeline.create_taste_vector(drink_data, use_gemini=True)
+            source = "gemini_auto"
+        else:
+            raise HTTPException(
+                status_code=503,
+                detail="AI 서비스 점검 중입니다. taste_input을 직접 입력해주세요."
+            )
+
+        drink_entry = {
+            "id": request.recipe_id,
+            "name": request.title,
+            "abv": 0.0,
+            "brewery": "",
+            "region": "",
+            "features": ", ".join(request.flavor_tags),
+            "description": request.description or "",
+            "ingredients": request.main_ingredient,
+            "taste_vector": taste_vector,
+        }
+        existing_ids = {d["id"] for d in recommender.drinks}
+        if request.recipe_id not in existing_ids:
+            recommender.drinks.append(drink_entry)
+        else:
+            for i, d in enumerate(recommender.drinks):
+                if d["id"] == request.recipe_id:
+                    recommender.drinks[i] = drink_entry
+                    break
+
+        _recipes[request.recipe_id] = {
+            **drink_entry,
+            "user_id": request.user_id,
+            "main_ingredient": request.main_ingredient,
+            "sub_ingredients": request.sub_ingredients,
+            "abv_range": request.abv_range,
+            "flavor_tags": request.flavor_tags,
+            "source": source,
+            "registered_at": datetime.now().isoformat(),
+        }
+
+        logger.info(f"레시피 등록 완료: {request.recipe_id} ({request.title}) source={source}")
+
+        return RecipeRegisterResponse(
+            status="success",
+            recipe_id=request.recipe_id,
+            title=request.title,
+            taste_vector=TasteVector(**taste_vector),
+            source=source,
+            message="레시피가 추천 풀에 편입되었습니다."
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"레시피 등록 실패: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# =====================================================
 # 레시피 제작 가능성 검토 API
 # =====================================================
 
@@ -1149,6 +1258,8 @@ async def recipe_validate(request: RecipeValidateRequest):
     Returns:
         feasibility, score, issues, suggestions, summary
     """
+    if not GEMINI_AVAILABLE:
+        raise HTTPException(status_code=503, detail="AI 서비스 점검 중입니다. 잠시 후 다시 시도해주세요.")
     try:
         cache_key = f"recipe_validate_{hash(request.title + request.main_ingredient + ''.join(sorted(request.sub_ingredients)))}"
         cached = get_cache(cache_key)
