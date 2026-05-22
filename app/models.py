@@ -147,12 +147,15 @@ class RecommendResponse(BaseModel):
     id: str
     name: str
     similarity: float
+    similarity_percent: float = 0.0
     abv: float
     brewery: Optional[str]
     region: Optional[str]
     features: Optional[str]
     taste_vector: TasteVector
     match_reason: List[str] = []
+    is_funding: bool = False
+    status: str = "available"
 
     class Config:
         from_attributes = True

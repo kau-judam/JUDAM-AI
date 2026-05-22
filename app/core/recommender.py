@@ -278,17 +278,21 @@ class AdvancedMakgeolliRecommender:
 
             similarity = self.multi_source_similarity(user_vector, drink, weights)
 
+            is_funding = drink.get('is_funding', False)
             recommendations.append({
                 'id': drink['id'],
                 'name': drink['name'],
                 'similarity': similarity,
+                'similarity_percent': round(similarity * 100, 1),
                 'abv': drink['abv'],
                 'brewery': drink['brewery'],
                 'region': drink['region'],
                 'features': drink['features'],
                 'ingredients': drink['ingredients'],
                 'taste_vector': drink['taste_vector'],
-                'match_reason': self.generate_match_reason(user_vector, drink['taste_vector'])
+                'match_reason': self.generate_match_reason(user_vector, drink['taste_vector']),
+                'is_funding': is_funding,
+                'status': 'funding' if is_funding else 'available',
             })
 
         # 유사도 순으로 정렬

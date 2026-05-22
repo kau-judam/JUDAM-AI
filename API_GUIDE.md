@@ -12,8 +12,10 @@
 ## 공통 사항
 
 - **Content-Type**: `application/json`
-- **에러 형식**: `{ "detail": "에러 메시지" }`
+- **에러 형식**: `{ "status": "error", "message": "에러 메시지" }`
 - **Gemini 429 초과**: HTTP 503 반환 — "현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요."
+- **GEMINI_AVAILABLE=false**: HTTP 503 반환 — "AI 서비스 점검 중입니다. 잠시 후 다시 시도해주세요."
+- **404**: `{ "status": "error", "message": "요청한 경로를 찾을 수 없습니다." }`
 
 ---
 
@@ -38,6 +40,11 @@
 17. [POST /api/drinks/request](#17-post-apidrinksrequest)
 18. [GET /api/drinks/requests](#18-get-apidrinksrequests)
 19. [POST /api/drinks/requests/{id}/approve](#19-post-apidrinksrequestsidapprove)
+20. [POST /api/funding/register](#20-post-apifundingregister)
+21. [GET /api/funding/{funding_id}](#21-get-apifundingfunding_id)
+22. [POST /api/funding/{funding_id}/taste-update](#22-post-apifundingfunding_idtaste-update)
+23. [POST /api/recipe/register](#23-post-apireciperegister)
+24. [POST /api/recipe/validate](#24-post-apirecipevalidate)
 
 ---
 
@@ -50,11 +57,16 @@
 ```json
 {
   "status": "ok",
+  "version": "0.3.0",
   "data_count": 207,
+  "funding_count": 1,
+  "recipe_count": 0,
   "user_count": 1,
   "gemini_key_loaded": true,
+  "gemini_available": true,
   "law_key_loaded": true,
   "db_connected": false,
+  "uptime_seconds": 3600,
   "api_status": {
     "recommend": "ok",
     "recipe": "ok",
@@ -65,15 +77,22 @@
 }
 ```
 
+> `recipe` / `law` / `chat`은 `GEMINI_AVAILABLE=false`일 때 `"limited"` 반환.
+
 | 필드 | 타입 | 설명 |
 |------|------|------|
 | status | string | 서버 상태 ("ok" / "error") |
-| data_count | number | 로드된 전통주 수 |
-| user_count | number | 취향 히스토리 보유 사용자 수 |
+| version | string | 서버 버전 |
+| data_count | number | 로드된 전통주 수 (기본 데이터 + 펀딩/레시피 포함) |
+| funding_count | number | 등록된 펀딩 전통주 수 |
+| recipe_count | number | 등록된 레시피 수 |
+| user_count | number | 저장된 사용자 프로필 수 |
 | gemini_key_loaded | boolean | Gemini API 키 로드 여부 |
+| gemini_available | boolean | Gemini 호출 가능 여부 (한도 초과 시 false) |
 | law_key_loaded | boolean | 법령 API 키 로드 여부 |
 | db_connected | boolean | PostgreSQL 연결 여부 |
-| api_status | object | 각 API 정상 동작 여부 |
+| uptime_seconds | number | 서버 시작 후 경과 시간 (초) |
+| api_status | object | 각 API 상태 ("ok" / "limited" / "no_data" / "no_gemini_key") |
 
 ```bash
 curl http://localhost:8000/health
@@ -130,6 +149,7 @@ curl http://localhost:8000/health
     "id": "makgeolli_0",
     "name": "이동 생 쌀 막걸리",
     "similarity": 0.978,
+    "similarity_percent": 97.8,
     "abv": 6.0,
     "brewery": "이동양조",
     "region": "경기도",
@@ -144,7 +164,9 @@ curl http://localhost:8000/health
       "aroma_intensity": 5.0,
       "finish": 5.0
     },
-    "match_reason": ["단맛이 잘 맞아요", "풍미가 비슷해요"]
+    "match_reason": ["단맛이 잘 맞아요", "풍미가 비슷해요"],
+    "is_funding": false,
+    "status": "available"
   }
 ]
 ```
@@ -154,12 +176,22 @@ curl http://localhost:8000/health
 | id | string | 전통주 ID |
 | name | string | 전통주 이름 |
 | similarity | number | 코사인 유사도 (0~1) |
+| similarity_percent | number | 유사도 퍼센트 (예: 97.8) |
 | abv | number | 알콜 도수 (%) |
 | brewery | string/null | 양조장 |
 | region | string/null | 지역 |
 | features | string/null | 특징 |
 | taste_vector | object | 전통주 맛 벡터 |
 | match_reason | array | 추천 이유 (가장 유사한 2개 축, 한국어) |
+| is_funding | boolean | 펀딩 중인 전통주 여부 |
+| status | string | "available" (출시) / "funding" (펀딩 중) |
+
+### 에러 케이스
+
+```json
+{ "status": "error", "message": "user_vector 또는 user_id 중 하나는 필수입니다." }
+{ "status": "error", "message": "top_k는 1~50 사이여야 합니다." }
+```
 
 ```bash
 curl -X POST http://localhost:8000/api/recommend \
@@ -937,6 +969,233 @@ curl "http://localhost:8000/api/drinks/requests?status=pending"
 ```bash
 curl -X POST http://localhost:8000/api/drinks/requests/1/approve
 ```
+
+---
+
+---
+
+## 20. POST /api/funding/register
+
+양조장이 펀딩 전통주를 등록하고 즉시 추천 풀에 편입합니다.
+
+### Request Body
+
+```json
+{
+  "funding_id": "funding_001",
+  "name": "경기도 이천 쌀 막걸리",
+  "brewery": "이천 양조장",
+  "region": "경기도 이천",
+  "description": "이천 쌀로 만든 달콤한 막걸리",
+  "abv": 6.0,
+  "main_ingredient": "이천 쌀",
+  "taste_input": {
+    "sweetness": 8, "body": 4, "carbonation": 7, "flavor": 6,
+    "alcohol": 4, "acidity": 5, "aroma_intensity": 6, "finish": 5
+  },
+  "brewery_user_id": "brewery_001"
+}
+```
+
+| 필드 | 타입 | 필수 | 설명 |
+|------|------|------|------|
+| funding_id | string | O | 펀딩 고유 ID (중복 불가) |
+| name | string | O | 전통주 이름 |
+| brewery | string | X | 양조장 |
+| region | string | X | 지역 |
+| description | string | X | 설명 |
+| abv | number | X | 도수 (0 초과 100 이하) |
+| main_ingredient | string | X | 메인 재료 |
+| taste_input | object | X | 맛지표 직접 입력 (없으면 Gemini 자동 생성) |
+| brewery_user_id | string | X | 양조장 사용자 ID |
+
+### Response
+
+```json
+{
+  "status": "success",
+  "funding_id": "funding_001",
+  "name": "경기도 이천 쌀 막걸리",
+  "taste_vector": { "sweetness": 8.0, "body": 4.0, "..." : 0.0 },
+  "source": "direct_input",
+  "message": "펀딩 전통주가 추천 풀에 편입되었습니다."
+}
+```
+
+| source 값 | 설명 |
+|-----------|------|
+| direct_input | taste_input 직접 입력 사용 |
+| gemini_auto | Gemini가 자동 생성 |
+
+### 에러 케이스
+
+```json
+{ "status": "error", "message": "이미 등록된 펀딩 ID입니다." }
+{ "status": "error", "message": "도수는 0~100 사이여야 합니다." }
+```
+
+---
+
+## 21. GET /api/funding/{funding_id}
+
+등록된 펀딩 전통주 정보와 맛벡터를 조회합니다.
+
+### Path Parameter
+
+| 파라미터 | 설명 |
+|----------|------|
+| funding_id | 등록 시 사용한 펀딩 ID |
+
+### Response
+
+```json
+{
+  "funding_id": "funding_001",
+  "name": "경기도 이천 쌀 막걸리",
+  "brewery": "이천 양조장",
+  "region": "경기도 이천",
+  "description": "이천 쌀로 만든 달콤한 막걸리",
+  "abv": 6.0,
+  "main_ingredient": "이천 쌀",
+  "brewery_user_id": "brewery_001",
+  "taste_vector": { "sweetness": 8.0, "body": 4.0, "..." : 0.0 },
+  "registered_at": "2026-05-22T10:00:00.000000"
+}
+```
+
+### 에러 케이스
+- 404: 해당 funding_id 없음
+
+---
+
+## 22. POST /api/funding/{funding_id}/taste-update
+
+샘플 시음 후 맛벡터를 보정하고 추천 풀에 즉시 반영합니다.
+
+### Request Body
+
+```json
+{
+  "taste_input": {
+    "sweetness": 9, "body": 5, "carbonation": 6, "flavor": 7,
+    "alcohol": 4, "acidity": 4, "aroma_intensity": 7, "finish": 6
+  }
+}
+```
+
+### Response
+
+```json
+{
+  "status": "success",
+  "funding_id": "funding_001",
+  "taste_vector": { "sweetness": 9.0, "body": 5.0, "..." : 0.0 },
+  "message": "맛벡터가 보정되어 추천 풀에 반영되었습니다."
+}
+```
+
+### 에러 케이스
+- 404: 해당 funding_id 없음
+
+---
+
+## 23. POST /api/recipe/register
+
+사용자 레시피를 등록하고 추천 풀에 편입합니다. `taste_input` 없이 `GEMINI_AVAILABLE=false`이면 503 반환.
+
+### Request Body
+
+```json
+{
+  "recipe_id": "recipe_001",
+  "title": "이천 쌀 막걸리",
+  "user_id": "user_001",
+  "main_ingredient": "이천 쌀",
+  "sub_ingredients": ["가평 잣"],
+  "abv_range": "6~8도",
+  "flavor_tags": ["달콤한", "고소한"],
+  "description": "구수하고 달콤한 막걸리",
+  "taste_input": null
+}
+```
+
+| 필드 | 타입 | 필수 | 설명 |
+|------|------|------|------|
+| recipe_id | string | O | 레시피 고유 ID |
+| title | string | O | 레시피 제목 |
+| user_id | string | O | 작성자 ID |
+| main_ingredient | string | O | 메인 재료 |
+| sub_ingredients | array | X | 서브 재료 |
+| abv_range | string | O | 목표 도수 범위 |
+| flavor_tags | array | X | 맛 태그 |
+| description | string | X | 추가 설명 |
+| taste_input | object | X | 맛벡터 직접 입력 (없으면 Gemini 자동 생성) |
+
+### Response
+
+```json
+{
+  "status": "success",
+  "recipe_id": "recipe_001",
+  "title": "이천 쌀 막걸리",
+  "taste_vector": { "sweetness": 7.0, "body": 5.0, "..." : 0.0 },
+  "source": "direct_input",
+  "message": "레시피가 추천 풀에 편입되었습니다."
+}
+```
+
+### 에러 케이스
+
+```json
+{ "status": "error", "message": "AI 서비스 점검 중입니다. taste_input을 직접 입력해주세요." }
+```
+
+---
+
+## 24. POST /api/recipe/validate
+
+전통주 양조 전문가 AI(Gemini)가 레시피 제작 가능성을 검토합니다. 동일 입력 조합은 60분 캐시.
+
+### Request Body
+
+```json
+{
+  "title": "이천 쌀 막걸리",
+  "main_ingredient": "이천 쌀",
+  "sub_ingredients": ["가평 잣", "여주 고구마"],
+  "abv_range": "6~8도",
+  "flavor_tags": ["달콤한", "고소한"],
+  "description": "구수하고 달콤한 막걸리"
+}
+```
+
+### Response
+
+```json
+{
+  "feasibility": "high",
+  "score": 90,
+  "issues": [],
+  "suggestions": [
+    "고구마 사용량 조절로 단맛 미세 조정 권장",
+    "잣 볶는 과정으로 더 깊은 고소함 표현 가능"
+  ],
+  "summary": "재료 조합이 적절하며 도수 실현 가능성이 높습니다.",
+  "cached": false
+}
+```
+
+| 필드 | 타입 | 설명 |
+|------|------|------|
+| feasibility | string | "high" / "medium" / "low" |
+| score | number | 제작 가능성 점수 (0~100) |
+| issues | array | 문제점 목록 |
+| suggestions | array | 개선안 목록 |
+| summary | string | 한 줄 검토 결과 |
+| cached | boolean | 캐시 응답 여부 |
+
+### 에러 케이스
+- 503: `GEMINI_AVAILABLE=false` 또는 Gemini 429 초과
 
 ---
 

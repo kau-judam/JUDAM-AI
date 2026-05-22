@@ -5,7 +5,8 @@
 import logging
 import os
 from datetime import datetime, timedelta
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from typing import List, Dict, Optional
 import json
@@ -45,6 +46,9 @@ TASTE_AXES = {'sweetness', 'body', 'carbonation', 'flavor', 'alcohol', 'acidity'
 
 # Gemini API 가용성 플래그 (한도 초과 시 False로 설정)
 GEMINI_AVAILABLE = True
+
+# 서버 시작 시간
+_server_start_time = datetime.now()
 
 # 인메모리 사용자 프로필 저장소
 _user_profiles: Dict[str, Dict] = {}
@@ -88,6 +92,16 @@ app.state.law_client = _law_client
 app.state.insight_dashboard = _insight_dashboard
 app.state.rag_system = _rag_system
 app.state.recipe_ai = _recipe_ai
+
+@app.exception_handler(404)
+async def not_found_handler(request: Request, exc):
+    return JSONResponse(status_code=404, content={"status": "error", "message": "요청한 경로를 찾을 수 없습니다."})
+
+
+@app.exception_handler(500)
+async def server_error_handler(request: Request, exc):
+    return JSONResponse(status_code=500, content={"status": "error", "message": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요."})
+
 
 app.include_router(chat_router, prefix="/api")
 
@@ -314,21 +328,30 @@ def health():
         api_key    = os.getenv("GEMINI_API_KEY")
         law_key    = os.getenv("LAW_API_KEY")
 
-        # 기능별 상태 판정
+        # 기능별 상태 판정 (GEMINI_AVAILABLE=False면 "limited")
         recommend_ok = "ok" if len(recommender.drinks) > 0 else "no_data"
-        recipe_ok    = "ok" if api_key else "no_gemini_key"
-        law_ok       = "ok" if api_key else "no_gemini_key"   # Gemini 분석 의존
-        chat_ok      = "ok" if api_key else "no_gemini_key"
-        insight_ok   = "ok" if len(recommender.drinks) > 0 else "no_data"
+        if not api_key:
+            recipe_ok = law_ok = chat_ok = "no_gemini_key"
+        elif not GEMINI_AVAILABLE:
+            recipe_ok = law_ok = chat_ok = "limited"
+        else:
+            recipe_ok = law_ok = chat_ok = "ok"
+        insight_ok = "ok" if len(recommender.drinks) > 0 else "no_data"
+
+        uptime = int((datetime.now() - _server_start_time).total_seconds())
 
         return {
             "status": "ok",
+            "version": "0.3.0",
             "data_count": len(recommender.drinks),
-            "user_count": len(recommender.user_taste_history),
+            "funding_count": len(_fundings),
+            "recipe_count": len(_recipes),
+            "user_count": len(_user_profiles),
             "gemini_key_loaded": bool(api_key),
             "gemini_available": GEMINI_AVAILABLE,
             "law_key_loaded": bool(law_key),
             "db_connected": recommender.db_connected,
+            "uptime_seconds": uptime,
             "api_status": {
                 "recommend": recommend_ok,
                 "recipe":    recipe_ok,
@@ -355,6 +378,11 @@ async def recommend(request: RecommendRequest):
     Returns:
         추천 결과 리스트
     """
+    if request.user_vector is None and not request.user_id:
+        raise HTTPException(status_code=400, detail={"status": "error", "message": "user_vector 또는 user_id 중 하나는 필수입니다."})
+    if not (1 <= request.top_k <= 50):
+        raise HTTPException(status_code=400, detail={"status": "error", "message": "top_k는 1~50 사이여야 합니다."})
+
     try:
         recommender = app.state.recommender
 
@@ -397,12 +425,15 @@ async def recommend(request: RecommendRequest):
                 id=rec['id'],
                 name=rec['name'],
                 similarity=rec['similarity'],
+                similarity_percent=rec.get('similarity_percent', round(rec['similarity'] * 100, 1)),
                 abv=rec['abv'],
                 brewery=clean_string(rec.get('brewery')),
                 region=clean_string(rec.get('region')),
                 features=clean_string(rec.get('features')),
                 taste_vector=TasteVector(**rec['taste_vector']),
-                match_reason=rec.get('match_reason', [])
+                match_reason=rec.get('match_reason', []),
+                is_funding=rec.get('is_funding', False),
+                status=rec.get('status', 'available'),
             ))
 
         return response
@@ -422,6 +453,9 @@ async def taste_update(request: TasteUpdateRequest):
     Returns:
         업데이트 결과
     """
+    if request.rating is None and not request.ratings:
+        raise HTTPException(status_code=400, detail={"status": "error", "message": "rating(별점) 또는 ratings(축별 수치) 중 하나는 필수입니다."})
+
     try:
         recommender = app.state.recommender
 
@@ -483,6 +517,9 @@ def food_recommend(request: FoodRecommendRequest):
     Returns:
         추천 결과 리스트
     """
+    if not request.food.strip():
+        raise HTTPException(status_code=400, detail={"status": "error", "message": "음식 이름을 입력해주세요."})
+
     try:
         cache_key = f"food:{request.food}:{request.top_k}"
         cached = get_cache(cache_key)
@@ -996,6 +1033,11 @@ async def funding_register(request: FundingRegisterRequest):
     Returns:
         등록 결과 + 생성된 맛벡터
     """
+    if request.funding_id in _fundings:
+        raise HTTPException(status_code=400, detail={"status": "error", "message": "이미 등록된 펀딩 ID입니다."})
+    if request.abv is not None and (request.abv <= 0 or request.abv > 100):
+        raise HTTPException(status_code=400, detail={"status": "error", "message": "도수는 0~100 사이여야 합니다."})
+
     try:
         recommender = app.state.recommender
 
@@ -1030,6 +1072,7 @@ async def funding_register(request: FundingRegisterRequest):
             "description": request.description or "",
             "ingredients": request.main_ingredient or "",
             "taste_vector": taste_vector,
+            "is_funding": True,
         }
         existing_ids = {d["id"] for d in recommender.drinks}
         if request.funding_id not in existing_ids:
