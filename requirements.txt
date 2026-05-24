@@ -29,6 +29,9 @@ boto3>=1.34.0
 # Gemini API
 google-generativeai>=0.3.0
 
+# 한국어 임베딩 (law RAG ko-sbert)
+sentence-transformers>=2.2.0
+
 # 벡터 DB (법령 RAG)
 chromadb>=0.4.0
 

@@ -211,28 +211,17 @@ class RecipeAI:
             desc_str = description or "없음"
 
             prompt = (
-                "전통주 양조 전문가로서 아래 레시피의 제작 가능성을 검토해줘.\n"
-                "재료 조합의 적절성, 도수 실현 가능성, 맛 밸런스를 분석하고\n"
-                "JSON으로만 반환해줘.\n"
-                "{\n"
-                '  "feasibility": "high/medium/low",\n'
-                '  "score": 0~100,\n'
-                '  "issues": ["문제점1", "문제점2"],\n'
-                '  "suggestions": ["개선안1", "개선안2"],\n'
-                '  "summary": "한 줄 검토 결과"\n'
-                "}\n\n"
-                f"제목: {title}\n"
-                f"메인재료: {main_ingredient}\n"
-                f"서브재료: {sub_str}\n"
-                f"목표도수: {abv_range}\n"
-                f"맛태그: {tags_str}\n"
-                f"설명: {desc_str}"
+                "전통주 양조 전문가. 아래 레시피 제작 가능성을 JSON으로만 반환.\n"
+                '{"feasibility":"high/medium/low","score":0~100,'
+                '"issues":["문제점"],"suggestions":["개선안"],"summary":"한줄결과"}\n\n'
+                f"제목:{title} 메인:{main_ingredient} 서브:{sub_str} "
+                f"도수:{abv_range} 맛:{tags_str}"
             )
 
             response = await client.aio.models.generate_content(
                 model='gemini-2.5-flash-lite',
                 contents=prompt,
-                config={"max_output_tokens": 300}
+                config={"max_output_tokens": 200}
             )
             result_text = response.text.strip()
             logger.info(f"Gemini 레시피 검토 응답: {result_text[:200]}")

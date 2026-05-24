@@ -782,10 +782,16 @@ async def get_insights(period: str = "week"):
         인사이트 결과 (ai_report 포함)
     """
     try:
-        insight_dashboard = app.state.insight_dashboard
+        cache_key = f"insight_{period}"
+        cached = get_cache(cache_key)
+        if cached is not None:
+            logger.info(f"인사이트 캐시 히트: {period}")
+            return cached
 
+        insight_dashboard = app.state.insight_dashboard
         insights = await insight_dashboard.get_insights(period=period)
 
+        set_cache(cache_key, insights, ttl_minutes=60)
         return insights
 
     except Exception as e:
