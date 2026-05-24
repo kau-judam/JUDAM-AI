@@ -1001,9 +1001,36 @@ def approve_drink_request(request_id: int):
         }
         vector = pipeline.create_taste_vector(drink_data, use_gemini=True)
 
+        # Gemini가 all-zero 벡터를 반환하면 기본 벡터로 fallback
+        if all(v == 0.0 for v in vector.values()):
+            logger.warning(f"Gemini all-zero 벡터 반환, 기본 벡터로 fallback: #{request_id}")
+            vector = pipeline._create_basic_vector(drink_data)
+
         record["status"] = "approved"
         record["approved_at"] = datetime.now().isoformat()
         record["taste_vector"] = vector
+
+        # 추천 풀 편입
+        drink_entry = {
+            "id": f"request_{request_id}",
+            "name": record["name"],
+            "abv": 0.0,
+            "brewery": record["brewery"],
+            "region": record["region"],
+            "features": record["description"],
+            "description": record["description"],
+            "ingredients": "",
+            "taste_vector": vector,
+            "is_funding": False,
+        }
+        existing_ids = {d["id"] for d in _recommender.drinks}
+        if drink_entry["id"] not in existing_ids:
+            _recommender.drinks.append(drink_entry)
+        else:
+            for i, d in enumerate(_recommender.drinks):
+                if d["id"] == drink_entry["id"]:
+                    _recommender.drinks[i] = drink_entry
+                    break
 
         logger.info(f"전통주 등록 요청 승인 완료: #{request_id} {record['name']}")
 
@@ -1247,6 +1274,7 @@ async def recipe_register(request: RecipeRegisterRequest):
             "description": request.description or "",
             "ingredients": request.main_ingredient,
             "taste_vector": taste_vector,
+            "is_funding": False,
         }
         existing_ids = {d["id"] for d in recommender.drinks}
         if request.recipe_id not in existing_ids:
