@@ -390,21 +390,25 @@ async def recommend(request: RecommendRequest):
         if request.user_vector is not None:
             user_vector = request.user_vector.model_dump()
         elif request.user_id:
-            mem = _user_profiles.get(request.user_id)
-            if mem:
-                user_vector = mem['taste_vector']
+            # taste/update 이력이 있으면 진화된 벡터 우선 사용
+            if recommender.user_taste_history.get(request.user_id):
+                user_vector = recommender.get_evolved_taste_vector(request.user_id)
             else:
-                db_profile = await db.get_user_profile(request.user_id)
-                if db_profile and db_profile.get('taste_vector'):
-                    import json as _json
-                    tv = db_profile['taste_vector']
-                    user_vector = _json.loads(tv) if isinstance(tv, str) else tv
-                    _user_profiles[request.user_id] = {'taste_vector': user_vector}
+                mem = _user_profiles.get(request.user_id)
+                if mem:
+                    user_vector = mem['taste_vector']
                 else:
-                    raise HTTPException(
-                        status_code=400,
-                        detail="user_vector 또는 저장된 user_id 중 하나를 제공해주세요."
-                    )
+                    db_profile = await db.get_user_profile(request.user_id)
+                    if db_profile and db_profile.get('taste_vector'):
+                        import json as _json
+                        tv = db_profile['taste_vector']
+                        user_vector = _json.loads(tv) if isinstance(tv, str) else tv
+                        _user_profiles[request.user_id] = {'taste_vector': user_vector}
+                    else:
+                        raise HTTPException(
+                            status_code=400,
+                            detail="user_vector 또는 저장된 user_id 중 하나를 제공해주세요."
+                        )
         else:
             raise HTTPException(
                 status_code=400,
