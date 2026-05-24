@@ -15,28 +15,25 @@
 | 3 | POST | `/api/recommend` | 맛벡터 기반 전통주 추천 | |
 | 4 | POST | `/api/taste/update` | 사용자 취향 업데이트 | |
 | 5 | GET | `/api/taste/history/{user_id}` | 취향 히스토리 조회 | |
-| 6 | POST | `/api/food/recommend` | 음식 기반 추천 | |
-| 7 | POST | `/api/survey/convert` | 술BTI 설문 → 맛벡터 변환 | |
-| 8 | GET | `/api/taste/profile/{user_id}` | 사용자 취향 프로필 조회 | |
-| 9 | POST | `/api/recipe/suggest-sub-ingredients` | 서브재료 추천 | ✓ |
-| 10 | POST | `/api/recipe/suggest-flavor-tags` | 맛 태그 추천 | ✓ |
-| 11 | POST | `/api/recipe/suggest-summary` | 레시피 요약문 생성 | ✓ |
-| 12 | POST | `/api/recipe/validate` | 레시피 제작 가능성 검토 | ✓ |
-| 13 | POST | `/api/recipe/register` | 레시피 등록 → 추천 풀 편입 | 선택 |
-| 14 | POST | `/api/law/filter` | 콘텐츠 법률 필터링 | ✓ |
-| 15 | GET | `/api/law/info` | 전통주 관련 법령 목록 | |
-| 16 | GET | `/api/insight` | 인사이트 대시보드 | |
-| 17 | POST | `/api/rag/search` | 문서 RAG 검색 | |
-| 18 | POST | `/api/chat` | 전통주 챗봇 | ✓ |
-| 19 | POST | `/api/crawler/check` | 외부 술 정보 크롤링 | |
-| 20 | POST | `/api/drinks/request` | 신규 전통주 등록 요청 | |
-| 21 | GET | `/api/drinks/requests` | 등록 요청 목록 조회 | |
-| 22 | POST | `/api/drinks/requests/{request_id}/approve` | 등록 요청 승인 | |
-| 23 | POST | `/api/funding/register` | 펀딩 전통주 등록 | 선택 |
-| 24 | GET | `/api/funding/{funding_id}` | 펀딩 정보 조회 | |
-| 25 | POST | `/api/funding/{funding_id}/taste-update` | 시음 후 맛벡터 보정 | |
-| 26 | POST | `/api/image/generate` | 전통주 이미지 생성 | ✓ |
-| 27 | POST | `/api/chat/stream` | 스트리밍 챗봇 | ✓ |
+| 6 | POST | `/api/survey/convert` | 술BTI 설문 → 맛벡터 변환 | |
+| 7 | GET | `/api/taste/profile/{user_id}` | 사용자 취향 프로필 조회 | |
+| 8 | POST | `/api/recipe/suggest-sub-ingredients` | 서브재료 추천 | ✓ |
+| 9 | POST | `/api/recipe/suggest-flavor-tags` | 맛 태그 추천 | ✓ |
+| 10 | POST | `/api/recipe/suggest-summary` | 레시피 요약문 생성 | ✓ |
+| 11 | POST | `/api/recipe/validate` | 레시피 제작 가능성 검토 | ✓ |
+| 12 | POST | `/api/recipe/register` | 레시피 등록 → 추천 풀 편입 | 선택 |
+| 13 | POST | `/api/law/filter` | 콘텐츠 법률 필터링 | ✓ |
+| 14 | GET | `/api/law/info` | 전통주 관련 법령 목록 | |
+| 15 | GET | `/api/insight` | 인사이트 대시보드 | |
+| 16 | POST | `/api/chat` | 전통주 챗봇 | ✓ |
+| 17 | POST | `/api/chat/stream` | 스트리밍 챗봇 | ✓ |
+| 18 | POST | `/api/drinks/request` | 신규 전통주 등록 요청 | |
+| 19 | GET | `/api/drinks/requests` | 등록 요청 목록 조회 | |
+| 20 | POST | `/api/drinks/requests/{request_id}/approve` | 등록 요청 승인 | |
+| 21 | POST | `/api/funding/register` | 펀딩 전통주 등록 | 선택 |
+| 22 | GET | `/api/funding/{funding_id}` | 펀딩 정보 조회 | |
+| 23 | POST | `/api/funding/{funding_id}/taste-update` | 시음 후 맛벡터 보정 | |
+| 24 | POST | `/api/image/generate` | 전통주 이미지 생성 | ✓ |
 
 ---
 
@@ -291,37 +288,7 @@ curl http://localhost:8000/api/taste/history/user_001
 
 ---
 
-## 6. POST `/api/food/recommend`
-
-먹고 싶은 음식을 입력하면 어울리는 전통주 추천.
-
-**요청**
-```json
-{ "food": "삼겹살", "top_k": 5 }
-```
-
-**응답** (배열)
-```json
-[
-  {
-    "id": "makgeolli_002",
-    "name": "장수 막걸리",
-    "abv": 6.0,
-    "brewery": "서울장수",
-    "region": "서울",
-    "features": "쌀, 누룩",
-    "taste_vector": { "sweetness": 4.0, "...": 0 },
-    "reason": "삼겹살의 기름진 맛을 산미로 잡아주는 균형 잡힌 막걸리입니다."
-  }
-]
-```
-
-**에러**
-- 400: 음식 이름이 빈 문자열일 때
-
----
-
-## 7. POST `/api/survey/convert`
+## 6. POST `/api/survey/convert`
 
 술BTI 설문 응답을 맛벡터와 BTI 유형으로 변환.  
 `user_id` 쿼리 파라미터 제공 시 프로필 자동 저장.
@@ -376,7 +343,7 @@ curl -X POST "http://localhost:8000/api/survey/convert?user_id=user_001" \
 
 ---
 
-## 8. GET `/api/taste/profile/{user_id}`
+## 7. GET `/api/taste/profile/{user_id}`
 
 저장된 사용자 취향 프로필 조회 (메모리 → DB 순서로 검색).
 
@@ -391,7 +358,7 @@ curl http://localhost:8000/api/taste/profile/user_001
 
 ---
 
-## 9. POST `/api/recipe/suggest-sub-ingredients` ✦ Gemini
+## 8. POST `/api/recipe/suggest-sub-ingredients` ✦ Gemini
 
 메인재료와 지역을 입력하면 지역 특산물 기반 서브재료 5개 추천.
 
@@ -409,7 +376,7 @@ curl http://localhost:8000/api/taste/profile/user_001
 
 ---
 
-## 10. POST `/api/recipe/suggest-flavor-tags` ✦ Gemini
+## 9. POST `/api/recipe/suggest-flavor-tags` ✦ Gemini
 
 레시피 정보를 기반으로 맛 태그 5개 이내 추천.
 
@@ -430,7 +397,7 @@ curl http://localhost:8000/api/taste/profile/user_001
 
 ---
 
-## 11. POST `/api/recipe/suggest-summary` ✦ Gemini
+## 10. POST `/api/recipe/suggest-summary` ✦ Gemini
 
 레시피/펀딩 프로젝트의 3문장 요약문 자동 생성.
 
@@ -453,7 +420,7 @@ curl http://localhost:8000/api/taste/profile/user_001
 
 ---
 
-## 12. POST `/api/recipe/validate` ✦ Gemini
+## 11. POST `/api/recipe/validate` ✦ Gemini
 
 Gemini 양조 전문가가 레시피 제작 가능성을 분석하고 점수화.  
 동일 입력은 1시간 캐시 적용.
@@ -490,7 +457,7 @@ Gemini 양조 전문가가 레시피 제작 가능성을 분석하고 점수화.
 
 ---
 
-## 13. POST `/api/recipe/register`
+## 12. POST `/api/recipe/register`
 
 레시피를 등록하고 추천 풀에 자동 편입.  
 `taste_input` 미입력 시 Gemini가 자동으로 맛벡터 생성 (`GEMINI_AVAILABLE: true` 필요).
@@ -530,7 +497,7 @@ Gemini 양조 전문가가 레시피 제작 가능성을 분석하고 점수화.
 
 ---
 
-## 14. POST `/api/law/filter` ✦ Gemini
+## 13. POST `/api/law/filter` ✦ Gemini
 
 콘텐츠(펀딩 설명, 레시피 소개)의 주류광고 법률 위반 여부 검토.  
 동일 입력은 1시간 캐시 적용.
@@ -568,7 +535,7 @@ Gemini 양조 전문가가 레시피 제작 가능성을 분석하고 점수화.
 
 ---
 
-## 15. GET `/api/law/info`
+## 14. GET `/api/law/info`
 
 서버에 내장된 전통주 관련 법령 목록 조회.
 
@@ -593,7 +560,7 @@ curl http://localhost:8000/api/law/info
 
 ---
 
-## 16. GET `/api/insight`
+## 15. GET `/api/insight`
 
 추천 데이터 기반 인사이트 대시보드.
 
@@ -617,35 +584,7 @@ curl "http://localhost:8000/api/insight?period=week"
 
 ---
 
-## 17. POST `/api/rag/search`
-
-전통주 관련 문서에서 RAG 기반 검색.
-
-**요청**
-```json
-{
-  "query": "막걸리 발효 온도",
-  "top_k": 3,
-  "category": "brewing"
-}
-```
-
-**응답**
-```json
-{
-  "results": [
-    {
-      "content": "막걸리 발효의 최적 온도는 20~25°C입니다...",
-      "source": "전통주 양조 가이드",
-      "score": 0.92
-    }
-  ]
-}
-```
-
----
-
-## 18. POST `/api/chat` ✦ Gemini
+## 16. POST `/api/chat` ✦ Gemini
 
 전통주(막걸리·청주·탁주·약주) 관련 질문에 답변하는 챗봇.  
 비관련 질문은 즉시 거절 (Gemini 호출 없음).
@@ -678,26 +617,52 @@ curl "http://localhost:8000/api/insight?period=week"
 
 ---
 
-## 19. POST `/api/crawler/check`
+## 17. POST `/api/chat/stream` ✦ Gemini
 
-외부 쇼핑몰/사이트에서 전통주 정보 크롤링.
+전통주 관련 질문에 대해 Gemini가 Server-Sent Events(SSE)로 스트리밍 응답.
 
 **요청**
 ```json
-{ "url": "https://example.com/makgeolli", "drink_name": "복순도가" }
-```
-
-**응답**
-```json
 {
-  "status": "success",
-  "drink_info": { "name": "복순도가 손막걸리", "abv": 6.5 }
+  "message": "막걸리와 약주의 차이가 뭔가요?",
+  "session_id": "session_abc123"
 }
 ```
 
+| 필드 | 타입 | 필수 | 설명 |
+|------|------|------|------|
+| message | string | Y | 사용자 질문 |
+| session_id | string | N | 세션 ID (대화 맥락 유지) |
+
+**응답 (SSE 스트림)**
+
+`Content-Type: text/event-stream`
+
+각 청크:
+```
+data: {"type": "chunk", "content": "막걸리는 "}
+
+data: {"type": "chunk", "content": "쌀, 물, 누룩으로 만든"}
+
+data: {"type": "done", "content": "", "full_response": "막걸리는 쌀, 물, 누룩으로 만든 탁주입니다."}
+```
+
+전통주 무관 질문 시:
+```
+data: {"type": "off_topic", "content": "전통주 관련 질문만 답변드릴 수 있어요."}
+```
+
+오류 시:
+```
+data: {"type": "error", "content": "오류가 발생했습니다."}
+```
+
+**에러**
+- 503: `GEMINI_AVAILABLE: false`일 때
+
 ---
 
-## 20. POST `/api/drinks/request`
+## 18. POST `/api/drinks/request`
 
 DB에 없는 전통주를 관리자 승인 방식으로 등록 요청.
 
@@ -723,7 +688,7 @@ DB에 없는 전통주를 관리자 승인 방식으로 등록 요청.
 
 ---
 
-## 21. GET `/api/drinks/requests`
+## 19. GET `/api/drinks/requests`
 
 전통주 등록 요청 목록 전체 조회.
 
@@ -747,7 +712,7 @@ curl http://localhost:8000/api/drinks/requests
 
 ---
 
-## 22. POST `/api/drinks/requests/{request_id}/approve`
+## 20. POST `/api/drinks/requests/{request_id}/approve`
 
 등록 요청을 승인하고 전통주를 추천 풀에 추가.
 
@@ -765,7 +730,7 @@ curl -X POST http://localhost:8000/api/drinks/requests/req_20260522_001/approve
 
 ---
 
-## 23. POST `/api/funding/register`
+## 21. POST `/api/funding/register`
 
 펀딩 전통주를 등록하고 추천 풀에 편입 (`is_funding: true`로 마킹).  
 `taste_input` 미입력 시 Gemini가 자동으로 맛벡터 생성.
@@ -807,7 +772,7 @@ curl -X POST http://localhost:8000/api/drinks/requests/req_20260522_001/approve
 
 ---
 
-## 24. GET `/api/funding/{funding_id}`
+## 22. GET `/api/funding/{funding_id}`
 
 등록된 펀딩 전통주의 정보와 맛벡터 조회.
 
@@ -836,7 +801,7 @@ curl http://localhost:8000/api/funding/funding_001
 
 ---
 
-## 25. POST `/api/funding/{funding_id}/taste-update`
+## 23. POST `/api/funding/{funding_id}/taste-update`
 
 샘플 시음 후 맛벡터를 보정하고 추천 풀에 즉시 반영.
 
@@ -866,7 +831,7 @@ curl http://localhost:8000/api/funding/funding_001
 
 ---
 
-## 26. POST `/api/image/generate` ✦ Gemini
+## 24. POST `/api/image/generate` ✦ Gemini
 
 전통주 정보를 기반으로 Gemini가 영문 이미지 프롬프트를 생성한 후,  
 `gemini-2.5-flash-image` 모델로 네이티브 이미지를 생성. HF Stable Diffusion은 fallback.
@@ -927,51 +892,6 @@ curl http://localhost:8000/api/funding/funding_001
 | `prompt_only` | 이미지 생성 실패, 프롬프트만 반환 |
 | `disabled` | GEMINI_API_KEY 미설정 |
 | `error` | 생성 중 오류 |
-
-**에러**
-- 503: `GEMINI_AVAILABLE: false`일 때
-
----
-
-## 27. POST `/api/chat/stream` ✦ Gemini
-
-전통주 관련 질문에 대해 Gemini가 Server-Sent Events(SSE)로 스트리밍 응답.
-
-**요청**
-```json
-{
-  "message": "막걸리와 약주의 차이가 뭔가요?",
-  "session_id": "session_abc123"
-}
-```
-
-| 필드 | 타입 | 필수 | 설명 |
-|------|------|------|------|
-| message | string | Y | 사용자 질문 |
-| session_id | string | N | 세션 ID (대화 맥락 유지) |
-
-**응답 (SSE 스트림)**
-
-`Content-Type: text/event-stream`
-
-각 청크:
-```
-data: {"type": "chunk", "content": "막걸리는 "}
-
-data: {"type": "chunk", "content": "쌀, 물, 누룩으로 만든"}
-
-data: {"type": "done", "content": "", "full_response": "막걸리는 쌀, 물, 누룩으로 만든 탁주입니다."}
-```
-
-전통주 무관 질문 시:
-```
-data: {"type": "off_topic", "content": "전통주 관련 질문만 답변드릴 수 있어요."}
-```
-
-오류 시:
-```
-data: {"type": "error", "content": "오류가 발생했습니다."}
-```
 
 **에러**
 - 503: `GEMINI_AVAILABLE: false`일 때

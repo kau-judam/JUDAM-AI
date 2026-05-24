@@ -20,7 +20,6 @@ from app.core.recommender import AdvancedMakgeolliRecommender
 from app.core.survey_converter import SurveyToVectorConverter, SurveyResponse
 from app.law_client import LawClient, ContentType, FilterResult
 from app.insight import InsightDashboard, InsightRequest, InsightResponse
-from app.rag import TraditionalAlcoholRAG, RAGSearchRequest, RAGSearchResponse
 from app.recipe import RecipeAI
 from app.image_generator import ImageGenerator
 from app.chat import router as chat_router
@@ -28,7 +27,6 @@ from app.models import (
     TasteVector, RecommendRequest, RecommendResponse,
     TasteUpdateRequest, TasteUpdateResponse,
     TasteHistorySummaryResponse,
-    FoodRecommendRequest, FoodRecommendResponse,
     HealthResponse,
     LawFilterRequest,
     SurveyConvertResponse,
@@ -76,7 +74,6 @@ _recommender = AdvancedMakgeolliRecommender()
 _survey_converter = SurveyToVectorConverter()
 _law_client = LawClient()
 _insight_dashboard = InsightDashboard()
-_rag_system = TraditionalAlcoholRAG()
 _recipe_ai = RecipeAI()
 _image_generator = ImageGenerator()
 
@@ -92,7 +89,6 @@ app.state.recommender = _recommender
 app.state.survey_converter = _survey_converter
 app.state.law_client = _law_client
 app.state.insight_dashboard = _insight_dashboard
-app.state.rag_system = _rag_system
 app.state.recipe_ai = _recipe_ai
 
 @app.exception_handler(404)
@@ -303,7 +299,6 @@ def root():
             "recommend": "/api/recommend",
             "taste_update": "/api/taste/update",
             "taste_history": "/api/taste/history/{user_id}",
-            "food_recommend": "/api/food/recommend",
             "survey_convert": "/api/survey/convert",
             "taste_profile": "/api/taste/profile/{user_id}",
             "recipe_suggest_sub_ingredients": "/api/recipe/suggest-sub-ingredients",
@@ -312,8 +307,8 @@ def root():
             "law_filter": "/api/law/filter",
             "law_info": "/api/law/info",
             "insight": "/api/insight",
-            "rag_search": "/api/rag/search",
             "chat": "/api/chat",
+            "chat_stream": "/api/chat/stream",
             "health": "/health"
         }
     }
@@ -507,56 +502,6 @@ def taste_history(user_id: str):
             "history": history,
             "evolved_taste_vector": evolved_vector
         }
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/api/food/recommend", response_model=List[FoodRecommendResponse])
-def food_recommend(request: FoodRecommendRequest):
-    """
-    음식 기반 추천
-
-    Args:
-        request: 음식 기반 추천 요청
-
-    Returns:
-        추천 결과 리스트
-    """
-    if not request.food.strip():
-        raise HTTPException(status_code=400, detail={"status": "error", "message": "음식 이름을 입력해주세요."})
-
-    try:
-        cache_key = f"food:{request.food}:{request.top_k}"
-        cached = get_cache(cache_key)
-        if cached is not None:
-            logger.info(f"음식 캐시 히트: {cache_key}")
-            return cached
-
-        recommender = app.state.recommender
-
-        # 추천
-        recommendations = recommender.recommend_by_food(
-            food=request.food,
-            top_k=request.top_k
-        )
-
-        # 응답 변환
-        response = []
-        for rec in recommendations:
-            response.append(FoodRecommendResponse(
-                id=rec['id'],
-                name=rec['name'],
-                abv=rec['abv'],
-                brewery=clean_string(rec.get('brewery')),
-                region=clean_string(rec.get('region')),
-                features=clean_string(rec.get('features')),
-                taste_vector=TasteVector(**rec['taste_vector']),
-                reason=rec['reason']
-            ))
-
-        set_cache(cache_key, response, ttl_minutes=1440)
-        return response
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -847,67 +792,8 @@ async def get_insights(period: str = "week"):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/api/rag/search")
-def rag_search(request: RAGSearchRequest):
-    """
-    RAG 문서 검색
-
-    Args:
-        request: RAG 검색 요청
-
-    Returns:
-        검색 결과
-    """
-    try:
-        cache_key = f"rag:{request.query}:{request.top_k}:{request.category}"
-        cached = get_cache(cache_key)
-        if cached is not None:
-            logger.info(f"RAG 캐시 히트: {cache_key[:60]}")
-            return cached
-
-        rag_system = app.state.rag_system
-
-        results = rag_system.search(
-            query=request.query,
-            top_k=request.top_k,
-            category=request.category
-        )
-
-        set_cache(cache_key, results, ttl_minutes=60)
-        return results
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-
 # =====================================================
-# 3단계: 크롤러 모니터 API
-# =====================================================
-
-@app.post("/api/crawler/check")
-def crawler_check():
-    """
-    koreansool.co.kr 에서 새로운 전통주를 감지하고 auto_pipeline 을 트리거합니다.
-
-    Returns:
-        감지 결과 (new_count, new_items, total_seen)
-    """
-    try:
-        from app.crawler.traditional_alcohol_monitor import check_new_entries
-        from app.auto_pipeline import AutoPipeline
-
-        auto_pipeline = AutoPipeline()
-        result = check_new_entries(auto_pipeline=auto_pipeline)
-        return result
-
-    except Exception as e:
-        logger.error(f"크롤러 체크 실패: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-# =====================================================
-# 4단계: 전통주 등록 요청 API (메모리 기반)
+# 전통주 등록 요청 API (메모리 기반)
 # =====================================================
 
 # 메모리 기반 등록 요청 저장소
@@ -923,7 +809,7 @@ class ImageGenerateRequest(BaseModel):
 
 
 class DrinkRequestCreate(BaseModel):
-    user_id: str = Field(..., description="요청자 사용자 ID")
+    user_id: str = Field(..., min_length=1, description="요청자 user_id")
     name: str = Field(..., description="전통주 이름")
     brewery: Optional[str] = Field(None, description="양조장")
     region: Optional[str] = Field(None, description="지역")
