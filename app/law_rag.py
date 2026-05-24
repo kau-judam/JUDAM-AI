@@ -73,10 +73,19 @@ class LawRAG:
             if count == 0:
                 return []
 
-            results = self.collection.query(
-                query_texts=[query],
-                n_results=min(top_k, count)
-            )
+            from app.embedder import get_embedder
+            embedder = get_embedder()
+            if embedder.enabled:
+                query_embedding = embedder.embed(query)
+                results = self.collection.query(
+                    query_embeddings=[query_embedding],
+                    n_results=min(top_k, count)
+                )
+            else:
+                results = self.collection.query(
+                    query_texts=[query],
+                    n_results=min(top_k, count)
+                )
 
             laws = []
             for doc, meta in zip(results['documents'][0], results['metadatas'][0]):

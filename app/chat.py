@@ -3,10 +3,12 @@ Chat API Endpoint
 Handles user queries with context-aware responses
 """
 
+import json
 import logging
 import os
-from typing import List, Dict, Optional
+from typing import AsyncGenerator, List, Dict, Optional
 from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -73,6 +75,11 @@ class ChatRequest(BaseModel):
     message: str
     user_id: str
     history: Optional[List[Dict[str, str]]] = []
+
+
+class ChatStreamRequest(BaseModel):
+    message: str
+    session_id: Optional[str] = None
 
 
 class ChatResponse(BaseModel):
@@ -184,3 +191,59 @@ async def chat(request: ChatRequest, req: Request) -> ChatResponse:
         if '429' in s or 'quota exceeded' in s.lower() or 'resource_exhausted' in s.lower():
             raise HTTPException(status_code=503, detail="현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요.")
         raise HTTPException(status_code=500, detail="챗봇 서비스 오류가 발생했습니다. 잠시 후 다시 시도해주세요.")
+
+
+async def _stream_gemini(message: str) -> AsyncGenerator[str, None]:
+    """Gemini 스트리밍 응답 SSE 제너레이터"""
+    gemini_api_key = os.getenv("GEMINI_API_KEY")
+    if not gemini_api_key:
+        yield f"data: {json.dumps({'type': 'error', 'content': 'GEMINI_API_KEY 미설정'}, ensure_ascii=False)}\n\n"
+        return
+
+    if not is_traditional_alcohol_related(message):
+        payload = {"type": "off_topic", "content": "전통주 관련 질문만 답변드릴 수 있어요."}
+        yield f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
+        return
+
+    try:
+        from google import genai as google_genai
+
+        client = google_genai.Client(api_key=gemini_api_key)
+        prompt = (
+            "한국 전통주 전문 AI입니다. 막걸리·청주·탁주·약주 관련 질문만 답변합니다. "
+            "3~5문장으로 간결하게 한국어로 답변하세요.\n\n"
+            f"질문: {message}\n답변:"
+        )
+
+        full_text = ""
+        async for chunk in await client.aio.models.generate_content_stream(
+            model="gemini-2.5-flash-lite",
+            contents=prompt
+        ):
+            text = chunk.text or ""
+            if text:
+                full_text += text
+                payload = {"type": "chunk", "content": text}
+                yield f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
+
+        done_payload = {"type": "done", "content": "", "full_response": full_text}
+        yield f"data: {json.dumps(done_payload, ensure_ascii=False)}\n\n"
+
+    except Exception as e:
+        logger.error(f"스트리밍 챗봇 오류: {e}")
+        error_payload = {"type": "error", "content": "오류가 발생했습니다."}
+        yield f"data: {json.dumps(error_payload, ensure_ascii=False)}\n\n"
+
+
+@router.post("/chat/stream")
+async def chat_stream(request: ChatStreamRequest):
+    """전통주 챗봇 스트리밍 엔드포인트 (SSE)"""
+    gemini_api_key = os.getenv("GEMINI_API_KEY")
+    if not gemini_api_key:
+        raise HTTPException(status_code=503, detail="GEMINI_API_KEY가 설정되지 않았습니다.")
+
+    return StreamingResponse(
+        _stream_gemini(request.message),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"}
+    )

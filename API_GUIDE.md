@@ -36,6 +36,7 @@
 | 24 | GET | `/api/funding/{funding_id}` | 펀딩 정보 조회 | |
 | 25 | POST | `/api/funding/{funding_id}/taste-update` | 시음 후 맛벡터 보정 | |
 | 26 | POST | `/api/image/generate` | 전통주 이미지 생성 | ✓ |
+| 27 | POST | `/api/chat/stream` | 스트리밍 챗봇 | ✓ |
 
 ---
 
@@ -162,6 +163,12 @@ curl http://localhost:8000/health
   "law_key_loaded": true,
   "db_connected": true,
   "uptime_seconds": 3600,
+  "pool_breakdown": {
+    "base": 207,
+    "funding": 3,
+    "recipe": 5,
+    "approved": 0
+  },
   "api_status": {
     "recommend": "ok",
     "recipe": "ok",
@@ -190,7 +197,8 @@ curl http://localhost:8000/health
     "flavor": 7, "alcohol": 4, "acidity": 5,
     "aroma_intensity": 6, "finish": 5
   },
-  "top_k": 5
+  "top_k": 5,
+  "pool": "all"
 }
 ```
 
@@ -199,6 +207,17 @@ curl http://localhost:8000/health
 | user_id | string | 조건부 | — | 저장된 프로필로 추천 |
 | user_vector | TasteVector | 조건부 | — | 직접 맛벡터 입력 |
 | top_k | int | N | 5 | 추천 개수 (1~50) |
+| pool | string | N | `"all"` | 추천 풀 선택 |
+
+**pool 값**
+
+| 값 | 대상 풀 | 설명 |
+|----|---------|------|
+| `all` | 전체 | base + funding + recipe + approved 합산 (기본값) |
+| `base` | 기본 전통주 | JSON/DB 로드 전통주만 |
+| `funding` | 펀딩 전통주 | `/api/funding/register`로 등록된 술 |
+| `recipe` | 레시피 전통주 | `/api/recipe/register`로 등록된 술 |
+| `approved` | 승인된 신규 술 | `/api/drinks/requests/{id}/approve` 승인 완료 술 |
 
 **응답** (배열)
 ```json
@@ -849,11 +868,11 @@ curl http://localhost:8000/api/funding/funding_001
 
 ## 26. POST `/api/image/generate` ✦ Gemini
 
-전통주 정보를 기반으로 Gemini가 이미지 생성 프롬프트를 작성하고,  
-`HUGGINGFACE_TOKEN` 설정 시 Stable Diffusion으로 실제 이미지를 생성.
+전통주 정보를 기반으로 Gemini가 영문 이미지 프롬프트를 생성한 후,  
+`gemini-2.5-flash-image` 모델로 네이티브 이미지를 생성. HF Stable Diffusion은 fallback.
 
-> **현재 상태**: `HUGGINGFACE_TOKEN` 미설정으로 Gemini 프롬프트 생성까지만 동작 (`status: "prompt_only"`).  
-> `.env`에 `HUGGINGFACE_TOKEN` 추가 시 base64 이미지 자동 생성 활성화.
+> **현재 상태**: `gemini-2.5-flash-image` 모델로 이미지 생성 활성화 (`GEMINI_API_KEY` 필요).  
+> Gemini 실패 시 `HUGGINGFACE_TOKEN` 있으면 Stable Diffusion으로 fallback.
 
 **요청**
 ```json
@@ -872,22 +891,25 @@ curl http://localhost:8000/api/funding/funding_001
 | flavor_tags | string[] | N | 맛 태그 목록 |
 | region | string | N | 지역 |
 
-**응답 — 현재 동작 (프롬프트만 생성)**
-```json
-{
-  "status": "prompt_only",
-  "prompt_used": "An elegant product photo of Icheon Rice Makgeolli, a sweet and nutty Korean rice wine. Feature it in traditional pottery or a bottle, against a backdrop of Korean traditional elements like hanji, bamboo, or ceramics. Shot with warm, natural light for a luxurious feel.",
-  "message": "HUGGINGFACE_TOKEN 설정 시 이미지 자동 생성 가능합니다."
-}
-```
-
-**응답 — 이미지 생성 성공 (HUGGINGFACE_TOKEN 설정 후)**
+**응답 — 이미지 생성 성공**
 ```json
 {
   "status": "success",
   "image_base64": "iVBORw0KGgoAAAANS...",
-  "prompt_used": "An elegant product photo of Icheon Rice Makgeolli...",
-  "format": "jpeg"
+  "mime_type": "image/png",
+  "model_used": "gemini-2.5-flash-image",
+  "prompt_used": "A traditional Korean ceramic cup filled with milky-white Icheon rice makgeolli, placed on a hanji-covered surface with bamboo and celadon props, warm natural light, premium product photography.",
+  "message": "Gemini gemini-2.5-flash-image로 이미지 생성 완료"
+}
+```
+
+**응답 — 이미지 생성 실패 (프롬프트만 반환)**
+```json
+{
+  "status": "prompt_only",
+  "prompt_used": "A traditional Korean ceramic cup...",
+  "model_used": "none",
+  "message": "이미지 생성 실패. HUGGINGFACE_TOKEN 또는 Gemini 이미지 모델 권한을 확인하세요."
 }
 ```
 
@@ -895,16 +917,61 @@ curl http://localhost:8000/api/funding/funding_001
 ```json
 {
   "status": "disabled",
-  "message": "이미지 생성 기능이 비활성화되어 있습니다."
+  "message": "GEMINI_API_KEY가 설정되지 않았습니다."
 }
 ```
 
 | status | 의미 |
 |--------|------|
-| `success` | 이미지 생성 완료 (base64 포함) — HUGGINGFACE_TOKEN 필요 |
-| `prompt_only` | Gemini 프롬프트만 생성 — **현재 서버 상태** |
+| `success` | 이미지 생성 완료 (base64 + mime_type 포함) |
+| `prompt_only` | 이미지 생성 실패, 프롬프트만 반환 |
 | `disabled` | GEMINI_API_KEY 미설정 |
 | `error` | 생성 중 오류 |
+
+**에러**
+- 503: `GEMINI_AVAILABLE: false`일 때
+
+---
+
+## 27. POST `/api/chat/stream` ✦ Gemini
+
+전통주 관련 질문에 대해 Gemini가 Server-Sent Events(SSE)로 스트리밍 응답.
+
+**요청**
+```json
+{
+  "message": "막걸리와 약주의 차이가 뭔가요?",
+  "session_id": "session_abc123"
+}
+```
+
+| 필드 | 타입 | 필수 | 설명 |
+|------|------|------|------|
+| message | string | Y | 사용자 질문 |
+| session_id | string | N | 세션 ID (대화 맥락 유지) |
+
+**응답 (SSE 스트림)**
+
+`Content-Type: text/event-stream`
+
+각 청크:
+```
+data: {"type": "chunk", "content": "막걸리는 "}
+
+data: {"type": "chunk", "content": "쌀, 물, 누룩으로 만든"}
+
+data: {"type": "done", "content": "", "full_response": "막걸리는 쌀, 물, 누룩으로 만든 탁주입니다."}
+```
+
+전통주 무관 질문 시:
+```
+data: {"type": "off_topic", "content": "전통주 관련 질문만 답변드릴 수 있어요."}
+```
+
+오류 시:
+```
+data: {"type": "error", "content": "오류가 발생했습니다."}
+```
 
 **에러**
 - 503: `GEMINI_AVAILABLE: false`일 때
