@@ -38,8 +38,11 @@ class AdvancedMakgeolliRecommender:
             base_dir = Path(__file__).parent.parent.parent
             data_file = base_dir / "data" / "processed" / "makgeolli_with_vectors.json"
         self.data_file = Path(data_file)
-        self.drinks = []
-        self.db = None  # DB 연결 (나중에 설정)
+        self.drinks = []          # 기존 전통주 (JSON + DB 로드)
+        self.funding_drinks = []  # 펀딩 전통주
+        self.recipe_drinks = []   # 레시피 전통주
+        self.approved_drinks = [] # 승인된 신규 전통주
+        self.db = None
         self.db_connected = False
         self.load_data()
 
@@ -254,13 +257,14 @@ class AdvancedMakgeolliRecommender:
 
         return ensemble_sim
 
-    def recommend(self, user_vector: Dict[str, float], top_k: int = 10, exclude_ids: List[str] = None, weights: Dict[str, float] = None) -> List[Dict]:
+    def recommend(self, user_vector: Dict[str, float], top_k: int = 10, pool: str = "all", exclude_ids: List[str] = None, weights: Dict[str, float] = None) -> List[Dict]:
         """
         다중 소스 앙상블 추천
 
         Args:
             user_vector: 사용자 맛 벡터
             top_k: 추천할 상위 k개
+            pool: 추천 풀 (all|base|funding|recipe|approved)
             exclude_ids: 제외할 ID 리스트
             weights: 가중치
 
@@ -270,9 +274,20 @@ class AdvancedMakgeolliRecommender:
         if exclude_ids is None:
             exclude_ids = []
 
+        if pool == "base":
+            target = self.drinks
+        elif pool == "funding":
+            target = self.funding_drinks
+        elif pool == "recipe":
+            target = self.recipe_drinks
+        elif pool == "approved":
+            target = self.approved_drinks
+        else:
+            target = self.drinks + self.funding_drinks + self.recipe_drinks + self.approved_drinks
+
         # 유사도 계산
         recommendations = []
-        for drink in self.drinks:
+        for drink in target:
             if drink['id'] in exclude_ids:
                 continue
 
@@ -309,13 +324,13 @@ class AdvancedMakgeolliRecommender:
             if len(filtered) >= top_k:
                 break
 
-        # 펀딩 전통주 최소 1개 포함
+        # 펀딩 전통주 최소 1개 포함 (전체 풀 추천 시에만)
         has_funding = any(item.get('is_funding') for item in filtered)
-        if not has_funding:
-            funding_drinks = [d for d in self.drinks if d.get('is_funding')]
-            if funding_drinks:
+        if not has_funding and pool == "all":
+            funding_source = self.funding_drinks or [d for d in self.drinks if d.get('is_funding')]
+            if funding_source:
                 best_funding = max(
-                    funding_drinks,
+                    funding_source,
                     key=lambda d: self.cosine_similarity(user_vector, d['taste_vector'])
                 )
                 sim = self.cosine_similarity(user_vector, best_funding['taste_vector'])

@@ -140,6 +140,7 @@ class RecommendRequest(BaseModel):
         None,
         description="가중치 (taste, ingredient, region)"
     )
+    pool: str = Field("all", description="추천 풀 선택 (all|base|funding|recipe|approved)")
 
 
 class RecommendResponse(BaseModel):

@@ -194,6 +194,8 @@ class LawClient:
     def __init__(self):
         self.law_api_key = os.getenv("LAW_API_KEY")
         self.gemini_api_key = os.getenv("GEMINI_API_KEY")
+        from app.law_rag import LawRAG
+        self.law_rag = LawRAG()
 
         # API 엔드포인트
         self.law_api_url = "https://www.law.go.kr/DRF/lawSearch.do"
@@ -547,6 +549,21 @@ class LawClient:
                         recommendation=f"'{kw}' 표현을 수정해주세요"
                     )
 
+        # RAG로 관련 법령 검색 (Gemini 컨텍스트용)
+        query = f"{title} {description}"
+        rag_results = self.law_rag.search(query, top_k=3)
+        rag_articles = [
+            Article(
+                article_id=f"rag_{i}",
+                article_name="RAG 검색 결과",
+                content=result['content'],
+                law_name=result['law_name']
+            )
+            for i, result in enumerate(rag_results)
+        ]
+        if rag_articles:
+            logger.info(f"RAG 검색 완료: {len(rag_articles)}개 법령 컨텍스트 확보")
+
         # 전체 텍스트 결합
         full_text = f"{title} {description} {ingredients}"
 
@@ -576,10 +593,16 @@ class LawClient:
                 laws = self.VIOLATION_KEYWORDS[category]["laws"]
 
                 for law_name in laws:
-                    # 관련 조문 조회
+                    # RAG 결과 우선, 없으면 API 호출
                     law_info = self.LAWS.get(law_name)
                     if law_info:
-                        articles = await self.get_relevant_articles(law_name, law_info.keywords)
+                        law_specific_rag = [a for a in rag_articles if a.law_name == law_name]
+                        if law_specific_rag:
+                            articles = law_specific_rag
+                        elif rag_articles:
+                            articles = rag_articles  # 관련 법령 없어도 전체 RAG 컨텍스트 활용
+                        else:
+                            articles = await self.get_relevant_articles(law_name, law_info.keywords)
 
                         # Gemini 분석
                         gemini_violations = await self._analyze_with_gemini(

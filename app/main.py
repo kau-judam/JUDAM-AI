@@ -132,6 +132,13 @@ async def startup_event():
         logger.warning(f"DB 연결 실패 (JSON fallback 사용): {e}")
         _recommender.db_connected = False
 
+    # 법령 RAG 초기화
+    try:
+        law_data = _law_client.get_all_laws()
+        _law_client.law_rag.initialize(law_data)
+    except Exception as e:
+        logger.warning(f"법령 RAG 초기화 실패: {e}")
+
     app.state.user_profiles = _user_profiles
 
     # 캐시 워밍업 (백그라운드)
@@ -338,6 +345,12 @@ def health():
             "data_count": len(recommender.drinks),
             "funding_count": len(_fundings),
             "recipe_count": len(_recipes),
+            "pool_breakdown": {
+                "base": len(recommender.drinks),
+                "funding": len(recommender.funding_drinks),
+                "recipe": len(recommender.recipe_drinks),
+                "approved": len(recommender.approved_drinks),
+            },
             "user_count": len(_user_profiles),
             "gemini_key_loaded": bool(api_key),
             "gemini_available": GEMINI_AVAILABLE,
@@ -407,6 +420,7 @@ async def recommend(request: RecommendRequest):
         recommendations = recommender.recommend(
             user_vector=user_vector,
             top_k=request.top_k,
+            pool=request.pool,
             exclude_ids=request.exclude_ids
         )
 
@@ -1023,13 +1037,13 @@ def approve_drink_request(request_id: int):
             "taste_vector": vector,
             "is_funding": False,
         }
-        existing_ids = {d["id"] for d in _recommender.drinks}
+        existing_ids = {d["id"] for d in _recommender.approved_drinks}
         if drink_entry["id"] not in existing_ids:
-            _recommender.drinks.append(drink_entry)
+            _recommender.approved_drinks.append(drink_entry)
         else:
-            for i, d in enumerate(_recommender.drinks):
+            for i, d in enumerate(_recommender.approved_drinks):
                 if d["id"] == drink_entry["id"]:
-                    _recommender.drinks[i] = drink_entry
+                    _recommender.approved_drinks[i] = drink_entry
                     break
 
         logger.info(f"전통주 등록 요청 승인 완료: #{request_id} {record['name']}")
@@ -1101,13 +1115,13 @@ async def funding_register(request: FundingRegisterRequest):
             "taste_vector": taste_vector,
             "is_funding": True,
         }
-        existing_ids = {d["id"] for d in recommender.drinks}
+        existing_ids = {d["id"] for d in recommender.funding_drinks}
         if request.funding_id not in existing_ids:
-            recommender.drinks.append(drink_entry)
+            recommender.funding_drinks.append(drink_entry)
         else:
-            for i, d in enumerate(recommender.drinks):
+            for i, d in enumerate(recommender.funding_drinks):
                 if d["id"] == request.funding_id:
-                    recommender.drinks[i] = drink_entry
+                    recommender.funding_drinks[i] = drink_entry
                     break
 
         # DB 저장 시도
@@ -1195,7 +1209,7 @@ async def funding_taste_update(funding_id: str, request: FundingTasteUpdateReque
 
     # 추천 풀 업데이트
     recommender = app.state.recommender
-    for d in recommender.drinks:
+    for d in recommender.funding_drinks:
         if d["id"] == funding_id:
             d["taste_vector"] = updated_vector
             break
@@ -1276,13 +1290,13 @@ async def recipe_register(request: RecipeRegisterRequest):
             "taste_vector": taste_vector,
             "is_funding": False,
         }
-        existing_ids = {d["id"] for d in recommender.drinks}
+        existing_ids = {d["id"] for d in recommender.recipe_drinks}
         if request.recipe_id not in existing_ids:
-            recommender.drinks.append(drink_entry)
+            recommender.recipe_drinks.append(drink_entry)
         else:
-            for i, d in enumerate(recommender.drinks):
+            for i, d in enumerate(recommender.recipe_drinks):
                 if d["id"] == request.recipe_id:
-                    recommender.drinks[i] = drink_entry
+                    recommender.recipe_drinks[i] = drink_entry
                     break
 
         _recipes[request.recipe_id] = {
