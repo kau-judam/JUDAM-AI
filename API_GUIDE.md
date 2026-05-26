@@ -392,6 +392,9 @@ curl http://localhost:8000/api/taste/history/user_001
 술BTI 설문 25문항 응답을 맛벡터·BTI 유형·취향 요약으로 변환.  
 `user_id` 쿼리 파라미터 제공 시 프로필을 메모리+DB에 자동 저장.
 
+> **bti_confidence** 필드로 분류 신뢰도를 확인할 수 있습니다.  
+> KNN 학습 데이터가 쌓이면 `bti_method`가 `"knn"` 또는 `"hybrid_agree"` 로 전환됩니다.
+
 **URL**
 ```
 POST /api/survey/convert?user_id=user_001
@@ -457,6 +460,7 @@ curl -X POST "http://localhost:8000/api/survey/convert?user_id=user_001" \
   },
   "bti_code":             "SHFCL",
   "bti_method":           "rule_based",
+  "bti_confidence":       "medium",
   "character_name":       "꿀단지에 빠진 인절미 (저도수)",
   "alcohol_label":        "저도수(8도 이하)",
   "experience_level":     "중급자",
@@ -472,7 +476,8 @@ curl -X POST "http://localhost:8000/api/survey/convert?user_id=user_001" \
 | 응답 필드 | 설명 |
 |----------|------|
 | `bti_code` | 5글자 BTI 코드 |
-| `bti_method` | `"rule_based"` (기본) 또는 `"knn"` (KNN 모델 활성화 후) |
+| `bti_method` | `"rule_based"` / `"knn"` / `"hybrid_agree"` / `"rule_based_fallback"` |
+| `bti_confidence` | `"high"` (KNN+규칙 일치 또는 KNN확률≥0.7) / `"medium"` (기본) / `"low"` (KNN 신뢰도 낮음) |
 | `preferred_food_pairing` | q24 선택 결과 한글 레이블 배열 — `/api/recommend` food_pairing에 자동 연동 |
 | `taste_profile_summary` | 맛 프로필 3단어 이내 요약 |
 
@@ -551,7 +556,7 @@ curl http://localhost:8000/api/taste/profile/user_001
 | 필드 | 타입 | 필수 | 설명 |
 |------|------|------|------|
 | main_ingredient | string | Y | 주재료 (예: "쌀", "보리", "고구마") |
-| region | string | Y | 지역명 (예: "경기도", "제주", "전북 완주") |
+| region | string | N | 지역명 (예: "경기도", "제주"). 생략 시 `main_ingredient`로 자동 추론 (→ `GET /api/recipe/ingredient-region` 기준) |
 
 **응답**
 ```json
@@ -1145,36 +1150,56 @@ Gemini 실패 시 `HUGGINGFACE_TOKEN`이 있으면 Stable Diffusion으로 fallba
 
 ## 26. GET `/api/recipe/ingredient-region`
 
-재료명을 입력하면 지리적 표시제 기준 추천 지역을 반환. **Gemini 호출 없음 (즉시 응답)**.
+재료명을 입력하면 지리적 표시제 기준 생산 지역 목록을 반환. **Gemini 호출 없음 (즉시 응답)**.
 
 ```bash
-curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=감귤"
+curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
 ```
 
 | 쿼리 파라미터 | 타입 | 필수 | 설명 |
 |---------------|------|------|------|
 | ingredient | string | Y | 재료명 (예: "이천 쌀", "감귤", "딸기") |
 
-**응답**
+**응답 — 매핑 성공**
 ```json
-{ "ingredient": "감귤", "region": "제주도", "found": true }
+{
+  "ingredient":   "쌀",
+  "regions":      ["경기도 이천", "강원도 철원", "전라북도 김제"],
+  "found":        true,
+  "data_source":  "manual"
+}
+```
+
+**응답 — 매핑 없음**
+```json
+{
+  "ingredient":  "통밀",
+  "regions":     [],
+  "found":       false,
+  "data_source": "manual"
+}
 ```
 
 | 필드 | 설명 |
 |------|------|
-| `region` | 추론된 지역. 매핑 없으면 `null` |
-| `found` | `true` = 매핑 성공, `false` = 매핑 없음 (region=null) |
+| `regions` | 생산 지역 배열. 매핑 없으면 빈 배열 `[]` |
+| `found` | `true` = 1개 이상 지역 매핑 성공 |
+| `data_source` | `"manual"` = 하드코딩 테이블. 향후 `"api"` (농사로 공공 API) 전환 예정 |
+
+> `regions[0]`이 `/api/recipe/suggest-sub-ingredients` 지역 자동추론에 사용됩니다.
 
 **지원 재료 예시**
 
-| 재료 | 추론 지역 |
-|------|----------|
-| 이천 쌀, 쌀 | 경기도 이천 |
-| 감귤, 한라봉, 제주 감귤 | 제주도 |
-| 딸기, 논산 딸기 | 충청남도 논산 |
-| 잣, 가평 잣 | 경기도 가평 |
-| 인삼, 홍삼 | 충청남도 금산 |
-| 녹차, 보성 녹차 | 전라남도 보성 |
+| 재료 | 추론 지역 (복수 가능) |
+|------|---------------------|
+| 쌀 | 경기도 이천, 강원도 철원, 전라북도 김제 |
+| 사과 | 경상북도 청송, 충청북도 충주, 경상남도 거창 |
+| 딸기 | 충청남도 논산, 경상남도 진주 |
+| 감귤, 한라봉 | 제주도 |
+| 잣 | 경기도 가평 |
+| 인삼, 홍삼 | 충청남도 금산, 경상북도 영주 |
+| 녹차 | 전라남도 보성 |
+| 포도 | 경상북도 영천, 충청북도 영동 |
 
 ---
 
