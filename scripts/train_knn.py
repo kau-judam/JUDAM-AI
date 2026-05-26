@@ -16,6 +16,7 @@
 데이터가 최소 50개 이상 쌓이면 실행 권장.
 """
 
+import asyncio
 import json
 import pickle
 import numpy as np
@@ -48,6 +49,30 @@ def load_feedback_data(filepath='data/bti_feedback.json'):
     return X, y
 
 
+async def load_from_db():
+    """DB에서 KNN 학습 데이터 로드"""
+    try:
+        from app.db import db
+        await db.connect()
+        rows = await db.get_bti_feedback_for_training()
+        if db.pool:
+            await db.pool.close()
+
+        axes = ['sweetness', 'body', 'carbonation', 'flavor',
+                'alcohol', 'acidity', 'aroma_intensity', 'finish']
+        X, y = [], []
+        for row in rows:
+            tv = json.loads(row['taste_vector']) if isinstance(row['taste_vector'], str) else row['taste_vector']
+            if tv:
+                X.append([tv.get(a, 5.0) for a in axes])
+                y.append(row['bti_code'])
+
+        return (np.array(X), np.array(y)) if X else (None, None)
+    except Exception as e:
+        print(f'DB 로드 실패 ({e}), JSON fallback 사용')
+        return None, None
+
+
 def train_knn(X, y, k=5):
     from sklearn.neighbors import KNeighborsClassifier
     from sklearn.preprocessing import LabelEncoder
@@ -77,7 +102,13 @@ def save_model(knn, le, filepath='models/knn_bti_model.pkl'):
 def main():
     print('=== 술BTI KNN 모델 학습 ===')
 
-    X, y = load_feedback_data()
+    # DB 우선, 실패 시 JSON fallback
+    X, y = asyncio.run(load_from_db())
+    if X is None:
+        print('DB 데이터 없음 → JSON 파일에서 로드')
+        X, y = load_feedback_data()
+    else:
+        print(f'DB에서 로드 완료: {len(X)}개')
     if X is None:
         return
 

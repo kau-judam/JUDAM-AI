@@ -316,7 +316,7 @@ def root():
 
 
 @app.get("/health")
-def health():
+async def health():
     """헬스체크 엔드포인트 (기능별 상태 포함)"""
     try:
         recommender = app.state.recommender
@@ -353,7 +353,7 @@ def health():
             "law_key_loaded": bool(law_key),
             "db_connected": recommender.db_connected,
             "knn_model_loaded": bool(_survey_converter.knn_model),
-            "bti_feedback_count": len(json.load(open('data/bti_feedback.json', encoding='utf-8'))) if Path('data/bti_feedback.json').exists() else 0,
+            "bti_feedback_count": await db.get_bti_feedback_count() if db.db_connected else (len(json.load(open('data/bti_feedback.json', encoding='utf-8'))) if Path('data/bti_feedback.json').exists() else 0),
             "uptime_seconds": uptime,
             "api_status": {
                 "recommend": recommend_ok,
@@ -573,31 +573,39 @@ async def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
 @app.post("/api/bti/feedback")
 async def bti_feedback(request: BTIFeedbackRequest):
     """BTI 결과에 대한 사용자 피드백 수집 (KNN 훈련 데이터로 활용)"""
-    feedback_file = Path('data/bti_feedback.json')
-    feedback = []
-    if feedback_file.exists():
-        with open(feedback_file, 'r', encoding='utf-8') as f:
-            feedback = json.load(f)
-
     profile = _user_profiles.get(request.user_id, {})
     entry = {
         'user_id': request.user_id,
         'taste_vector': profile.get('taste_vector', {}),
         'bti_code': request.bti_code,
+        'original_code': request.actual_preference or request.bti_code,
         'is_correct': request.is_correct,
-        'actual_preference': request.actual_preference,
         'timestamp': datetime.now().isoformat(),
     }
-    feedback.append(entry)
 
-    feedback_file.parent.mkdir(exist_ok=True)
-    with open(feedback_file, 'w', encoding='utf-8') as f:
-        json.dump(feedback, f, ensure_ascii=False, indent=2)
+    # DB 우선 저장
+    db_saved = await db.insert_bti_feedback(entry)
+
+    if not db_saved:
+        # JSON fallback
+        feedback_file = Path('data/bti_feedback.json')
+        feedback = []
+        if feedback_file.exists():
+            with open(feedback_file, 'r', encoding='utf-8') as f:
+                feedback = json.load(f)
+        feedback.append(entry)
+        feedback_file.parent.mkdir(exist_ok=True)
+        with open(feedback_file, 'w', encoding='utf-8') as f:
+            json.dump(feedback, f, ensure_ascii=False, indent=2)
+        total = len(feedback)
+    else:
+        total = await db.get_bti_feedback_count()
 
     return {
         'status': 'success',
         'message': '피드백이 저장되었습니다.',
-        'total_feedback': len(feedback),
+        'storage': 'db' if db_saved else 'json',
+        'total_feedback': total,
     }
 
 
