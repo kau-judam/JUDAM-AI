@@ -1,4 +1,4 @@
-﻿"""
+"""
 레시피 AI 클라이언트
 Gemini API를 활용한 레시피 추천 기능
 """
@@ -6,7 +6,7 @@ Gemini API를 활용한 레시피 추천 기능
 import logging
 import os
 import json
-from typing import List, Dict
+from typing import List, Dict, Optional
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -32,13 +32,52 @@ def _gemini_error_message(e: Exception) -> str:
     return _CONN_MSG
 
 
+INGREDIENT_REGION_MAP = {
+    # 쌀
+    '이천 쌀': '경기도 이천', '여주 쌀': '경기도 여주',
+    '철원 쌀': '강원도 철원', '김제 쌀': '전라북도 김제',
+    '안동 쌀': '경상북도 안동', '홍성 쌀': '충청남도 홍성',
+    '진주 쌀': '경상남도 진주', '나주 쌀': '전라남도 나주',
+    # 과일
+    '제주 감귤': '제주도', '감귤': '제주도', '한라봉': '제주도',
+    '청송 사과': '경상북도 청송', '사과': '경상북도 청송',
+    '나주 배': '전라남도 나주', '배': '전라남도 나주',
+    '논산 딸기': '충청남도 논산', '딸기': '충청남도 논산',
+    '영천 포도': '경상북도 영천', '포도': '경상북도 영천',
+    '황도': '경상북도 청도', '복숭아': '경기도 이천',
+    # 기타 재료
+    '해남 고구마': '전라남도 해남', '고구마': '전라남도 해남',
+    '가평 잣': '경기도 가평', '잣': '경기도 가평',
+    '강화 인삼': '인천 강화', '풍기 인삼': '경상북도 영주',
+    '인삼': '충청남도 금산', '홍삼': '충청남도 금산',
+    '보성 녹차': '전라남도 보성', '녹차': '전라남도 보성',
+    '담양 대나무': '전라남도 담양',
+    '영광 모싯잎': '전라남도 영광',
+    # 기본값
+    '쌀': '경기도 이천',
+}
+
+
 class RecipeAI:
     """레시피 AI 클라이언트"""
 
     def __init__(self):
         self.gemini_api_key = os.getenv("GEMINI_API_KEY")
 
-    async def suggest_sub_ingredients(self, main_ingredient: str, region: str) -> Dict[str, List[str]]:
+    def get_region_from_ingredient(self, ingredient: str) -> Optional[str]:
+        """재료명에서 지역 자동 추론 (INGREDIENT_REGION_MAP 기반)"""
+        if not ingredient:
+            return None
+        # 정확히 일치하는 키 우선
+        if ingredient in INGREDIENT_REGION_MAP:
+            return INGREDIENT_REGION_MAP[ingredient]
+        # 부분 일치: 재료명이 키를 포함하거나 키가 재료명을 포함
+        for key, region in INGREDIENT_REGION_MAP.items():
+            if key in ingredient or ingredient in key:
+                return region
+        return None
+
+    async def suggest_sub_ingredients(self, main_ingredient: str, region: Optional[str] = None) -> Dict[str, List[str]]:
         """
         서브재료 추천
 
@@ -49,6 +88,10 @@ class RecipeAI:
         Returns:
             서브재료 리스트
         """
+        # 지역 자동 추론
+        if not region:
+            region = self.get_region_from_ingredient(main_ingredient) or '전국'
+
         if not self.gemini_api_key:
             logger.warning("GEMINI_API_KEY가 설정되지 않음")
             return {"sub_ingredients": []}

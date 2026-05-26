@@ -389,7 +389,7 @@ class BTITypeResponse(BaseModel):
 class SubIngredientsRequest(BaseModel):
     """서브재료 추천 요청 모델"""
     main_ingredient: str = Field(..., description="메인 재료")
-    region: str = Field(..., description="지역")
+    region: Optional[str] = Field(None, description="지역 (없으면 재료명으로 자동 추론)")
 
 
 class SubIngredientsResponse(BaseModel):
@@ -520,6 +520,12 @@ class RecipeValidateResponse(BaseModel):
     suggestions: List[str]
     summary: str
     cached: bool = False
+
+
+class BreweryOCRRequest(BaseModel):
+    """양조장 인증 서류 OCR 요청 모델"""
+    image_base64: str = Field(..., description="이미지 base64 인코딩 문자열")
+    mime_type: str = Field(default="image/jpeg", description="image/jpeg 또는 image/png")
 
 
 class RecipeRegisterRequest(BaseModel):

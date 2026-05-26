@@ -35,6 +35,8 @@
 | 23 | GET | `/api/funding/{funding_id}` | 펀딩 정보 조회 | |
 | 24 | POST | `/api/funding/{funding_id}/taste-update` | 시음 후 맛벡터 보정 | |
 | 25 | POST | `/api/image/generate` | 전통주 이미지 생성 | ✓ |
+| 26 | GET | `/api/recipe/ingredient-region` | 메인재료 → 추천 지역 자동 조회 | |
+| 27 | POST | `/api/brewery/verify-ocr` | 양조장 인증 서류 OCR (3종) | ✓ |
 
 ---
 
@@ -1138,6 +1140,113 @@ Gemini 실패 시 `HUGGINGFACE_TOKEN`이 있으면 Stable Diffusion으로 fallba
 
 **에러**
 - 503: `GEMINI_AVAILABLE: false`일 때
+
+---
+
+## 26. GET `/api/recipe/ingredient-region`
+
+재료명을 입력하면 지리적 표시제 기준 추천 지역을 반환. **Gemini 호출 없음 (즉시 응답)**.
+
+```bash
+curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=감귤"
+```
+
+| 쿼리 파라미터 | 타입 | 필수 | 설명 |
+|---------------|------|------|------|
+| ingredient | string | Y | 재료명 (예: "이천 쌀", "감귤", "딸기") |
+
+**응답**
+```json
+{ "ingredient": "감귤", "region": "제주도", "found": true }
+```
+
+| 필드 | 설명 |
+|------|------|
+| `region` | 추론된 지역. 매핑 없으면 `null` |
+| `found` | `true` = 매핑 성공, `false` = 매핑 없음 (region=null) |
+
+**지원 재료 예시**
+
+| 재료 | 추론 지역 |
+|------|----------|
+| 이천 쌀, 쌀 | 경기도 이천 |
+| 감귤, 한라봉, 제주 감귤 | 제주도 |
+| 딸기, 논산 딸기 | 충청남도 논산 |
+| 잣, 가평 잣 | 경기도 가평 |
+| 인삼, 홍삼 | 충청남도 금산 |
+| 녹차, 보성 녹차 | 전라남도 보성 |
+
+---
+
+## 27. POST `/api/brewery/verify-ocr` ✦ Gemini
+
+양조장 인증 서류 이미지를 분석하여 3종 서류 판별 및 정보 추출.
+
+**인정 서류 3종**
+1. 주류제조면허증 (국세청 발급)
+2. 사업자등록증 (국세청 발급)
+3. 식품제조가공업 영업신고증 (식약처 / 지자체 발급)
+
+**요청**
+```json
+{
+  "image_base64": "/9j/4AAQSkZJRgABAQ...",
+  "mime_type":    "image/jpeg"
+}
+```
+
+| 필드 | 타입 | 필수 | 기본값 | 설명 |
+|------|------|------|--------|------|
+| image_base64 | string | Y | — | 이미지 base64 인코딩 문자열 |
+| mime_type | string | N | `image/jpeg` | `image/jpeg` 또는 `image/png` |
+
+**응답 — 유효 서류**
+```json
+{
+  "status":        "success",
+  "is_valid":      true,
+  "document_type": "주류제조면허증",
+  "confidence":    "high",
+  "extracted": {
+    "document_type":       "주류제조면허증",
+    "is_valid_document":   true,
+    "brewery_name":        "한강양조 주식회사",
+    "registration_number": "서울-주류-2024-001",
+    "owner_name":          "홍길동",
+    "address":             "서울특별시 마포구 양화로 100",
+    "issue_date":          "2024-01-15",
+    "issuing_authority":   "국세청",
+    "alcohol_types":       ["탁주", "약주"],
+    "confidence":          "high",
+    "rejection_reason":    null
+  }
+}
+```
+
+**응답 — 유효하지 않은 서류**
+```json
+{
+  "status":        "success",
+  "is_valid":      false,
+  "document_type": "인식불가",
+  "confidence":    "low",
+  "extracted": {
+    "is_valid_document": false,
+    "rejection_reason":  "인정되는 3종 서류(주류제조면허증, 사업자등록증, 식품제조가공업영업신고증)에 해당하지 않습니다."
+  }
+}
+```
+
+| 응답 필드 | 설명 |
+|----------|------|
+| `is_valid` | `true` = 3종 서류 중 하나로 인식됨 |
+| `document_type` | 판별된 서류 종류 |
+| `confidence` | `high` / `medium` / `low` — OCR 신뢰도 |
+| `extracted.alcohol_types` | 주류제조면허증인 경우 제조 가능 주종 목록 |
+
+**에러**
+- 400: `image_base64` 누락
+- 503: `GEMINI_AVAILABLE: false` 또는 `GEMINI_API_KEY` 미설정
 
 ---
 

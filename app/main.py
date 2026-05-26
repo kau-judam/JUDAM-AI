@@ -23,6 +23,7 @@ from app.insight import InsightDashboard, InsightRequest, InsightResponse
 from app.recipe import RecipeAI
 from app.image_generator import ImageGenerator
 from app.chat import router as chat_router
+from app.ocr import BreweryOCR
 from app.models import (
     TasteVector, RecommendRequest, RecommendResponse,
     TasteUpdateRequest, TasteUpdateResponse,
@@ -39,6 +40,7 @@ from app.models import (
     RecipeValidateRequest, RecipeValidateResponse,
     RecipeRegisterRequest, RecipeRegisterResponse,
     BTIFeedbackRequest,
+    BreweryOCRRequest,
 )
 from app.db import db
 
@@ -77,6 +79,7 @@ _law_client = LawClient()
 _insight_dashboard = InsightDashboard()
 _recipe_ai = RecipeAI()
 _image_generator = ImageGenerator()
+_brewery_ocr = BreweryOCR()
 
 # FastAPI 인스턴스 생성
 app = FastAPI(
@@ -660,10 +663,12 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
     if not GEMINI_AVAILABLE:
         raise HTTPException(status_code=503, detail="AI 서비스 점검 중입니다. 잠시 후 다시 시도해주세요.")
     try:
-        cache_key = f"recipe_sub_{hash(request.main_ingredient + request.region)}"
+        from app.recipe import INGREDIENT_REGION_MAP
+        effective_region = request.region or _recipe_ai.get_region_from_ingredient(request.main_ingredient) or '전국'
+        cache_key = f"recipe_sub_{hash(request.main_ingredient + effective_region)}"
         cached = get_cache(cache_key)
         if cached is not None:
-            logger.info(f"서브재료 캐시 히트: {request.main_ingredient}/{request.region}")
+            logger.info(f"서브재료 캐시 히트: {request.main_ingredient}/{effective_region}")
             return cached
 
         recipe_ai = app.state.recipe_ai
@@ -679,6 +684,32 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
 
     except Exception as e:
         raise_api_error(e, "서브재료 추천 중 오류가 발생했습니다.")
+
+
+@app.get("/api/recipe/ingredient-region")
+async def get_ingredient_region(ingredient: str):
+    """메인재료 → 추천 지역 자동 조회 (INGREDIENT_REGION_MAP 기반, Gemini 호출 없음)"""
+    region = _recipe_ai.get_region_from_ingredient(ingredient)
+    return {"ingredient": ingredient, "region": region, "found": bool(region)}
+
+
+@app.post("/api/brewery/verify-ocr")
+async def brewery_verify_ocr(request: BreweryOCRRequest):
+    """양조장 인증 서류 OCR 분석
+    주류제조면허증 / 사업자등록증 / 식품제조가공업영업신고증 3종 서류 판별 및 정보 추출
+    """
+    if not GEMINI_AVAILABLE:
+        raise HTTPException(status_code=503, detail="AI 서비스 점검 중입니다.")
+    if not _brewery_ocr.enabled:
+        raise HTTPException(status_code=503, detail="OCR 기능이 비활성화되어 있습니다.")
+    if not request.image_base64:
+        raise HTTPException(status_code=400, detail="이미지 데이터가 없습니다.")
+
+    result = await _brewery_ocr.extract_brewery_info(
+        request.image_base64,
+        request.mime_type
+    )
+    return result
 
 
 @app.post("/api/recipe/suggest-flavor-tags", response_model=FlavorTagsResponse)
