@@ -64,18 +64,39 @@ class RecipeAI:
     def __init__(self):
         self.gemini_api_key = os.getenv("GEMINI_API_KEY")
 
-    def get_region_from_ingredient(self, ingredient: str) -> Optional[str]:
-        """재료명에서 지역 자동 추론 (INGREDIENT_REGION_MAP 기반)"""
-        if not ingredient:
-            return None
-        # 정확히 일치하는 키 우선
-        if ingredient in INGREDIENT_REGION_MAP:
-            return INGREDIENT_REGION_MAP[ingredient]
-        # 부분 일치: 재료명이 키를 포함하거나 키가 재료명을 포함
-        for key, region in INGREDIENT_REGION_MAP.items():
-            if key in ingredient or ingredient in key:
-                return region
-        return None
+    def get_region_from_ingredient(self, main_ingredient: str) -> list:
+        """
+        메인재료 → 생산 지역 목록 반환
+        현재: 임시 하드코딩 데이터
+        TODO: 농사로 공공 API 연동 후 교체 예정
+        """
+        _MAP = {
+            '이천 쌀': ['경기도 이천'],
+            '여주 쌀': ['경기도 여주'],
+            '철원 쌀': ['강원도 철원'],
+            '김제 쌀': ['전라북도 김제'],
+            '안동 쌀': ['경상북도 안동'],
+            '홍성 쌀': ['충청남도 홍성'],
+            '쌀': ['경기도 이천', '강원도 철원', '전라북도 김제'],
+            '감귤': ['제주도'],
+            '한라봉': ['제주도'],
+            '사과': ['경상북도 청송', '충청북도 충주', '경상남도 거창'],
+            '배': ['전라남도 나주', '충청남도 천안'],
+            '딸기': ['충청남도 논산', '경상남도 진주'],
+            '포도': ['경상북도 영천', '충청북도 영동'],
+            '복숭아': ['경기도 이천', '충청북도 음성'],
+            '고구마': ['전라남도 해남', '충청남도 당진'],
+            '잣': ['경기도 가평'],
+            '인삼': ['충청남도 금산', '경상북도 영주'],
+            '녹차': ['전라남도 보성'],
+            '대나무': ['전라남도 담양'],
+        }
+        if main_ingredient in _MAP:
+            return _MAP[main_ingredient]
+        for key, regions in _MAP.items():
+            if key in main_ingredient or main_ingredient in key:
+                return regions
+        return []
 
     async def suggest_sub_ingredients(self, main_ingredient: str, region: Optional[str] = None) -> Dict[str, List[str]]:
         """
@@ -88,9 +109,10 @@ class RecipeAI:
         Returns:
             서브재료 리스트
         """
-        # 지역 자동 추론
+        # 지역 자동 추론 (여러 지역이면 첫 번째 사용)
         if not region:
-            region = self.get_region_from_ingredient(main_ingredient) or '전국'
+            regions = self.get_region_from_ingredient(main_ingredient)
+            region = regions[0] if regions else '전국'
 
         if not self.gemini_api_key:
             logger.warning("GEMINI_API_KEY가 설정되지 않음")

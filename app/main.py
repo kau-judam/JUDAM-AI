@@ -688,9 +688,18 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
 
 @app.get("/api/recipe/ingredient-region")
 async def get_ingredient_region(ingredient: str):
-    """메인재료 → 추천 지역 자동 조회 (INGREDIENT_REGION_MAP 기반, Gemini 호출 없음)"""
-    region = _recipe_ai.get_region_from_ingredient(ingredient)
-    return {"ingredient": ingredient, "region": region, "found": bool(region)}
+    """
+    메인재료 입력 시 생산 지역 목록 반환.
+    여러 지역이 있을 수 있음 → 프론트에서 선택하게 할 것.
+    현재는 임시 데이터, 농사로 API 연동 후 정확도 향상 예정.
+    """
+    regions = _recipe_ai.get_region_from_ingredient(ingredient)
+    return {
+        "ingredient": ingredient,
+        "regions": regions,
+        "found": bool(regions),
+        "data_source": "manual",
+    }
 
 
 @app.post("/api/brewery/verify-ocr")
