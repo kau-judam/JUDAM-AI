@@ -265,6 +265,7 @@ class SurveyConvertResponse(BaseModel):
     preferred_aroma: List[str] = []
     taste_profile_summary: str = ""
     bti_method: str = "rule_based"
+    bti_confidence: str = "medium"
 
 
 # ========== BTI 피드백 관련 ==========

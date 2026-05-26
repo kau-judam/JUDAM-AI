@@ -556,6 +556,8 @@ async def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
             preferred_food_pairing=full.get('preferred_food_pairing', []),
             preferred_aroma=full.get('preferred_aroma', []),
             taste_profile_summary=full.get('taste_profile_summary', ''),
+            bti_method=full.get('bti_method', 'rule_based'),
+            bti_confidence=full.get('bti_confidence', 'medium'),
         )
 
         if user_id:

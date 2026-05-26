@@ -166,15 +166,55 @@ class SurveyToVectorConverter:
         else:
             logger.info('KNN 모델 없음 → Rule-based 사용')
 
-    def determine_bti_code_knn(self, taste_vector: dict) -> str:
-        """KNN으로 BTI 분류 (모델 없으면 None 반환)"""
+    def _determine_bti_rule_based(self, taste_vector: dict) -> str:
+        """Rule-based BTI 분류"""
+        sweetness   = taste_vector.get('sweetness', 5)
+        body        = taste_vector.get('body', 5)
+        carbonation = taste_vector.get('carbonation', 5)
+        flavor      = taste_vector.get('flavor', 5)
+        alcohol     = taste_vector.get('alcohol', 5)
+        s_d = 'S' if sweetness   >= 5 else 'D'
+        h_l = 'H' if body        >= 5 else 'L'
+        f_m = 'F' if carbonation >= 5 else 'M'
+        c_u = 'U' if flavor      >= 5 else 'C'
+        a   = 'H' if alcohol     >= 9 else 'L'
+        return f"{s_d}{h_l}{f_m}{c_u}{a}"
+
+    def determine_bti_code_hybrid(self, taste_vector: dict) -> tuple:
+        """
+        KNN + Rule-based 하이브리드 BTI 분류
+        반환: (bti_code, method, confidence)
+        """
+        rule_code = self._determine_bti_rule_based(taste_vector)
+
         if not self.knn_model:
-            return None
+            return rule_code, 'rule_based', 'medium'
+
         axes = ['sweetness', 'body', 'carbonation', 'flavor',
                 'alcohol', 'acidity', 'aroma_intensity', 'finish']
         X = [[taste_vector.get(a, 5.0) for a in axes]]
+
         pred = self.knn_model.predict(X)
-        return self.knn_encoder.inverse_transform(pred)[0]
+        knn_code = self.knn_encoder.inverse_transform(pred)[0]
+
+        try:
+            proba = self.knn_model.predict_proba(X).max()
+        except Exception:
+            proba = 0.5
+
+        if knn_code == rule_code:
+            return knn_code, 'hybrid_agree', 'high'
+        elif proba >= 0.7:
+            return knn_code, 'knn', 'high'
+        elif proba >= 0.4:
+            return rule_code, 'rule_based_fallback', 'medium'
+        else:
+            return rule_code, 'rule_based', 'low'
+
+    def determine_bti_code_knn(self, taste_vector: dict) -> str:
+        """하위호환용 — 내부적으로 hybrid 호출"""
+        code, _, _ = self.determine_bti_code_hybrid(taste_vector)
+        return code
 
     def convert(self, survey: SurveyResponse) -> Dict[str, float]:
         """
@@ -244,25 +284,12 @@ class SurveyToVectorConverter:
             elif aroma == 'rice':
                 body = min(10, body + 0.7)
 
-        # BTI 코드 판정: KNN 우선, 없으면 Rule-based
-        rule_bti_code = (
-            ('S' if sweetness >= 5.0 else 'D') +
-            ('H' if body >= 5.0 else 'L') +
-            ('F' if carbonation >= 5.0 else 'M') +
-            ('U' if flavor >= 5.0 else 'C') +
-            ('H' if alcohol >= 9.0 else 'L')
-        )
-        knn_code = self.determine_bti_code_knn({
+        # BTI 코드 판정: 하이브리드 (KNN + Rule-based)
+        bti_code, bti_method, bti_confidence = self.determine_bti_code_hybrid({
             'sweetness': sweetness, 'body': body, 'carbonation': carbonation,
             'flavor': flavor, 'alcohol': alcohol, 'acidity': acidity,
             'aroma_intensity': aroma_intensity, 'finish': finish,
         })
-        if knn_code:
-            bti_code = knn_code
-            bti_method = 'knn'
-        else:
-            bti_code = rule_bti_code
-            bti_method = 'rule_based'
         bti_info = BTI_TYPE_MAPPING.get(bti_code, BTI_TYPE_MAPPING.get(bti_code[:4] + 'H', {}))
         character_name = bti_info.get('name', '')
         alcohol_label = "고도수(9도 이상)" if alcohol >= 9.0 else "저도수(8도 이하)"
@@ -335,6 +362,7 @@ class SurveyToVectorConverter:
             'preferred_aroma': preferred_aroma,
             'taste_profile_summary': taste_profile_summary,
             'bti_method': bti_method,
+            'bti_confidence': bti_confidence,
         }
 
         logger.info(f"25문항 설문 응답 → 맛 벡터 변환 완료: {vector}")
