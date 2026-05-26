@@ -38,6 +38,7 @@ from app.models import (
     FundingTasteUpdateRequest, FundingTasteUpdateResponse,
     RecipeValidateRequest, RecipeValidateResponse,
     RecipeRegisterRequest, RecipeRegisterResponse,
+    BTIFeedbackRequest,
 )
 from app.db import db
 
@@ -351,6 +352,8 @@ def health():
             "gemini_available": GEMINI_AVAILABLE,
             "law_key_loaded": bool(law_key),
             "db_connected": recommender.db_connected,
+            "knn_model_loaded": bool(_survey_converter.knn_model),
+            "bti_feedback_count": len(json.load(open('data/bti_feedback.json', encoding='utf-8'))) if Path('data/bti_feedback.json').exists() else 0,
             "uptime_seconds": uptime,
             "api_status": {
                 "recommend": recommend_ok,
@@ -415,12 +418,19 @@ async def recommend(request: RecommendRequest):
                 detail="user_vector 또는 저장된 user_id 중 하나를 제공해주세요."
             )
 
+        # food_pairing: 요청값 우선, 없으면 저장된 프로필에서 가져오기
+        user_food = request.food_pairing
+        if not user_food and request.user_id:
+            profile = _user_profiles.get(request.user_id) or {}
+            user_food = profile.get('preferred_food_pairing') or []
+
         # 추천
         recommendations = recommender.recommend(
             user_vector=user_vector,
             top_k=request.top_k,
             pool=request.pool,
-            exclude_ids=request.exclude_ids
+            exclude_ids=request.exclude_ids,
+            user_food_pairings=user_food or [],
         )
 
         # 응답 변환
@@ -558,6 +568,37 @@ async def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
         return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/bti/feedback")
+async def bti_feedback(request: BTIFeedbackRequest):
+    """BTI 결과에 대한 사용자 피드백 수집 (KNN 훈련 데이터로 활용)"""
+    feedback_file = Path('data/bti_feedback.json')
+    feedback = []
+    if feedback_file.exists():
+        with open(feedback_file, 'r', encoding='utf-8') as f:
+            feedback = json.load(f)
+
+    profile = _user_profiles.get(request.user_id, {})
+    entry = {
+        'user_id': request.user_id,
+        'taste_vector': profile.get('taste_vector', {}),
+        'bti_code': request.bti_code,
+        'is_correct': request.is_correct,
+        'actual_preference': request.actual_preference,
+        'timestamp': datetime.now().isoformat(),
+    }
+    feedback.append(entry)
+
+    feedback_file.parent.mkdir(exist_ok=True)
+    with open(feedback_file, 'w', encoding='utf-8') as f:
+        json.dump(feedback, f, ensure_ascii=False, indent=2)
+
+    return {
+        'status': 'success',
+        'message': '피드백이 저장되었습니다.',
+        'total_feedback': len(feedback),
+    }
 
 
 @app.get("/api/taste/profile/{user_id}")

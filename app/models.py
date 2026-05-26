@@ -141,6 +141,7 @@ class RecommendRequest(BaseModel):
         description="가중치 (taste, ingredient, region)"
     )
     pool: str = Field("all", description="추천 풀 선택 (all|base|funding|recipe|approved)")
+    food_pairing: Optional[List[str]] = Field(None, description="음식 선호 리스트 (예: ['고기', '디저트'])")
 
 
 class RecommendResponse(BaseModel):
@@ -263,6 +264,17 @@ class SurveyConvertResponse(BaseModel):
     preferred_food_pairing: List[str] = []
     preferred_aroma: List[str] = []
     taste_profile_summary: str = ""
+    bti_method: str = "rule_based"
+
+
+# ========== BTI 피드백 관련 ==========
+
+class BTIFeedbackRequest(BaseModel):
+    """BTI 결과 피드백 요청 모델"""
+    user_id: str = Field(..., min_length=1, max_length=50)
+    bti_code: str = Field(..., min_length=5, max_length=5)
+    is_correct: bool
+    actual_preference: Optional[str] = None
 
 
 # ========== 법률 필터링 관련 ==========

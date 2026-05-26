@@ -49,6 +49,26 @@ class AdvancedMakgeolliRecommender:
         # 사용자 취향 히스토리 (취향 진화 트래킹)
         self.user_taste_history = defaultdict(list)
 
+        # features 텍스트 기반 food_pairing 카테고리 매핑
+        self.food_keyword_map = {
+            'meat':      ['고기', '갈비', '삼겹살', '불고기', '육류', '소고기', '돼지고기', '닭고기', '구이'],
+            'seafood':   ['해산물', '홍어', '오징어', '조개', '새우', '생선', '회', '꼴뚜기', '낙지', '전복'],
+            'spicy':     ['매운', '김치', '떡볶이', '청양', '짬뽕', '낙지볶음'],
+            'dessert':   ['디저트', '달콤', '케이크', '과자', '빵', '떡', '한과'],
+            'cheese':    ['치즈', '크림', '버터', '유제품'],
+            'vegetable': ['나물', '채소', '두부', '순두부', '된장'],
+            'jeon':      ['전', '파전', '부침', '빈대떡'],
+            'stew':      ['찌개', '국', '탕', '전골', '감자탕'],
+        }
+        # 설문 한글 레이블 → food_keyword_map 카테고리 매핑
+        self.user_food_label_map = {
+            '고기':    'meat',
+            '해산물':  'seafood',
+            '매운음식': 'spicy',
+            '디저트':  'dessert',
+            '치즈':    'cheese',
+        }
+
         # 안주 매칭 데이터
         self.food_pairings = {
             '갈비찜': ['이동 생 쌀 막걸리', '오산막걸리', '연천 아주'],
@@ -209,6 +229,24 @@ class AdvancedMakgeolliRecommender:
 
         return intersection / union if union > 0 else 0.0
 
+    def get_drink_food_categories(self, drink: Dict) -> List[str]:
+        """전통주의 features/ingredients 텍스트에서 음식 카테고리 추출"""
+        features = str(drink.get('features') or '')
+        ingredients = str(drink.get('ingredients') or '')
+        text = features + ' ' + ingredients
+        return [cat for cat, keywords in self.food_keyword_map.items() if any(kw in text for kw in keywords)]
+
+    def food_pairing_similarity(self, user_food_pairings: List[str], drink: Dict) -> float:
+        """사용자 음식 선호와 전통주 features 기반 food 카테고리 유사도"""
+        if not user_food_pairings:
+            return 0.0
+        user_cats = [self.user_food_label_map.get(f, f) for f in user_food_pairings]
+        drink_cats = self.get_drink_food_categories(drink)
+        if not drink_cats:
+            return 0.0
+        overlap = len(set(user_cats) & set(drink_cats))
+        return overlap / max(len(user_cats), len(drink_cats))
+
     def region_similarity(self, region1: str, region2: str) -> float:
         """지역 유사도 계산"""
         if not region1 or not region2:
@@ -217,47 +255,43 @@ class AdvancedMakgeolliRecommender:
         # 같은 지역이면 1.0, 아니면 0.0
         return 1.0 if region1 == region2 else 0.0
 
-    def multi_source_similarity(self, user_vector: Dict[str, float], drink: Dict, weights: Dict[str, float] = None) -> float:
+    def multi_source_similarity(self, user_vector: Dict[str, float], drink: Dict, weights: Dict[str, float] = None, user_food_pairings: List[str] = None) -> float:
         """
         다중 소스 앙상블 유사도 계산
 
         Args:
             user_vector: 사용자 맛 벡터
             drink: 막걸리 데이터
-            weights: 가중치 (taste, ingredient, region)
+            weights: 가중치 (taste, ingredient, region, food)
+            user_food_pairings: 사용자 음식 선호 리스트 (한글 레이블)
 
         Returns:
             앙상블 유사도
         """
         if weights is None:
             weights = {
-                'taste': 0.7,
-                'ingredient': 0.2,
-                'region': 0.1
+                'taste': 0.65,
+                'ingredient': 0.15,
+                'region': 0.1,
+                'food': 0.1,
             }
 
-        # 맛 벡터 유사도
         taste_sim = self.cosine_similarity(user_vector, drink['taste_vector'])
-
-        # 원재료 유사도
         ingredient_sim = self.ingredient_similarity(
             ' '.join([str(v) for v in user_vector.values()]),
             drink.get('ingredients', '')
         )
+        region_sim = 0.0
+        food_sim = self.food_pairing_similarity(user_food_pairings or [], drink)
 
-        # 지역 유사도
-        region_sim = 0.0  # 사용자 지역 정보가 없으므로 0
-
-        # 앙상블 유사도
-        ensemble_sim = (
+        return (
             weights['taste'] * taste_sim +
             weights['ingredient'] * ingredient_sim +
-            weights['region'] * region_sim
+            weights['region'] * region_sim +
+            weights['food'] * food_sim
         )
 
-        return ensemble_sim
-
-    def recommend(self, user_vector: Dict[str, float], top_k: int = 10, pool: str = "all", exclude_ids: List[str] = None, weights: Dict[str, float] = None) -> List[Dict]:
+    def recommend(self, user_vector: Dict[str, float], top_k: int = 10, pool: str = "all", exclude_ids: List[str] = None, weights: Dict[str, float] = None, user_food_pairings: List[str] = None) -> List[Dict]:
         """
         다중 소스 앙상블 추천
 
@@ -267,6 +301,7 @@ class AdvancedMakgeolliRecommender:
             pool: 추천 풀 (all|base|funding|recipe|approved)
             exclude_ids: 제외할 ID 리스트
             weights: 가중치
+            user_food_pairings: 사용자 음식 선호 리스트 (한글 레이블)
 
         Returns:
             추천 결과 리스트
@@ -291,7 +326,7 @@ class AdvancedMakgeolliRecommender:
             if drink['id'] in exclude_ids:
                 continue
 
-            similarity = self.multi_source_similarity(user_vector, drink, weights)
+            similarity = self.multi_source_similarity(user_vector, drink, weights, user_food_pairings)
 
             is_funding = drink.get('is_funding', False)
             recommendations.append({
