@@ -177,7 +177,7 @@ class SurveyToVectorConverter:
         h_l = 'H' if body        >= 5 else 'L'
         f_m = 'F' if carbonation >= 5 else 'M'
         c_u = 'U' if flavor      >= 5 else 'C'
-        a   = 'H' if alcohol     >= 9 else 'L'
+        a   = 'H' if alcohol     >= 5.5 else 'L'  # Q2③(9~12도,고도수)=5.60→H, Q2②(6~8도)=5.00→L
         return f"{s_d}{h_l}{f_m}{c_u}{a}"
 
     def determine_bti_code_hybrid(self, taste_vector: dict) -> tuple:

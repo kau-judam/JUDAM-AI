@@ -132,6 +132,10 @@ async def startup_event():
         logger.warning(f"DB 연결 실패 (JSON fallback 사용): {e}")
         _recommender.db_connected = False
 
+    # InsightDashboard 에 DB + 펀딩 저장소 주입
+    # (_fundings 는 dict 참조로 전달 → 이후 등록된 펀딩이 자동 반영됨)
+    _insight_dashboard.set_db(db, _fundings)
+
     # 법령 RAG 초기화
     try:
         law_data = _law_client.get_all_laws()
@@ -695,19 +699,22 @@ async def get_ingredient_region(ingredient: str):
     여러 지역이 있을 수 있음 → 프론트에서 선택하게 할 것.
     현재는 임시 데이터, 농사로 API 연동 후 정확도 향상 예정.
     """
+    from app.recipe import _match_nongsaro_regions
     regions = _recipe_ai.get_region_from_ingredient(ingredient)
+    data_source = "nongsaro_api" if _match_nongsaro_regions(ingredient) else "manual"
     return {
         "ingredient": ingredient,
         "regions": regions,
         "found": bool(regions),
-        "data_source": "manual",
+        "data_source": data_source,
     }
 
 
 @app.post("/api/brewery/verify-ocr")
 async def brewery_verify_ocr(request: BreweryOCRRequest):
     """양조장 인증 서류 OCR 분석
-    주류제조면허증 / 사업자등록증 / 식품제조가공업영업신고증 3종 서류 판별 및 정보 추출
+    지원 서류(사업자등록증/신분증/통신판매업신고증/주류통신판매승인서/전통주제조면허증 등)는
+    app/ocr.py 의 SUPPORTED_DOC_TYPES 레지스트리로 관리 — 종류 추가가 쉬운 구조.
     """
     if not GEMINI_AVAILABLE:
         raise HTTPException(status_code=503, detail="AI 서비스 점검 중입니다.")
@@ -907,6 +914,8 @@ class ImageGenerateRequest(BaseModel):
     description: str
     flavor_tags: List[str] = []
     region: Optional[str] = None
+    taste_vector: Optional[Dict[str, float]] = None  # 8축 맛벡터 → 색·질감 시각화 (선택)
+    seed: Optional[int] = None  # 동일 입력 재현/변주 제어 (선택)
 
 
 class DrinkRequestCreate(BaseModel):
@@ -1365,7 +1374,9 @@ async def generate_image(request: ImageGenerateRequest):
         name=request.name,
         description=request.description,
         flavor_tags=request.flavor_tags,
-        region=request.region
+        region=request.region,
+        taste_vector=request.taste_vector,
+        seed=request.seed
     )
     return result
 

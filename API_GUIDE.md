@@ -6,6 +6,51 @@
 
 ---
 
+## 환경 변수 & 서버 실행
+
+`.env` 파일을 프로젝트 루트에 두고 아래 키를 설정합니다 (`.env`는 절대 커밋 금지 — `.gitignore` 처리됨).
+
+```bash
+# .env (예시 — 실제 키 값으로 교체)
+GEMINI_API_KEY=발급받은_제미나이_키        # 레시피/법률/챗봇/이미지/OCR 등 Gemini 기능 필수
+LAW_API_KEY=국가법령정보센터_키             # /api/law/* (없으면 내장 법령 fallback)
+NONGSARO_API_KEY=농사로_공공API_키          # scripts/collect_local_products.py (지역특산물 수집)
+DATABASE_URL=postgresql+asyncpg://user:pass@localhost/juddam   # 없으면 인메모리/JSON fallback
+REDIS_URL=redis://localhost:6379            # 선택 (캐시)
+HUGGINGFACE_TOKEN=                          # 선택 (이미지 생성 Gemini 실패 시 SD fallback)
+AWS_REGION=ap-northeast-2                   # 선택 (app/sqs_worker.py 실행 시 필수)
+AWS_SQS_AI_TASK_QUEUE_URL=https://...        # 선택 (app/sqs_worker.py 실행 시 필수)
+LOG_LEVEL=INFO
+PORT=8000
+```
+
+| 변수 | 필수 | 용도 | 미설정 시 |
+|------|------|------|----------|
+| `GEMINI_API_KEY` | ★ | Gemini 기반 기능(✦ 표시: 레시피·법률 보강·챗봇·이미지·OCR 등) | 해당 엔드포인트 503/`disabled` |
+| `LAW_API_KEY` | 권장 | 국가법령정보센터 연동 | 내장 법령 목록으로 동작 |
+| `NONGSARO_API_KEY` | 선택 | 농사로 지역특산물 수집 스크립트 | 하드코딩 지역 매핑 fallback |
+| `DATABASE_URL` | 선택 | PostgreSQL 영속화 | 인메모리 + JSON 파일 fallback |
+| `REDIS_URL` / `HUGGINGFACE_TOKEN` | 선택 | 캐시 / 이미지 SD fallback | 기능 생략 |
+| `AWS_REGION` / `AWS_SQS_AI_TASK_QUEUE_URL` | 선택 | `app/sqs_worker.py` SQS 워커 | API 서버 실행에는 불필요 |
+
+> 별도의 `.env.example` 파일은 없습니다. 위 표가 기준입니다.
+
+**실행**
+```bash
+# 의존성
+pip install -r requirements.txt
+
+# 개발 서버 (자동 리로드)
+uvicorn app.main:app --reload --port 8000
+
+# 상태 확인
+curl http://localhost:8000/health
+```
+
+`GET /health` 의 `gemini_key_loaded` / `gemini_available` / `db_connected` / `knn_model_loaded` 로 환경 구성을 점검할 수 있습니다.
+
+---
+
 ## 목차
 
 | # | 메서드 | 경로 | 설명 | Gemini |
@@ -36,7 +81,7 @@
 | 24 | POST | `/api/funding/{funding_id}/taste-update` | 시음 후 맛벡터 보정 | |
 | 25 | POST | `/api/image/generate` | 전통주 이미지 생성 | ✓ |
 | 26 | GET | `/api/recipe/ingredient-region` | 메인재료 → 추천 지역 자동 조회 | |
-| 27 | POST | `/api/brewery/verify-ocr` | 양조장 인증 서류 OCR (3종) | ✓ |
+| 27 | POST | `/api/brewery/verify-ocr` | 양조장 인증 서류 OCR (레지스트리 기반 7종) | ✓ |
 
 ---
 
@@ -52,7 +97,11 @@
 | 바디 (H/L) | H = Heavy, L = Light | body ≥ 5 → H |
 | 탄산 (F/M) | F = Fizzy, M = Mellow | carbonation ≥ 5 → F |
 | 풍미 (U/C) | U = Unique, C = Classic | flavor ≥ 5 → U |
-| 도수 (H/L) | H = High, L = Low | alcohol ≥ 9 → H |
+| 도수 (H/L) | H = High, L = Low | alcohol ≥ 5.5 → H |
+
+> **도수 임계값은 5.5** (과거 9에서 변경). alcohol 축은 실제 ABV(도수)가 아니라 0~10 스케일의 파생 점수이며, 설문 Q2 ③(9~12도, 고도수) 응답이 H로 분류되도록 보정한 값입니다.
+
+> **5글자 vs 4글자** — 서버 `/api/survey/convert` 응답의 `bti_code`는 **5글자**(도수 포함)입니다. 별도의 정적 설문 페이지(`web/survey/index.html`)는 동일한 8축 맛벡터에서 **앞 4글자만**(도수 제외, `bti4`) 사용합니다. 두 체계 모두 단맛/바디/탄산/풍미 임계는 5, 4글자는 도수축만 생략한 부분집합입니다.
 
 > KNN 피드백 데이터가 10개 이상 쌓이면 `scripts/train_knn.py` 실행 후 서버 재시작 시 KNN 분류로 전환됩니다.  
 > 현재 분류 방식은 `/api/survey/convert` 응답의 `bti_method` 필드에서 확인 가능합니다.
@@ -410,22 +459,22 @@ POST /api/survey/convert?user_id=user_001
 | q4 | Likert | 1~7 | 단맛 선호도 (1=전혀 안 단 것, 7=매우 달콤한 것) |
 | q5 | Likert | 1~7 | 산미 선호도 (1=산미 싫음, 7=강한 산미 좋음) |
 | q6 | Likert | 1~7 | 청량감 선호도 (1=탄산 없는 것, 7=강한 탄산) |
-| q7 | Likert | 1~7 | 바디감 선호도 (1=가벼운 것, 7=묵직한 것) |
+| q7 | Likert | 1~7 | 과일 향 선호도 |
 | q8 | Likert | 1~7 | 여운 선호도 (1=깔끔하게 끝남, 7=긴 여운) |
 | q9 | Likert | 1~7 | 향 복잡도 선호도 (1=단순한 향, 7=복잡한 향) |
 | q10 | Likert | 1~7 | 식감 선호도 (1=물처럼 맑음, 7=걸쭉함) |
 | q11 | Likert | 1~7 | 색상 선호도 (1=맑은 투명, 7=불투명 탁함) |
 | q12 | Likert | 1~7 | 도수에 대한 민감도 (1=도수 낮을수록 좋음, 7=높을수록 좋음) |
-| q13 | Likert | 1~7 | 전통 재료 선호도 (1=현대적 재료, 7=전통 누룩/쌀) |
+| q13 | Likert | 1~7 | 알콜 감지 선호도 |
 | q14 | Likert | 1~7 | 탄산감 필요 정도 (1=전혀 불필요, 7=꼭 있어야 함) |
 | q15 | Likert | 1~7 | 향 강도 선호도 (1=향 없는 것, 7=향 아주 강한 것) |
-| q16 | Likert | 1~7 | 음용 속도 (1=천천히 음미, 7=빠르게 마심) |
-| q17 | Likert | 1~7 | 발효 향 선호도 (1=발효 향 싫음, 7=발효 향 좋음) |
+| q16 | Likert | 1~7 | 꽃향 선호도 |
+| q17 | Likert | 1~7 | 허브향 선호도 |
 | q18 | Likert | 1~7 | 과일/꽃 향 선호도 (1=전혀 불필요, 7=과일·꽃향 필수) |
-| q19 | Likert | 1~7 | 드라이함 선호도 (1=달콤함 선호, 7=드라이함 선호) |
-| q20 | Likert | 1~7 | 발효 복잡도 선호도 (1=단순 발효, 7=복잡한 발효) |
+| q19 | Likert | 1~7 | 신선한 향 선호도 |
+| q20 | Likert | 1~7 | 구수한 향 선호도 |
 | q21 | Likert | 1~7 | 알코올 느낌 선호도 (1=알코올 느낌 싫음, 7=알코올 느낌 좋음) |
-| q22 | Likert | 1~7 | 오크/숙성 향 선호도 (1=숙성 향 싫음, 7=숙성 향 좋음) |
+| q22 | Likert | 1~7 | 전반적인 맛 강도 선호도 |
 | q23 | 명목 | 1~5 | 선호 과일 (1=감귤류, 2=베리류, 3=사과, 4=포도, 5=망고) |
 | q24 | 복수선택 | 1~5 | 음식 페어링 선호 (1=고기, 2=해산물, 3=매운음식, 4=디저트, 5=치즈). 배열로 복수 선택 가능 |
 | q25 | 복수선택 | 1~5 | 관심 향 (1=과일향, 2=감귤향, 3=꽃향, 4=허브향, 5=쌀향). 배열로 복수 선택 가능 |
@@ -1093,17 +1142,27 @@ curl http://localhost:8000/api/funding/funding_001
 
 ## 25. POST `/api/image/generate` ✦ Gemini
 
-전통주 정보를 기반으로 Gemini가 영문 프롬프트를 생성한 후  
-`gemini-2.5-flash-image` 모델로 이미지를 직접 생성.  
+입력 구동 프롬프트 빌더(`build_image_prompt`)가 **결정적으로** 영문 프롬프트를 조립한 후
+`gemini-2.5-flash-image` 모델로 이미지를 직접 생성. (과거의 LLM 프롬프트 생성 방식 대체)
 Gemini 실패 시 `HUGGINGFACE_TOKEN`이 있으면 Stable Diffusion으로 fallback.
+
+**프롬프트 구성** — `[SUBJECT][COLOR][TEXTURE][PROPS][BACKGROUND][LIGHTING][STYLE]` 7개 섹션으로 조립:
+- `taste_vector` → 시각 언어 (단맛↑ 골든톤 / 탄산↑ 기포 / 바디↑ 점성·우윳빛 / 산미↑ 신선한 하이라이트)
+- `flavor_tags`·재료 → 소품·가니시, `region` → 배경 분위기
+- 구도/조명/스타일은 `name`(또는 `seed`) 해시로 프리셋을 회전 → 술마다 다른 결과, 같은 입력은 재현
 
 **요청**
 ```json
 {
-  "name":        "이천 쌀 막걸리",
-  "description": "이천 쌀로 만든 달콤한 막걸리",
-  "flavor_tags": ["달콤한", "고소한"],
-  "region":      "경기도 이천"
+  "name":        "탄산 톡톡 딸기 요거트",
+  "description": "상큼 달달한 저도수 스파클링",
+  "flavor_tags": ["달콤한", "청량한", "딸기"],
+  "region":      "충청남도 논산",
+  "taste_vector": {
+    "sweetness": 8.5, "body": 3.0, "carbonation": 8.0, "flavor": 6.0,
+    "alcohol": 4.0, "acidity": 6.5, "aroma_intensity": 6.0, "finish": 4.0
+  },
+  "seed": 12345
 }
 ```
 
@@ -1111,8 +1170,10 @@ Gemini 실패 시 `HUGGINGFACE_TOKEN`이 있으면 Stable Diffusion으로 fallba
 |------|------|------|------|
 | name | string | Y | 전통주 이름 |
 | description | string | Y | 전통주 설명 |
-| flavor_tags | string[] | N | 맛 태그 (이미지 스타일에 반영) |
-| region | string | N | 지역 (지역 특색 반영) |
+| flavor_tags | string[] | N | 맛 태그 → 소품/가니시 |
+| region | string | N | 지역 → 배경 분위기 |
+| taste_vector | object(8축, float) | N | 8축 맛벡터 → 색·질감 시각화. 미전달 시 중립(5) 처리 |
+| seed | int | N | 구도/조명/스타일 프리셋 변주 제어. 미전달 시 `name+region` 해시 사용(재현 가능) |
 
 **응답 — 이미지 생성 성공**
 ```json
@@ -1121,10 +1182,12 @@ Gemini 실패 시 `HUGGINGFACE_TOKEN`이 있으면 Stable Diffusion으로 fallba
   "image_base64": "iVBORw0KGgoAAAANS...",
   "mime_type":   "image/png",
   "model_used":  "gemini-2.5-flash-image",
-  "prompt_used": "A traditional Korean ceramic cup filled with milky-white Icheon rice makgeolli, placed on a hanji-covered surface with bamboo and celadon props, warm natural light, premium product photography.",
+  "prompt_used": "[SUBJECT] A bottle and a slender clear glass of Korean traditional alcohol '탄산 톡톡 딸기 요거트' ...\n[COLOR] deep golden-amber, honeyed and glistening, with bright fresh dewy highlights\n[TEXTURE] light thin body, clear and translucent, lively rising bubbles ...\n[PROPS] garnished with fresh strawberries ...\n[BACKGROUND] ...\n[LIGHTING] ...\n[STYLE] ...",
   "message":     "Gemini gemini-2.5-flash-image로 이미지 생성 완료"
 }
 ```
+
+> **반환은 base64 PNG 문자열**입니다. 이미지 파일 저장·S3 업로드·CDN URL 발급은 **백엔드 몫**입니다(AI 서버는 바이너리를 직접 저장하지 않음). `image_base64`를 디코드해 저장 후 URL을 발급하세요.
 
 **응답 — 이미지 생성 실패 (프롬프트만 반환)**
 ```json
@@ -1150,7 +1213,11 @@ Gemini 실패 시 `HUGGINGFACE_TOKEN`이 있으면 Stable Diffusion으로 fallba
 
 ## 26. GET `/api/recipe/ingredient-region`
 
-재료명을 입력하면 지리적 표시제 기준 생산 지역 목록을 반환. **Gemini 호출 없음 (즉시 응답)**.
+재료명을 입력하면 생산 지역 목록을 반환. **Gemini 호출 없음 (즉시 응답)**.
+
+조회 순서:
+1. `data/ingredient_region_map.json` — `scripts/collect_local_products.py`가 농사로 지역특산물 OpenAPI(`localSpcprd/localSpcprdLst`)에서 수집한 매핑
+2. `app/recipe.py`의 하드코딩 fallback 매핑
 
 ```bash
 curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
@@ -1164,9 +1231,9 @@ curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
 ```json
 {
   "ingredient":   "쌀",
-  "regions":      ["경기도 이천", "강원도 철원", "전라북도 김제"],
+  "regions":      ["경상남도 의령군", "전북특별자치도 고창군", "전북특별자치도 남원시"],
   "found":        true,
-  "data_source":  "manual"
+  "data_source":  "nongsaro_api"
 }
 ```
 
@@ -1184,15 +1251,16 @@ curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
 |------|------|
 | `regions` | 생산 지역 배열. 매핑 없으면 빈 배열 `[]` |
 | `found` | `true` = 1개 이상 지역 매핑 성공 |
-| `data_source` | `"manual"` = 하드코딩 테이블. 향후 `"api"` (농사로 공공 API) 전환 예정 |
+| `data_source` | `"nongsaro_api"` = `data/ingredient_region_map.json` 매칭, `"manual"` = 하드코딩 fallback |
 
 > `regions[0]`이 `/api/recipe/suggest-sub-ingredients` 지역 자동추론에 사용됩니다.
+> 원본 농사로 수집 레코드는 `data/local_products.json`에 보관되고, API는 그 결과를 재가공한 `data/ingredient_region_map.json`을 읽습니다. 코드에서는 `"경상남도 > 의령군"` 형태를 `"경상남도 의령군"`처럼 정규화해 반환합니다.
 
 **지원 재료 예시**
 
 | 재료 | 추론 지역 (복수 가능) |
 |------|---------------------|
-| 쌀 | 경기도 이천, 강원도 철원, 전라북도 김제 |
+| 쌀 | 경상남도 의령군, 전북특별자치도 고창군, 전북특별자치도 남원시, 충청남도 논산시, 충청북도 청주시, 강원특별자치도 철원군 등 |
 | 사과 | 경상북도 청송, 충청북도 충주, 경상남도 거창 |
 | 딸기 | 충청남도 논산, 경상남도 진주 |
 | 감귤, 한라봉 | 제주도 |
@@ -1205,12 +1273,17 @@ curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
 
 ## 27. POST `/api/brewery/verify-ocr` ✦ Gemini
 
-양조장 인증 서류 이미지를 분석하여 3종 서류 판별 및 정보 추출.
+양조장 인증/신원 서류 이미지를 Gemini Vision으로 분석하여 서류 종류 판별 및 필드 추출.
+지원 서류는 `app/ocr.py`의 `SUPPORTED_DOC_TYPES` 레지스트리에서 관리합니다.
 
-**인정 서류 3종**
-1. 주류제조면허증 (국세청 발급)
-2. 사업자등록증 (국세청 발급)
-3. 식품제조가공업 영업신고증 (식약처 / 지자체 발급)
+**현재 인식 가능한 서류 7종**
+1. 사업자등록증
+2. 신분증
+3. 통신판매업신고증
+4. 주류통신판매승인서
+5. 전통주제조면허증
+6. 주류제조면허증
+7. 식품제조가공업영업신고증
 
 **요청**
 ```json
@@ -1256,18 +1329,39 @@ curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
   "document_type": "인식불가",
   "confidence":    "low",
   "extracted": {
+    "document_type": "인식불가",
     "is_valid_document": false,
-    "rejection_reason":  "인정되는 3종 서류(주류제조면허증, 사업자등록증, 식품제조가공업영업신고증)에 해당하지 않습니다."
+    "rejection_reason":  "인정되는 서류 종류에 해당하지 않거나 핵심 식별번호를 읽을 수 없습니다."
   }
 }
 ```
 
 | 응답 필드 | 설명 |
 |----------|------|
-| `is_valid` | `true` = 3종 서류 중 하나로 인식됨 |
+| `status` | `"success"` / `"disabled"` / `"error"` |
+| `is_valid` | `extracted.is_valid_document` 값. 인정 서류이고 핵심 식별번호가 읽히면 `true` |
 | `document_type` | 판별된 서류 종류 |
 | `confidence` | `high` / `medium` / `low` — OCR 신뢰도 |
-| `extracted.alcohol_types` | 주류제조면허증인 경우 제조 가능 주종 목록 |
+| `extracted.document_type` | 서류 종류. 7종 중 하나 또는 `"인식불가"` |
+| `extracted.is_valid_document` | 프롬프트 기준의 유효 서류 여부 |
+| `extracted.brewery_name` | 업체명/상호/제조장명. 신분증이면 빈 문자열 |
+| `extracted.registration_number` | 사업자번호/면허번호/신고번호/승인번호/주민등록번호 등 핵심 식별번호 |
+| `extracted.owner_name` | 대표자명 또는 신분증 성명 |
+| `extracted.address` | 주소 또는 소재지 |
+| `extracted.issue_date` | 발급일/등록일/면허일/승인일 |
+| `extracted.issuing_authority` | 발급기관 |
+| `extracted.alcohol_types` | 주류 관련 면허/승인서에서 추출 가능한 제조 가능 주종 목록 |
+| `extracted.rejection_reason` | 인식불가 또는 무효 판정 사유 |
+
+**더미 OCR 검증 결과**
+- `results_ocr.md` 기준 더미 서류 5종을 실제 Gemini OCR(`gemini-2.5-flash-lite`)로 검증했습니다.
+- 서류 판별 정확도: 5/5 = 100%.
+- 필드 정확도: `brewery_name` 4/4, `registration_number` 5/5, `owner_name` 5/5, `address` 5/5, `issue_date` 4/5, `issuing_authority` 5/5.
+- 전통주제조면허증 더미는 예측 `document_type`이 `주류제조면허증`으로 나왔지만, 현재 평가에서는 제조면허 계열로 정답 처리했습니다.
+
+**현재 한계**
+- `issue_date`는 사업자등록증의 개업일/등록일/발급일을 혼동할 수 있습니다.
+- 인정 서류가 아닌 negative 케이스는 아직 별도 검증하지 않았습니다.
 
 **에러**
 - 400: `image_base64` 누락
@@ -1313,3 +1407,13 @@ curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
 4. GET /health 에서 knn_model_loaded: true 확인
 5. POST /api/survey/convert 응답의 bti_method: "knn" 으로 전환
 ```
+
+---
+
+## 변경 이력
+
+### 2026-05-31
+- 농사로 지역특산물 API 수집 결과(`data/local_products.json`, `data/ingredient_region_map.json`) 기반 재료→지역 매핑과 하드코딩 fallback 구조를 문서화.
+- `/api/image/generate`의 `build_image_prompt()` 기반 프롬프트, `taste_vector`/`seed` 입력, base64 PNG 응답, S3 업로드 역할 분리를 반영.
+- `/api/brewery/verify-ocr`를 `SUPPORTED_DOC_TYPES` 레지스트리 기준 7종 서류로 갱신하고 더미 OCR 검증 결과와 한계를 정리.
+- `/api/survey/convert` 기준 BTI는 현재 5글자(`bti_code`) 응답이며, BTI 도수 H/L 임계값은 alcohol 5.5로 정리. 4글자 BTI 논의는 정적 웹 설문(`web/survey/index.html`)의 `bti4` 참고 사항으로만 유지.

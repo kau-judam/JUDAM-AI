@@ -6,6 +6,7 @@ Gemini API를 활용한 레시피 추천 기능
 import logging
 import os
 import json
+from pathlib import Path
 from typing import List, Dict, Optional
 from dotenv import load_dotenv
 
@@ -13,6 +14,44 @@ load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# 농사로 지역특산물 수집 결과 (scripts/collect_local_products.py 산출물)
+_NONGSARO_REGION_MAP_PATH = Path("data/ingredient_region_map.json")
+_NONGSARO_REGION_MAP: Optional[Dict[str, List[str]]] = None
+
+
+def _load_nongsaro_region_map() -> Dict[str, List[str]]:
+    """특산물명 → 지역목록 매핑 로드. ' > ' 구분자는 공백으로 정규화. 없으면 빈 dict."""
+    global _NONGSARO_REGION_MAP
+    if _NONGSARO_REGION_MAP is None:
+        try:
+            with open(_NONGSARO_REGION_MAP_PATH, encoding="utf-8") as f:
+                raw = json.load(f)
+            _NONGSARO_REGION_MAP = {
+                name: [r.replace(" > ", " ").strip() for r in regions]
+                for name, regions in raw.items()
+            }
+            logger.info(f"농사로 지역특산물 매핑 로드: {len(_NONGSARO_REGION_MAP)}개")
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            logger.warning(f"농사로 매핑 로드 실패({e}) → 하드코딩 fallback 사용")
+            _NONGSARO_REGION_MAP = {}
+    return _NONGSARO_REGION_MAP
+
+
+def _match_nongsaro_regions(ingredient: str) -> List[str]:
+    """농사로 매핑에서 ingredient 에 해당하는 지역목록 반환 (없으면 [])."""
+    nmap = _load_nongsaro_region_map()
+    if not nmap:
+        return []
+    if ingredient in nmap:
+        return list(nmap[ingredient])
+    matched: List[str] = []
+    for name, regions in nmap.items():
+        if ingredient in name or name in ingredient:
+            for r in regions:
+                if r not in matched:
+                    matched.append(r)
+    return matched[:10]
 
 # Gemini 에러 관련 상수
 _QUOTA_MSG = "현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요."
@@ -66,10 +105,16 @@ class RecipeAI:
 
     def get_region_from_ingredient(self, main_ingredient: str) -> list:
         """
-        메인재료 → 생산 지역 목록 반환
-        현재: 임시 하드코딩 데이터
-        TODO: 농사로 공공 API 연동 후 교체 예정
+        메인재료 → 생산 지역 목록 반환.
+        1순위: 농사로 지역특산물 수집 데이터(data/ingredient_region_map.json),
+        2순위(fallback): 하드코딩 테이블.
         """
+        # 1순위: 농사로 수집 데이터
+        nongsaro = _match_nongsaro_regions(main_ingredient)
+        if nongsaro:
+            return nongsaro
+
+        # 2순위: 하드코딩 fallback
         _MAP = {
             '이천 쌀': ['경기도 이천'],
             '여주 쌀': ['경기도 여주'],
