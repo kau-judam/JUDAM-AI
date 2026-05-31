@@ -70,14 +70,14 @@ vercel --prod            # 프로덕션 배포
 2. 제출 시 페이지에 **“응답이 저장되었습니다”** 가 뜨는지 확인
    (URL 미설정이면 “제출 완료 (로컬 로그)”, 네트워크 실패면 “저장 실패…”).
 3. 구글시트의 **`responses` 탭**에 새 행이 들어왔는지 확인
-   (헤더: `timestamp, q1…q25, q24_text, q25_text, sweetness…finish, bti4, is_match, wrong_axes, memo`).
+   (헤더: `timestamp, q1…q25, q24_text, q25_text, sweetness…finish, bti4, is_correct, feedback_reason`).
 
 ---
 
 ## 저장되는 컬럼
 `timestamp` · `q1`~`q25`(각 칸, q24/q25 는 선택 인덱스 콤마결합) · `q24_text` · `q25_text` ·
 8축(`sweetness, body, carbonation, flavor, alcohol, acidity, aroma_intensity, finish`) ·
-`bti4` · `is_match`(예/아니오) · `wrong_axes`(`축:방향; …`) · `memo`(자유 입력).
+`bti4` · `is_correct`(예/아니오) · `feedback_reason`(결과가 맞지 않는 이유/메모).
 
 ## 자주 묻는 문제
 - **시트에 행이 안 들어옴**: ① 액세스 권한이 ‘모든 사용자’인지, ② `SHEET_WEBHOOK_URL` 끝이 `/exec` 인지(`/dev` 아님), ③ 코드 수정 후 **새 배포**(또는 ‘배포 관리 → 편집 → 새 버전’)했는지 확인.

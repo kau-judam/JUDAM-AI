@@ -26,7 +26,7 @@ var HEADERS = [
   'q23', 'q24', 'q25', 'q24_text', 'q25_text',
   'sweetness', 'body', 'carbonation', 'flavor', 'alcohol', 'acidity',
   'aroma_intensity', 'finish',
-  'bti4', 'is_match', 'wrong_axes', 'memo'
+  'bti4', 'is_correct', 'feedback_reason'
 ];
 
 function _sheet() {
@@ -51,11 +51,6 @@ function doPost(e) {
       qVals.push(Array.isArray(v) ? v.join(',') : (v == null ? '' : v));
     }
 
-    // wrong_axes: [{axis, actual_direction}] → "sweetness:high; body:low"
-    var wrong = (fb.wrong_axes || []).map(function (w) {
-      return w.axis + ':' + (w.actual_direction || '');
-    }).join('; ');
-
     var row = [data.timestamp || new Date().toISOString()]
       .concat(qVals)
       .concat([
@@ -64,9 +59,8 @@ function doPost(e) {
         tv.sweetness, tv.body, tv.carbonation, tv.flavor,
         tv.alcohol, tv.acidity, tv.aroma_intensity, tv.finish,
         data.bti4 || '',
-        fb.is_match,
-        wrong,
-        fb.memo || ''
+        fb.is_correct,
+        fb.feedback_reason || ''
       ]);
 
     _sheet().appendRow(row);

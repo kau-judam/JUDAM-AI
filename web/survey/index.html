@@ -69,10 +69,8 @@
         <label data-v="no"><input type="radio" name="fb">아니요</label>
       </div>
       <div id="fbDetail" class="hidden" style="margin-top:14px;">
-        <div class="qt" style="font-size:14px;">어느 축이 틀렸나요? (복수선택) — 실제 방향도 알려주세요</div>
-        <div id="fbAxes"></div>
-        <div class="qt" style="font-size:14px;margin-top:10px;">자유 메모 (선택)</div>
-        <textarea id="fbMemo" rows="2" placeholder="예: 실제로는 더 드라이한 걸 좋아해요"></textarea>
+        <div class="qt" style="font-size:14px;">어떤 부분이 맞지 않았나요? (선택)</div>
+        <textarea id="feedbackReason" rows="3" placeholder="예: 실제로는 더 드라이한 막걸리를 좋아해요"></textarea>
       </div>
     </div>
     <button id="finalSubmit" type="button">제출하기</button>
@@ -183,33 +181,33 @@ if (typeof module !== 'undefined' && module.exports) {
 /* ============== 이하 브라우저 UI (검증과 무관) ============== */
 if (typeof document !== 'undefined') {
 
-const LIKERT = ["1 전혀","2","3","4","5","6","7 매우"];
+const LIKERT = ["1 전혀 아니다","2 아니다","3 보통이다","4 그렇다","5 매우 그렇다"];
 const QUESTIONS = [
-  {id:"q1", t:"탁주/막걸리를 얼마나 마셔봤나요?", type:"scale", opts:["처음이다 (입문자)","잘 마시지 않는다","가끔 마셔봤다 (경험자)","종종 마신다","자주 즐겨 마신다 (애호가)"]},
-  {id:"q2", t:"선호하는 도수는?", type:"scale", opts:["저도수(3도↓)","약함(4~6도)","중간(7~9도)","높음(10~13도)","고도수(14도↑)"]},
+  {id:"q1", t:"탁주/막걸리를 얼마나 마셔봤나요?", type:"scale", opts:["처음이다. (입문자)","잘 마시지 않는다.","가끔 마셔봤다. (경험자)","종종 마신다.","자주 즐겨 마신다 (애호가)"]},
+  {id:"q2", t:"선호하는 막걸리 도수는?", type:"scale", opts:["3~5도 (거의 안 느껴지는)","6~8도 (가볍게 취하는)","9~12도 (적당히 강한)","13~15도 (꽤 취하는)","16도 이상 (강하게 취하는)"]},
   {id:"q3", t:"막걸리 탁도(뿌연 정도) 선호는?", type:"scale", opts:["맑고 투명한 (청명주/청주 스타일)","살짝 뿌연 (탁도 낮은 막걸리)","뽀얗게 뿌연 (일반 막걸리)","일반적으로 탁한","진하게 탁한 (생막걸리/동동주)"]},
-  {id:"q4", t:"단맛을 선호한다", type:"likert"},
-  {id:"q5", t:"신맛을 선호한다", type:"likert"},
-  {id:"q6", t:"청량감(시원함)을 선호한다", type:"likert"},
-  {id:"q7", t:"과일 향을 선호한다", type:"likert"},
-  {id:"q8", t:"긴 여운을 선호한다", type:"likert"},
-  {id:"q9", t:"복잡한 풍미를 선호한다", type:"likert"},
-  {id:"q10", t:"묵직한 바디감을 선호한다", type:"likert"},
-  {id:"q11", t:"맛의 농도가 진한 것을 선호한다", type:"likert"},
-  {id:"q12", t:"높은 도수를 잘 견딘다", type:"likert"},
-  {id:"q13", t:"알콜의 감각을 선호한다", type:"likert"},
-  {id:"q14", t:"탄산감을 선호한다", type:"likert"},
-  {id:"q15", t:"향기 강도가 강한 것을 선호한다", type:"likert"},
-  {id:"q16", t:"꽃 향을 선호한다", type:"likert"},
-  {id:"q17", t:"허브 향을 선호한다", type:"likert"},
-  {id:"q18", t:"과일 향(세부)을 선호한다", type:"likert"},
-  {id:"q19", t:"신선한 향을 선호한다", type:"likert"},
-  {id:"q20", t:"구수한 향을 선호한다", type:"likert"},
-  {id:"q21", t:"알콜 향을 선호한다", type:"likert"},
-  {id:"q22", t:"전반적인 맛 강도가 강한 것을 선호한다", type:"likert"},
-  {id:"q23", t:"가장 선호하는 과일은?", type:"single", opts:["레몬","산딸기","귤","딸기","메론"]},
-  {id:"q24", t:"함께 즐기는 음식은? (복수선택·직접입력 가능)", type:"multi", required:false, opts:["치킨튀김","삼겹살(육류)","해산물(회)","찌개류","매운음식"]},
-  {id:"q25", t:"관심 있는 향은? (복수선택·직접입력 가능)", type:"multi", required:true, opts:["달콤한 과일향","상큼한 과일향","꽃·허브향","약재향","쌀·누룩향"]},
+  {id:"q4", t:"달콤하고 과일향 나는 막걸리가 좋다", type:"likert"},
+  {id:"q5", t:"단맛 없이 깔끔하고 드라이한 막걸리가 좋다", type:"likert"},
+  {id:"q6", t:"안주 없이도 가볍게 마시는 막걸리를 좋아한다", type:"likert"},
+  {id:"q7", t:"술을 마실 때 사이다나 토닉워터를 타 먹는 걸 좋아한다", type:"likert"},
+  {id:"q8", t:"한 모금 마셨을 때 단맛이 먼저 느껴지길 원한다", type:"likert"},
+  {id:"q9", t:"막걸리에 다양한 부재료가 들어가는 것을 좋아한다", type:"likert"},
+  {id:"q10", t:"묵직하고 걸쭉하게 넘어가는 막걸리가 좋다", type:"likert"},
+  {id:"q11", t:"나는 에이드보다 스무디가 좋다.", type:"likert"},
+  {id:"q12", t:"나는 맥주보다 소주가 좋다.", type:"likert"},
+  {id:"q13", t:"나는 술을 마실 때 안주값보다 술값이 더 나온다.", type:"likert"},
+  {id:"q14", t:"탄산이 톡 쏘는 청량한 막걸리가 좋다", type:"likert"},
+  {id:"q15", t:"탄산이 강하면 막걸리 본연의 향을 못 느끼는 것 같다", type:"likert"},
+  {id:"q16", t:"술 마신 후에 남는 잔향을 좋아한다", type:"likert"},
+  {id:"q17", t:"쌀과 누룩의 구수하고 전통적인 향이 좋다", type:"likert"},
+  {id:"q18", t:"과일향이나 꽃향 등 화사하고 독특한 향이 좋다", type:"likert"},
+  {id:"q19", t:"나는 겉절이보다 익은 김치가 좋다.", type:"likert"},
+  {id:"q20", t:"아는 맛이 최고다.", type:"likert"},
+  {id:"q21", t:"도수가 낮아 부담 없이 마실 수 있는 막걸리가 좋다", type:"likert"},
+  {id:"q22", t:"갓 지은 쌀밥 냄새 같은 구수한 향이 좋다", type:"likert"},
+  {id:"q23", t:"내가 선호하는 과일은?", type:"single", opts:["레몬","산딸기","귤","딸기","메론"]},
+  {id:"q24", t:"막걸리와 함께 즐기는 음식은? (복수 선택)", type:"multi", required:false, opts:["치킨/튀김류","삼겹살/육류","해산물/회","찌개류","매운음식(떡볶이, 불닭 등)"]},
+  {id:"q25", t:"관심 있는 막걸리 향은? (복수 선택)", type:"multi", required:true, opts:["복숭아/딸기 같은 달콤한 과일향","유자/레몬 같은 상큼한 과일향","꽃향/허브향","쑥/약초 같은 약재향","쌀/누룩의 구수한 향"]},
 ];
 const AXIS_KO = {sweetness:"단맛", body:"바디", carbonation:"탄산", flavor:"풍미",
   alcohol:"도수", acidity:"산미", aroma_intensity:"향강도", finish:"여운"};
@@ -222,7 +220,7 @@ QUESTIONS.forEach(q => {
   let html = `<div class="qt"><span class="num">Q${q.id.slice(1)}</span>${q.t}</div>`;
   if (q.type === "likert") {
     html += `<div class="scale" data-q="${q.id}">` +
-      LIKERT.map((_, i) => `<label data-v="${i+1}"><input type="radio">${i+1}</label>`).join("") +
+      LIKERT.map((label, i) => `<label data-v="${i+1}"><input type="radio">${label}</label>`).join("") +
       `</div><div class="ends"><span>전혀 아니다</span><span>매우 그렇다</span></div>`;
   } else if (q.type === "scale" || q.type === "single") {
     html += `<div class="${q.type==='single'?'opts':'scale'}" data-q="${q.id}" data-single="1">` +
@@ -298,14 +296,6 @@ document.getElementById("submitBtn").addEventListener("click", () => {
       <span style="width:38px;text-align:right;">${val.toFixed(1)}</span></div>`;
   }).join("");
 
-  // 피드백 축 체크박스 (4개 분류축 + 방향)
-  document.getElementById("fbAxes").innerHTML = ["sweetness","body","carbonation","flavor"].map(k =>
-    `<div class="axis-row" data-axis="${k}">
-       <label style="width:90px;"><input type="checkbox" class="fbAxisChk">${AXIS_KO[k]} 틀림</label>
-       <label><input type="radio" name="dir_${k}" value="high">실제 높음</label>
-       <label><input type="radio" name="dir_${k}" value="low">실제 낮음</label>
-     </div>`).join("");
-
   document.getElementById("resultScreen").classList.remove("hidden");
   document.getElementById("submitBtn").classList.add("hidden");
   form.classList.add("hidden");
@@ -348,26 +338,16 @@ async function sendData(payload) {
 
 document.getElementById("finalSubmit").addEventListener("click", async () => {
   const fbSel = document.querySelector("#fbYesNo label.sel");
-  const isMatch = fbSel ? fbSel.dataset.v === "yes" : null;
-  const wrongAxes = [];
-  if (isMatch === false) {
-    document.querySelectorAll("#fbAxes .axis-row").forEach(row => {
-      const chk = row.querySelector(".fbAxisChk");
-      if (chk && chk.checked) {
-        const dir = row.querySelector("input[type=radio]:checked");
-        wrongAxes.push({ axis: row.dataset.axis, actual_direction: dir ? dir.value : null });
-      }
-    });
-  }
+  const isCorrect = fbSel ? fbSel.dataset.v === "yes" : null;
+  const feedbackReason = (document.getElementById("feedbackReason").value || "").trim();
   const payload = {
     timestamp: new Date().toISOString(),
     answers,
     taste_vector: lastResult.axes,
     bti4: lastResult.bti4,
     feedback: {
-      is_match: isMatch,
-      wrong_axes: wrongAxes,
-      memo: (document.getElementById("fbMemo").value || "").trim(),
+      is_correct: isCorrect,
+      feedback_reason: feedbackReason,
     },
   };
   const res = await sendData(payload);
