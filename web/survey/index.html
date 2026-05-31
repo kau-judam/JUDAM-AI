@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>술BTI 설문</title>
+<style>
+  :root { --pri:#7b4fff; --bg:#faf8ff; --line:#e3dcf5; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Malgun Gothic", sans-serif; background: var(--bg);
+         color: #222; margin: 0; padding: 0 16px 60px; }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  h1 { text-align: center; color: var(--pri); margin: 28px 0 4px; font-size: 24px; }
+  .sub { text-align: center; color: #888; font-size: 13px; margin-bottom: 18px; }
+  .q { background: #fff; border: 1px solid var(--line); border-radius: 12px;
+       padding: 16px 18px; margin: 12px 0; }
+  .q .qt { font-weight: 600; margin-bottom: 12px; font-size: 15px; }
+  .q .qt .num { color: var(--pri); margin-right: 6px; }
+  .scale { display: flex; gap: 6px; flex-wrap: wrap; }
+  .scale label { flex: 1; min-width: 56px; text-align: center; border: 1px solid var(--line);
+       border-radius: 8px; padding: 8px 4px; cursor: pointer; font-size: 13px; background: #fff; }
+  .scale input { display: none; }
+  .scale label.sel { background: var(--pri); color: #fff; border-color: var(--pri); }
+  .ends { display: flex; justify-content: space-between; font-size: 11px; color: #999; margin-top: 6px; }
+  .opts label { display: block; border: 1px solid var(--line); border-radius: 8px;
+       padding: 10px 12px; margin: 6px 0; cursor: pointer; font-size: 14px; }
+  .opts label.sel { background: var(--pri); color: #fff; border-color: var(--pri); }
+  button { background: var(--pri); color: #fff; border: 0; border-radius: 10px;
+       padding: 14px; font-size: 16px; width: 100%; cursor: pointer; margin-top: 18px; }
+  button:disabled { background: #c3b6ef; cursor: not-allowed; }
+  .result { background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px; text-align:center; }
+  .bti-code { font-size: 40px; font-weight: 800; color: var(--pri); letter-spacing: 4px; }
+  .bti-name { font-size: 20px; font-weight: 700; margin: 8px 0; }
+  .axes { text-align:left; margin: 18px 0; }
+  .axis-row { display:flex; align-items:center; gap:8px; margin:5px 0; font-size:13px; }
+  .axis-row .lab { width: 64px; color:#555; }
+  .bar { flex:1; height:10px; background:#eee; border-radius:5px; overflow:hidden; }
+  .bar > i { display:block; height:100%; background:var(--pri); }
+  .fb { text-align:left; margin-top: 16px; }
+  .warn { color:#c00; font-size:12px; text-align:center; }
+  .hidden { display:none; }
+  textarea { width:100%; border:1px solid var(--line); border-radius:8px; padding:8px; font-family:inherit; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>술BTI 설문</h1>
+  <div class="sub">전통주 취향을 8축 맛 벡터 + 4글자 BTI로 분석합니다</div>
+
+  <form id="surveyForm"></form>
+  <div id="warn" class="warn"></div>
+  <button id="submitBtn" type="button">결과 보기</button>
+
+  <!-- 결과 화면 -->
+  <div id="resultScreen" class="hidden">
+    <div class="result">
+      <div class="bti-code" id="rBti"></div>
+      <div class="bti-name" id="rName"></div>
+      <div id="rSummary" style="color:#666;"></div>
+      <div id="rDrinks" style="font-size:13px;color:#888;margin-top:6px;"></div>
+      <div class="axes" id="rAxes"></div>
+    </div>
+
+    <!-- 피드백 -->
+    <div class="q fb">
+      <div class="qt">이 결과가 본인과 맞나요?</div>
+      <div class="scale" id="fbYesNo">
+        <label data-v="yes"><input type="radio" name="fb">예, 맞아요</label>
+        <label data-v="no"><input type="radio" name="fb">아니요</label>
+      </div>
+      <div id="fbDetail" class="hidden" style="margin-top:14px;">
+        <div class="qt" style="font-size:14px;">어느 축이 틀렸나요? (복수선택) — 실제 방향도 알려주세요</div>
+        <div id="fbAxes"></div>
+        <div class="qt" style="font-size:14px;margin-top:10px;">자유 메모 (선택)</div>
+        <textarea id="fbMemo" rows="2" placeholder="예: 실제로는 더 드라이한 걸 좋아해요"></textarea>
+      </div>
+    </div>
+    <button id="finalSubmit" type="button">제출하기</button>
+    <div id="doneMsg" class="warn hidden" style="color:var(--pri);">제출 완료! (현재는 console.log 출력)</div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   ===PORT_START===  (이 블록은 scripts/verify_js_port.py 가 그대로 추출해
+   Node로 실행하여 파이썬 survey_converter 와 대조한다. DOM 참조 금지.)
+   app/core/survey_converter.py 의 계산식/보정/4글자 룰을 1:1 포팅.
+   ===================================================================== */
+function convertSurvey(s) {
+  // q1~q3 보정 base (도수 초기값)  — _get_alcohol_base
+  const ALC_BASE = {1:2.0, 2:4.0, 3:6.0, 4:8.0, 5:10.0};
+  const base = (s.q2 in ALC_BASE) ? ALC_BASE[s.q2] : 5.0;
+
+  // q4~q22 → 8축 (각 _calculate_* 와 동일한 연산 순서/가중치)
+  let sweetness   = (s.q4*0.30 + (8 - s.q5)*0.20 + s.q6*0.10 + s.q7*0.15 + s.q8*0.15 + s.q9*0.10) / 7 * 10;
+  let body        = (s.q10*0.35 + s.q11*0.25 + s.q13*0.25 + (8 - s.q6)*0.15) / 7 * 10;
+  let carbonation = (s.q14*0.40 + (8 - s.q15)*0.35 + s.q7*0.25) / 7 * 10;
+  let flavor      = ((8 - s.q17)*0.20 + s.q18*0.30 + (8 - s.q20)*0.25 + s.q9*0.25) / 7 * 10;
+  const calculated = ((8 - s.q21)*0.40 + s.q12*0.35 + s.q13*0.25) / 7 * 10;
+  let alcohol     = calculated*0.7 + base*0.3;
+  let acidity     = ((8 - s.q5)*0.30 + s.q14*0.20 + s.q19*0.30 + s.q18*0.20) / 7 * 10;
+  let aroma_intensity = ((8 - s.q15)*0.30 + s.q16*0.30 + s.q17*0.20 + s.q18*0.20) / 7 * 10;
+  let finish      = (s.q8*0.35 + s.q16*0.35 + (8 - s.q14)*0.30) / 7 * 10;
+
+  // q23: 과일 선호 반영  — fruit_taste_map
+  const FRUIT = {1:{citrus:8.0}, 2:{berry:8.0}, 3:{citrus:7.0}, 4:{berry:8.0}, 5:{tropical:8.0}};
+  const ft = FRUIT[s.q23] || {};
+  for (const key in ft) {
+    const value = ft[key];
+    if (key === 'citrus')        aroma_intensity = Math.min(10, aroma_intensity + value*0.1);
+    else if (key === 'berry')    flavor          = Math.min(10, flavor + value*0.1);
+    else if (key === 'tropical') sweetness       = Math.min(10, sweetness + value*0.1);
+  }
+
+  // q25: 향기 선호 반영  — aroma_map (리스트 순서대로)
+  const AROMA = {1:'other_fruit', 2:'citrus', 3:'flower', 4:'herb', 5:'rice'};
+  for (const code of (s.q25 || [])) {
+    const a = AROMA[code];
+    if (a === 'other_fruit') flavor          = Math.min(10, flavor + 0.7);
+    else if (a === 'citrus') aroma_intensity = Math.min(10, aroma_intensity + 0.7);
+    else if (a === 'flower') aroma_intensity = Math.min(10, aroma_intensity + 0.7);
+    else if (a === 'herb')   flavor          = Math.min(10, flavor + 0.7);
+    else if (a === 'rice')   body            = Math.min(10, body + 0.7);
+  }
+
+  const axes = { sweetness, body, carbonation, flavor, alcohol, acidity, aroma_intensity, finish };
+
+  // 4글자 BTI 룰 (alcohol 제외, 임계 5) — _determine_bti_rule_based 앞 4글자
+  const bti4 =
+      (sweetness   >= 5 ? 'S' : 'D') +
+      (body        >= 5 ? 'H' : 'L') +
+      (carbonation >= 5 ? 'F' : 'M') +
+      (flavor      >= 5 ? 'U' : 'C');
+
+  return { axes, bti4 };
+}
+
+// 4글자 BTI → 캐릭터명/추천주 (BTI_TYPE_MAPPING 에서 H/L 공통분 추출)
+const BTI4_INFO = {
+  SHFC:{name:"꿀단지에 빠진 인절미", drinks:["꿀 막걸리","밤 막걸리","탄산 생막걸리"]},
+  SHFU:{name:"탄산 톡톡 딸기 요거트", drinks:["딸기 탄산막걸리","복숭아 생막걸리","유자 탁주"]},
+  SHMC:{name:"쫀득쫀득 꿀 찹쌀떡", drinks:["찹쌀탁주","원주 막걸리","고구마 막걸리"]},
+  SHMU:{name:"포근포근 꽃복숭아", drinks:["망고 막걸리","블루베리 탁주","샤인머스캣 막걸리"]},
+  SLFC:{name:"청량함 가득 사과 푸딩", drinks:["저도수 생막걸리","쌀 막걸리","캔 막걸리"]},
+  SLFU:{name:"팝핑 과일 에이드", drinks:["자몽 막걸리","레몬 탁주","오미자 탄산막걸리"]},
+  SLMC:{name:"햇살 머금은 식혜", drinks:["맑은 탁주","단술","저도수 쌀막걸리"]},
+  SLMU:{name:"산들바람 머금은 화전", drinks:["꽃잎 막걸리","허브 탁주","사과 막걸리"]},
+  DHFC:{name:"바삭하게 터지는 현미 누룽지", drinks:["고도수 생막걸리","드라이한 탁주","호밀 막걸리"]},
+  DHFU:{name:"반전매력 고추냉이", drinks:["오미자 탄산막걸리","생강 탁주","쑥 막걸리"]},
+  DHMC:{name:"묵묵한 바위 속 숭늉", drinks:["무감미료 탁주","고도수 원주","옥수수 막걸리"]},
+  DHMU:{name:"안개 낀 숲속의 황금사과", drinks:["산미 특화 막걸리","약재 향 탁주","드라이 과일막걸리"]},
+  DLFC:{name:"청량한 대나무 숲의 차", drinks:["가벼운 드라이 막걸리","탄산 약주","쌀 생막걸리"]},
+  DLFU:{name:"차가운 도시의 샹그리아", drinks:["드라이 유자막걸리","진저 탁주","탄산 베리막걸리"]},
+  DLMC:{name:"대숲에 앉은 맑은 백설기", drinks:["정통 드라이 탁주","맑은 막걸리","가벼운 누룩주"]},
+  DLMU:{name:"빗소리 들리는 다실의 꽃차", drinks:["산미 있는 가벼운 탁주","허브 드라이막걸리","차 콜라보 막걸리"]},
+};
+
+// 맛 요약 — convert() 의 taste_profile_summary 로직 포팅 (raw 값 기준)
+const _CONJ = {"달콤한":"달콤하고","드라이한":"드라이하고","청량한":"청량하고","부드러운":"부드럽고",
+  "묵직한":"묵직하고","가벼운":"가볍고","향이 풍부한":"향이 풍부하고","산미 있는":"산미 있고","여운이 긴":"여운이 길고"};
+function tasteSummary(a) {
+  const scored = [];
+  if (a.sweetness >= 6) scored.push(["달콤한", a.sweetness]); else if (a.sweetness <= 4) scored.push(["드라이한", 10 - a.sweetness]);
+  if (a.carbonation >= 6) scored.push(["청량한", a.carbonation]); else if (a.carbonation <= 4) scored.push(["부드러운", 10 - a.carbonation]);
+  if (a.body >= 6) scored.push(["묵직한", a.body]); else if (a.body <= 4) scored.push(["가벼운", 10 - a.body]);
+  if (a.aroma_intensity >= 6) scored.push(["향이 풍부한", a.aroma_intensity]);
+  if (a.acidity >= 6) scored.push(["산미 있는", a.acidity]);
+  if (a.finish >= 6) scored.push(["여운이 긴", a.finish]);
+  scored.sort((x, y) => y[1] - x[1]);
+  const top = scored.slice(0, 3).map(d => d[0]);
+  if (top.length === 0) return "균형 잡힌 취향";
+  if (top.length === 1) return `${top[0]} 취향`;
+  if (top.length === 2) return `${_CONJ[top[0]] || top[0]} ${top[1]} 취향`;
+  return `${_CONJ[top[0]] || top[0]} ${_CONJ[top[1]] || top[1]} ${top[2]} 취향`;
+}
+/* ===PORT_END=== */
+
+// Node 환경(검증 하니스)에서 export
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { convertSurvey, tasteSummary };
+}
+
+/* ============== 이하 브라우저 UI (검증과 무관) ============== */
+if (typeof document !== 'undefined') {
+
+const LIKERT = ["1 전혀","2","3","4","5","6","7 매우"];
+const QUESTIONS = [
+  {id:"q1", t:"탁주/막걸리를 얼마나 마셔봤나요?", type:"scale", opts:["처음이다 (입문자)","잘 마시지 않는다","가끔 마셔봤다 (경험자)","종종 마신다","자주 즐겨 마신다 (애호가)"]},
+  {id:"q2", t:"선호하는 도수는?", type:"scale", opts:["저도수(3도↓)","약함(4~6도)","중간(7~9도)","높음(10~13도)","고도수(14도↑)"]},
+  {id:"q3", t:"막걸리 탁도(뿌연 정도) 선호는?", type:"scale", opts:["맑고 투명한 (청명주/청주 스타일)","살짝 뿌연 (탁도 낮은 막걸리)","뽀얗게 뿌연 (일반 막걸리)","일반적으로 탁한","진하게 탁한 (생막걸리/동동주)"]},
+  {id:"q4", t:"단맛을 선호한다", type:"likert"},
+  {id:"q5", t:"신맛을 선호한다", type:"likert"},
+  {id:"q6", t:"청량감(시원함)을 선호한다", type:"likert"},
+  {id:"q7", t:"과일 향을 선호한다", type:"likert"},
+  {id:"q8", t:"긴 여운을 선호한다", type:"likert"},
+  {id:"q9", t:"복잡한 풍미를 선호한다", type:"likert"},
+  {id:"q10", t:"묵직한 바디감을 선호한다", type:"likert"},
+  {id:"q11", t:"맛의 농도가 진한 것을 선호한다", type:"likert"},
+  {id:"q12", t:"높은 도수를 잘 견딘다", type:"likert"},
+  {id:"q13", t:"알콜의 감각을 선호한다", type:"likert"},
+  {id:"q14", t:"탄산감을 선호한다", type:"likert"},
+  {id:"q15", t:"향기 강도가 강한 것을 선호한다", type:"likert"},
+  {id:"q16", t:"꽃 향을 선호한다", type:"likert"},
+  {id:"q17", t:"허브 향을 선호한다", type:"likert"},
+  {id:"q18", t:"과일 향(세부)을 선호한다", type:"likert"},
+  {id:"q19", t:"신선한 향을 선호한다", type:"likert"},
+  {id:"q20", t:"구수한 향을 선호한다", type:"likert"},
+  {id:"q21", t:"알콜 향을 선호한다", type:"likert"},
+  {id:"q22", t:"전반적인 맛 강도가 강한 것을 선호한다", type:"likert"},
+  {id:"q23", t:"가장 선호하는 과일은?", type:"single", opts:["레몬","산딸기","귤","딸기","메론"]},
+  {id:"q24", t:"함께 즐기는 음식은? (복수선택·직접입력 가능)", type:"multi", required:false, opts:["치킨튀김","삼겹살(육류)","해산물(회)","찌개류","매운음식"]},
+  {id:"q25", t:"관심 있는 향은? (복수선택·직접입력 가능)", type:"multi", required:true, opts:["달콤한 과일향","상큼한 과일향","꽃·허브향","약재향","쌀·누룩향"]},
+];
+const AXIS_KO = {sweetness:"단맛", body:"바디", carbonation:"탄산", flavor:"풍미",
+  alcohol:"도수", acidity:"산미", aroma_intensity:"향강도", finish:"여운"};
+const answers = {};
+
+const form = document.getElementById("surveyForm");
+QUESTIONS.forEach(q => {
+  const div = document.createElement("div");
+  div.className = "q";
+  let html = `<div class="qt"><span class="num">Q${q.id.slice(1)}</span>${q.t}</div>`;
+  if (q.type === "likert") {
+    html += `<div class="scale" data-q="${q.id}">` +
+      LIKERT.map((_, i) => `<label data-v="${i+1}"><input type="radio">${i+1}</label>`).join("") +
+      `</div><div class="ends"><span>전혀 아니다</span><span>매우 그렇다</span></div>`;
+  } else if (q.type === "scale" || q.type === "single") {
+    html += `<div class="${q.type==='single'?'opts':'scale'}" data-q="${q.id}" data-single="1">` +
+      q.opts.map((o, i) => `<label data-v="${i+1}"><input type="radio">${o||(i+1)}</label>`).join("") + `</div>`;
+  } else { // multi (복수선택 + 직접입력)
+    html += `<div class="opts" data-q="${q.id}" data-multi="1">` +
+      q.opts.map((o, i) => `<label data-v="${i+1}"><input type="checkbox">${o}</label>`).join("") +
+      `<input class="multi-text" type="text" placeholder="기타 (직접입력, 선택)" ` +
+      `style="margin-top:6px;border:1px solid var(--line);border-radius:8px;padding:9px 12px;width:100%;font-family:inherit;">` +
+      `</div>`;
+  }
+  div.innerHTML = html;
+  form.appendChild(div);
+});
+
+// 단일선택(라디오)만 click 으로 처리. 복수선택은 네이티브 체크박스 + change 로 처리
+// (라벨 클릭 시 라벨+input 합성클릭 이중 발화로 토글이 상쇄돼 빈 배열이 되던 버그 회피).
+form.addEventListener("click", e => {
+  const lab = e.target.closest("label[data-v]");
+  if (!lab) return;
+  const group = lab.closest("[data-q]");
+  if (group.dataset.multi) return;
+  group.querySelectorAll("label").forEach(l => l.classList.remove("sel"));
+  lab.classList.add("sel");
+  answers[group.dataset.q] = parseInt(lab.dataset.v);
+});
+// 복수선택: 체크 변경 시 'sel' 표시만 갱신(값은 제출 시 DOM 에서 직접 수집).
+form.addEventListener("change", e => {
+  if (e.target.matches('input[type="checkbox"]')) {
+    e.target.closest("label").classList.toggle("sel", e.target.checked);
+  }
+});
+
+// 복수선택 문항 값 수집: 체크된 보기 인덱스 배열 + 직접입력 텍스트.
+function collectMulti(qid) {
+  const group = form.querySelector(`[data-q="${qid}"]`);
+  const codes = [...group.querySelectorAll('input[type="checkbox"]:checked')]
+    .map(c => parseInt(c.closest("label").dataset.v));
+  const textEl = group.querySelector(".multi-text");
+  const text = textEl ? textEl.value.trim() : "";
+  return { codes, text };
+}
+
+let lastResult = null;
+document.getElementById("submitBtn").addEventListener("click", () => {
+  const missing = [];
+  QUESTIONS.forEach(q => {
+    if (q.type === "multi") {
+      const { codes, text } = collectMulti(q.id);
+      answers[q.id] = codes;            // 변환기 입력(인덱스 배열)
+      answers[q.id + "_text"] = text;   // 직접입력은 별도 저장(변환기 미사용)
+      if (q.required && codes.length === 0 && text === "") missing.push(q.id);
+    } else if (!(q.id in answers)) {
+      missing.push(q.id);
+    }
+  });
+  const warn = document.getElementById("warn");
+  if (missing.length) { warn.textContent = `미응답 ${missing.length}문항: ${missing.join(", ")}`; return; }
+  warn.textContent = "";
+
+  const r = convertSurvey(answers);
+  lastResult = r;
+  const info = BTI4_INFO[r.bti4] || {name:"", drinks:[]};
+  document.getElementById("rBti").textContent = r.bti4;
+  document.getElementById("rName").textContent = info.name;
+  document.getElementById("rSummary").textContent = tasteSummary(r.axes);
+  document.getElementById("rDrinks").textContent = info.drinks.length ? "추천: " + info.drinks.join(", ") : "";
+  const axesBox = document.getElementById("rAxes");
+  axesBox.innerHTML = Object.keys(AXIS_KO).map(k => {
+    const val = Math.round(r.axes[k] * 100) / 100;
+    return `<div class="axis-row"><span class="lab">${AXIS_KO[k]}</span>
+      <span class="bar"><i style="width:${val*10}%"></i></span>
+      <span style="width:38px;text-align:right;">${val.toFixed(1)}</span></div>`;
+  }).join("");
+
+  // 피드백 축 체크박스 (4개 분류축 + 방향)
+  document.getElementById("fbAxes").innerHTML = ["sweetness","body","carbonation","flavor"].map(k =>
+    `<div class="axis-row" data-axis="${k}">
+       <label style="width:90px;"><input type="checkbox" class="fbAxisChk">${AXIS_KO[k]} 틀림</label>
+       <label><input type="radio" name="dir_${k}" value="high">실제 높음</label>
+       <label><input type="radio" name="dir_${k}" value="low">실제 낮음</label>
+     </div>`).join("");
+
+  document.getElementById("resultScreen").classList.remove("hidden");
+  document.getElementById("submitBtn").classList.add("hidden");
+  form.classList.add("hidden");
+  document.getElementById("resultScreen").scrollIntoView({behavior:"smooth"});
+});
+
+document.getElementById("fbYesNo").addEventListener("click", e => {
+  const lab = e.target.closest("label[data-v]");
+  if (!lab) return;
+  document.querySelectorAll("#fbYesNo label").forEach(l => l.classList.remove("sel"));
+  lab.classList.add("sel");
+  document.getElementById("fbDetail").classList.toggle("hidden", lab.dataset.v !== "no");
+});
+
+// ===== 구글시트 연동 설정 =====
+// 배포한 Apps Script 웹앱 URL 을 여기에 붙여넣으세요. 비어 있으면 console.log 로만 출력(fallback).
+const SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyvz8xdw6czMWw_JEa3iD6Jl9VBbkxUAL1T_LrnMo-TmXp2bRKNc9AY0-aI0GcqhQhC/exec";
+
+// 전송부 — Apps Script 웹앱으로 POST. 반환: {ok:전송성공, stored:시트저장시도됨}
+async function sendData(payload) {
+  if (!SHEET_WEBHOOK_URL) {
+    console.log("[SURVEY SUBMIT]", JSON.stringify(payload, null, 2));
+    return { ok: true, stored: false };   // URL 미설정 → 로컬 로그만
+  }
+  try {
+    // Apps Script 는 CORS 프리플라이트 처리를 안 하므로 '단순요청'으로 보낸다:
+    // mode:'no-cors' + Content-Type text/plain → 프리플라이트 없음. (응답은 opaque)
+    await fetch(SHEET_WEBHOOK_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload),
+    });
+    return { ok: true, stored: true };     // 네트워크 성공(본문 파싱 불가)
+  } catch (e) {
+    console.warn("설문 전송 실패:", e);
+    return { ok: false, stored: false };   // 네트워크 실패
+  }
+}
+
+document.getElementById("finalSubmit").addEventListener("click", async () => {
+  const fbSel = document.querySelector("#fbYesNo label.sel");
+  const isMatch = fbSel ? fbSel.dataset.v === "yes" : null;
+  const wrongAxes = [];
+  if (isMatch === false) {
+    document.querySelectorAll("#fbAxes .axis-row").forEach(row => {
+      const chk = row.querySelector(".fbAxisChk");
+      if (chk && chk.checked) {
+        const dir = row.querySelector("input[type=radio]:checked");
+        wrongAxes.push({ axis: row.dataset.axis, actual_direction: dir ? dir.value : null });
+      }
+    });
+  }
+  const payload = {
+    timestamp: new Date().toISOString(),
+    answers,
+    taste_vector: lastResult.axes,
+    bti4: lastResult.bti4,
+    feedback: {
+      is_match: isMatch,
+      wrong_axes: wrongAxes,
+      memo: (document.getElementById("fbMemo").value || "").trim(),
+    },
+  };
+  const res = await sendData(payload);
+  const done = document.getElementById("doneMsg");
+  if (res.stored)      done.textContent = "응답이 저장되었습니다. 감사합니다!";
+  else if (res.ok)     done.textContent = "제출 완료 (로컬 로그). 결과는 정상입니다.";
+  else                 done.textContent = "저장 실패 — 네트워크 문제 (결과 화면은 정상입니다).";
+  done.classList.remove("hidden");
+  // 전송 성공/실패와 무관하게 결과·캐릭터 화면은 그대로 유지됨.
+});
+
+} // end browser UI
+</script>
+</body>
+</html>
