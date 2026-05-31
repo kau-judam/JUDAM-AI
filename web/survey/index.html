@@ -45,7 +45,7 @@
 <body>
 <div class="wrap">
   <h1>술BTI 설문</h1>
-  <div class="sub">전통주 취향을 8축 맛 벡터 + 5글자 BTI로 분석합니다</div>
+  <div class="sub">전통주 취향을 8축 맛 벡터 + 4글자 BTI로 분석합니다</div>
 
   <form id="surveyForm"></form>
   <div id="warn" class="warn"></div>
@@ -69,7 +69,17 @@
         <label data-v="no"><input type="radio" name="fb">아니요</label>
       </div>
       <div id="fbDetail" class="hidden" style="margin-top:14px;">
-        <div class="qt" style="font-size:14px;">어떤 부분이 맞지 않았나요? (선택)</div>
+        <div class="qt" style="font-size:14px;">어떤 축이 맞지 않았나요? (복수 선택 필수)</div>
+        <div class="opts" id="mismatchAxes">
+          <label data-v="sweetness"><input type="checkbox">단맛</label>
+          <label data-v="body"><input type="checkbox">바디감/묵직함</label>
+          <label data-v="carbonation"><input type="checkbox">탄산감</label>
+          <label data-v="flavor"><input type="checkbox">풍미/향</label>
+          <label data-v="alcohol"><input type="checkbox">도수</label>
+          <label data-v="unknown"><input type="checkbox">기타/잘 모르겠음</label>
+        </div>
+        <div id="fbWarn" class="warn" style="margin:8px 0;"></div>
+        <div class="qt" style="font-size:14px;margin-top:12px;">추가 의견 (선택)</div>
         <textarea id="feedbackReason" rows="3" placeholder="예: 실제로는 더 드라이한 막걸리를 좋아해요"></textarea>
       </div>
     </div>
@@ -82,7 +92,7 @@
 /* =====================================================================
    ===PORT_START===  (이 블록은 scripts/verify_js_port.py 가 그대로 추출해
    Node로 실행하여 파이썬 survey_converter 와 대조한다. DOM 참조 금지.)
-   app/core/survey_converter.py 의 계산식/보정/5글자 BTI 룰을 JS로 포팅.
+   app/core/survey_converter.py 의 계산식을 기반으로 하되, 테스트 설문은 4글자 BTI만 저장한다.
    ===================================================================== */
 function toConverterScale(v) {
   // 웹 설문은 1~5 리커트, survey_converter.py 공식은 1~7 리커트.
@@ -104,8 +114,7 @@ function determineBtiCode(a) {
   return (a.sweetness >= 5 ? 'S' : 'D') +
     (a.body >= 5 ? 'H' : 'L') +
     (a.carbonation >= 5 ? 'F' : 'M') +
-    (a.flavor >= 5 ? 'U' : 'C') +
-    (a.alcohol >= 5.5 ? 'H' : 'L');
+    (a.flavor >= 5 ? 'U' : 'C');
 }
 
 function convertSurvey(s) {
@@ -158,15 +167,18 @@ function convertSurvey(s) {
     finish: round2(finish),
   };
   const bti_code = determineBtiCode(taste_vector);
-  const baseInfo = BTI_BASE_INFO[bti_code.slice(0, 4)] || {name:"", drinks:[]};
-  const alcoholSuffix = bti_code.endsWith('H') ? "고도수" : "저도수";
-  const character_name = baseInfo.name ? `${baseInfo.name} (${alcoholSuffix})` : "";
+  const baseInfo = BTI_BASE_INFO[bti_code] || {name:"", drinks:[]};
+  const alcohol_preference = alcohol >= 5.5 ? "high" : "low";
+  const alcohol_label = alcohol_preference === "high" ? "고도수 선호" : "저도수 선호";
   return {
     status: "success",
     taste_vector,
     bti_code,
-    character_name,
-    alcohol_label: alcohol >= 9.0 ? "고도수(9도 이상)" : "저도수(8도 이하)",
+    character_name: baseInfo.name || "",
+    result_title: baseInfo.name || "",
+    alcohol_score: round2(alcohol),
+    alcohol_preference,
+    alcohol_label,
     experience_level: c.q1 <= 2 ? "입문자" : (c.q1 === 3 ? "중급자" : "전문가"),
     preferred_abv: ({1:"저도수(3도 이하)", 2:"약한 도수(4~6도)", 3:"중간 도수(7~9도)", 4:"높은 도수(10~13도)", 5:"고도수(14도 이상)"})[c.q2] || "",
     preferred_body: ({1:"매우 가벼움", 2:"가벼움", 3:"보통", 4:"묵직함", 5:"매우 묵직함"})[c.q3] || "",
@@ -181,7 +193,7 @@ function convertSurvey(s) {
   };
 }
 
-// BTI 기본 유형 → 캐릭터명/추천주. alcohol H/L suffix는 convertSurvey에서 붙인다.
+// BTI 기본 유형 → 캐릭터명/추천주.
 const BTI_BASE_INFO = {
   SHFC:{name:"꿀단지에 빠진 인절미", drinks:["꿀 막걸리","밤 막걸리","탄산 생막걸리"]},
   SHFU:{name:"탄산 톡톡 딸기 요거트", drinks:["딸기 탄산막걸리","복숭아 생막걸리","유자 탁주"]},
@@ -262,6 +274,7 @@ const AXIS_KO = {sweetness:"단맛", body:"바디", carbonation:"탄산", flavor
 const answers = {};
 
 const form = document.getElementById("surveyForm");
+form.addEventListener("submit", e => e.preventDefault());
 QUESTIONS.forEach(q => {
   const div = document.createElement("div");
   div.className = "q";
@@ -354,7 +367,22 @@ document.getElementById("fbYesNo").addEventListener("click", e => {
   if (!lab) return;
   document.querySelectorAll("#fbYesNo label").forEach(l => l.classList.remove("sel"));
   lab.classList.add("sel");
-  document.getElementById("fbDetail").classList.toggle("hidden", lab.dataset.v !== "no");
+  const isNo = lab.dataset.v === "no";
+  document.getElementById("fbDetail").classList.toggle("hidden", !isNo);
+  document.getElementById("fbWarn").textContent = "";
+  if (!isNo) {
+    document.querySelectorAll("#mismatchAxes input[type='checkbox']").forEach(input => {
+      input.checked = false;
+      input.closest("label").classList.remove("sel");
+    });
+  }
+});
+
+document.getElementById("mismatchAxes").addEventListener("change", e => {
+  if (e.target.matches('input[type="checkbox"]')) {
+    e.target.closest("label").classList.toggle("sel", e.target.checked);
+    document.getElementById("fbWarn").textContent = "";
+  }
 });
 
 // ===== 구글시트 연동 설정 =====
@@ -383,29 +411,65 @@ async function sendData(payload) {
   }
 }
 
-document.getElementById("finalSubmit").addEventListener("click", async () => {
+document.getElementById("finalSubmit").addEventListener("click", async event => {
+  event.preventDefault();
+  const submitButton = document.getElementById("finalSubmit");
+  if (submitButton.disabled) return;
   const fbSel = document.querySelector("#fbYesNo label.sel");
   const isCorrect = fbSel ? fbSel.dataset.v === "yes" : null;
+  const mismatchAxes = [...document.querySelectorAll("#mismatchAxes input[type='checkbox']:checked")]
+    .map(input => input.closest("label").dataset.v);
   const feedbackReason = (document.getElementById("feedbackReason").value || "").trim();
+  const done = document.getElementById("doneMsg");
+  const fbWarn = document.getElementById("fbWarn");
+  done.classList.add("hidden");
+  done.textContent = "";
+  if (isCorrect === null) {
+    done.textContent = "결과가 맞는지 먼저 선택해 주세요.";
+    done.classList.remove("hidden");
+    return;
+  }
+  if (isCorrect === false && mismatchAxes.length === 0) {
+    fbWarn.textContent = "맞지 않은 축을 하나 이상 선택해 주세요.";
+    return;
+  }
+  const flatAnswers = {};
+  for (let i = 1; i <= 25; i += 1) flatAnswers[`q${i}`] = answers[`q${i}`];
+  flatAnswers.q24_text = answers.q24_text || "";
+  flatAnswers.q25_text = answers.q25_text || "";
   const payload = {
     timestamp: new Date().toISOString(),
+    ...flatAnswers,
     answers,
     taste_vector: lastResult.taste_vector,
     bti_code: lastResult.bti_code,
     character_name: lastResult.character_name,
+    result_title: lastResult.result_title,
     taste_profile_summary: lastResult.taste_profile_summary,
+    alcohol_score: lastResult.alcohol_score,
+    alcohol_preference: lastResult.alcohol_preference,
     calculation_source: "local_js",
+    is_correct: isCorrect,
+    mismatch_axes: mismatchAxes,
+    feedback_reason: feedbackReason,
     calculation_result: lastResult,
     feedback: {
       is_correct: isCorrect,
+      mismatch_axes: mismatchAxes,
       feedback_reason: feedbackReason,
     },
   };
+  submitButton.disabled = true;
+  submitButton.textContent = "저장 중...";
   const res = await sendData(payload);
-  const done = document.getElementById("doneMsg");
-  if (res.stored)      done.textContent = "응답이 저장되었습니다. 감사합니다!";
-  else if (res.ok)     done.textContent = "제출 완료 (로컬 로그). 결과는 정상입니다.";
-  else                 done.textContent = "저장 실패 — 네트워크 문제 (결과 화면은 정상입니다).";
+  if (res.ok) {
+    done.textContent = "응답이 저장되었습니다. 감사합니다!";
+    submitButton.textContent = "제출 완료";
+  } else {
+    done.textContent = "저장 실패 - 네트워크 문제입니다. 잠시 후 다시 시도해 주세요.";
+    submitButton.disabled = false;
+    submitButton.textContent = "제출하기";
+  }
   done.classList.remove("hidden");
   // 전송 성공/실패와 무관하게 결과·캐릭터 화면은 그대로 유지됨.
 });

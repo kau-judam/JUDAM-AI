@@ -21,13 +21,15 @@ var SHEET_NAME = 'responses';
 
 var HEADERS = [
   'timestamp',
+  'bti_code', 'character_name', 'result_title', 'taste_vector_json', 'taste_profile_summary',
+  'alcohol_score', 'alcohol_preference', 'calculation_source',
+  'is_correct', 'mismatch_axes', 'feedback_reason',
   'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12',
   'q13', 'q14', 'q15', 'q16', 'q17', 'q18', 'q19', 'q20', 'q21', 'q22',
   'q23', 'q24', 'q25', 'q24_text', 'q25_text',
   'sweetness', 'body', 'carbonation', 'flavor', 'alcohol', 'acidity',
   'aroma_intensity', 'finish',
-  'bti_code', 'character_name', 'taste_profile_summary', 'calculation_source',
-  'is_correct', 'feedback_reason', 'calculation_result_json'
+  'calculation_result_json'
 ];
 
 function _sheet() {
@@ -44,31 +46,52 @@ function _sheet() {
 
 function doPost(e) {
   try {
-    var data = JSON.parse(e.postData.contents);
+    if (!e || !e.postData || !e.postData.contents) {
+      return _json({ status: 'error', message: 'empty request body' });
+    }
+
+    var data;
+    try {
+      data = JSON.parse(e.postData.contents);
+    } catch (parseErr) {
+      return _json({ status: 'error', message: 'invalid JSON: ' + String(parseErr) });
+    }
+
     var a = data.answers || {};
     var tv = data.taste_vector || {};
     var fb = data.feedback || {};
+    var mismatchAxes = data.mismatch_axes || fb.mismatch_axes || [];
+    var isCorrect = data.is_correct;
+    if (isCorrect === undefined) isCorrect = fb.is_correct;
 
     // q1~q25 (q24/q25 는 배열 → 콤마 결합)
     var qVals = [];
     for (var i = 1; i <= 25; i++) {
-      var v = a['q' + i];
+      var v = data['q' + i];
+      if (v === undefined) v = a['q' + i];
       qVals.push(Array.isArray(v) ? v.join(',') : (v == null ? '' : v));
     }
 
     var row = [data.timestamp || new Date().toISOString()]
-      .concat(qVals)
       .concat([
-        a.q24_text || '',
-        a.q25_text || '',
-        tv.sweetness, tv.body, tv.carbonation, tv.flavor,
-        tv.alcohol, tv.acidity, tv.aroma_intensity, tv.finish,
         data.bti_code || '',
         data.character_name || '',
+        data.result_title || data.character_name || '',
+        JSON.stringify(tv || {}),
         data.taste_profile_summary || '',
+        data.alcohol_score,
+        data.alcohol_preference || '',
         data.calculation_source || '',
-        fb.is_correct,
-        fb.feedback_reason || '',
+        isCorrect,
+        Array.isArray(mismatchAxes) ? mismatchAxes.join(',') : mismatchAxes,
+        data.feedback_reason || fb.feedback_reason || ''
+      ])
+      .concat(qVals)
+      .concat([
+        data.q24_text || a.q24_text || '',
+        data.q25_text || a.q25_text || '',
+        tv.sweetness, tv.body, tv.carbonation, tv.flavor,
+        tv.alcohol, tv.acidity, tv.aroma_intensity, tv.finish,
         JSON.stringify(data.calculation_result || {})
       ]);
 
