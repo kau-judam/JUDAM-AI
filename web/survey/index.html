@@ -419,7 +419,9 @@ document.getElementById("finalSubmit").addEventListener("click", async event => 
   const isCorrect = fbSel ? fbSel.dataset.v === "yes" : null;
   const mismatchAxes = [...document.querySelectorAll("#mismatchAxes input[type='checkbox']:checked")]
     .map(input => input.closest("label").dataset.v);
+  const wrongAxes = mismatchAxes;
   const feedbackReason = (document.getElementById("feedbackReason").value || "").trim();
+  const isMatch = isCorrect === true ? "맞음" : "아님";
   const done = document.getElementById("doneMsg");
   const fbWarn = document.getElementById("fbWarn");
   done.classList.add("hidden");
@@ -442,6 +444,7 @@ document.getElementById("finalSubmit").addEventListener("click", async event => 
     ...flatAnswers,
     answers,
     taste_vector: lastResult.taste_vector,
+    bti4: lastResult.bti_code,
     bti_code: lastResult.bti_code,
     character_name: lastResult.character_name,
     result_title: lastResult.result_title,
@@ -449,13 +452,19 @@ document.getElementById("finalSubmit").addEventListener("click", async event => 
     alcohol_score: lastResult.alcohol_score,
     alcohol_preference: lastResult.alcohol_preference,
     calculation_source: "local_js",
+    is_match: isMatch,
     is_correct: isCorrect,
+    wrong_axes: wrongAxes,
     mismatch_axes: mismatchAxes,
+    memo: feedbackReason,
     feedback_reason: feedbackReason,
     calculation_result: lastResult,
     feedback: {
+      is_match: isMatch,
       is_correct: isCorrect,
+      wrong_axes: wrongAxes,
       mismatch_axes: mismatchAxes,
+      memo: feedbackReason,
       feedback_reason: feedbackReason,
     },
   };

@@ -21,6 +21,7 @@ var SHEET_NAME = 'responses';
 
 var HEADERS = [
   'timestamp',
+  'bti4', 'is_match', 'wrong_axes', 'memo',
   'bti_code', 'character_name', 'result_title', 'taste_vector_json', 'taste_profile_summary',
   'alcohol_score', 'alcohol_preference', 'calculation_source',
   'is_correct', 'mismatch_axes', 'feedback_reason',
@@ -60,9 +61,19 @@ function doPost(e) {
     var a = data.answers || {};
     var tv = data.taste_vector || {};
     var fb = data.feedback || {};
+    var bti4 = data.bti4 || data.bti_code || '';
     var mismatchAxes = data.mismatch_axes || fb.mismatch_axes || [];
+    var wrongAxes = data.wrong_axes || fb.wrong_axes || mismatchAxes;
+    var memo = data.memo || data.feedback_reason || fb.memo || fb.feedback_reason || '';
     var isCorrect = data.is_correct;
     if (isCorrect === undefined) isCorrect = fb.is_correct;
+    var isMatch = data.is_match;
+    if (isMatch === undefined || isMatch === '') isMatch = fb.is_match;
+    if (isMatch === undefined || isMatch === '') isMatch = isCorrect;
+    if (isMatch === true) isMatch = '맞음';
+    if (isMatch === false) isMatch = '아님';
+    var wrongAxesText = Array.isArray(wrongAxes) ? wrongAxes.join(',') : (wrongAxes || '');
+    var mismatchAxesText = Array.isArray(mismatchAxes) ? mismatchAxes.join(',') : (mismatchAxes || '');
 
     // q1~q25 (q24/q25 는 배열 → 콤마 결합)
     var qVals = [];
@@ -74,7 +85,11 @@ function doPost(e) {
 
     var row = [data.timestamp || new Date().toISOString()]
       .concat([
-        data.bti_code || '',
+        bti4,
+        isMatch,
+        wrongAxesText,
+        memo,
+        data.bti_code || bti4,
         data.character_name || '',
         data.result_title || data.character_name || '',
         JSON.stringify(tv || {}),
@@ -83,8 +98,8 @@ function doPost(e) {
         data.alcohol_preference || '',
         data.calculation_source || '',
         isCorrect,
-        Array.isArray(mismatchAxes) ? mismatchAxes.join(',') : mismatchAxes,
-        data.feedback_reason || fb.feedback_reason || ''
+        mismatchAxesText,
+        data.feedback_reason || fb.feedback_reason || memo
       ])
       .concat(qVals)
       .concat([
