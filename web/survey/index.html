@@ -71,12 +71,12 @@
       <div id="fbDetail" class="hidden" style="margin-top:14px;">
         <div class="qt" style="font-size:14px;">어떤 축이 맞지 않았나요? (복수 선택 필수)</div>
         <div class="opts" id="mismatchAxes">
-          <label data-v="sweetness"><input type="checkbox">단맛</label>
-          <label data-v="body"><input type="checkbox">바디감/묵직함</label>
-          <label data-v="carbonation"><input type="checkbox">탄산감</label>
-          <label data-v="flavor"><input type="checkbox">풍미/향</label>
-          <label data-v="alcohol"><input type="checkbox">도수</label>
-          <label data-v="unknown"><input type="checkbox">기타/잘 모르겠음</label>
+          <label data-v="sweetness" data-label="단맛"><input type="checkbox" value="sweetness">단맛</label>
+          <label data-v="body" data-label="바디감/묵직함"><input type="checkbox" value="body">바디감/묵직함</label>
+          <label data-v="carbonation" data-label="탄산감"><input type="checkbox" value="carbonation">탄산감</label>
+          <label data-v="flavor" data-label="풍미/향"><input type="checkbox" value="flavor">풍미/향</label>
+          <label data-v="alcohol" data-label="도수"><input type="checkbox" value="alcohol">도수</label>
+          <label data-v="other" data-label="기타/잘 모르겠음"><input type="checkbox" value="other">기타/잘 모르겠음</label>
         </div>
         <div id="fbWarn" class="warn" style="margin:8px 0;"></div>
         <div class="qt" style="font-size:14px;margin-top:12px;">추가 의견 (선택)</div>
@@ -304,6 +304,11 @@ form.addEventListener("click", e => {
   if (!lab) return;
   const group = lab.closest("[data-q]");
   if (group.dataset.multi) return;
+  if (group.dataset.q === "q23" && lab.classList.contains("sel")) {
+    lab.classList.remove("sel");
+    delete answers.q23;
+    return;
+  }
   group.querySelectorAll("label").forEach(l => l.classList.remove("sel"));
   lab.classList.add("sel");
   answers[group.dataset.q] = parseInt(lab.dataset.v);
@@ -417,9 +422,19 @@ document.getElementById("finalSubmit").addEventListener("click", async event => 
   if (submitButton.disabled) return;
   const fbSel = document.querySelector("#fbYesNo label.sel");
   const isCorrect = fbSel ? fbSel.dataset.v === "yes" : null;
-  const mismatchAxes = [...document.querySelectorAll("#mismatchAxes input[type='checkbox']:checked")]
-    .map(input => input.closest("label").dataset.v);
-  const wrongAxes = mismatchAxes;
+  const selectedAxisLabels = [...document.querySelectorAll("#mismatchAxes input[type='checkbox']:checked")]
+    .map(input => {
+      const label = input.closest("label");
+      return {
+        value: input.value || label.dataset.v,
+        axis: label.dataset.v,
+        key: label.dataset.v,
+        label: label.dataset.label || label.textContent.trim(),
+      };
+    })
+    .filter(axis => axis.value && axis.label);
+  const mismatchAxes = selectedAxisLabels.map(axis => axis.value);
+  const wrongAxes = selectedAxisLabels;
   const feedbackReason = (document.getElementById("feedbackReason").value || "").trim();
   const isMatch = isCorrect === true ? "맞음" : "아님";
   const done = document.getElementById("doneMsg");

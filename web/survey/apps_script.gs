@@ -45,6 +45,23 @@ function _sheet() {
   return sh;
 }
 
+function _axisText(value) {
+  if (!value) return '';
+  if (typeof value === 'string') return value;
+  var key = value.value || value.axis || value.key || value.code || '';
+  var label = value.label || value.name || value.text || '';
+  if (key && label) return key + ':' + label;
+  return label || key || '';
+}
+
+function _axesText(value) {
+  if (!value) return '';
+  if (Array.isArray(value)) {
+    return value.map(_axisText).filter(Boolean).join(',');
+  }
+  return _axisText(value);
+}
+
 function doPost(e) {
   try {
     if (!e || !e.postData || !e.postData.contents) {
@@ -72,8 +89,8 @@ function doPost(e) {
     if (isMatch === undefined || isMatch === '') isMatch = isCorrect;
     if (isMatch === true) isMatch = '맞음';
     if (isMatch === false) isMatch = '아님';
-    var wrongAxesText = Array.isArray(wrongAxes) ? wrongAxes.join(',') : (wrongAxes || '');
-    var mismatchAxesText = Array.isArray(mismatchAxes) ? mismatchAxes.join(',') : (mismatchAxes || '');
+    var wrongAxesText = _axesText(wrongAxes);
+    var mismatchAxesText = _axesText(mismatchAxes);
 
     // q1~q25 (q24/q25 는 배열 → 콤마 결합)
     var qVals = [];
