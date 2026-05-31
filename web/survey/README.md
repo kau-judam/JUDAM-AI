@@ -1,6 +1,7 @@
 # 술BTI 설문 페이지 — 배포 체크리스트
 
-정적 페이지(`index.html`) 하나로 동작하며, 제출 데이터는 구글시트(Apps Script 웹앱)에 한 줄씩 저장됩니다.
+정적 페이지(`index.html`) 하나로 동작하며, AI 서버 API 호출 없이 브라우저에서 술BTI를 계산합니다.
+제출 데이터는 구글시트(Apps Script 웹앱)에 한 줄씩 저장됩니다.
 
 ```
 web/survey/
@@ -70,14 +71,15 @@ vercel --prod            # 프로덕션 배포
 2. 제출 시 페이지에 **“응답이 저장되었습니다”** 가 뜨는지 확인
    (URL 미설정이면 “제출 완료 (로컬 로그)”, 네트워크 실패면 “저장 실패…”).
 3. 구글시트의 **`responses` 탭**에 새 행이 들어왔는지 확인
-   (헤더: `timestamp, q1…q25, q24_text, q25_text, sweetness…finish, bti4, is_correct, feedback_reason`).
+   (헤더: `timestamp, q1…q25, q24_text, q25_text, sweetness…finish, bti_code, character_name, taste_profile_summary, calculation_source, is_correct, feedback_reason`).
 
 ---
 
 ## 저장되는 컬럼
 `timestamp` · `q1`~`q25`(각 칸, q24/q25 는 선택 인덱스 콤마결합) · `q24_text` · `q25_text` ·
 8축(`sweetness, body, carbonation, flavor, alcohol, acidity, aroma_intensity, finish`) ·
-`bti4` · `is_correct`(예/아니오) · `feedback_reason`(결과가 맞지 않는 이유/메모).
+`bti_code` · `character_name` · `taste_profile_summary` · `calculation_source`(`local_js`) ·
+`is_correct`(예/아니오) · `feedback_reason`(결과가 맞지 않는 이유/메모) · `calculation_result_json`.
 
 ## 자주 묻는 문제
 - **시트에 행이 안 들어옴**: ① 액세스 권한이 ‘모든 사용자’인지, ② `SHEET_WEBHOOK_URL` 끝이 `/exec` 인지(`/dev` 아님), ③ 코드 수정 후 **새 배포**(또는 ‘배포 관리 → 편집 → 새 버전’)했는지 확인.

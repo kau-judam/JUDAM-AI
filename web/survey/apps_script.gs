@@ -26,14 +26,19 @@ var HEADERS = [
   'q23', 'q24', 'q25', 'q24_text', 'q25_text',
   'sweetness', 'body', 'carbonation', 'flavor', 'alcohol', 'acidity',
   'aroma_intensity', 'finish',
-  'bti4', 'is_correct', 'feedback_reason'
+  'bti_code', 'character_name', 'taste_profile_summary', 'calculation_source',
+  'is_correct', 'feedback_reason', 'calculation_result_json'
 ];
 
 function _sheet() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName(SHEET_NAME);
   if (!sh) sh = ss.insertSheet(SHEET_NAME);
-  if (sh.getLastRow() === 0) sh.appendRow(HEADERS);   // 비어있으면 헤더 먼저
+  if (sh.getLastRow() === 0) {
+    sh.appendRow(HEADERS);
+  } else {
+    sh.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+  }
   return sh;
 }
 
@@ -58,9 +63,13 @@ function doPost(e) {
         a.q25_text || '',
         tv.sweetness, tv.body, tv.carbonation, tv.flavor,
         tv.alcohol, tv.acidity, tv.aroma_intensity, tv.finish,
-        data.bti4 || '',
+        data.bti_code || '',
+        data.character_name || '',
+        data.taste_profile_summary || '',
+        data.calculation_source || '',
         fb.is_correct,
-        fb.feedback_reason || ''
+        fb.feedback_reason || '',
+        JSON.stringify(data.calculation_result || {})
       ]);
 
     _sheet().appendRow(row);

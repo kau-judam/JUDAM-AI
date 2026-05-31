@@ -45,7 +45,7 @@
 <body>
 <div class="wrap">
   <h1>술BTI 설문</h1>
-  <div class="sub">전통주 취향을 8축 맛 벡터 + 4글자 BTI로 분석합니다</div>
+  <div class="sub">전통주 취향을 8축 맛 벡터 + 5글자 BTI로 분석합니다</div>
 
   <form id="surveyForm"></form>
   <div id="warn" class="warn"></div>
@@ -82,27 +82,53 @@
 /* =====================================================================
    ===PORT_START===  (이 블록은 scripts/verify_js_port.py 가 그대로 추출해
    Node로 실행하여 파이썬 survey_converter 와 대조한다. DOM 참조 금지.)
-   app/core/survey_converter.py 의 계산식/보정/4글자 룰을 1:1 포팅.
+   app/core/survey_converter.py 의 계산식/보정/5글자 BTI 룰을 JS로 포팅.
    ===================================================================== */
+function toConverterScale(v) {
+  // 웹 설문은 1~5 리커트, survey_converter.py 공식은 1~7 리커트.
+  // 원문 응답은 그대로 저장하고 계산 입력만 API가 받을 수 있는 정수 1, 2, 4, 6, 7로 변환한다.
+  return ({1:1, 2:2, 3:4, 4:6, 5:7})[Number(v)] || 4;
+}
+
+function round2(v) {
+  return Math.round(v * 100) / 100;
+}
+
+function normalizeForCalculation(s) {
+  const c = {...s};
+  for (let i = 4; i <= 22; i += 1) c[`q${i}`] = toConverterScale(s[`q${i}`]);
+  return c;
+}
+
+function determineBtiCode(a) {
+  return (a.sweetness >= 5 ? 'S' : 'D') +
+    (a.body >= 5 ? 'H' : 'L') +
+    (a.carbonation >= 5 ? 'F' : 'M') +
+    (a.flavor >= 5 ? 'U' : 'C') +
+    (a.alcohol >= 5.5 ? 'H' : 'L');
+}
+
 function convertSurvey(s) {
+  const c = normalizeForCalculation(s);
+
   // q1~q3 보정 base (도수 초기값)  — _get_alcohol_base
   const ALC_BASE = {1:2.0, 2:4.0, 3:6.0, 4:8.0, 5:10.0};
-  const base = (s.q2 in ALC_BASE) ? ALC_BASE[s.q2] : 5.0;
+  const base = (c.q2 in ALC_BASE) ? ALC_BASE[c.q2] : 5.0;
 
   // q4~q22 → 8축 (각 _calculate_* 와 동일한 연산 순서/가중치)
-  let sweetness   = (s.q4*0.30 + (8 - s.q5)*0.20 + s.q6*0.10 + s.q7*0.15 + s.q8*0.15 + s.q9*0.10) / 7 * 10;
-  let body        = (s.q10*0.35 + s.q11*0.25 + s.q13*0.25 + (8 - s.q6)*0.15) / 7 * 10;
-  let carbonation = (s.q14*0.40 + (8 - s.q15)*0.35 + s.q7*0.25) / 7 * 10;
-  let flavor      = ((8 - s.q17)*0.20 + s.q18*0.30 + (8 - s.q20)*0.25 + s.q9*0.25) / 7 * 10;
-  const calculated = ((8 - s.q21)*0.40 + s.q12*0.35 + s.q13*0.25) / 7 * 10;
+  let sweetness   = (c.q4*0.30 + (8 - c.q5)*0.20 + c.q6*0.10 + c.q7*0.15 + c.q8*0.15 + c.q9*0.10) / 7 * 10;
+  let body        = (c.q10*0.35 + c.q11*0.25 + c.q13*0.25 + (8 - c.q6)*0.15) / 7 * 10;
+  let carbonation = (c.q14*0.40 + (8 - c.q15)*0.35 + c.q7*0.25) / 7 * 10;
+  let flavor      = ((8 - c.q17)*0.20 + c.q18*0.30 + (8 - c.q20)*0.25 + c.q9*0.25) / 7 * 10;
+  const calculated = ((8 - c.q21)*0.40 + c.q12*0.35 + c.q13*0.25) / 7 * 10;
   let alcohol     = calculated*0.7 + base*0.3;
-  let acidity     = ((8 - s.q5)*0.30 + s.q14*0.20 + s.q19*0.30 + s.q18*0.20) / 7 * 10;
-  let aroma_intensity = ((8 - s.q15)*0.30 + s.q16*0.30 + s.q17*0.20 + s.q18*0.20) / 7 * 10;
-  let finish      = (s.q8*0.35 + s.q16*0.35 + (8 - s.q14)*0.30) / 7 * 10;
+  let acidity     = ((8 - c.q5)*0.30 + c.q14*0.20 + c.q19*0.30 + c.q18*0.20) / 7 * 10;
+  let aroma_intensity = ((8 - c.q15)*0.30 + c.q16*0.30 + c.q17*0.20 + c.q18*0.20) / 7 * 10;
+  let finish      = (c.q8*0.35 + c.q16*0.35 + (8 - c.q14)*0.30) / 7 * 10;
 
   // q23: 과일 선호 반영  — fruit_taste_map
   const FRUIT = {1:{citrus:8.0}, 2:{berry:8.0}, 3:{citrus:7.0}, 4:{berry:8.0}, 5:{tropical:8.0}};
-  const ft = FRUIT[s.q23] || {};
+  const ft = FRUIT[c.q23] || {};
   for (const key in ft) {
     const value = ft[key];
     if (key === 'citrus')        aroma_intensity = Math.min(10, aroma_intensity + value*0.1);
@@ -112,7 +138,7 @@ function convertSurvey(s) {
 
   // q25: 향기 선호 반영  — aroma_map (리스트 순서대로)
   const AROMA = {1:'other_fruit', 2:'citrus', 3:'flower', 4:'herb', 5:'rice'};
-  for (const code of (s.q25 || [])) {
+  for (const code of (c.q25 || [])) {
     const a = AROMA[code];
     if (a === 'other_fruit') flavor          = Math.min(10, flavor + 0.7);
     else if (a === 'citrus') aroma_intensity = Math.min(10, aroma_intensity + 0.7);
@@ -121,20 +147,42 @@ function convertSurvey(s) {
     else if (a === 'rice')   body            = Math.min(10, body + 0.7);
   }
 
-  const axes = { sweetness, body, carbonation, flavor, alcohol, acidity, aroma_intensity, finish };
-
-  // 4글자 BTI 룰 (alcohol 제외, 임계 5) — _determine_bti_rule_based 앞 4글자
-  const bti4 =
-      (sweetness   >= 5 ? 'S' : 'D') +
-      (body        >= 5 ? 'H' : 'L') +
-      (carbonation >= 5 ? 'F' : 'M') +
-      (flavor      >= 5 ? 'U' : 'C');
-
-  return { axes, bti4 };
+  const taste_vector = {
+    sweetness: round2(sweetness),
+    body: round2(body),
+    carbonation: round2(carbonation),
+    flavor: round2(flavor),
+    alcohol: round2(alcohol),
+    acidity: round2(acidity),
+    aroma_intensity: round2(aroma_intensity),
+    finish: round2(finish),
+  };
+  const bti_code = determineBtiCode(taste_vector);
+  const baseInfo = BTI_BASE_INFO[bti_code.slice(0, 4)] || {name:"", drinks:[]};
+  const alcoholSuffix = bti_code.endsWith('H') ? "고도수" : "저도수";
+  const character_name = baseInfo.name ? `${baseInfo.name} (${alcoholSuffix})` : "";
+  return {
+    status: "success",
+    taste_vector,
+    bti_code,
+    character_name,
+    alcohol_label: alcohol >= 9.0 ? "고도수(9도 이상)" : "저도수(8도 이하)",
+    experience_level: c.q1 <= 2 ? "입문자" : (c.q1 === 3 ? "중급자" : "전문가"),
+    preferred_abv: ({1:"저도수(3도 이하)", 2:"약한 도수(4~6도)", 3:"중간 도수(7~9도)", 4:"높은 도수(10~13도)", 5:"고도수(14도 이상)"})[c.q2] || "",
+    preferred_body: ({1:"매우 가벼움", 2:"가벼움", 3:"보통", 4:"묵직함", 5:"매우 묵직함"})[c.q3] || "",
+    preferred_fruit: ({1:"감귤류", 2:"베리류", 3:"사과", 4:"포도", 5:"망고"})[c.q23] || "",
+    preferred_food_pairing: (c.q24 || []).map(v => ({1:"고기", 2:"해산물", 3:"매운음식", 4:"디저트", 5:"치즈"})[v]).filter(Boolean),
+    preferred_aroma: (c.q25 || []).map(v => ({1:"과일향", 2:"감귤향", 3:"꽃향", 4:"허브향", 5:"쌀향"})[v]).filter(Boolean),
+    taste_profile_summary: tasteSummary({sweetness, body, carbonation, flavor, alcohol, acidity, aroma_intensity, finish}),
+    bti_method: "local_js_rule_based",
+    bti_confidence: "medium",
+    recommended_drinks: baseInfo.drinks,
+    calculation_source: "local_js",
+  };
 }
 
-// 4글자 BTI → 캐릭터명/추천주 (BTI_TYPE_MAPPING 에서 H/L 공통분 추출)
-const BTI4_INFO = {
+// BTI 기본 유형 → 캐릭터명/추천주. alcohol H/L suffix는 convertSurvey에서 붙인다.
+const BTI_BASE_INFO = {
   SHFC:{name:"꿀단지에 빠진 인절미", drinks:["꿀 막걸리","밤 막걸리","탄산 생막걸리"]},
   SHFU:{name:"탄산 톡톡 딸기 요거트", drinks:["딸기 탄산막걸리","복숭아 생막걸리","유자 탁주"]},
   SHMC:{name:"쫀득쫀득 꿀 찹쌀떡", drinks:["찹쌀탁주","원주 막걸리","고구마 막걸리"]},
@@ -283,14 +331,13 @@ document.getElementById("submitBtn").addEventListener("click", () => {
 
   const r = convertSurvey(answers);
   lastResult = r;
-  const info = BTI4_INFO[r.bti4] || {name:"", drinks:[]};
-  document.getElementById("rBti").textContent = r.bti4;
-  document.getElementById("rName").textContent = info.name;
-  document.getElementById("rSummary").textContent = tasteSummary(r.axes);
-  document.getElementById("rDrinks").textContent = info.drinks.length ? "추천: " + info.drinks.join(", ") : "";
+  document.getElementById("rBti").textContent = r.bti_code;
+  document.getElementById("rName").textContent = r.character_name;
+  document.getElementById("rSummary").textContent = r.taste_profile_summary;
+  document.getElementById("rDrinks").textContent = r.recommended_drinks.length ? "추천: " + r.recommended_drinks.join(", ") : "";
   const axesBox = document.getElementById("rAxes");
   axesBox.innerHTML = Object.keys(AXIS_KO).map(k => {
-    const val = Math.round(r.axes[k] * 100) / 100;
+    const val = r.taste_vector[k];
     return `<div class="axis-row"><span class="lab">${AXIS_KO[k]}</span>
       <span class="bar"><i style="width:${val*10}%"></i></span>
       <span style="width:38px;text-align:right;">${val.toFixed(1)}</span></div>`;
@@ -343,8 +390,12 @@ document.getElementById("finalSubmit").addEventListener("click", async () => {
   const payload = {
     timestamp: new Date().toISOString(),
     answers,
-    taste_vector: lastResult.axes,
-    bti4: lastResult.bti4,
+    taste_vector: lastResult.taste_vector,
+    bti_code: lastResult.bti_code,
+    character_name: lastResult.character_name,
+    taste_profile_summary: lastResult.taste_profile_summary,
+    calculation_source: "local_js",
+    calculation_result: lastResult,
     feedback: {
       is_correct: isCorrect,
       feedback_reason: feedbackReason,
