@@ -47,7 +47,7 @@ function _sheet() {
 
 function _axisText(value) {
   if (!value) return '';
-  if (typeof value === 'string') return value;
+  if (typeof value === 'string') return value === 'undefined' ? '' : value;
   var key = value.value || value.axis || value.key || value.code || '';
   var label = value.label || value.name || value.text || '';
   if (key && label) return key + ':' + label;
@@ -77,6 +77,14 @@ function doPost(e) {
 
     var a = data.answers || {};
     var tv = data.taste_vector || {};
+    tv.sweetness = tv.sweetness !== undefined ? tv.sweetness : data.sweetness;
+    tv.body = tv.body !== undefined ? tv.body : data.body;
+    tv.carbonation = tv.carbonation !== undefined ? tv.carbonation : data.carbonation;
+    tv.flavor = tv.flavor !== undefined ? tv.flavor : data.flavor;
+    tv.alcohol = tv.alcohol !== undefined ? tv.alcohol : data.alcohol;
+    tv.acidity = tv.acidity !== undefined ? tv.acidity : data.acidity;
+    tv.aroma_intensity = tv.aroma_intensity !== undefined ? tv.aroma_intensity : data.aroma_intensity;
+    tv.finish = tv.finish !== undefined ? tv.finish : data.finish;
     var fb = data.feedback || {};
     var bti4 = data.bti4 || data.bti_code || '';
     var mismatchAxes = data.mismatch_axes || fb.mismatch_axes || [];

@@ -38,6 +38,7 @@
   .bar > i { display:block; height:100%; background:var(--pri); }
   .fb { text-align:left; margin-top: 16px; }
   .warn { color:#c00; font-size:12px; text-align:center; }
+  .hint { color:#777; font-size:12px; margin-top:8px; }
   .hidden { display:none; }
   textarea { width:100%; border:1px solid var(--line); border-radius:8px; padding:8px; font-family:inherit; }
 </style>
@@ -65,12 +66,18 @@
     <div class="q fb">
       <div class="qt">이 결과가 본인과 맞나요?</div>
       <div class="scale" id="fbYesNo">
-        <label data-v="yes"><input type="radio" name="fb">예, 맞아요</label>
-        <label data-v="no"><input type="radio" name="fb">아니요</label>
+        <label data-v="yes"><input type="radio" name="fb">맞아요</label>
+        <label data-v="no"><input type="radio" name="fb">아니에요</label>
       </div>
+      <div id="fbSelectHint" class="hint">결과가 맞는지 선택하면 제출할 수 있어요.</div>
       <div id="fbDetail" class="hidden" style="margin-top:14px;">
-        <div class="qt" style="font-size:14px;">어떤 축이 맞지 않았나요? (복수 선택 필수)</div>
-        <div class="opts" id="mismatchAxes">
+        <div id="matchPrompt" class="qt hidden" style="font-size:14px;">
+          결과가 맞았다면 어떤 부분이 특히 잘 맞았나요? 또는 추가 의견이 있다면 적어주세요. (선택)
+        </div>
+        <div id="mismatchPrompt" class="qt hidden" style="font-size:14px;">
+          어떤 부분이 맞지 않았나요? 틀린 축을 선택하고, 가능하면 이유를 적어주세요.
+        </div>
+        <div class="opts hidden" id="mismatchAxes">
           <label data-v="sweetness" data-label="단맛"><input type="checkbox" value="sweetness">단맛</label>
           <label data-v="body" data-label="바디감/묵직함"><input type="checkbox" value="body">바디감/묵직함</label>
           <label data-v="carbonation" data-label="탄산감"><input type="checkbox" value="carbonation">탄산감</label>
@@ -79,11 +86,10 @@
           <label data-v="other" data-label="기타/잘 모르겠음"><input type="checkbox" value="other">기타/잘 모르겠음</label>
         </div>
         <div id="fbWarn" class="warn" style="margin:8px 0;"></div>
-        <div class="qt" style="font-size:14px;margin-top:12px;">추가 의견 (선택)</div>
         <textarea id="feedbackReason" rows="3" placeholder="예: 실제로는 더 드라이한 막걸리를 좋아해요"></textarea>
       </div>
     </div>
-    <button id="finalSubmit" type="button">제출하기</button>
+    <button id="finalSubmit" type="button" disabled>제출하기</button>
     <div id="doneMsg" class="warn hidden" style="color:var(--pri);">제출 완료! (현재는 console.log 출력)</div>
   </div>
 </div>
@@ -271,6 +277,14 @@ const QUESTIONS = [
 ];
 const AXIS_KO = {sweetness:"단맛", body:"바디", carbonation:"탄산", flavor:"풍미",
   alcohol:"도수", acidity:"산미", aroma_intensity:"향강도", finish:"여운"};
+const FEEDBACK_AXIS_LABELS = {
+  sweetness: "단맛",
+  body: "바디감/묵직함",
+  carbonation: "탄산감",
+  flavor: "풍미/향",
+  alcohol: "도수",
+  other: "기타/잘 모르겠음",
+};
 const answers = {};
 
 const form = document.getElementById("surveyForm");
@@ -386,7 +400,15 @@ document.getElementById("fbYesNo").addEventListener("click", e => {
   document.querySelectorAll("#fbYesNo label").forEach(l => l.classList.remove("sel"));
   lab.classList.add("sel");
   const isNo = lab.dataset.v === "no";
-  document.getElementById("fbDetail").classList.toggle("hidden", !isNo);
+  document.getElementById("fbDetail").classList.remove("hidden");
+  document.getElementById("matchPrompt").classList.toggle("hidden", isNo);
+  document.getElementById("mismatchPrompt").classList.toggle("hidden", !isNo);
+  document.getElementById("mismatchAxes").classList.toggle("hidden", !isNo);
+  document.getElementById("feedbackReason").placeholder = isNo
+    ? "예: 단맛은 맞는데 향은 실제 취향보다 강하게 나온 것 같아요"
+    : "예: 달콤하고 탄산감 있는 취향이라는 점이 잘 맞았어요";
+  document.getElementById("fbSelectHint").classList.add("hidden");
+  document.getElementById("finalSubmit").disabled = false;
   document.getElementById("fbWarn").textContent = "";
   if (!isNo) {
     document.querySelectorAll("#mismatchAxes input[type='checkbox']").forEach(input => {
@@ -429,25 +451,30 @@ async function sendData(payload) {
   }
 }
 
+function selectedFeedbackAxes() {
+  return [...document.querySelectorAll("#mismatchAxes input[type='checkbox']:checked")]
+    .map(input => {
+      const label = input.closest("label");
+      const key = input.value || label.dataset.v || "";
+      const text = label.dataset.label || FEEDBACK_AXIS_LABELS[key] || label.textContent.trim() || "";
+      return { key, label: text };
+    })
+    .filter(axis => axis.key && axis.label);
+}
+
+function axisText(axis) {
+  return axis && axis.key && axis.label ? `${axis.key}:${axis.label}` : "";
+}
+
 document.getElementById("finalSubmit").addEventListener("click", async event => {
   event.preventDefault();
   const submitButton = document.getElementById("finalSubmit");
   if (submitButton.disabled) return;
   const fbSel = document.querySelector("#fbYesNo label.sel");
   const isCorrect = fbSel ? fbSel.dataset.v === "yes" : null;
-  const selectedAxisLabels = [...document.querySelectorAll("#mismatchAxes input[type='checkbox']:checked")]
-    .map(input => {
-      const label = input.closest("label");
-      return {
-        value: input.value || label.dataset.v,
-        axis: label.dataset.v,
-        key: label.dataset.v,
-        label: label.dataset.label || label.textContent.trim(),
-      };
-    })
-    .filter(axis => axis.value && axis.label);
-  const mismatchAxes = selectedAxisLabels.map(axis => axis.value);
-  const wrongAxes = selectedAxisLabels;
+  const selectedAxes = selectedFeedbackAxes();
+  const mismatchAxes = isCorrect === false ? selectedAxes.map(axisText).filter(Boolean) : [];
+  const wrongAxes = isCorrect === false ? mismatchAxes.join(", ") : "";
   const feedbackReason = (document.getElementById("feedbackReason").value || "").trim();
   const isMatch = isCorrect === true ? "맞음" : "아님";
   const done = document.getElementById("doneMsg");
@@ -472,6 +499,14 @@ document.getElementById("finalSubmit").addEventListener("click", async event => 
     ...flatAnswers,
     answers,
     taste_vector: lastResult.taste_vector,
+    sweetness: lastResult.taste_vector.sweetness,
+    body: lastResult.taste_vector.body,
+    carbonation: lastResult.taste_vector.carbonation,
+    flavor: lastResult.taste_vector.flavor,
+    alcohol: lastResult.taste_vector.alcohol,
+    acidity: lastResult.taste_vector.acidity,
+    aroma_intensity: lastResult.taste_vector.aroma_intensity,
+    finish: lastResult.taste_vector.finish,
     bti4: lastResult.bti_code,
     bti_code: lastResult.bti_code,
     character_name: lastResult.character_name,
