@@ -33,6 +33,13 @@ ENV/
 *.swo
 *~
 
+# Claude Code 에이전트 작업 트리(로컬 스크래치)
+.claude/worktrees/
+
+# 서버 로그 덤프(임시)
+srv_out.txt
+srv_err.txt
+
 # Environment Variables
 .env
 
@@ -44,9 +51,19 @@ cache/
 data/raw/*.csv
 data/anchors.json
 
+# 실사용자 설문 응답 (개인정보 — 절대 커밋 금지)
+data/real_survey/
+
+# 임시 산출물 (테스트 이미지 등)
+data/_img_test.png
+data/*_test.png
+
 # Models
 models/*.pkl
 models/*.joblib
+
+# 법령 조문 벡터 인덱스 (대용량, data/law_articles.json 으로 재빌드 가능)
+rag_db/
 
 # Logs
 *.log

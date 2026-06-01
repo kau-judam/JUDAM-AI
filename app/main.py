@@ -460,6 +460,8 @@ async def recommend(request: RecommendRequest):
 
         return response
 
+    except HTTPException:
+        raise  # 입력검증 400(저장 프로필 없음 등)이 500으로 둔갑하지 않도록
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -824,6 +826,7 @@ async def law_filter(request: LawFilterRequest):
 
         response_data = {
             "violation": result.violation,
+            "verdict": result.verdict,  # block | pass | review (review=관리자 검토 큐)
             "details": [
                 {
                     "category": d.category,

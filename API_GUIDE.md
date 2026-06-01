@@ -33,7 +33,7 @@ PORT=8000
 | `REDIS_URL` / `HUGGINGFACE_TOKEN` | 선택 | 캐시 / 이미지 SD fallback | 기능 생략 |
 | `AWS_REGION` / `AWS_SQS_AI_TASK_QUEUE_URL` | 선택 | `app/sqs_worker.py` SQS 워커 | API 서버 실행에는 불필요 |
 
-> 별도의 `.env.example` 파일은 없습니다. 위 표가 기준입니다.
+> 키 목록 템플릿은 `.env.example` 참고(실제 값 없는 플레이스홀더). 법령 RAG 임베딩 모델은 `LAW_EMBED_MODEL`(기본 `paraphrase-multilingual-MiniLM-L12-v2`)로 교체 가능하며, 법령 API 호출 헤더는 `LAW_USER_AGENT`/`LAW_REFERER`로 override 가능합니다.
 
 **실행**
 ```bash
@@ -82,6 +82,22 @@ curl http://localhost:8000/health
 | 25 | POST | `/api/image/generate` | 전통주 이미지 생성 | ✓ |
 | 26 | GET | `/api/recipe/ingredient-region` | 메인재료 → 추천 지역 자동 조회 | |
 | 27 | POST | `/api/brewery/verify-ocr` | 양조장 인증 서류 OCR (레지스트리 기반 7종) | ✓ |
+
+### 기능별 분류
+
+| 분류 | 엔드포인트 |
+|------|-----------|
+| 시스템 | `GET /` · `GET /health` |
+| 설문/BTI | `POST /api/survey/convert` · `POST /api/bti/feedback` · `GET /api/taste/profile/{user_id}` |
+| 추천/취향 | `POST /api/recommend` · `POST /api/taste/update` · `GET /api/taste/history/{user_id}` |
+| 레시피 | `POST /api/recipe/suggest-sub-ingredients` · `suggest-flavor-tags` · `suggest-summary` · `validate` · `register` · `GET /api/recipe/ingredient-region` |
+| 법률 | `POST /api/law/filter` · `GET /api/law/info` |
+| 인사이트 | `GET /api/insight` |
+| 챗봇 | `POST /api/chat` · `POST /api/chat/stream` |
+| 전통주 등록 | `POST /api/drinks/request` · `GET /api/drinks/requests` · `POST /api/drinks/requests/{id}/approve` |
+| 펀딩 | `POST /api/funding/register` · `GET /api/funding/{id}` · `POST /api/funding/{id}/taste-update` |
+| 이미지 | `POST /api/image/generate` |
+| OCR | `POST /api/brewery/verify-ocr` |
 
 ---
 
@@ -779,6 +795,26 @@ Gemini 양조 전문가가 레시피 제작 가능성을 분석하고 점수화.
 콘텐츠(펀딩 설명, 제품 소개)의 주류광고 법률 위반 여부 검토.  
 동일 입력에 1시간 캐시 적용.
 
+**3등급 판정(`verdict`)** — 자동 차단/통과를 강제하지 않고 애매한 건 사람이 본다:
+
+| `verdict` | 의미 | `violation` |
+|-----------|------|-------------|
+| `block` | 명백한 위반 → 자동 차단 | `true` |
+| `pass` | 명백히 정상 → 자동 통과 | `false` |
+| `review` | 애매 → **관리자 검토 큐로** (자동 차단·통과 안 함) | `false` |
+
+> `violation`(bool)은 하위호환 필드로 **`block`일 때만 `true`**입니다. `review`는 `violation:false`이되 `verdict:"review"`이므로, 클라이언트는 `verdict`로 분기해 `review`를 검토 대기열로 보내세요.
+
+**검토 파이프라인**: ① 위반 키워드 1차 즉시차단(QUICK) → ② 법령 RAG 검색(관련 조문 컨텍스트) → ③ **모든 콘텐츠를 Gemini로 1회 검토**(키워드 미일치도 검토 — 무검토 통과 경로 없음). Gemini 실패 시 키워드 결과 fallback(위반 키워드 있으면 `block`, 없으면 `review` 보류).
+
+**펀딩 콘텐츠 판정 기준** (`content_type`이 펀딩/제품설명일 때):
+- 전통주 제조·판매 **리워드형 펀딩(후원 대가로 제품/굿즈 제공)은 정상(`pass`)** — '펀딩/후원/공동구매' 단어 자체는 위반 아님.
+- **`block`은 원금 보장 / 수익(이자·배당) 보장 / 확정 투자수익 / 무위험 수익을 *긍정적으로 약속*할 때만.**
+- **위험 고지·부정 표현("수익 보장 안 함", "원금 손실 위험 있음")은 위반이 아니라 정상(컴플라이언스 양성 신호)** — 위반 근거로 보지 않음.
+- 명시 보장은 아니나 수익을 암시하는 경우("높은 수익률 기대" 등)는 `review`.
+
+RAG는 **국가법령정보센터 조문 단위 인덱스**(9개 법령 1,719개 청크, MiniLM 임베딩 384차원, ChromaDB `PersistentClient(rag_db/law)` 컬렉션 `law_articles`)를 사용합니다. 인덱스가 없으면 기존 9개 법령 **설명 단위**(EphemeralClient) fallback으로 자동 동작 — 검색 정확도만 낮아지고 API 동작은 동일합니다. 인덱스 재빌드는 `scripts/build_law_index.py` → `scripts/embed_law_index.py` 참고(README/results_law.md). 필터 테스트 결과는 `results_law_test.md`.
+
 **요청**
 ```json
 {
@@ -797,10 +833,11 @@ Gemini 양조 전문가가 레시피 제작 가능성을 분석하고 점수화.
 | ingredients | string[] | N | 재료 목록 |
 | target_region | string | N | 타겟 지역 (지역 규정 추가 검토 시) |
 
-**응답**
+**응답** (block 예시)
 ```json
 {
   "violation": true,
+  "verdict":   "block",
   "details": [
     {
       "category": "건강기능식품 효능 주장",
@@ -812,6 +849,29 @@ Gemini 양조 전문가가 레시피 제작 가능성을 분석하고 점수화.
   "recommendation": "효능 표현을 삭제하고 맛과 향으로만 설명해주세요."
 }
 ```
+
+**응답** (review 예시 — 관리자 검토 큐)
+```json
+{
+  "violation": false,
+  "verdict":   "review",
+  "details": [
+    { "category": "과대광고 소지", "law": "식품위생법", "reason": "'다음날 개운한' 표현이 숙취 해소를 암시할 소지", "article": null }
+  ],
+  "recommendation": "관리자 검토가 필요합니다."
+}
+```
+
+**응답** (pass 예시)
+```json
+{ "violation": false, "verdict": "pass", "details": [], "recommendation": "법적 문제가 없습니다." }
+```
+
+| 응답 필드 | 설명 |
+|----------|------|
+| `verdict` | `block` / `pass` / `review` — **`review`는 자동 차단·통과 없이 관리자 검토 큐로** |
+| `violation` | 하위호환 bool. `verdict=="block"`일 때만 `true` |
+| `details[]` | 위반/검토 사유. `pass`면 빈 배열 |
 
 ---
 
@@ -842,7 +902,8 @@ curl http://localhost:8000/api/law/info
 
 ## 16. GET `/api/insight`
 
-추천 데이터 기반 인사이트 대시보드. 기간별 취향 트렌드·인기 전통주 통계 제공.
+양조장용 인사이트 대시보드. 통계 집계 + 트렌드 예측 + 사용자 군집 + 선호 분포 + Gemini 자연어 리포트.
+**데이터 소스**: DB 연결 시 `user_taste_history`/`user_profiles`/`_fundings`, 미연결 시 인메모리 샘플 fallback (`data_source` 필드로 구분).
 
 ```bash
 curl "http://localhost:8000/api/insight?period=week"
@@ -855,12 +916,51 @@ curl "http://localhost:8000/api/insight?period=week"
 **응답**
 ```json
 {
-  "period":       "week",
-  "top_drinks":   [],
-  "taste_trends": {},
-  "ai_report":    "이번 주는 산미 높은 막걸리 선호도가 증가했습니다."
+  "period": "week",
+  "summary": "최근 320건의 리뷰(샘플 데이터)가 있으며, 평균 평점은 3.0점입니다. ...",
+  "statistics": {
+    "total_reviews": 320,
+    "avg_rating": 3.0,
+    "top_drinks": [{ "name": "...", "count": 12, "avg_rating": 3.5 }],
+    "taste_distribution": { "sweetness": 5.2, "body": 5.0, "...": 0.0 },
+    "funding_top": [{ "funding_id": "f1", "name": "...", "brewery": "...", "region": "...", "registered_at": "..." }],
+    "data_source": "memory"
+  },
+  "predictions": { "trend": "stable", "predicted_growth": 0.0, "next_period_prediction": 11, "current_average": 10 },
+  "clusters": [
+    { "cluster_id": 0, "name": "단맛 선호형", "description": "...", "user_count": 30, "percentage": 25.0, "data_source": "memory" }
+  ],
+  "ai_report": "이번 주는 산미 높은 막걸리 선호도가 증가했습니다. ...",
+  "data_source": "memory",
+  "preferences": {
+    "profile_count": 120,
+    "bti4_distribution": [{ "key": "SHMU", "count": 13 }],
+    "bti5_distribution": [{ "key": "SHMUH", "count": 7 }],
+    "axis_preference_avg": { "sweetness": 5.0, "body": 5.0, "...": 5.0 },
+    "food_pairing_top": [{ "key": "치즈", "count": 54 }],
+    "aroma_distribution": [{ "key": "꽃향", "count": 41 }],
+    "fruit_distribution": [{ "key": "망고", "count": 30 }],
+    "data_source": "memory"
+  }
 }
 ```
+
+| 응답 필드 | 설명 |
+|-----------|------|
+| `statistics.top_drinks` | 인기 전통주 순위(리뷰 수·평균평점) |
+| `statistics.taste_distribution` | 리뷰 기반 8축 평균 |
+| `statistics.funding_top` | 최근 등록 펀딩 전통주 (최대 10) |
+| `predictions` | 지수평활 트렌드(`increasing`/`stable`/`decreasing`) + 성장률 |
+| `clusters` | 사용자 취향 군집. DB 모드는 BTI 앞 2글자 기반, 메모리 모드는 8축 k-means |
+| `ai_report` | Gemini 자연어 리포트 (키 없으면 안내 문구) |
+| `data_source` | `"db"` = 실제 데이터, `"memory"` = 샘플 fallback |
+| `preferences` | **선호 분포 인사이트** — DB `user_profiles` 또는 샘플 프로필 기반 |
+| `preferences.bti4_distribution` / `bti5_distribution` | BTI 4글자(16종)·5글자(32종) 분포 (count 내림차순) |
+| `preferences.axis_preference_avg` | 프로필 기반 8축 선호 평균 |
+| `preferences.food_pairing_top` | 음식 페어링(q24) 빈도 상위 5 |
+| `preferences.aroma_distribution` / `fruit_distribution` | 관심 향(q25)·선호 과일(q23) 분포 |
+
+> `preferences`는 DB의 `user_profiles`(bti_code·preferred_food_pairing·preferred_aroma·preferred_fruit·taste_vector)에서 집계하며, DB 미연결 시 결정적 샘플 프로필 120건으로 데모됩니다. `data_source`로 출처를 구분하세요.
 
 ---
 
@@ -1391,7 +1491,7 @@ curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
 1. POST /api/recipe/suggest-sub-ingredients   ← 지역 특산물 서브재료 추천
 2. POST /api/recipe/suggest-flavor-tags       ← 맛 태그 추천
 3. POST /api/recipe/validate                  ← 제작 가능성 점수 확인 (score ≥ 70 권장)
-4. POST /api/law/filter                       ← 광고 문구 법률 검토 (violation=false 확인)
+4. POST /api/law/filter                       ← 광고 문구 법률 검토 (verdict=pass 통과 / block 차단 / review 관리자검토)
         ↓
 5. POST /api/funding/register                 ← 추천 풀 편입 (is_funding=true)
         ↓ 시음 샘플 완성 후
@@ -1411,6 +1511,12 @@ curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
 ---
 
 ## 변경 이력
+
+### 2026-06-01
+- **`/api/law/filter` 3등급 판정(`verdict` block/pass/review) 반영** — `review`는 자동 차단·통과 없이 관리자 검토 큐로. `violation`은 `block`일 때만 `true`(하위호환). 모든 콘텐츠를 Gemini 1회 검토(무검토 통과 경로 제거), 실패 시 키워드 fallback.
+- **법률 RAG**: 국가법령정보센터 조문 단위 인덱스(9개 법령 1,719 청크, MiniLM 384d, ChromaDB `PersistentClient(rag_db/law)`/`law_articles`), 인덱스 없으면 9개 설명 단위 EphemeralClient fallback.
+- **펀딩 판정 정밀화**: 리워드형 펀딩은 정상(pass), 원금·수익 보장 등 *긍정 약속*만 block, 위험 고지·부정 표현은 정상 신호로 처리(review/pass). (테스트: `results_law_test.md` — 안전율 100%·위험 FN 0)
+- `.env.example` 추가(키 목록 템플릿), `LAW_EMBED_MODEL`/`LAW_USER_AGENT`/`LAW_REFERER` 환경변수 문서화.
 
 ### 2026-05-31
 - 농사로 지역특산물 API 수집 결과(`data/local_products.json`, `data/ingredient_region_map.json`) 기반 재료→지역 매핑과 하드코딩 fallback 구조를 문서화.
