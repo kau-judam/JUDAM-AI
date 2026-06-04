@@ -392,6 +392,8 @@ async def recommend(request: RecommendRequest):
         raise HTTPException(status_code=400, detail={"status": "error", "message": "user_vector 또는 user_id 중 하나는 필수입니다."})
     if not (1 <= request.top_k <= 50):
         raise HTTPException(status_code=400, detail={"status": "error", "message": "top_k는 1~50 사이여야 합니다."})
+    if request.pool not in ("all", "base", "funding", "recipe", "approved"):
+        raise HTTPException(status_code=400, detail={"status": "error", "message": "pool은 all/base/funding/recipe/approved 중 하나여야 합니다."})
 
     try:
         recommender = app.state.recommender

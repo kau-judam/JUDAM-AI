@@ -27,7 +27,8 @@ beautifulsoup4>=4.12.0
 boto3>=1.34.0
 
 # Gemini API
-google-generativeai>=0.3.0
+google-generativeai>=0.3.0   # 구 SDK (chat/law/insight/auto_pipeline/tasting_note)
+google-genai>=1.0.0          # 신 SDK (ocr/recipe/image_generator/chat-stream) — from google import genai
 
 # 한국어 임베딩 (law RAG ko-sbert)
 sentence-transformers>=2.2.0
