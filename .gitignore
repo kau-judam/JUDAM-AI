@@ -53,6 +53,9 @@ data/anchors.json
 
 # 실사용자 설문 응답 (개인정보 — 절대 커밋 금지)
 data/real_survey/
+# 술BTI 실효성검증 원본 (실사용자 76명 응답=개인정보. 집계는 results_survey_analysis.md 참조)
+술bti실효성검증.xlsx
+*실효성검증.xlsx
 
 # 임시 산출물 (테스트 이미지 등)
 data/_img_test.png

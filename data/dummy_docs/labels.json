@@ -6,7 +6,8 @@
     "owner_name": "김단아",
     "address": "강원특별자치도 평창군 봉평면 견본로 123",
     "issue_date": "2020-03-20",
-    "issuing_authority": "평창세무서장"
+    "issuing_authority": "평창세무서장",
+    "expect_valid": true
   },
   "02_신분증.png": {
     "document_type": "신분증",
@@ -15,7 +16,8 @@
     "owner_name": "이가상",
     "address": "서울특별시 종로구 견본동 1-1",
     "issue_date": "2018-05-20",
-    "issuing_authority": "서울특별시 종로구청장"
+    "issuing_authority": "서울특별시 종로구청장",
+    "expect_valid": true
   },
   "03_통신판매업신고증.png": {
     "document_type": "통신판매업신고증",
@@ -24,7 +26,8 @@
     "owner_name": "김단아",
     "address": "강원특별자치도 평창군 봉평면 견본로 123",
     "issue_date": "2023-07-01",
-    "issuing_authority": "평창군수"
+    "issuing_authority": "평창군수",
+    "expect_valid": true
   },
   "04_주류통신판매승인서.png": {
     "document_type": "주류통신판매승인서",
@@ -33,7 +36,8 @@
     "owner_name": "김단아",
     "address": "강원특별자치도 평창군 봉평면 견본로 123",
     "issue_date": "2024-02-10",
-    "issuing_authority": "평창세무서장"
+    "issuing_authority": "평창세무서장",
+    "expect_valid": true
   },
   "05_전통주제조면허증.png": {
     "document_type": "전통주제조면허증",
@@ -42,6 +46,55 @@
     "owner_name": "김단아",
     "address": "강원특별자치도 평창군 봉평면 견본로 123",
     "issue_date": "2019-11-05",
-    "issuing_authority": "평창세무서장"
+    "issuing_authority": "평창세무서장",
+    "expect_valid": true
+  },
+  "06_위조의심_훼손사업자등록증.png": {
+    "document_type": "인식불가",
+    "brewery_name": "",
+    "registration_number": "",
+    "owner_name": "",
+    "address": "",
+    "issue_date": "",
+    "issuing_authority": "",
+    "expect_valid": false,
+    "neg_kind": "위조의심",
+    "note": "식별번호 훼손·직인 없음"
+  },
+  "07_무관_풍경.png": {
+    "document_type": "인식불가",
+    "brewery_name": "",
+    "registration_number": "",
+    "owner_name": "",
+    "address": "",
+    "issue_date": "",
+    "issuing_authority": "",
+    "expect_valid": false,
+    "neg_kind": "무관(풍경)",
+    "note": "서류 아님"
+  },
+  "08_무관_음식.png": {
+    "document_type": "인식불가",
+    "brewery_name": "",
+    "registration_number": "",
+    "owner_name": "",
+    "address": "",
+    "issue_date": "",
+    "issuing_authority": "",
+    "expect_valid": false,
+    "neg_kind": "무관(음식)",
+    "note": "서류 아님"
+  },
+  "09_서류아닌_메모.png": {
+    "document_type": "인식불가",
+    "brewery_name": "",
+    "registration_number": "",
+    "owner_name": "",
+    "address": "",
+    "issue_date": "",
+    "issuing_authority": "",
+    "expect_valid": false,
+    "neg_kind": "서류아닌텍스트",
+    "note": "일상 메모/일기"
   }
 }
