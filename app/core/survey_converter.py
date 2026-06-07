@@ -292,7 +292,7 @@ class SurveyToVectorConverter:
         })
         bti_info = BTI_TYPE_MAPPING.get(bti_code, BTI_TYPE_MAPPING.get(bti_code[:4] + 'H', {}))
         character_name = bti_info.get('name', '')
-        alcohol_label = "고도수(9도 이상)" if alcohol >= 9.0 else "저도수(8도 이하)"
+        alcohol_label = "고도수(9도 이상)" if alcohol >= 5.5 else "저도수(8도 이하)"
 
         # 경험 수준
         if survey.q1 <= 2:

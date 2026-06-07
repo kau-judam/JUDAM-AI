@@ -40,6 +40,8 @@ def _load_nongsaro_region_map() -> Dict[str, List[str]]:
 
 def _match_nongsaro_regions(ingredient: str) -> List[str]:
     """농사로 매핑에서 ingredient 에 해당하는 지역목록 반환 (없으면 [])."""
+    if not ingredient or not ingredient.strip():
+        return []  # 빈 입력은 substring 매칭으로 전 항목과 오매칭되므로 차단
     nmap = _load_nongsaro_region_map()
     if not nmap:
         return []
@@ -109,6 +111,9 @@ class RecipeAI:
         1순위: 농사로 지역특산물 수집 데이터(data/ingredient_region_map.json),
         2순위(fallback): 하드코딩 테이블.
         """
+        if not main_ingredient or not main_ingredient.strip():
+            return []  # 빈 입력은 substring 오매칭 방지
+
         # 1순위: 농사로 수집 데이터
         nongsaro = _match_nongsaro_regions(main_ingredient)
         if nongsaro:
