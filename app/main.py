@@ -4,11 +4,13 @@
 
 import logging
 import os
+import re
 from datetime import datetime, timedelta
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
-from typing import List, Dict, Optional
+from typing import Any, List, Dict, Optional
 import json
 from pathlib import Path
 
@@ -103,6 +105,31 @@ async def not_found_handler(request: Request, exc):
 @app.exception_handler(500)
 async def server_error_handler(request: Request, exc):
     return JSONResponse(status_code=500, content={"status": "error", "message": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요."})
+
+
+def _sanitize_validation_value(value: Any) -> Any:
+    if isinstance(value, (bytes, bytearray)):
+        return f"<{len(value)} bytes omitted>"
+    if isinstance(value, UploadFile):
+        return {
+            "filename": value.filename,
+            "content_type": value.content_type,
+        }
+    if isinstance(value, dict):
+        return {key: _sanitize_validation_value(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_sanitize_validation_value(item) for item in value]
+    if isinstance(value, (str, int, float, bool)) or value is None:
+        return value
+    return str(value)
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_error_handler(request: Request, exc: RequestValidationError):
+    return JSONResponse(
+        status_code=422,
+        content={"detail": _sanitize_validation_value(exc.errors())},
+    )
 
 
 app.include_router(chat_router, prefix="/api")
@@ -1057,6 +1084,216 @@ def approve_drink_request(request_id: int):
 
 
 # =====================================================
+# Brewery verification OCR API
+# =====================================================
+
+OCR_REVIEW_POLICY = "OCR_RESULT_IS_FOR_ADMIN_REVIEW_ONLY"
+
+
+def _brewery_ocr_failure_response(
+    error_message: str = "OCR 처리 중 오류가 발생했습니다.",
+    reason: str = "OCR_PROCESSING_FAILED",
+) -> Dict[str, Any]:
+    return {
+        "status": "FAILED",
+        "verified": False,
+        "summary": {
+            "reason": reason,
+            "manualReviewOnly": True,
+            "reviewPolicy": OCR_REVIEW_POLICY,
+        },
+        "error": error_message,
+        "warnings": ["관리자 수동 검토가 필요합니다."],
+    }
+
+
+def _clean_ocr_text(value: Any) -> str:
+    if value is None:
+        return ""
+    return str(value).strip()
+
+
+def _first_non_empty(*values: Any) -> str:
+    for value in values:
+        cleaned = _clean_ocr_text(value)
+        if cleaned:
+            return cleaned
+    return ""
+
+
+def _regex_first(pattern: str, text: str) -> str:
+    match = re.search(pattern, text, flags=re.IGNORECASE | re.MULTILINE)
+    if not match:
+        return ""
+    return _clean_ocr_text(match.group(1) if match.lastindex == 1 else match.group(match.lastindex))
+
+
+def _extract_ocr_json(text: str) -> Dict[str, Any]:
+    match = re.search(r"\{[\s\S]*\}", text or "")
+    if not match:
+        return {}
+    try:
+        parsed = json.loads(match.group(0))
+        return parsed if isinstance(parsed, dict) else {}
+    except json.JSONDecodeError:
+        return {}
+
+
+def _list_ocr_warnings(value: Any) -> List[str]:
+    if isinstance(value, list):
+        return [_clean_ocr_text(item) for item in value if _clean_ocr_text(item)]
+    if isinstance(value, str) and value.strip():
+        return [value.strip()]
+    return []
+
+
+def _normalize_brewery_ocr_result(response_text: str) -> Dict[str, Any]:
+    parsed = _extract_ocr_json(response_text)
+    summary = parsed.get("summary") if isinstance(parsed.get("summary"), dict) else parsed
+    raw_text = _first_non_empty(
+        parsed.get("rawText"),
+        parsed.get("raw_text"),
+        summary.get("rawText") if isinstance(summary, dict) else None,
+        summary.get("raw_text") if isinstance(summary, dict) else None,
+        response_text,
+    )
+
+    business_number = _first_non_empty(
+        summary.get("businessNumber"),
+        summary.get("business_number"),
+        summary.get("registrationNumber"),
+        _regex_first(r"(?:사업자\s*등록\s*번호|사업자등록번호|등록번호)\s*[:\-]?\s*([0-9]{3}-?[0-9]{2}-?[0-9]{5})", raw_text),
+    )
+    brewery_name = _first_non_empty(
+        summary.get("breweryName"),
+        summary.get("brewery_name"),
+        summary.get("businessName"),
+        summary.get("companyName"),
+        _regex_first(r"(?:상호|법인명|단체명|업체명|상호명)\s*[:\-]?\s*([^\r\n]+)", raw_text),
+    )
+    representative_name = _first_non_empty(
+        summary.get("representativeName"),
+        summary.get("representative_name"),
+        summary.get("ceoName"),
+        _regex_first(r"(?:대표자명|대표자|성명)\s*[:\-]?\s*([^\r\n]+)", raw_text),
+    )
+    address = _first_non_empty(
+        summary.get("address"),
+        summary.get("businessAddress"),
+        _regex_first(r"(?:사업장\s*소재지|소재지|주소)\s*[:\-]?\s*([^\r\n]+)", raw_text),
+    )
+    license_type = _first_non_empty(
+        summary.get("licenseType"),
+        summary.get("license_type"),
+        "사업자등록증",
+    )
+    warnings = _list_ocr_warnings(parsed.get("warnings") or summary.get("warnings"))
+
+    if not raw_text:
+        warnings.append("OCR 결과가 비어 있습니다.")
+
+    return {
+        "status": "COMPLETED",
+        "verified": True,
+        "summary": {
+            "businessNumber": business_number,
+            "breweryName": brewery_name,
+            "representativeName": representative_name,
+            "address": address,
+            "licenseType": license_type,
+            "manualReviewOnly": True,
+            "reviewPolicy": OCR_REVIEW_POLICY,
+        },
+        "rawText": raw_text,
+        "warnings": warnings,
+    }
+
+
+async def _run_brewery_ocr(document_bytes: bytes, mime_type: str) -> Dict[str, Any]:
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY is not configured")
+
+    import google.generativeai as genai
+
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel("gemini-2.5-flash-lite")
+    prompt = """
+양조장 인증 서류 이미지를 OCR로 읽고 사업자등록증 정보를 추출해줘.
+OCR 결과는 자동 승인에 쓰지 않고 관리자 수동 검토 참고용으로만 사용한다.
+
+다음 JSON 형식만 반환해줘.
+{
+  "businessNumber": "",
+  "breweryName": "",
+  "representativeName": "",
+  "address": "",
+  "licenseType": "사업자등록증",
+  "rawText": "",
+  "warnings": []
+}
+확실하지 않은 값은 빈 문자열로 두고, 추정하지 마.
+"""
+    response = await model.generate_content_async(
+        [
+            prompt,
+            {
+                "mime_type": mime_type or "application/octet-stream",
+                "data": document_bytes,
+            },
+        ],
+        generation_config={"max_output_tokens": 2048},
+    )
+    return _normalize_brewery_ocr_result(getattr(response, "text", "") or "")
+
+
+@app.post("/api/brewery/verify-ocr")
+async def brewery_verify_ocr(
+    file: Optional[UploadFile] = File(None),
+    businessLicense: Optional[UploadFile] = File(None),
+    documentUrl: Optional[str] = Form(None),
+    document_url: Optional[str] = Form(None),
+    documentKey: Optional[str] = Form(None),
+    document_key: Optional[str] = Form(None),
+    originalName: Optional[str] = Form(None),
+    original_name: Optional[str] = Form(None),
+    mimeType: Optional[str] = Form(None),
+    mime_type: Optional[str] = Form(None),
+):
+    """양조장 인증 서류 OCR. 결과는 관리자 검토 참고용으로만 반환한다."""
+    upload = file or businessLicense
+    if upload is None:
+        logger.warning("Brewery OCR request missing upload file")
+        return _brewery_ocr_failure_response()
+
+    effective_document_url = documentUrl or document_url
+    effective_document_key = documentKey or document_key
+    effective_original_name = originalName or original_name or upload.filename
+    effective_mime_type = mimeType or mime_type or upload.content_type or "application/octet-stream"
+
+    try:
+        document_bytes = await upload.read()
+        if not document_bytes:
+            logger.warning("Brewery OCR request received empty file: filename=%s", effective_original_name)
+            return _brewery_ocr_failure_response()
+
+        logger.info(
+            "Brewery OCR request received: filename=%s content_type=%s size=%s document_key=%s document_url_present=%s",
+            effective_original_name,
+            effective_mime_type,
+            len(document_bytes),
+            effective_document_key,
+            bool(effective_document_url),
+        )
+        return await _run_brewery_ocr(document_bytes, effective_mime_type)
+    except Exception as e:
+        logger.exception("Brewery OCR processing failed: %s", e)
+        return _brewery_ocr_failure_response()
+    finally:
+        await upload.close()
+
+
+# =====================================================
 # 펀딩 맛지표 API
 # =====================================================
 
@@ -1064,8 +1301,34 @@ def approve_drink_request(request_id: int):
 _fundings: Dict[str, Dict] = {}
 
 
+def _funding_required_string(value, field_name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise HTTPException(status_code=400, detail=f"필수값이 누락되었습니다: {field_name}")
+    return value.strip()
+
+
+def _funding_abv(value) -> float:
+    if value is None:
+        raise HTTPException(status_code=400, detail="필수값이 누락되었습니다: abv")
+    try:
+        abv = float(value)
+    except (TypeError, ValueError):
+        raise HTTPException(status_code=400, detail="abv는 0 이상 100 이하이어야 합니다.")
+    if abv < 0 or abv > 100:
+        raise HTTPException(status_code=400, detail="abv는 0 이상 100 이하이어야 합니다.")
+    return abv
+
+
+def _funding_taste_vector(values: Dict) -> Dict[str, float]:
+    return {axis: float(values.get(axis, 5.0)) for axis in TASTE_AXES}
+
+
+def _funding_fallback_vector() -> Dict[str, float]:
+    return {axis: 5.0 for axis in TASTE_AXES}
+
+
 @app.post("/api/funding/register", response_model=FundingRegisterResponse)
-async def funding_register(request: FundingRegisterRequest):
+async def funding_register(request: Request):
     """
     펀딩 전통주 등록: 맛지표 입력 → 맛벡터 생성 → 추천 풀 편입
 
@@ -1075,10 +1338,32 @@ async def funding_register(request: FundingRegisterRequest):
     Returns:
         등록 결과 + 생성된 맛벡터
     """
-    if request.funding_id in _fundings:
-        raise HTTPException(status_code=400, detail={"status": "error", "message": "이미 등록된 펀딩 ID입니다."})
-    if request.abv is not None and (request.abv <= 0 or request.abv > 100):
-        raise HTTPException(status_code=400, detail={"status": "error", "message": "도수는 0~100 사이여야 합니다."})
+    body = await request.json()
+    funding_id = _funding_required_string(body.get("funding_id"), "funding_id")
+    name = _funding_required_string(body.get("name"), "name")
+    brewery = _funding_required_string(body.get("brewery"), "brewery")
+    brewery_user_id = _funding_required_string(body.get("brewery_user_id"), "brewery_user_id")
+    abv = _funding_abv(body.get("abv"))
+    taste_input = body.get("taste_input")
+    taste_input_model = TasteVector(**_funding_taste_vector(taste_input)) if taste_input is not None else None
+    request = FundingRegisterRequest.model_construct(
+        funding_id=funding_id,
+        name=name,
+        brewery=brewery,
+        brewery_user_id=brewery_user_id,
+        region=body.get("region"),
+        abv=abv,
+        main_ingredient=body.get("main_ingredient"),
+        description=body.get("description"),
+        taste_input=taste_input_model,
+    )
+
+    recommender = app.state.recommender
+    if request.funding_id in _fundings or any(
+        d.get("funding_id") == request.funding_id or d.get("id") == request.funding_id
+        for d in recommender.drinks
+    ):
+        raise HTTPException(status_code=400, detail="이미 등록된 funding_id입니다.")
 
     try:
         recommender = app.state.recommender
@@ -1088,31 +1373,41 @@ async def funding_register(request: FundingRegisterRequest):
             taste_vector = request.taste_input.model_dump()
             source = "direct_input"
         else:
-            # Gemini auto_pipeline으로 자동 생성
-            from app.auto_pipeline import AutoPipeline
-            pipeline = AutoPipeline()
-            drink_data = {
-                "name": request.name,
-                "brewery": request.brewery or "",
-                "region": request.region or "",
-                "description": request.description or "",
-                "features": request.description or "",
-                "ingredients": request.main_ingredient or "",
-                "abv": request.abv or 0.0,
-            }
-            taste_vector = pipeline.create_taste_vector(drink_data, use_gemini=True)
-            source = "gemini_auto"
+            try:
+                from app.auto_pipeline import AutoPipeline
+                pipeline = AutoPipeline()
+                drink_data = {
+                    "name": request.name,
+                    "brewery": request.brewery or "",
+                    "region": request.region or "",
+                    "description": request.description or "",
+                    "features": request.description or "",
+                    "ingredients": request.main_ingredient or "",
+                    "abv": request.abv,
+                }
+                taste_vector = _funding_taste_vector(
+                    pipeline.create_taste_vector(drink_data, use_gemini=True)
+                )
+                source = "gemini"
+            except Exception as vector_err:
+                logger.warning(f"funding taste vector auto generation failed, using fallback: {vector_err}")
+                taste_vector = _funding_fallback_vector()
+                source = "fallback"
 
         # 추천 풀 편입
         drink_entry = {
             "id": request.funding_id,
+            "drink_id": request.funding_id,
+            "funding_id": request.funding_id,
             "name": request.name,
-            "abv": request.abv or 0.0,
+            "abv": request.abv,
             "brewery": request.brewery or "",
+            "brewery_user_id": request.brewery_user_id or "",
             "region": request.region or "",
             "features": request.description or "",
             "description": request.description or "",
             "ingredients": request.main_ingredient or "",
+            "main_ingredient": request.main_ingredient or "",
             "taste_vector": taste_vector,
             "is_funding": True,
         }
@@ -1152,6 +1447,9 @@ async def funding_register(request: FundingRegisterRequest):
             message="펀딩 전통주가 추천 풀에 편입되었습니다."
         )
 
+
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"펀딩 등록 실패: {e}")
         raise HTTPException(status_code=500, detail=str(e))
