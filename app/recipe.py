@@ -18,6 +18,8 @@ logger = logging.getLogger(__name__)
 # 농사로 지역특산물 수집 결과 (scripts/collect_local_products.py 산출물)
 _NONGSARO_REGION_MAP_PATH = Path("data/ingredient_region_map.json")
 _NONGSARO_REGION_MAP: Optional[Dict[str, List[str]]] = None
+_LOCAL_PRODUCTS_PATH = Path("data/local_products.json")
+_LOCAL_PRODUCTS: Optional[List[Dict]] = None
 
 
 def _load_nongsaro_region_map() -> Dict[str, List[str]]:
@@ -54,6 +56,27 @@ def _match_nongsaro_regions(ingredient: str) -> List[str]:
                 if r not in matched:
                     matched.append(r)
     return matched[:10]
+
+
+def _load_local_products() -> List[Dict]:
+    """농사로 수집 특산물 원본을 로드한다."""
+    global _LOCAL_PRODUCTS
+    if _LOCAL_PRODUCTS is None:
+        try:
+            with open(_LOCAL_PRODUCTS_PATH, encoding="utf-8") as file:
+                loaded = json.load(file)
+            _LOCAL_PRODUCTS = loaded if isinstance(loaded, list) else []
+        except (FileNotFoundError, json.JSONDecodeError) as exc:
+            logger.warning("농사로 특산물 원본 로드 실패: %s", type(exc).__name__)
+            _LOCAL_PRODUCTS = []
+    return _LOCAL_PRODUCTS
+
+
+def _region_matches(area: str, region: str) -> bool:
+    """수집 데이터의 광역·기초 지역 표기와 요청 지역을 비교한다."""
+    normalized_area = " ".join(str(area or "").replace(">", " ").split())
+    normalized_region = " ".join(str(region or "").replace(">", " ").split())
+    return bool(normalized_region and normalized_region in normalized_area)
 
 # Gemini 에러 관련 상수
 _QUOTA_MSG = "현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요."
@@ -148,7 +171,7 @@ class RecipeAI:
                 return regions
         return []
 
-    async def suggest_sub_ingredients(self, main_ingredient: str, region: Optional[str] = None) -> Dict[str, List[str]]:
+    async def suggest_sub_ingredients(self, main_ingredient: str, region: Optional[str] = None) -> Dict:
         """
         서브재료 추천
 
@@ -159,69 +182,56 @@ class RecipeAI:
         Returns:
             서브재료 리스트
         """
-        # 지역 자동 추론 (여러 지역이면 첫 번째 사용)
         if not region:
-            regions = self.get_region_from_ingredient(main_ingredient)
-            region = regions[0] if regions else '전국'
+            return {
+                "sub_ingredients": [],
+                "region": None,
+                "data_source": "unavailable",
+                "traditional_liquor_status": "NEEDS_REVIEW",
+                "warnings": ["region을 입력해야 지역 특산물 후보를 확인할 수 있습니다."],
+            }
 
-        if not self.gemini_api_key:
-            logger.warning("GEMINI_API_KEY가 설정되지 않음")
-            return {"sub_ingredients": []}
+        candidates: List[str] = []
+        for product in _load_local_products():
+            name = str(product.get("name") or "").strip()
+            area = str(product.get("area") or "").strip()
+            if (
+                name
+                and _region_matches(area, region)
+                and name != main_ingredient
+                and name not in candidates
+            ):
+                candidates.append(name)
+        if candidates:
+            return {
+                "sub_ingredients": candidates[:5],
+                "region": region,
+                "data_source": "nongsaro_api",
+                "traditional_liquor_status": "NEEDS_REVIEW",
+                "warnings": ["지역특산주 요건 충족 여부는 별도 법률·면허 검토가 필요합니다."],
+            }
 
-        try:
-            import google.genai as genai
-            import re
+        manual = [
+            ingredient
+            for ingredient, mapped_region in INGREDIENT_REGION_MAP.items()
+            if region in mapped_region and ingredient != main_ingredient
+        ]
+        if manual:
+            return {
+                "sub_ingredients": manual[:5],
+                "region": region,
+                "data_source": "manual",
+                "traditional_liquor_status": "NEEDS_REVIEW",
+                "warnings": ["수동 매핑 기반 후보이며 실제 생산·지역특산주 요건 확인이 필요합니다."],
+            }
 
-            client = genai.Client(api_key=self.gemini_api_key)
-
-            prompt = (
-                f"전통주 지리적 표시제 기준으로 {region} 내 시/군 단위 특산물 기반 "
-                f"서브재료 5개 추천해줘. 인접 지역 특산물은 제외하고 해당 지역 내 "
-                f"특산물만 추천. 각 재료 옆에 원산지 시/군명 포함.\n"
-                f"입력: 메인재료={main_ingredient}, 지역={region}\n"
-                f'출력: {{"sub_ingredients": ["이천 쌀", "여주 고구마", ...]}}\n'
-                f"다른 말 없이 JSON만 반환."
-            )
-
-            response = await client.aio.models.generate_content(
-                model='gemini-2.5-flash-lite',
-                contents=prompt,
-                config={"max_output_tokens": 200}
-            )
-            result_text = response.text.strip()
-            logger.info(f"Gemini 서브재료 응답: {result_text}")
-
-            try:
-                # 객체 형태 {"sub_ingredients": [...]} 우선 파싱
-                obj_match = re.search(r'\{[\s\S]*\}', result_text)
-                if obj_match:
-                    parsed = json.loads(obj_match.group(0))
-                    if "sub_ingredients" in parsed and isinstance(parsed["sub_ingredients"], list):
-                        return {"sub_ingredients": parsed["sub_ingredients"]}
-
-                # fallback: 배열 형태 [...]
-                arr_match = re.search(r'\[[\s\S]*\]', result_text)
-                if arr_match:
-                    parsed = json.loads(arr_match.group(0))
-                    if isinstance(parsed, list):
-                        if parsed and isinstance(parsed[0], dict):
-                            return {"sub_ingredients": [
-                                item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료", "")
-                                for item in parsed
-                                if item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료")
-                            ]}
-                        return {"sub_ingredients": parsed}
-
-                return {"sub_ingredients": []}
-
-            except json.JSONDecodeError as e:
-                logger.error(f"JSON 파싱 실패: {e}, 원본: {result_text}")
-                return {"sub_ingredients": []}
-
-        except Exception as e:
-            msg = _gemini_error_message(e)
-            logger.error(f"서브재료 추천 실패: {e}")
-            raise RuntimeError(msg) from e
+        return {
+            "sub_ingredients": [],
+            "region": region,
+            "data_source": "unavailable",
+            "traditional_liquor_status": "NEEDS_REVIEW",
+            "warnings": ["해당 지역에서 확인된 특산물 후보가 없습니다."],
+        }
 
     async def suggest_flavor_tags(
         self,

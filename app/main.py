@@ -697,11 +697,8 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
     Returns:
         서브재료 리스트
     """
-    if not GEMINI_AVAILABLE:
-        raise HTTPException(status_code=503, detail="AI 서비스 점검 중입니다. 잠시 후 다시 시도해주세요.")
     try:
-        from app.recipe import INGREDIENT_REGION_MAP
-        effective_region = request.region or _recipe_ai.get_region_from_ingredient(request.main_ingredient) or '전국'
+        effective_region = request.region or "unavailable"
         cache_key = f"recipe_sub_{hash(request.main_ingredient + effective_region)}"
         cached = get_cache(cache_key)
         if cached is not None:
@@ -715,7 +712,7 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
             region=request.region
         )
 
-        response_obj = SubIngredientsResponse(sub_ingredients=result["sub_ingredients"])
+        response_obj = SubIngredientsResponse(**result)
         set_cache(cache_key, response_obj, ttl_minutes=1440)
         return response_obj
 
@@ -732,7 +729,11 @@ async def get_ingredient_region(ingredient: str):
     """
     from app.recipe import _match_nongsaro_regions
     regions = _recipe_ai.get_region_from_ingredient(ingredient)
-    data_source = "nongsaro_api" if _match_nongsaro_regions(ingredient) else "manual"
+    data_source = (
+        "nongsaro_api"
+        if _match_nongsaro_regions(ingredient)
+        else ("manual" if regions else "unavailable")
+    )
     return {
         "ingredient": ingredient,
         "regions": regions,

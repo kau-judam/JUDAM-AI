@@ -3,7 +3,7 @@ Pydantic 모델
 요청/응답 데이터 검증용 모델
 """
 
-from pydantic import BaseModel, Field, validator
+from pydantic import AliasChoices, BaseModel, Field, validator
 from typing import List, Dict, Optional
 from datetime import datetime
 
@@ -389,13 +389,21 @@ class BTITypeResponse(BaseModel):
 
 class SubIngredientsRequest(BaseModel):
     """서브재료 추천 요청 모델"""
-    main_ingredient: str = Field(..., description="메인 재료")
-    region: Optional[str] = Field(None, description="지역 (없으면 재료명으로 자동 추론)")
+    main_ingredient: str = Field(
+        ...,
+        validation_alias=AliasChoices("main_ingredient", "mainIngredient"),
+        description="메인 재료. snake_case가 공식 계약이며 mainIngredient는 임시 호환",
+    )
+    region: Optional[str] = Field(None, description="특산물 생산 지역")
 
 
 class SubIngredientsResponse(BaseModel):
     """서브재료 추천 응답 모델"""
     sub_ingredients: List[str]
+    region: Optional[str] = None
+    data_source: str
+    traditional_liquor_status: str
+    warnings: List[str] = Field(default_factory=list)
 
 
 class FlavorTagsRequest(BaseModel):
