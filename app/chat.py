@@ -6,11 +6,14 @@ Handles user queries with context-aware responses
 import json
 import logging
 import os
-from typing import AsyncGenerator, List, Dict, Optional
+import re
+from typing import Any, AsyncGenerator, List, Dict, Optional, Tuple
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from dotenv import load_dotenv
+
+from app.db import db
 
 load_dotenv()
 
@@ -28,84 +31,10 @@ TRADITIONAL_ALCOHOL_KEYWORDS = [
     '단맛', '바디', '탄산', '풍미', '여운'
 ]
 
-# 키워드별 후속 질문 매핑 (각 3개)
-KEYWORD_QUESTION_MAP = {
-    '막걸리':   [
-        '탄산 강한 막걸리 중에 도수 낮은 거 있어요?',
-        '삼겹살이랑 어울리는 막걸리 추천해줘',
-        '막걸리 냉장 보관 꼭 해야 해요?',
-    ],
-    '청주':     [
-        '청주와 막걸리의 차이가 뭔가요?',
-        '청주에 어울리는 안주가 있나요?',
-        '청주로 만드는 전통 요리가 있나요?',
-    ],
-    '탁주':     [
-        '탁주와 청주 차이가 무엇인가요?',
-        '탁주 만드는 방법이 궁금해요',
-        '탁주 중 초보자에게 추천하는 브랜드가 있나요?',
-    ],
-    '소주':     [
-        '소주와 전통주의 차이는 뭔가요?',
-        '소주 대신 즐길 수 있는 전통주가 있나요?',
-        '전통 증류식 소주는 어디서 구할 수 있어요?',
-    ],
-    '약주':     [
-        '약주와 청주는 같은 건가요?',
-        '약주에 어울리는 음식을 추천해줘요',
-        '약주는 어떤 재료로 만드나요?',
-    ],
-    '동동주':   [
-        '동동주와 막걸리의 차이가 뭔가요?',
-        '동동주 만드는 방법이 궁금해요',
-        '동동주에 어울리는 안주는 뭐가 있나요?',
-    ],
-    '누룩':     [
-        '누룩이 막걸리에 어떤 역할을 하나요?',
-        '좋은 누룩을 고르는 방법이 있나요?',
-        '집에서 누룩을 직접 만들 수 있나요?',
-    ],
-    '양조':     [
-        '전통주 양조 과정이 궁금해요',
-        '가정에서 전통주 담그는 방법이 있나요?',
-        '양조 시 온도 관리가 중요한가요?',
-    ],
-    '전통주':   [
-        '전통주 종류를 알려주세요',
-        '처음 막걸리 마시는 사람한테 뭐 추천해요?',
-        '전통주는 어디서 구매할 수 있나요?',
-    ],
-    '도수':     [
-        '도수별 추천 전통주를 알려주세요',
-        '도수 낮은 막걸리를 추천해주세요',
-        '같은 도수라도 취하는 정도가 다른가요?',
-    ],
-    '안주':     [
-        '막걸리에 어울리는 안주는 무엇인가요?',
-        '전통주별 최고의 안주 페어링이 궁금해요',
-        '해산물이랑 잘 맞는 전통주가 있나요?',
-    ],
-    '페어링':   [
-        '음식과 막걸리 페어링 방법을 알려주세요',
-        '특별한 날 페어링 추천이 있나요?',
-        '디저트에 어울리는 전통주도 있나요?',
-    ],
-    '발효':     [
-        '전통주 발효 기간은 얼마나 걸리나요?',
-        '발효 온도가 맛에 영향을 주나요?',
-        '발효가 잘못되면 어떻게 되나요?',
-    ],
-    '양조장':   [
-        '국내 유명 전통주 양조장을 추천해주세요',
-        '양조장 견학이 가능한 곳이 있나요?',
-        '이천 쌀 막걸리는 어디서 살 수 있어요?',
-    ],
-}
-
 DEFAULT_QUESTIONS = [
-    '어떤 전통주를 처음 마셔보면 좋을까요?',
-    '막걸리와 청주 중 뭐가 더 잘 맞을지 알고 싶어요',
-    '전통주 페어링이 궁금하신가요?',
+    '추천한 술 중 도수가 가장 낮은 술은 무엇인가요?',
+    '첫 번째 추천 술에 어울리는 안주는 무엇인가요?',
+    '추천한 술들의 맛 차이를 비교해 주세요.',
 ]
 
 
@@ -122,19 +51,11 @@ def is_traditional_alcohol_related(message: str, history: Optional[List[Dict[str
     return False
 
 
-def generate_suggested_questions(message: str) -> List[str]:
-    """키워드 기반 후속 질문 3개 생성 (Gemini 호출 없음)"""
-    for kw, questions in KEYWORD_QUESTION_MAP.items():
-        if kw in message:
-            return questions[:3]
-    return DEFAULT_QUESTIONS
-
-
 class ChatRequest(BaseModel):
     """Chat request model"""
     message: str
-    user_id: str
-    history: Optional[List[Dict[str, str]]] = []
+    user_id: Optional[str] = None
+    history: List[Dict[str, Any]] = Field(default_factory=list)
 
 
 class ChatStreamRequest(BaseModel):
@@ -146,7 +67,191 @@ class ChatResponse(BaseModel):
     """Chat response model"""
     response: str
     context: str
-    suggested_questions: List[str] = []
+    suggested_questions: List[str] = Field(default_factory=list)
+    referenced_drinks: Optional[List[Dict[str, Any]]] = None
+    next_actions: Optional[List[str]] = None
+    intent: Optional[str] = None
+    personalization_source: Optional[str] = None
+
+
+def _drink_catalog(recommender: Any) -> List[Dict[str, Any]]:
+    """추천 시스템이 실제 보유한 전통주만 중복 없이 반환한다."""
+    catalog: List[Dict[str, Any]] = []
+    seen = set()
+    for pool_name in ("drinks", "funding_drinks", "approved_drinks"):
+        for drink in getattr(recommender, pool_name, []) or []:
+            drink_id = str(drink.get("id") or "")
+            name = str(drink.get("name") or "")
+            if not name or (drink_id, name) in seen:
+                continue
+            seen.add((drink_id, name))
+            catalog.append(drink)
+    return catalog
+
+
+def _public_drink(drink: Dict[str, Any]) -> Dict[str, Any]:
+    """챗봇 응답에 포함할 실제 제품 필드를 정리한다."""
+    return {
+        "id": drink.get("id"),
+        "name": drink.get("name", ""),
+        "brewery": drink.get("brewery", ""),
+        "abv": drink.get("abv", 0),
+        "region": drink.get("region", ""),
+        "features": drink.get("features", ""),
+    }
+
+
+def _history_drinks(history: List[Dict[str, Any]], catalog: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """직전 응답이 참조한 실제 제품을 대화 기록에서 복원한다."""
+    by_name = {str(drink.get("name")): drink for drink in catalog}
+    found: List[Dict[str, Any]] = []
+    for item in reversed(history):
+        refs = item.get("referenced_drinks") or []
+        for ref in refs:
+            name = ref.get("name") if isinstance(ref, dict) else str(ref)
+            if name in by_name and by_name[name] not in found:
+                found.append(by_name[name])
+        content = str(item.get("content") or item.get("message") or "")
+        for name, drink in by_name.items():
+            if name and name in content and drink not in found:
+                found.append(drink)
+        if found:
+            break
+    return found
+
+
+def _detect_intent(message: str, contextual_drinks: List[Dict[str, Any]]) -> str:
+    """현재 질문과 직전 추천 제품을 바탕으로 챗봇 의도를 분류한다."""
+    compact = re.sub(r"\s+", "", message)
+    if any(word in compact for word in ("비교", "차이", "뭐가더")):
+        return "compare_drinks"
+    if any(word in compact for word in ("가장낮은도수", "낮은도수", "도수가낮")):
+        return "lowest_abv"
+    if any(word in compact for word in ("안주", "페어링", "어울리는음식")):
+        return "food_pairing"
+    if any(word in compact for word in ("설명", "특징", "어떤술", "알려줘")) and contextual_drinks:
+        return "drink_explanation"
+    return "recommend_drinks"
+
+
+async def _personalization(req: Request, user_id: Optional[str]) -> Tuple[Optional[Dict[str, float]], str, List[str]]:
+    """실제 취향 이력 또는 설문 프로필에서 개인화 입력을 가져온다."""
+    if not user_id:
+        return None, "general", []
+    recommender = req.app.state.recommender
+    history = getattr(recommender, "user_taste_history", {}).get(user_id, [])
+    if history:
+        return recommender.get_evolved_taste_vector(user_id), "taste_history", []
+
+    profile = getattr(req.app.state, "user_profiles", {}).get(user_id)
+    if not profile and getattr(db, "db_connected", False):
+        try:
+            profile = await db.get_user_profile(user_id)
+        except Exception as exc:
+            logger.warning("챗봇 사용자 프로필 조회 실패: %s", type(exc).__name__)
+    if profile:
+        taste_vector = profile.get("taste_vector")
+        if isinstance(taste_vector, str):
+            try:
+                taste_vector = json.loads(taste_vector)
+            except json.JSONDecodeError:
+                taste_vector = None
+        if taste_vector:
+            return taste_vector, "survey_profile", profile.get("preferred_food_pairing", []) or []
+    return None, "general", []
+
+
+def _select_drinks(
+    intent: str,
+    message: str,
+    contextual_drinks: List[Dict[str, Any]],
+    catalog: List[Dict[str, Any]],
+    recommender: Any,
+    taste_vector: Optional[Dict[str, float]],
+    food_pairings: List[str],
+) -> List[Dict[str, Any]]:
+    """의도에 맞는 실제 제품만 선택한다."""
+    mentioned = [drink for drink in catalog if str(drink.get("name") or "") in message]
+    base = mentioned or contextual_drinks
+    if intent == "lowest_abv" and base:
+        return [min(base, key=lambda drink: float(drink.get("abv") or 0))]
+    if intent in {"food_pairing", "drink_explanation"} and base:
+        if "첫 번째" in message or "첫번째" in message:
+            return base[:1]
+        return base[:3]
+    if intent == "compare_drinks" and base:
+        return base[:3]
+    if taste_vector:
+        return recommender.recommend(
+            user_vector=taste_vector,
+            top_k=3,
+            pool="all",
+            user_food_pairings=food_pairings,
+        )
+    return sorted(catalog, key=lambda drink: (float(drink.get("abv") or 0), str(drink.get("name") or "")))[:3]
+
+
+def _build_answer(intent: str, drinks: List[Dict[str, Any]], personalization_source: str) -> str:
+    """실제 제품 데이터만 사용해 챗봇 답변을 구성한다."""
+    if not drinks:
+        return "현재 추천 가능한 실제 전통주 제품 데이터가 없습니다."
+    general_note = "사용자 취향 데이터가 없어 일반 추천으로 안내드립니다. " if personalization_source == "general" else ""
+    if intent == "lowest_abv":
+        drink = drinks[0]
+        return f"{general_note}앞서 언급한 제품 중 도수가 가장 낮은 술은 {drink['name']}({drink.get('abv', 0)}도)입니다."
+    if intent == "food_pairing":
+        lines = []
+        for drink in drinks:
+            feature = str(drink.get("features") or "제품 특성에 맞는 담백한 한식 안주")
+            lines.append(f"{drink['name']}: {feature}")
+        return general_note + "안주 페어링은 다음과 같습니다. " + " / ".join(lines)
+    if intent == "compare_drinks":
+        lines = [
+            f"{drink['name']}({drink.get('abv', 0)}도, {drink.get('brewery') or '양조장 정보 없음'}): "
+            f"{drink.get('features') or '상세 특징 정보 없음'}"
+            for drink in drinks
+        ]
+        return general_note + "제품별 차이를 비교하면 " + " / ".join(lines)
+    if intent == "drink_explanation":
+        drink = drinks[0]
+        return (
+            f"{general_note}{drink['name']}은 {drink.get('brewery') or '양조장 정보 미상'} 제품이며 "
+            f"도수는 {drink.get('abv', 0)}도입니다. {drink.get('features') or '상세 특징 정보는 없습니다.'}"
+        )
+    names = ", ".join(f"{drink['name']}({drink.get('abv', 0)}도)" for drink in drinks)
+    prefix = "취향 정보를 반영한 추천입니다. " if personalization_source != "general" else general_note
+    return f"{prefix}실제 등록 제품 중 {names}을 추천합니다."
+
+
+async def _generate_next_actions(
+    question: str,
+    answer: str,
+    drinks: List[Dict[str, Any]],
+) -> List[str]:
+    """질문·답변·추천 제품에 관련된 후속 질문을 Gemini로 생성한다."""
+    try:
+        import google.generativeai as genai
+
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise RuntimeError("GEMINI_API_KEY not configured")
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel("gemini-2.5-flash-lite")
+        drink_names = [str(drink.get("name")) for drink in drinks]
+        prompt = f"""다음 전통주 대화에 직접 관련된 후속 질문 2~3개만 JSON 문자열 배열로 반환하세요.
+질문: {question}
+답변: {answer}
+실제 언급 가능 제품: {json.dumps(drink_names, ensure_ascii=False)}
+답변과 무관한 질문이나 목록에 없는 제품명은 쓰지 마세요."""
+        response = await model.generate_content_async(prompt, generation_config={"max_output_tokens": 180})
+        parsed = json.loads(response.text.strip().replace("```json", "").replace("```", "").strip())
+        actions = [str(item).strip() for item in parsed if str(item).strip()]
+        if not 2 <= len(actions) <= 3:
+            raise ValueError("invalid next action count")
+        return actions
+    except Exception as exc:
+        logger.warning("챗봇 후속 질문 생성 fallback: %s", type(exc).__name__)
+        return DEFAULT_QUESTIONS[:3]
 
 
 @router.post("/chat", response_model=ChatResponse)
@@ -161,96 +266,43 @@ async def chat(request: ChatRequest, req: Request) -> ChatResponse:
     Returns:
         Chat response with answer, context, and suggested_questions
     """
-    try:
-        import google.generativeai as genai
-
-        gemini_api_key = os.getenv("GEMINI_API_KEY")
-        if not gemini_api_key:
-            raise HTTPException(status_code=500, detail="GEMINI_API_KEY not configured")
-
-        genai.configure(api_key=gemini_api_key)
-        model = genai.GenerativeModel('gemini-2.5-flash-lite')
-
-        # 전통주 관련 여부 확인 (현재 메시지 + 히스토리 맥락 포함)
-        is_related = is_traditional_alcohol_related(request.message, request.history)
-
-        # 비관련 질문이면 즉시 거절 (Gemini 호출 절약)
-        if not is_related:
-            suggested = generate_suggested_questions(request.message)
-            return ChatResponse(
-                response="죄송합니다. 저는 전통주(막걸리, 청주, 탁주 등) 관련 질문만 답변드릴 수 있어요. 전통주에 대해 궁금한 점을 물어봐 주세요!",
-                context="out_of_scope",
-                suggested_questions=suggested
-            )
-
-        # 사용자 프로필 조회 (app.state.user_profiles)
-        profile_context = ""
-        try:
-            user_profiles = getattr(req.app.state, 'user_profiles', {})
-            profile = user_profiles.get(request.user_id)
-            if profile:
-                bti = profile.get('bti_code', '')
-                char = profile.get('character_name', '')
-                summary = profile.get('taste_profile_summary', '')
-                abv = profile.get('preferred_abv', '')
-                body = profile.get('preferred_body', '')
-                if bti or summary:
-                    profile_context = (
-                        f"\n\n[사용자 취향 프로필]\n"
-                        f"술BTI: {bti} ({char})\n"
-                        f"선호 도수: {abv} / 선호 바디감: {body}\n"
-                        f"취향 요약: {summary}"
-                    )
-        except Exception:
-            pass
-
-        # 대화 히스토리 구성 (content 키 지원)
-        context_parts = []
-        if request.history:
-            for item in request.history:
-                role = item.get("role", "")
-                # 'content' 또는 'message' 키 모두 지원
-                content = item.get("content") or item.get("message", "")
-                if role == "user" and content:
-                    context_parts.append(f"사용자: {content}")
-                elif role == "assistant" and content:
-                    context_parts.append(f"어시스턴트: {content}")
-
-        context_str = "\n".join(context_parts) if context_parts else "이전 대화 없음"
-
-        # 시스템 프롬프트 (간결화 버전)
-        system_prompt = f"한국 전통주 전문 AI. 막걸리·청주·탁주·약주 관련 질문만 답변. 3~5문장으로 간결하게 한국어로 답변.{profile_context}"
-
-        full_prompt = f"""{system_prompt}
-
-이전 대화: {context_str}
-
-질문: {request.message}
-답변:"""
-
-        response = await model.generate_content_async(
-            full_prompt,
-            generation_config={"max_output_tokens": 500}
-        )
-        result_text = response.text.strip()
-
-        # 키워드 기반 후속 질문 생성
-        suggested = generate_suggested_questions(request.message)
-
+    recommender = req.app.state.recommender
+    catalog = _drink_catalog(recommender)
+    contextual_drinks = _history_drinks(request.history, catalog)
+    is_related = is_traditional_alcohol_related(request.message, request.history) or bool(contextual_drinks)
+    if not is_related:
         return ChatResponse(
-            response=result_text,
-            context="traditional_korean_alcohol",
-            suggested_questions=suggested
+            response="죄송합니다. 저는 전통주 관련 질문만 답변드릴 수 있어요.",
+            context="out_of_scope",
+            suggested_questions=DEFAULT_QUESTIONS,
+            next_actions=DEFAULT_QUESTIONS,
+            intent="out_of_scope",
+            personalization_source="general",
         )
 
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Chat error: {e}")
-        s = str(e)
-        if '429' in s or 'quota exceeded' in s.lower() or 'resource_exhausted' in s.lower():
-            raise HTTPException(status_code=503, detail="현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요.")
-        raise HTTPException(status_code=500, detail="챗봇 서비스 오류가 발생했습니다. 잠시 후 다시 시도해주세요.")
+    taste_vector, personalization_source, food_pairings = await _personalization(req, request.user_id)
+    intent = _detect_intent(request.message, contextual_drinks)
+    selected = _select_drinks(
+        intent,
+        request.message,
+        contextual_drinks,
+        catalog,
+        recommender,
+        taste_vector,
+        food_pairings,
+    )
+    answer = _build_answer(intent, selected, personalization_source)
+    next_actions = await _generate_next_actions(request.message, answer, selected)
+    referenced = [_public_drink(drink) for drink in selected]
+    return ChatResponse(
+        response=answer,
+        context="traditional_korean_alcohol",
+        suggested_questions=next_actions,
+        referenced_drinks=referenced,
+        next_actions=next_actions,
+        intent=intent,
+        personalization_source=personalization_source,
+    )
 
 
 async def _stream_gemini(message: str) -> AsyncGenerator[str, None]:
