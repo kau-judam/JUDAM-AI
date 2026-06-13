@@ -140,3 +140,13 @@ async def test_product_comparison_and_relevant_next_actions():
     assert len(response.referenced_drinks) == 2
     assert response.next_actions == response.suggested_questions
     assert any("테스트 생막걸리" in question for question in response.next_actions)
+
+
+@pytest.mark.asyncio
+async def test_direct_product_explanation_uses_named_catalog_product():
+    response = await chat_module.chat(
+        chat_module.ChatRequest(message="테스트 약주 특징 알려줘"),
+        _request(FakeRecommender()),
+    )
+    assert response.intent == "drink_explanation"
+    assert response.referenced_drinks[0]["name"] == "테스트 약주"

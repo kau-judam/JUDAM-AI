@@ -129,7 +129,7 @@ def _detect_intent(message: str, contextual_drinks: List[Dict[str, Any]]) -> str
         return "lowest_abv"
     if any(word in compact for word in ("안주", "페어링", "어울리는음식")):
         return "food_pairing"
-    if any(word in compact for word in ("설명", "특징", "어떤술", "알려줘")) and contextual_drinks:
+    if any(word in compact for word in ("설명", "특징", "어떤술", "알려줘")):
         return "drink_explanation"
     return "recommend_drinks"
 
