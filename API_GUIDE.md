@@ -606,29 +606,42 @@ curl http://localhost:8000/api/taste/profile/user_001
 
 ---
 
-## 9. POST `/api/recipe/suggest-sub-ingredients` ✦ Gemini
+## 9. POST `/api/recipe/suggest-sub-ingredients`
 
-메인재료와 지역을 입력하면 지역 특산물 기반 서브재료 5개 추천.
+메인재료와 지역을 별도로 입력하면 실제 수집 데이터에서 확인된 지역 특산물 후보를 최대 5개 반환합니다.
+Gemini가 특산물명을 생성하지 않습니다.
 
 **요청**
 ```json
 {
-  "main_ingredient": "쌀",
-  "region":          "경기도"
+  "main_ingredient": "사과",
+  "region":          "청주시"
 }
 ```
 
 | 필드 | 타입 | 필수 | 설명 |
 |------|------|------|------|
-| main_ingredient | string | Y | 주재료 (예: "쌀", "보리", "고구마") |
-| region | string | N | 지역명 (예: "경기도", "제주"). 생략 시 `main_ingredient`로 자동 추론 (→ `GET /api/recipe/ingredient-region` 기준) |
+| main_ingredient | string | Y | 주재료. `snake_case`가 공식 계약. 기존 `mainIngredient`는 임시 alias 호환 |
+| region | string | N | 특산물 생산 지역. 누락 시 500 대신 `data_source: "unavailable"` 반환 |
 
 **응답**
 ```json
 {
-  "sub_ingredients": ["이천 쌀", "여주 고구마", "안성 배", "광주 복숭아", "연천 율무"]
+  "sub_ingredients": ["쌀", "딸기", "포도", "복숭아", "고구마"],
+  "region": "청주시",
+  "data_source": "nongsaro_api",
+  "traditional_liquor_status": "NEEDS_REVIEW",
+  "warnings": ["지역특산주 요건 충족 여부는 별도 법률·면허 검토가 필요합니다."]
 }
 ```
+
+| `data_source` | 의미 |
+|---|---|
+| `nongsaro_api` | `local_products.json`의 농사로 수집 결과에서 확인 |
+| `manual` | 코드의 수동 매핑에서 확인 |
+| `unavailable` | 입력 지역에서 확인 가능한 후보 없음 또는 region 누락 |
+
+지역특산주 요건은 재료 매칭만으로 확정하지 않으며 현재 응답은 `NEEDS_REVIEW`입니다.
 
 ---
 
@@ -962,21 +975,27 @@ curl "http://localhost:8000/api/insight?period=week"
 
 > `preferences`는 DB의 `user_profiles`(bti_code·preferred_food_pairing·preferred_aroma·preferred_fruit·taste_vector)에서 집계하며, DB 미연결 시 결정적 샘플 프로필 120건으로 데모됩니다. `data_source`로 출처를 구분하세요.
 
+> 양조장 제품 기획용 인사이트는 이 메모리 샘플을 실데이터로 사용하지 않습니다. 백엔드가 게시물·댓글·성공 펀딩·BTI 관심 데이터를 비식별 집계해 전달하는 별도 계약 초안은 `docs/brewery-insight-aggregation-contract.md`를 참고하세요. 백엔드 계약 확정 전 AI 서버는 서비스 DB 테이블을 추측해 직접 JOIN하지 않습니다.
+
 ---
 
-## 17. POST `/api/chat` ✦ Gemini
+## 17. POST `/api/chat`
 
-전통주(막걸리·청주·탁주·약주) 관련 질문에 답변하는 챗봇.  
-비관련 질문은 Gemini 호출 없이 즉시 거절.
+전통주 추천, 제품 설명, 비교, 안주 추천과 직전 추천 제품에 대한 후속 질문을 하나의 엔드포인트에서 처리합니다.
+제품명과 양조장명은 실제 `app.state.recommender` 추천 풀에 있는 데이터만 사용합니다.
+Gemini는 질문·직전 답변·추천 제품에 관련된 후속 질문 생성에 사용하며, 실패할 때만 고정 fallback을 사용합니다.
 
 **요청**
 ```json
 {
-  "message": "막걸리 초보자에게 추천하는 도수는?",
+  "message": "그중 낮은 도수는?",
   "user_id": "user_001",
   "history": [
-    { "role": "user",      "content": "막걸리가 뭔가요?" },
-    { "role": "assistant", "content": "막걸리는 쌀을 발효시킨 한국 전통주입니다." }
+    {
+      "role": "assistant",
+      "content": "A와 B를 추천합니다.",
+      "referenced_drinks": [{"name": "A"}, {"name": "B"}]
+    }
   ]
 }
 ```
@@ -984,22 +1003,24 @@ curl "http://localhost:8000/api/insight?period=week"
 | 필드 | 타입 | 필수 | 설명 |
 |------|------|------|------|
 | message | string | Y | 사용자 질문 |
-| user_id | string | N | 사용자 ID (대화 맥락 저장용) |
-| history | array | N | 이전 대화 기록. `role`: `"user"` 또는 `"assistant"` |
+| user_id | string | N | 있으면 실제 taste history 또는 survey profile을 개인화에 사용 |
+| history | array | N | 이전 대화 기록. assistant 항목의 `referenced_drinks`로 후속 제품 맥락 전달 가능 |
 
 **응답**
 ```json
 {
-  "response": "초보자에게는 5~6도 막걸리를 추천드립니다. 부담 없이 즐길 수 있어요.",
+  "response": "앞서 언급한 제품 중 도수가 가장 낮은 술은 A(5도)입니다.",
   "context": "traditional_korean_alcohol",
-  "suggested_questions": [
-    "도수별 추천 전통주를 알려주세요",
-    "도수 낮은 막걸리를 추천해주세요"
-  ]
+  "suggested_questions": ["A에 어울리는 안주는?", "A와 B의 맛 차이는?"],
+  "referenced_drinks": [{"id": "drink_a", "name": "A", "brewery": "A양조장", "abv": 5.0}],
+  "next_actions": ["A에 어울리는 안주는?", "A와 B의 맛 차이는?"],
+  "intent": "lowest_abv",
+  "personalization_source": "taste_history"
 }
 ```
 
-비관련 질문 시 `context: "out_of_scope"` 반환.
+기존 `response`, `context`, `suggested_questions` 필드는 유지됩니다. 추가 필드는 optional입니다.
+`personalization_source`는 `taste_history`, `survey_profile`, `general` 중 하나이며, `general`이면 답변에 일반 추천임을 명시합니다.
 
 ---
 
@@ -1258,6 +1279,9 @@ Gemini 실패 시 `HUGGINGFACE_TOKEN`이 있으면 Stable Diffusion으로 fallba
   "description": "상큼 달달한 저도수 스파클링",
   "flavor_tags": ["달콤한", "청량한", "딸기"],
   "region":      "충청남도 논산",
+  "main_ingredient": "쌀",
+  "sub_ingredients": ["논산 딸기"],
+  "concept": "봄 소풍을 위한 저도수 스파클링",
   "taste_vector": {
     "sweetness": 8.5, "body": 3.0, "carbonation": 8.0, "flavor": 6.0,
     "alcohol": 4.0, "acidity": 6.5, "aroma_intensity": 6.0, "finish": 4.0
@@ -1272,6 +1296,9 @@ Gemini 실패 시 `HUGGINGFACE_TOKEN`이 있으면 Stable Diffusion으로 fallba
 | description | string | Y | 전통주 설명 |
 | flavor_tags | string[] | N | 맛 태그 → 소품/가니시 |
 | region | string | N | 지역 → 배경 분위기 |
+| main_ingredient | string | N | 메인재료 → 이미지 소품 |
+| sub_ingredients | string[] | N | 서브재료 → 이미지 소품 |
+| concept | string | N | 프로젝트 컨셉 → 피사체·분위기 |
 | taste_vector | object(8축, float) | N | 8축 맛벡터 → 색·질감 시각화. 미전달 시 중립(5) 처리 |
 | seed | int | N | 구도/조명/스타일 프리셋 변주 제어. 미전달 시 `name+region` 해시 사용(재현 가능) |
 
@@ -1343,7 +1370,7 @@ curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
   "ingredient":  "통밀",
   "regions":     [],
   "found":       false,
-  "data_source": "manual"
+  "data_source": "unavailable"
 }
 ```
 
@@ -1351,9 +1378,9 @@ curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
 |------|------|
 | `regions` | 생산 지역 배열. 매핑 없으면 빈 배열 `[]` |
 | `found` | `true` = 1개 이상 지역 매핑 성공 |
-| `data_source` | `"nongsaro_api"` = `data/ingredient_region_map.json` 매칭, `"manual"` = 하드코딩 fallback |
+| `data_source` | `"nongsaro_api"` = `data/ingredient_region_map.json` 매칭, `"manual"` = 하드코딩 fallback, `"unavailable"` = 매핑 없음 |
 
-> `regions[0]`이 `/api/recipe/suggest-sub-ingredients` 지역 자동추론에 사용됩니다.
+> 서브재료 공식 요청은 사용자가 선택한 `region`을 별도로 전달합니다. 지역 목록 첫 항목을 서버가 임의 선택하지 않습니다.
 > 원본 농사로 수집 레코드는 `data/local_products.json`에 보관되고, API는 그 결과를 재가공한 `data/ingredient_region_map.json`을 읽습니다. 코드에서는 `"경상남도 > 의령군"` 형태를 `"경상남도 의령군"`처럼 정규화해 반환합니다.
 
 **지원 재료 예시**
@@ -1373,8 +1400,9 @@ curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
 
 ## 27. POST `/api/brewery/verify-ocr` ✦ Gemini
 
-양조장 인증/신원 서류 이미지를 Gemini Vision으로 분석하여 서류 종류 판별 및 필드 추출.
+양조장 인증/신원 서류 파일을 Gemini Vision으로 분석하여 서류 종류 판별 및 필드 추출.
 지원 서류는 `app/ocr.py`의 `SUPPORTED_DOC_TYPES` 레지스트리에서 관리합니다.
+OCR 결과는 관리자 검토 자료이며 자동 승인에 사용하지 않습니다.
 
 **현재 인식 가능한 서류 7종**
 1. 사업자등록증
@@ -1385,87 +1413,59 @@ curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
 6. 주류제조면허증
 7. 식품제조가공업영업신고증
 
-**요청**
-```json
-{
-  "image_base64": "/9j/4AAQSkZJRgABAQ...",
-  "mime_type":    "image/jpeg"
-}
-```
+**요청** `multipart/form-data`
 
 | 필드 | 타입 | 필수 | 기본값 | 설명 |
 |------|------|------|--------|------|
-| image_base64 | string | Y | — | 이미지 base64 인코딩 문자열 |
-| mime_type | string | N | `image/jpeg` | `image/jpeg` 또는 `image/png` |
+| file | file | 조건부 | — | 공식 백엔드 필드 미확정. `businessLicense`와 임시 호환 |
+| businessLicense | file | 조건부 | — | `file` 임시 호환 필드 |
+| mimeType | string | N | — | upload content type이 없을 때 검증용 |
+| documentUrl / documentKey / originalName | string | N | — | 현재 OCR 및 DB 저장에 사용하지 않음 |
 
-**응답 — 유효 서류**
+PNG, JPEG, PDF magic bytes와 MIME 타입을 함께 검증하며 파일 크기 상한은 10MB입니다.
+PDF는 코드 경로만 지원하며 실제 Gemini 라이브 호출은 미검증입니다.
+
+**응답 — OCR 완료**
 ```json
 {
-  "status":        "success",
-  "is_valid":      true,
-  "document_type": "주류제조면허증",
-  "confidence":    "high",
-  "extracted": {
-    "document_type":       "주류제조면허증",
-    "is_valid_document":   true,
-    "brewery_name":        "한강양조 주식회사",
-    "registration_number": "서울-주류-2024-001",
-    "owner_name":          "홍길동",
-    "address":             "서울특별시 마포구 양화로 100",
-    "issue_date":          "2024-01-15",
-    "issuing_authority":   "국세청",
-    "alcohol_types":       ["탁주", "약주"],
-    "confidence":          "high",
-    "rejection_reason":    null
-  }
+  "status": "COMPLETED",
+  "ocrSucceeded": true,
+  "verified": false,
+  "documentAssessment": "REVIEW_REQUIRED",
+  "summary": {
+    "businessNumber": "214-88-12345",
+    "breweryName": "테스트양조장",
+    "representativeName": "김테스트",
+    "address": "서울특별시 테스트구",
+    "licenseType": "사업자등록증",
+    "manualReviewOnly": true,
+    "reviewPolicy": "OCR_RESULT_IS_FOR_ADMIN_REVIEW_ONLY"
+  },
+  "rawText": "OCR로 읽은 원문",
+  "warnings": []
 }
 ```
 
-**응답 — 유효하지 않은 서류**
+**응답 — OCR 업무 실패**
 ```json
 {
-  "status":        "success",
-  "is_valid":      false,
-  "document_type": "인식불가",
-  "confidence":    "low",
-  "extracted": {
-    "document_type": "인식불가",
-    "is_valid_document": false,
-    "rejection_reason":  "인정되는 서류 종류에 해당하지 않거나 핵심 식별번호를 읽을 수 없습니다."
-  }
+  "status": "FAILED",
+  "ocrSucceeded": false,
+  "verified": false,
+  "documentAssessment": "MANUAL_REVIEW",
+  "summary": {
+    "reason": "UNSUPPORTED_FILE_TYPE",
+    "manualReviewOnly": true,
+    "reviewPolicy": "OCR_RESULT_IS_FOR_ADMIN_REVIEW_ONLY"
+  },
+  "error": "PNG, JPEG, PDF 파일만 지원합니다.",
+  "warnings": ["관리자 수동 검토가 필요합니다."]
 }
 ```
 
-| 응답 필드 | 설명 |
-|----------|------|
-| `status` | `"success"` / `"disabled"` / `"error"` |
-| `is_valid` | `extracted.is_valid_document` 값. 인정 서류이고 핵심 식별번호가 읽히면 `true` |
-| `document_type` | 판별된 서류 종류 |
-| `confidence` | `high` / `medium` / `low` — OCR 신뢰도 |
-| `extracted.document_type` | 서류 종류. 7종 중 하나 또는 `"인식불가"` |
-| `extracted.is_valid_document` | 프롬프트 기준의 유효 서류 여부 |
-| `extracted.brewery_name` | 업체명/상호/제조장명. 신분증이면 빈 문자열 |
-| `extracted.registration_number` | 사업자번호/면허번호/신고번호/승인번호/주민등록번호 등 핵심 식별번호 |
-| `extracted.owner_name` | 대표자명 또는 신분증 성명 |
-| `extracted.address` | 주소 또는 소재지 |
-| `extracted.issue_date` | 발급일/등록일/면허일/승인일 |
-| `extracted.issuing_authority` | 발급기관 |
-| `extracted.alcohol_types` | 주류 관련 면허/승인서에서 추출 가능한 제조 가능 주종 목록 |
-| `extracted.rejection_reason` | 인식불가 또는 무효 판정 사유 |
-
-**더미 OCR 검증 결과**
-- `results_ocr.md` 기준 더미 서류 5종을 실제 Gemini OCR(`gemini-2.5-flash-lite`)로 검증했습니다.
-- 서류 판별 정확도: 5/5 = 100%.
-- 필드 정확도: `brewery_name` 4/4, `registration_number` 5/5, `owner_name` 5/5, `address` 5/5, `issue_date` 4/5, `issuing_authority` 5/5.
-- 전통주제조면허증 더미는 예측 `document_type`이 `주류제조면허증`으로 나왔지만, 현재 평가에서는 제조면허 계열로 정답 처리했습니다.
-
-**현재 한계**
-- `issue_date`는 사업자등록증의 개업일/등록일/발급일을 혼동할 수 있습니다.
-- 인정 서류가 아닌 negative 케이스는 아직 별도 검증하지 않았습니다.
-
-**에러**
-- 400: `image_base64` 누락
-- 503: `GEMINI_AVAILABLE: false` 또는 `GEMINI_API_KEY` 미설정
+인증 신청 비차단 정책을 위해 모든 OCR 업무 결과는 HTTP 200이며 `body.status`로 완료·실패를 구분합니다.
+실패 reason은 `NO_FILE`, `EMPTY_FILE`, `FILE_TOO_LARGE`, `UNSUPPORTED_FILE_TYPE`, `OCR_PROCESSING_FAILED`입니다.
+사업자등록번호 체크섬 실패와 필드 누락은 반려가 아니라 `warnings`에만 추가됩니다.
 
 ---
 
