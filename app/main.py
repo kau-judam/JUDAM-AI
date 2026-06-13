@@ -945,8 +945,11 @@ _drink_request_id_counter = [0]
 class ImageGenerateRequest(BaseModel):
     name: str
     description: str
-    flavor_tags: List[str] = []
+    flavor_tags: List[str] = Field(default_factory=list)
     region: Optional[str] = None
+    main_ingredient: Optional[str] = None
+    sub_ingredients: List[str] = Field(default_factory=list)
+    concept: Optional[str] = None
     taste_vector: Optional[Dict[str, float]] = None  # 8축 맛벡터 → 색·질감 시각화 (선택)
     seed: Optional[int] = None  # 동일 입력 재현/변주 제어 (선택)
 
@@ -1679,6 +1682,9 @@ async def generate_image(request: ImageGenerateRequest):
         description=request.description,
         flavor_tags=request.flavor_tags,
         region=request.region,
+        main_ingredient=request.main_ingredient,
+        sub_ingredients=request.sub_ingredients,
+        concept=request.concept,
         taste_vector=request.taste_vector,
         seed=request.seed
     )

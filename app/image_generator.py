@@ -6,6 +6,7 @@
 
 import os
 import base64
+import io
 import logging
 import random
 from typing import Optional, List, Dict
@@ -141,8 +142,24 @@ def _background_phrase(region: Optional[str]) -> str:
     return 'a softly blurred hanok interior with hanji paper'
 
 
+def _as_png_base64(image_base64: str) -> Optional[str]:
+    """공급자 이미지 응답을 base64 PNG로 정규화한다."""
+    try:
+        from PIL import Image
+
+        image_bytes = base64.b64decode(image_base64)
+        with Image.open(io.BytesIO(image_bytes)) as image:
+            output = io.BytesIO()
+            image.convert("RGBA").save(output, format="PNG")
+        return base64.b64encode(output.getvalue()).decode("ascii")
+    except Exception as exc:
+        logger.warning("이미지 PNG 변환 실패: %s", type(exc).__name__)
+        return None
+
+
 def build_image_prompt(name: str, description: str, flavor_tags: Optional[List[str]] = None,
-                       region: Optional[str] = None,
+                       region: Optional[str] = None, main_ingredient: Optional[str] = None,
+                       sub_ingredients: Optional[List[str]] = None, concept: Optional[str] = None,
                        taste_vector: Optional[Dict[str, float]] = None,
                        seed: Optional[int] = None) -> str:
     """
@@ -158,13 +175,16 @@ def build_image_prompt(name: str, description: str, flavor_tags: Optional[List[s
     style = rng.choice(_STYLE)
 
     flavor_str = ', '.join(flavor_tags) if flavor_tags else 'traditional'
+    ingredient_tags = [main_ingredient] + (sub_ingredients or []) if main_ingredient else (sub_ingredients or [])
+    visual_tags = flavor_tags + [tag for tag in ingredient_tags if tag]
     sections = [
         f"[SUBJECT] A bottle and {_vessel(taste_vector)} of Korean traditional alcohol "
-        f"'{name}' ({description or flavor_str}), {composition}",
+        f"'{name}' ({description or flavor_str}), concept: {concept or 'traditional'}, {composition}",
         f"[COLOR] {_color_phrase(taste_vector)}",
         f"[TEXTURE] {_texture_phrase(taste_vector)}",
-        f"[PROPS] garnished with {_props_phrase(name, flavor_tags)}; flavor notes: {flavor_str}",
-        f"[BACKGROUND] {_background_phrase(region)}",
+        f"[PROPS] garnished with {_props_phrase(name, visual_tags)}; "
+        f"ingredients: {', '.join(ingredient_tags) or 'unspecified'}; flavor notes: {flavor_str}",
+        f"[BACKGROUND] region: {region or 'unspecified'}, {_background_phrase(region)}",
         f"[LIGHTING] {lighting}",
         f"[STYLE] {style}, photorealistic, high resolution, no text, no watermark",
     ]
@@ -242,6 +262,9 @@ class ImageGenerator:
     async def generate(self, name: str, description: str,
                        flavor_tags: Optional[List[str]] = None,
                        region: Optional[str] = None,
+                       main_ingredient: Optional[str] = None,
+                       sub_ingredients: Optional[List[str]] = None,
+                       concept: Optional[str] = None,
                        taste_vector: Optional[Dict[str, float]] = None,
                        seed: Optional[int] = None) -> dict:
         if not self.enabled:
@@ -250,19 +273,21 @@ class ImageGenerator:
         try:
             # 1단계: 입력 구동 구조화 프롬프트 (맛벡터·재료·지역 반영, 프리셋 회전)
             image_prompt = build_image_prompt(
-                name, description, flavor_tags or [], region, taste_vector, seed
+                name, description, flavor_tags or [], region, main_ingredient,
+                sub_ingredients or [], concept, taste_vector, seed
             )
             logger.info(f"이미지 프롬프트 생성 완료: {image_prompt[:80]}")
 
             # 2단계: Gemini 네이티브 이미지 생성 시도
             try:
                 image_b64, mime_type = await self._generate_with_gemini(image_prompt)
-                if image_b64:
+                png_b64 = _as_png_base64(image_b64) if image_b64 else None
+                if png_b64:
                     logger.info(f"Gemini 이미지 생성 성공 ({mime_type})")
                     return {
                         "status": "success",
-                        "image_base64": image_b64,
-                        "mime_type": mime_type,
+                        "image_base64": png_b64,
+                        "mime_type": "image/png",
                         "model_used": self.gemini_image_model,
                         "prompt_used": image_prompt,
                         "message": f"Gemini {self.gemini_image_model}로 이미지 생성 완료"
@@ -272,11 +297,12 @@ class ImageGenerator:
 
             # 3단계: HF Stable Diffusion fallback
             image_b64 = await self._generate_with_hf(image_prompt)
-            if image_b64:
+            png_b64 = _as_png_base64(image_b64) if image_b64 else None
+            if png_b64:
                 return {
                     "status": "success",
-                    "image_base64": image_b64,
-                    "mime_type": "image/jpeg",
+                    "image_base64": png_b64,
+                    "mime_type": "image/png",
                     "model_used": self.hf_model,
                     "prompt_used": image_prompt,
                     "message": "Stable Diffusion으로 이미지 생성 완료"
