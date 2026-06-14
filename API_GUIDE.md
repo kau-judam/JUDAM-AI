@@ -621,8 +621,10 @@ DB 연결 시 DB 저장, 미연결 시 `data/bti_feedback.json` fallback.
 {
   "user_id":            "user_001",
   "bti_code":           "SHFCL",
-  "is_correct":         true,
-  "actual_preference":  null
+  "is_correct":         false,
+  "actual_preference":  null,
+  "wrong_axes":         ["단맛", "바디감·묵직함"],
+  "feedback_reason":    "실제로는 조금 더 드라이하고 가벼운 취향입니다."
 }
 ```
 
@@ -632,9 +634,14 @@ DB 연결 시 DB 저장, 미연결 시 `data/bti_feedback.json` fallback.
 | bti_code | string | Y | 서버가 분류한 BTI 코드 (정확히 5글자) |
 | is_correct | boolean | Y | `true` = "이 결과가 내 취향과 맞아요" → KNN 학습 데이터로 사용 |
 | actual_preference | string | N | `is_correct: false`일 때 실제로 더 맞는 캐릭터명 입력 (선택) |
+| wrong_axes | string[] | N | `is_correct: false`일 때 틀린 축 복수 선택. 예: 단맛, 바디감·묵직함, 탄산감, 풍미·향, 잘 모르겠음 |
+| feedback_reason | string | N | 자유 텍스트 이유 |
 
 > 피드백 응답의 `storage` 필드로 저장 위치를 확인할 수 있습니다.  
 > 피드백이 일정량 쌓이면 `python scripts/train_knn.py`로 KNN 모델을 학습시키세요.
+>
+> `wrong_axes`와 `feedback_reason`은 현재 요청·메모리 entry 및 JSON fallback 수집용입니다. `bti_feedback` DB 테이블에는 해당 컬럼이 없어 DB 저장 시 적재되지 않으며, KNN 학습에도 사용되지 않습니다.
+> 자유 텍스트 이유를 `actual_preference`에 넣지 마세요. `actual_preference`는 현재 `original_code`로 매핑되며 DB 컬럼 길이는 `VARCHAR(10)`입니다.
 
 **응답**
 ```json
@@ -685,7 +692,7 @@ Gemini가 목록에 없는 특산물명을 생성할 수 없도록 결과를 실
 | 필드 | 타입 | 필수 | 설명 |
 |------|------|------|------|
 | main_ingredient | string | Y | 주재료. `snake_case`가 공식 계약. 기존 `mainIngredient`는 임시 alias 호환 |
-| region | string | N | 특산물 생산 지역. 누락 시 500 대신 `data_source: "unavailable"` 반환 |
+| region | string | N | 사용자가 직접 입력하는 값이 아니라, **26번 `GET /api/recipe/ingredient-region` 응답의 `regions` 중 사용자가 선택한 값**. 누락 시 500 대신 `data_source: "unavailable"` 반환. 2단계 흐름은 26번 참조 |
 
 **응답**
 ```json
