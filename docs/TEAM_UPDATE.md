@@ -10,7 +10,7 @@
 
 ## B. 배포 담당 승빈 확인사항
 
-- `main` 최신 커밋을 pull합니다. 배포 기준 커밋 해시는 첫 push 후 아래 관련 커밋에 추가합니다.
+- `main` 최신 커밋을 pull합니다. 기능·가이드·팀 문서를 포함한 배포 기준 커밋은 `659a37b`입니다.
 - `python-multipart`가 추가되었으므로 반드시 `pip install -r requirements.txt`를 실행합니다. 재설치하지 않으면 OCR multipart 요청 처리가 실패합니다.
 - PM2의 `judam-ai-server`, `judam-ai-sqs-worker`를 모두 재시작합니다.
 - `GEMINI_API_KEY` 존재 여부를 확인합니다. 챗봇 큐레이션, 서브재료 선별, 후속 질문 생성에 사용하며 미설정·호출 실패 시 폴백되지만 품질이 낮아집니다.
@@ -44,4 +44,4 @@
 - 기존 OCR multipart·관리자 검토 정책: `510c1ef`
 - 기존 챗봇·서브재료 Gemini 큐레이션: `f21839d`
 - 기존 AI API 가이드·인수인계 동기화: `1f761e8`
-- 배포 기준 main: 첫 push 후 기입
+- 기능·가이드·팀 문서 배포 기준 main: `659a37b`
