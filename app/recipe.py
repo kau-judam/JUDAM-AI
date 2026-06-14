@@ -203,8 +203,16 @@ class RecipeAI:
             ):
                 candidates.append(name)
         if candidates:
+            # 후보가 2개 이상일 때만 Gemini 선별(보조 단계). 실패 시 기존대로 candidates[:5] 폴백.
+            selected = candidates[:5]
+            if len(candidates) >= 2 and self.gemini_api_key:
+                try:
+                    selected = await self._gemini_select_sub_ingredients(main_ingredient, candidates)
+                except Exception as exc:
+                    logger.warning("서브재료 Gemini 선별 실패 → 후보 그대로 사용: %s", type(exc).__name__)
+                    selected = candidates[:5]
             return {
-                "sub_ingredients": candidates[:5],
+                "sub_ingredients": selected,
                 "region": region,
                 "data_source": "nongsaro_api",
                 "traditional_liquor_status": "NEEDS_REVIEW",
@@ -232,6 +240,49 @@ class RecipeAI:
             "traditional_liquor_status": "NEEDS_REVIEW",
             "warnings": ["해당 지역에서 확인된 특산물 후보가 없습니다."],
         }
+
+    async def _gemini_select_sub_ingredients(self, main_ingredient: str, candidates: List[str]) -> List[str]:
+        """지역 후보 중 main_ingredient 와 궁합 좋은 서브재료를 Gemini 로 선별.
+
+        - 반드시 candidates 안에서만 고른다(목록에 없는 재료 생성 금지).
+        - 실패/파싱오류 시 예외를 그대로 올려 호출자가 candidates[:5] 로 폴백하게 한다.
+        """
+        import google.genai as genai
+        import re
+
+        client = genai.Client(api_key=self.gemini_api_key)
+        candidates_str = ", ".join(candidates)
+        prompt = (
+            f"'{main_ingredient}'(으)로 만드는 전통주에 어울리는 서브재료를 아래 후보 중에서만 골라줘.\n"
+            f"후보: {candidates_str}\n"
+            "주로 무난히 어울리는 것 위주로 3~5개를 고르되, 그중 1개 정도는 의외성 있는(독특하지만 시도해볼 만한) 재료를 섞어도 좋아.\n"
+            "반드시 위 후보 목록 안에 있는 재료만 사용하고, 목록에 없는 재료는 만들지 마.\n"
+            "재료 이름 문자열만 담은 JSON 배열로만 답변. 이유·점수 등 다른 정보는 넣지 마."
+        )
+
+        response = await client.aio.models.generate_content(
+            model='gemini-2.5-flash-lite',
+            contents=prompt,
+            config={"max_output_tokens": 200},
+        )
+        result_text = response.text
+        json_match = re.search(r'\[[\s\S]*\]', result_text)
+        if json_match:
+            result_text = json_match.group(0)
+        parsed = json.loads(result_text)
+        if not isinstance(parsed, list):
+            raise ValueError("Gemini 서브재료 응답이 배열이 아님")
+
+        # 후보 목록 안의 재료만, 순서 유지·중복 제거
+        allowed = set(candidates)
+        selected: List[str] = []
+        for item in parsed:
+            name = str(item).strip()
+            if name in allowed and name not in selected:
+                selected.append(name)
+        if not selected:
+            raise ValueError("Gemini 선별 결과가 후보와 일치하지 않음")
+        return selected[:5]
 
     async def suggest_flavor_tags(
         self,

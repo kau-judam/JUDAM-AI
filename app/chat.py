@@ -223,6 +223,79 @@ def _build_answer(intent: str, drinks: List[Dict[str, Any]], personalization_sou
     return f"{prefix}실제 등록 제품 중 {names}을 추천합니다."
 
 
+def _curation_tone(intent: str) -> str:
+    """intent 별 큐레이션 톤 가이드(제품은 바꾸지 않고 말투만 조정)."""
+    if intent == "food_pairing":
+        return "안주·음식 궁합을 중심으로, 각 제품이 어떤 안주와 왜 잘 맞는지 설명해줘."
+    if intent == "compare_drinks":
+        return "제품들의 맛·도수·특징 차이를 비교하는 흐름으로 설명해줘."
+    if intent == "drink_explanation":
+        return "해당 제품의 특징을 친근하게 소개하는 흐름으로 설명해줘."
+    if intent == "lowest_abv":
+        return "도수가 낮은 제품을 짚어주는 흐름으로 설명해줘."
+    return "사용자에게 어울리는 이유를 곁들여 추천하는 흐름으로 설명해줘."
+
+
+async def _build_answer_curated(
+    intent: str,
+    drinks: List[Dict[str, Any]],
+    personalization_source: str,
+    user_message: str,
+) -> str:
+    """이미 선택된 제품들(drinks)만 Gemini로 자연스럽게 풀어쓴다.
+
+    - 제품 선택/추가는 하지 않는다(_select_drinks 결과를 그대로 사용).
+    - 응답에 선택된 제품명이 1개도 없으면 ValueError → 호출자가 _build_answer 로 폴백.
+    - 어떤 실패든 예외를 올려 호출자가 템플릿으로 폴백하게 한다.
+    """
+    if not drinks:
+        raise ValueError("큐레이션할 제품 없음")
+
+    import google.generativeai as genai
+
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY not configured")
+
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel("gemini-2.5-flash-lite")
+
+    product_lines = []
+    for drink in drinks:
+        product_lines.append(
+            f"- 이름:{drink.get('name','')} | 양조장:{drink.get('brewery') or '정보없음'} | "
+            f"도수:{drink.get('abv', 0)}도 | 지역:{drink.get('region') or '정보없음'} | "
+            f"특징:{drink.get('features') or '정보없음'} | 재료:{drink.get('ingredients') or '정보없음'}"
+        )
+    products_block = "\n".join(product_lines)
+    general_note = "사용자 취향 데이터가 없어 일반 추천이라는 점을 한 마디 자연스럽게 포함해줘. " \
+        if personalization_source == "general" else ""
+
+    prompt = f"""너는 한국 전통주 큐레이터다. 아래 '추천 제품 목록'에 있는 제품들만 가지고, 사용자 질문에 자연스럽고 친근한 큐레이션 말투로 3~5문장으로 한국어로 답하라.
+각 제품의 실제 이름·양조장·특징(features)을 활용해 왜 어울리는지 설명하라.
+목록에 없는 제품명·브랜드는 절대 언급하지 마라. 목록이 비어 있으면 추천할 제품이 없다고만 답하라.
+가격·구매처 등 목록에 없는 정보는 지어내지 마라.
+{_curation_tone(intent)} {general_note}
+
+[추천 제품 목록]
+{products_block}
+
+[사용자 질문]
+{user_message}
+
+답변:"""
+
+    response = await model.generate_content_async(prompt, generation_config={"max_output_tokens": 300})
+    text = (response.text or "").strip()
+    if not text:
+        raise ValueError("큐레이션 응답이 비어있음")
+
+    # 할루시네이션 차단: 선택된 실제 제품명이 최소 1개 이상 포함돼야 함
+    if not any(str(drink.get("name") or "") and str(drink["name"]) in text for drink in drinks):
+        raise ValueError("큐레이션 응답에 실제 제품명이 없음")
+    return text
+
+
 async def _generate_next_actions(
     question: str,
     answer: str,
@@ -291,7 +364,11 @@ async def chat(request: ChatRequest, req: Request) -> ChatResponse:
         taste_vector,
         food_pairings,
     )
-    answer = _build_answer(intent, selected, personalization_source)
+    try:
+        answer = await _build_answer_curated(intent, selected, personalization_source, request.message)
+    except Exception as exc:
+        logger.warning("챗봇 큐레이션 fallback → 템플릿 사용: %s", type(exc).__name__)
+        answer = _build_answer(intent, selected, personalization_source)
     next_actions = await _generate_next_actions(request.message, answer, selected)
     referenced = [_public_drink(drink) for drink in selected]
     return ChatResponse(

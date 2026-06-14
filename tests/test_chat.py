@@ -150,3 +150,33 @@ async def test_direct_product_explanation_uses_named_catalog_product():
     )
     assert response.intent == "drink_explanation"
     assert response.referenced_drinks[0]["name"] == "테스트 약주"
+
+
+@pytest.mark.asyncio
+async def test_curated_answer_uses_selected_catalog_products(monkeypatch):
+    async def fake_curated(_intent, drinks, _source, _message):
+        return f"큐레이션 추천: {drinks[0]['name']}"
+
+    monkeypatch.setattr(chat_module, "_build_answer_curated", fake_curated)
+    response = await chat_module.chat(
+        chat_module.ChatRequest(message="전통주 추천해줘"),
+        _request(FakeRecommender()),
+    )
+
+    assert response.response == "큐레이션 추천: 테스트 저도주"
+    assert response.referenced_drinks[0]["name"] == "테스트 저도주"
+
+
+@pytest.mark.asyncio
+async def test_curated_answer_failure_falls_back_to_catalog_template(monkeypatch):
+    async def fail_curated(*_args, **_kwargs):
+        raise RuntimeError("provider failure")
+
+    monkeypatch.setattr(chat_module, "_build_answer_curated", fail_curated)
+    response = await chat_module.chat(
+        chat_module.ChatRequest(message="전통주 추천해줘"),
+        _request(FakeRecommender()),
+    )
+
+    assert "일반 추천" in response.response
+    assert all(drink["name"] in {item["name"] for item in DRINKS} for drink in response.referenced_drinks)
