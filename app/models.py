@@ -276,6 +276,8 @@ class BTIFeedbackRequest(BaseModel):
     bti_code: str = Field(..., min_length=5, max_length=5)
     is_correct: bool
     actual_preference: Optional[str] = None
+    wrong_axes: Optional[List[str]] = None      # 아니에요일 때 틀린 축 복수 선택(선택)
+    feedback_reason: Optional[str] = None        # 자유 텍스트 이유(선택)
 
 
 # ========== 법률 필터링 관련 ==========

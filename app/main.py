@@ -620,6 +620,8 @@ async def bti_feedback(request: BTIFeedbackRequest):
         'bti_code': request.bti_code,
         'original_code': request.actual_preference or request.bti_code,
         'is_correct': request.is_correct,
+        'wrong_axes': request.wrong_axes,            # 메모리/JSON 폴백에만 적재(DB 컬럼 없음 → INSERT 미반영)
+        'feedback_reason': request.feedback_reason,   # 자유 텍스트 이유(VARCHAR(10)인 actual_preference와 분리)
         'timestamp': datetime.now().isoformat(),
     }
 
