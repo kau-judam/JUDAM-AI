@@ -11,6 +11,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from typing import Any, List, Dict, Optional
+import base64
 import json
 from pathlib import Path
 
@@ -42,7 +43,6 @@ from app.models import (
     RecipeValidateRequest, RecipeValidateResponse,
     RecipeRegisterRequest, RecipeRegisterResponse,
     BTIFeedbackRequest,
-    BreweryOCRRequest,
 )
 from app.db import db
 
@@ -743,23 +743,157 @@ async def get_ingredient_region(ingredient: str):
 
 
 @app.post("/api/brewery/verify-ocr")
-async def brewery_verify_ocr(request: BreweryOCRRequest):
-    """양조장 인증 서류 OCR 분석
+async def brewery_verify_ocr(
+    file: Optional[UploadFile] = File(None),
+    businessLicense: Optional[UploadFile] = File(None),
+    documentUrl: Optional[str] = Form(None),
+    document_url: Optional[str] = Form(None),
+    documentKey: Optional[str] = Form(None),
+    document_key: Optional[str] = Form(None),
+    originalName: Optional[str] = Form(None),
+    original_name: Optional[str] = Form(None),
+    mimeType: Optional[str] = Form(None),
+    mime_type: Optional[str] = Form(None),
+):
+    """양조장 인증 서류 OCR 분석 (multipart 업로드).
+
+    실제 백엔드 계약을 확인할 수 없어 `file` 또는 `businessLicense` 를 임시 호환한다.
+    documentUrl/documentKey/originalName 과 snake_case alias 는 현재 OCR/DB 저장에 사용하지 않는다.
+    mimeType/mime_type 은 업로드 content_type 이 없을 때 파일 시그니처 대조용 임시 호환값으로만 사용한다.
     지원 서류(사업자등록증/신분증/통신판매업신고증/주류통신판매승인서/전통주제조면허증 등)는
     app/ocr.py 의 SUPPORTED_DOC_TYPES 레지스트리로 관리 — 종류 추가가 쉬운 구조.
-    """
-    if not GEMINI_AVAILABLE:
-        raise HTTPException(status_code=503, detail="AI 서비스 점검 중입니다.")
-    if not _brewery_ocr.enabled:
-        raise HTTPException(status_code=503, detail="OCR 기능이 비활성화되어 있습니다.")
-    if not request.image_base64:
-        raise HTTPException(status_code=400, detail="이미지 데이터가 없습니다.")
 
-    result = await _brewery_ocr.extract_brewery_info(
-        request.image_base64,
-        request.mime_type
-    )
-    return result
+    정책:
+    - OCR 결과는 자동 승인에 쓰지 않는다 (manualReviewOnly 항상 true).
+    - OCR 가 실패해도 인증 신청을 막지 않는다 (FAILED 여도 HTTP 200 으로 반환).
+    """
+    _REVIEW_POLICY = "OCR_RESULT_IS_FOR_ADMIN_REVIEW_ONLY"
+    _MAX_FILE_SIZE = 10 * 1024 * 1024
+    _GENERIC_MIME_TYPES = {"", "application/octet-stream"}
+    _SUPPORTED_MIME_TYPES = {"image/png", "image/jpeg", "application/pdf"}
+
+    def _failed(reason: str, error: str):
+        """인증 신청을 막지 않도록 OCR 업무 실패를 HTTP 200으로 반환한다."""
+        body = {
+            "status": "FAILED",
+            "ocrSucceeded": False,
+            "verified": False,
+            "documentAssessment": "MANUAL_REVIEW",
+            "summary": {
+                "reason": reason,
+                "manualReviewOnly": True,
+                "reviewPolicy": _REVIEW_POLICY,
+            },
+            "error": error,
+            "warnings": ["관리자 수동 검토가 필요합니다."],
+        }
+        return JSONResponse(status_code=200, content=body)
+
+    def _detect_mime(data: bytes) -> Optional[str]:
+        """파일 시그니처로 지원 MIME을 판별한다."""
+        if data.startswith(b"\x89PNG\r\n\x1a\n"):
+            return "image/png"
+        if data.startswith(b"\xff\xd8\xff"):
+            return "image/jpeg"
+        if data.startswith(b"%PDF-"):
+            return "application/pdf"
+        return None
+
+    def _business_number_is_valid(value: str) -> bool:
+        """사업자등록번호의 기본 형식과 체크섬을 검증한다."""
+        digits = re.sub(r"\D", "", value or "")
+        if len(digits) != 10:
+            return False
+        nums = [int(digit) for digit in digits]
+        weights = [1, 3, 7, 1, 3, 7, 1, 3, 5]
+        checksum = sum(num * weight for num, weight in zip(nums[:9], weights))
+        checksum += (nums[8] * 5) // 10
+        return (10 - checksum % 10) % 10 == nums[9]
+
+    # 어떤 예외든(파일 bytes 가 JSON/UTF-8 로 디코드되며 터지는 경우 포함) FAILED JSON 으로 흡수.
+    # 방어: 파일 bytes/base64와 OCR 원문은 로그에 남기지 않는다 (예외 타입명만 로깅).
+    # OCR rawText는 관리자 검토 계약에 따라 성공 응답에만 포함한다.
+    try:
+        upload = file or businessLicense
+        if upload is None:
+            logger.warning("verify-ocr: 업로드 파일이 없습니다 (file/businessLicense 모두 비어있음).")
+            return _failed("NO_FILE", "업로드된 파일이 없습니다.")
+
+        data = await upload.read(_MAX_FILE_SIZE + 1)
+        if not data:
+            logger.warning("verify-ocr: 업로드 파일이 비어있습니다.")
+            return _failed("EMPTY_FILE", "빈 파일은 처리할 수 없습니다.")
+        if len(data) > _MAX_FILE_SIZE:
+            logger.warning("verify-ocr: 파일 크기 상한 초과.")
+            return _failed("FILE_TOO_LARGE", "파일 크기는 10MB 이하여야 합니다.")
+
+        detected_mime = _detect_mime(data)
+        declared_mime = (upload.content_type or mimeType or mime_type or "").lower().split(";", 1)[0].strip()
+        if detected_mime is None or detected_mime not in _SUPPORTED_MIME_TYPES:
+            logger.warning("verify-ocr: 지원하지 않는 파일 시그니처.")
+            return _failed("UNSUPPORTED_FILE_TYPE", "PNG, JPEG, PDF 파일만 지원합니다.")
+        if declared_mime not in _GENERIC_MIME_TYPES and declared_mime != detected_mime:
+            logger.warning("verify-ocr: MIME 타입과 파일 시그니처 불일치.")
+            return _failed("UNSUPPORTED_FILE_TYPE", "파일 형식과 MIME 타입이 일치하지 않습니다.")
+
+        image_b64 = base64.b64encode(data).decode("ascii")
+        result = await _brewery_ocr.extract_brewery_info(image_b64, detected_mime)
+
+        if result.get("status") != "success":
+            logger.warning("verify-ocr: OCR 비성공 (status=%s).", result.get("status"))
+            return _failed("OCR_PROCESSING_FAILED", "OCR 처리 중 오류가 발생했습니다.")
+
+        ext = result.get("extracted", {}) or {}
+        document_type = str(ext.get("document_type") or "")
+        business_number = str(ext.get("business_number") or "")
+        if not business_number and document_type == "사업자등록증":
+            business_number = str(ext.get("registration_number") or "")
+        raw_text = str(ext.get("raw_text") or "")
+        warnings = []
+
+        required_fields = {
+            "businessNumber": business_number,
+            "breweryName": ext.get("brewery_name"),
+            "representativeName": ext.get("owner_name"),
+            "address": ext.get("address"),
+            "licenseType": document_type,
+        }
+        for field_name, value in required_fields.items():
+            if not str(value or "").strip():
+                warnings.append(f"필수 필드 누락: {field_name}")
+        if business_number and not _business_number_is_valid(business_number):
+            warnings.append("사업자등록번호 형식 또는 체크섬을 확인할 수 없습니다.")
+        if not ext.get("is_valid_document") or document_type == "인식불가":
+            warnings.append("지원 서류 종류로 확인되지 않았습니다.")
+        if ext.get("confidence") in {"low", None, ""}:
+            warnings.append("OCR 추출 신뢰도가 낮습니다.")
+        compact_raw_text = re.sub(r"\s+", "", raw_text)
+        if len(compact_raw_text) < 30:
+            warnings.append("OCR 텍스트가 지나치게 짧거나 판독이 어렵습니다.")
+        elif compact_raw_text.count("\ufffd") / len(compact_raw_text) > 0.05:
+            warnings.append("OCR 텍스트에 판독 불가 문자가 많습니다.")
+
+        return {
+            "status": "COMPLETED",
+            "ocrSucceeded": True,
+            "verified": False,
+            "documentAssessment": "REVIEW_REQUIRED",
+            "summary": {
+                "businessNumber": business_number,
+                "breweryName": ext.get("brewery_name", ""),
+                "representativeName": ext.get("owner_name", ""),
+                "address": ext.get("address", ""),
+                "licenseType": document_type,
+                "manualReviewOnly": True,
+                "reviewPolicy": _REVIEW_POLICY,
+            },
+            "rawText": raw_text,
+            "warnings": warnings,
+        }
+
+    except Exception as e:
+        logger.error("verify-ocr 처리 실패: %s", type(e).__name__)
+        return _failed("OCR_PROCESSING_FAILED", "OCR 처리 중 오류가 발생했습니다.")
 
 
 @app.post("/api/recipe/suggest-flavor-tags", response_model=FlavorTagsResponse)
@@ -1085,216 +1219,6 @@ def approve_drink_request(request_id: int):
     except Exception as e:
         logger.error(f"승인 처리 중 오류: {e}")
         raise HTTPException(status_code=500, detail=str(e))
-
-
-# =====================================================
-# Brewery verification OCR API
-# =====================================================
-
-OCR_REVIEW_POLICY = "OCR_RESULT_IS_FOR_ADMIN_REVIEW_ONLY"
-
-
-def _brewery_ocr_failure_response(
-    error_message: str = "OCR 처리 중 오류가 발생했습니다.",
-    reason: str = "OCR_PROCESSING_FAILED",
-) -> Dict[str, Any]:
-    return {
-        "status": "FAILED",
-        "verified": False,
-        "summary": {
-            "reason": reason,
-            "manualReviewOnly": True,
-            "reviewPolicy": OCR_REVIEW_POLICY,
-        },
-        "error": error_message,
-        "warnings": ["관리자 수동 검토가 필요합니다."],
-    }
-
-
-def _clean_ocr_text(value: Any) -> str:
-    if value is None:
-        return ""
-    return str(value).strip()
-
-
-def _first_non_empty(*values: Any) -> str:
-    for value in values:
-        cleaned = _clean_ocr_text(value)
-        if cleaned:
-            return cleaned
-    return ""
-
-
-def _regex_first(pattern: str, text: str) -> str:
-    match = re.search(pattern, text, flags=re.IGNORECASE | re.MULTILINE)
-    if not match:
-        return ""
-    return _clean_ocr_text(match.group(1) if match.lastindex == 1 else match.group(match.lastindex))
-
-
-def _extract_ocr_json(text: str) -> Dict[str, Any]:
-    match = re.search(r"\{[\s\S]*\}", text or "")
-    if not match:
-        return {}
-    try:
-        parsed = json.loads(match.group(0))
-        return parsed if isinstance(parsed, dict) else {}
-    except json.JSONDecodeError:
-        return {}
-
-
-def _list_ocr_warnings(value: Any) -> List[str]:
-    if isinstance(value, list):
-        return [_clean_ocr_text(item) for item in value if _clean_ocr_text(item)]
-    if isinstance(value, str) and value.strip():
-        return [value.strip()]
-    return []
-
-
-def _normalize_brewery_ocr_result(response_text: str) -> Dict[str, Any]:
-    parsed = _extract_ocr_json(response_text)
-    summary = parsed.get("summary") if isinstance(parsed.get("summary"), dict) else parsed
-    raw_text = _first_non_empty(
-        parsed.get("rawText"),
-        parsed.get("raw_text"),
-        summary.get("rawText") if isinstance(summary, dict) else None,
-        summary.get("raw_text") if isinstance(summary, dict) else None,
-        response_text,
-    )
-
-    business_number = _first_non_empty(
-        summary.get("businessNumber"),
-        summary.get("business_number"),
-        summary.get("registrationNumber"),
-        _regex_first(r"(?:사업자\s*등록\s*번호|사업자등록번호|등록번호)\s*[:\-]?\s*([0-9]{3}-?[0-9]{2}-?[0-9]{5})", raw_text),
-    )
-    brewery_name = _first_non_empty(
-        summary.get("breweryName"),
-        summary.get("brewery_name"),
-        summary.get("businessName"),
-        summary.get("companyName"),
-        _regex_first(r"(?:상호|법인명|단체명|업체명|상호명)\s*[:\-]?\s*([^\r\n]+)", raw_text),
-    )
-    representative_name = _first_non_empty(
-        summary.get("representativeName"),
-        summary.get("representative_name"),
-        summary.get("ceoName"),
-        _regex_first(r"(?:대표자명|대표자|성명)\s*[:\-]?\s*([^\r\n]+)", raw_text),
-    )
-    address = _first_non_empty(
-        summary.get("address"),
-        summary.get("businessAddress"),
-        _regex_first(r"(?:사업장\s*소재지|소재지|주소)\s*[:\-]?\s*([^\r\n]+)", raw_text),
-    )
-    license_type = _first_non_empty(
-        summary.get("licenseType"),
-        summary.get("license_type"),
-        "사업자등록증",
-    )
-    warnings = _list_ocr_warnings(parsed.get("warnings") or summary.get("warnings"))
-
-    if not raw_text:
-        warnings.append("OCR 결과가 비어 있습니다.")
-
-    return {
-        "status": "COMPLETED",
-        "verified": True,
-        "summary": {
-            "businessNumber": business_number,
-            "breweryName": brewery_name,
-            "representativeName": representative_name,
-            "address": address,
-            "licenseType": license_type,
-            "manualReviewOnly": True,
-            "reviewPolicy": OCR_REVIEW_POLICY,
-        },
-        "rawText": raw_text,
-        "warnings": warnings,
-    }
-
-
-async def _run_brewery_ocr(document_bytes: bytes, mime_type: str) -> Dict[str, Any]:
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY is not configured")
-
-    import google.generativeai as genai
-
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-2.5-flash-lite")
-    prompt = """
-양조장 인증 서류 이미지를 OCR로 읽고 사업자등록증 정보를 추출해줘.
-OCR 결과는 자동 승인에 쓰지 않고 관리자 수동 검토 참고용으로만 사용한다.
-
-다음 JSON 형식만 반환해줘.
-{
-  "businessNumber": "",
-  "breweryName": "",
-  "representativeName": "",
-  "address": "",
-  "licenseType": "사업자등록증",
-  "rawText": "",
-  "warnings": []
-}
-확실하지 않은 값은 빈 문자열로 두고, 추정하지 마.
-"""
-    response = await model.generate_content_async(
-        [
-            prompt,
-            {
-                "mime_type": mime_type or "application/octet-stream",
-                "data": document_bytes,
-            },
-        ],
-        generation_config={"max_output_tokens": 2048},
-    )
-    return _normalize_brewery_ocr_result(getattr(response, "text", "") or "")
-
-
-@app.post("/api/brewery/verify-ocr")
-async def brewery_verify_ocr(
-    file: Optional[UploadFile] = File(None),
-    businessLicense: Optional[UploadFile] = File(None),
-    documentUrl: Optional[str] = Form(None),
-    document_url: Optional[str] = Form(None),
-    documentKey: Optional[str] = Form(None),
-    document_key: Optional[str] = Form(None),
-    originalName: Optional[str] = Form(None),
-    original_name: Optional[str] = Form(None),
-    mimeType: Optional[str] = Form(None),
-    mime_type: Optional[str] = Form(None),
-):
-    """양조장 인증 서류 OCR. 결과는 관리자 검토 참고용으로만 반환한다."""
-    upload = file or businessLicense
-    if upload is None:
-        logger.warning("Brewery OCR request missing upload file")
-        return _brewery_ocr_failure_response()
-
-    effective_document_url = documentUrl or document_url
-    effective_document_key = documentKey or document_key
-    effective_original_name = originalName or original_name or upload.filename
-    effective_mime_type = mimeType or mime_type or upload.content_type or "application/octet-stream"
-
-    try:
-        document_bytes = await upload.read()
-        if not document_bytes:
-            logger.warning("Brewery OCR request received empty file: filename=%s", effective_original_name)
-            return _brewery_ocr_failure_response()
-
-        logger.info(
-            "Brewery OCR request received: filename=%s content_type=%s size=%s document_key=%s document_url_present=%s",
-            effective_original_name,
-            effective_mime_type,
-            len(document_bytes),
-            effective_document_key,
-            bool(effective_document_url),
-        )
-        return await _run_brewery_ocr(document_bytes, effective_mime_type)
-    except Exception as e:
-        logger.exception("Brewery OCR processing failed: %s", e)
-        return _brewery_ocr_failure_response()
-    finally:
-        await upload.close()
 
 
 # =====================================================

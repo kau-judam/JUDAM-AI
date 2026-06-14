@@ -28,7 +28,7 @@ def _build_ocr_prompt() -> str:
         lines.append(f"{i}. {d['type']} - {d['hint']}")
     doc_list = "\n".join(lines)
     type_enum = "/".join(d["type"] for d in SUPPORTED_DOC_TYPES) + "/인식불가"
-    return f"""이 이미지가 양조장 인증/신원 서류인지 판단하고 정보를 추출해줘.
+    return f"""이 파일이 양조장 인증/신원 서류인지 판단하고 정보를 추출해줘.
 
 [인정되는 서류 종류]
 {doc_list}
@@ -44,13 +44,15 @@ def _build_ocr_prompt() -> str:
   "is_valid_document": true,
   "brewery_name": "업체명/상호/제조장명 (신분증이면 빈 문자열)",
   "registration_number": "해당 서류의 핵심 식별번호 (사업자번호/면허번호/신고번호/승인번호/주민등록번호)",
+  "business_number": "문서에 사업자등록번호가 있으면 000-00-00000 형식, 없으면 빈 문자열",
   "owner_name": "대표자명 또는 신분증 성명",
   "address": "주소 또는 소재지",
   "issue_date": "발급일/등록일/면허일/승인일",
   "issuing_authority": "발급기관 (세무서장/국세청/구청장/시장 등)",
   "alcohol_types": [],
   "confidence": "high/medium/low",
-  "rejection_reason": null
+  "rejection_reason": null,
+  "raw_text": "문서에서 읽은 전체 텍스트. 줄바꿈을 유지하고 추측해서 채우지 말 것"
 }}"""
 
 
