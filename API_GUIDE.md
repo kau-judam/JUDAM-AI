@@ -1,8 +1,12 @@
 # 주담 AI 서버 — API 가이드
 
-**Base URL** `http://localhost:8000`  
-**Version** `0.3.0`  
-**Content-Type** `application/json`
+**Public Base URL** `http://43.201.97.229:8000`<br>
+**Private Base URL** `http://10.0.1.83:8000`<br>
+**Local Base URL** `http://localhost:8000`<br>
+**Version** `0.3.0`<br>
+**기본 Content-Type** `application/json` (`/api/brewery/verify-ocr`만 `multipart/form-data`)
+
+> 검증 기준: 현재 작업 브랜치의 `app/main.py`, `app/chat.py`, `app/models.py`와 관련 구현·테스트를 직접 대조했습니다. 작성 환경에는 실행 가능한 Python/pytest가 없고 Public/Private 서버도 연결되지 않아, 응답 예시는 코드의 고정 반환값 또는 저장소 테스트 fixture 기준입니다. 라이브 미검증 항목은 별도로 표시합니다.
 
 ---
 
@@ -26,7 +30,7 @@ PORT=8000
 
 | 변수 | 필수 | 용도 | 미설정 시 |
 |------|------|------|----------|
-| `GEMINI_API_KEY` | ★ | Gemini 기반 기능(✦ 표시: 레시피·법률 보강·챗봇·이미지·OCR 등) | 해당 엔드포인트 503/`disabled` |
+| `GEMINI_API_KEY` | ★ | Gemini 기반 기능(✦ 표시: 레시피·법률 보강·챗봇·이미지·OCR 등) | 챗봇 본문·후속질문과 서브재료 선별은 안전 폴백, 그 외 기능은 503/`disabled` 가능 |
 | `LAW_API_KEY` | 권장 | 국가법령정보센터 연동 | 내장 법령 목록으로 동작 |
 | `NONGSARO_API_KEY` | 선택 | 농사로 지역특산물 수집 스크립트 | 하드코딩 지역 매핑 fallback |
 | `DATABASE_URL` | 선택 | PostgreSQL 영속화 | 인메모리 + JSON 파일 fallback |
@@ -99,9 +103,49 @@ curl http://localhost:8000/health
 | 이미지 | `POST /api/image/generate` |
 | OCR | `POST /api/brewery/verify-ocr` |
 
+### 전체 라우트 계약 매트릭스
+
+현재 `app/main.py`와 `app/chat.py`에서 선언된 라우트는 총 **27개**입니다. 모든 라우트는 현재 애플리케이션 내부 인증 의존성이나 Bearer/API key 검사를 사용하지 않습니다. 외부 공개 범위와 사용자·관리자 권한 검사는 백엔드/API Gateway에서 적용해야 합니다.
+
+| 메서드 | 경로 | 요청 계약 | 응답 계약 | 형식 | 캐시 |
+|---|---|---|---|---|---|
+| GET | `/` | 없음 | inline object | JSON | 없음 |
+| GET | `/health` | 없음 | inline object | JSON | 없음 |
+| POST | `/api/recommend` | `RecommendRequest` | `List[RecommendResponse]` | JSON | 없음 |
+| POST | `/api/taste/update` | `TasteUpdateRequest` | inline object | JSON | 없음 |
+| GET | `/api/taste/history/{user_id}` | path `user_id: string` | inline object | JSON | 없음 |
+| POST | `/api/survey/convert` | body `SurveyResponse`, query `user_id?: string` | `SurveyConvertResponse` | JSON | 없음 |
+| POST | `/api/bti/feedback` | `BTIFeedbackRequest` | inline object | JSON | 없음 |
+| GET | `/api/taste/profile/{user_id}` | path `user_id: string` | 저장된 survey profile | JSON | 없음 |
+| POST | `/api/recipe/suggest-sub-ingredients` | `SubIngredientsRequest` | `SubIngredientsResponse` | JSON | 인메모리 1,440분 |
+| POST | `/api/recipe/suggest-flavor-tags` | `FlavorTagsRequest` | `FlavorTagsResponse` | JSON | 없음 |
+| POST | `/api/recipe/suggest-summary` | `SummaryRequest` | `SummaryResponse` | JSON | 없음 |
+| POST | `/api/recipe/validate` | `RecipeValidateRequest` | `RecipeValidateResponse` | JSON | 인메모리 60분 |
+| POST | `/api/recipe/register` | `RecipeRegisterRequest` | `RecipeRegisterResponse` | JSON | 없음 |
+| POST | `/api/law/filter` | `LawFilterRequest` | inline object | JSON | 인메모리 60분 |
+| GET | `/api/law/info` | 없음 | inline object | JSON | 없음 |
+| GET | `/api/insight` | query `period: string = "week"` | inline insight object | JSON | 인메모리 60분 |
+| POST | `/api/chat` | `ChatRequest` | `ChatResponse` | JSON | 없음 |
+| POST | `/api/chat/stream` | `ChatStreamRequest` | SSE events | JSON 요청/SSE 응답 | 없음 |
+| POST | `/api/drinks/request` | `DrinkRequestCreate` | inline object | JSON | 없음 |
+| GET | `/api/drinks/requests` | query `status?: string = null` | inline object | JSON | 없음 |
+| POST | `/api/drinks/requests/{request_id}/approve` | path `request_id: integer` | inline object | JSON | 없음 |
+| POST | `/api/funding/register` | raw JSON 검증 후 `FundingRegisterRequest` 구성 | `FundingRegisterResponse` | JSON | 없음 |
+| GET | `/api/funding/{funding_id}` | path `funding_id: string` | `FundingGetResponse` | JSON | 없음 |
+| POST | `/api/funding/{funding_id}/taste-update` | path `funding_id`, body `FundingTasteUpdateRequest` | `FundingTasteUpdateResponse` | JSON | 없음 |
+| POST | `/api/image/generate` | `ImageGenerateRequest` | inline object | JSON | 없음 |
+| GET | `/api/recipe/ingredient-region` | query `ingredient: string` | inline object | JSON | 없음 |
+| POST | `/api/brewery/verify-ocr` | multipart fields | inline OCR result | multipart/JSON | 없음 |
+
+> 모델별 필드·타입·필수 여부·기본값은 각 엔드포인트 표가 권위 있는 계약입니다. Pydantic에서 기본값이 없거나 `...`인 필드는 필수입니다.
+
 ---
 
 ## 공통 사항
+
+### 인증
+
+AI 서버 코드에는 인증 미들웨어나 `Depends` 기반 권한 검사가 없습니다. 따라서 현재는 모든 엔드포인트가 AI 서버 관점에서 인증 없이 호출 가능합니다. 특히 관리자용 `/api/drinks/requests*`, OCR, 사용자 프로필·취향 API는 백엔드 또는 API Gateway에서 인증·인가 후 호출해야 합니다.
 
 ### 술BTI 코드 구조 (5글자)
 
@@ -191,17 +235,35 @@ curl http://localhost:8000/health
 
 ### 에러 응답 형식
 
+현재 에러 응답은 호출 경로에 따라 다음 세 형태가 존재합니다.
+
+**`raise_api_error`를 사용하는 Gemini 경로**
 ```json
-{ "status": "error", "message": "사람이 읽을 수 있는 오류 설명" }
+{ "detail": "현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요." }
+```
+
+Gemini quota/resource-exhausted 또는 AI 연결 오류는 HTTP 503, 나머지는 HTTP 500과 엔드포인트별 일반 메시지로 반환합니다. 내부 예외 메시지는 `raise_api_error` 경로에서 클라이언트에 노출하지 않습니다.
+
+**일반 `HTTPException` 및 Pydantic 검증**
+```json
+{ "detail": "오류 설명 또는 구조화된 오류 객체" }
+```
+
+`RequestValidationError` 응답은 파일 bytes를 그대로 포함하지 않고 `"<N bytes omitted>"` 형태로 마스킹합니다.
+
+**커스텀 404/500 핸들러**
+```json
+{ "status": "error", "message": "요청한 경로를 찾을 수 없습니다." }
 ```
 
 | HTTP 코드 | 의미 |
-|-----------|------|
-| 400 | 요청 파라미터 오류 |
-| 404 | 리소스 없음 |
-| 422 | Pydantic 유효성 검사 실패 (필드 타입/범위 오류) |
-| 503 | Gemini AI 서비스 점검 중 |
+|---|---|
+| 400 | 명시적 요청 파라미터·업무 규칙 오류 |
+| 404 | 리소스 또는 경로 없음 |
+| 422 | FastAPI/Pydantic 필드 타입·필수값·범위 검증 실패 |
+| 503 | Gemini 점검·혼잡 또는 필수 키 미설정 경로 |
 | 500 | 서버 내부 오류 |
+| 200 + `body.status="FAILED"` | OCR 업무 실패. 인증 신청 비차단 정책 |
 
 ---
 
@@ -609,7 +671,8 @@ curl http://localhost:8000/api/taste/profile/user_001
 ## 9. POST `/api/recipe/suggest-sub-ingredients`
 
 메인재료와 지역을 별도로 입력하면 실제 수집 데이터에서 확인된 지역 특산물 후보를 최대 5개 반환합니다.
-Gemini가 특산물명을 생성하지 않습니다.
+후보가 2개 이상이고 `GEMINI_API_KEY`가 있으면 Gemini가 후보 목록 안에서 궁합이 좋은 재료를 보조 선별합니다.
+Gemini가 목록에 없는 특산물명을 생성할 수 없도록 결과를 실제 후보 목록과 대조하며, 호출·파싱·대조 실패 시 기존 후보 최대 5개로 폴백합니다. 응답 모델은 선별 여부와 무관하게 동일합니다.
 
 **요청**
 ```json
@@ -642,6 +705,7 @@ Gemini가 특산물명을 생성하지 않습니다.
 | `unavailable` | 입력 지역에서 확인 가능한 후보 없음 또는 region 누락 |
 
 지역특산주 요건은 재료 매칭만으로 확정하지 않으며 현재 응답은 `NEEDS_REVIEW`입니다.
+Gemini 선별 여부는 현재 응답 필드로 구분하지 않습니다.
 
 ---
 
@@ -983,18 +1047,23 @@ curl "http://localhost:8000/api/insight?period=week"
 
 전통주 추천, 제품 설명, 비교, 안주 추천과 직전 추천 제품에 대한 후속 질문을 하나의 엔드포인트에서 처리합니다.
 제품명과 양조장명은 실제 `app.state.recommender` 추천 풀에 있는 데이터만 사용합니다.
-Gemini는 질문·직전 답변·추천 제품에 관련된 후속 질문 생성에 사용하며, 실패할 때만 고정 fallback을 사용합니다.
+선택된 실제 제품 목록을 바꾸지 않은 상태에서 Gemini가 본문을 자연스럽게 큐레이션하고, 질문·본문·추천 제품에 관련된 후속 질문 2~3개를 생성합니다. Gemini 본문에 실제 선택 제품명이 하나도 없거나 호출이 실패하면 카탈로그 기반 템플릿으로 폴백합니다. 후속 질문 생성 실패 시에만 고정 fallback을 사용합니다.
+
+서버는 대화 세션을 저장하지 않는 **무상태(stateless)** 구조입니다. 멀티턴 질문을 처리하려면 클라이언트가 이전 메시지와 직전 assistant 응답의 `referenced_drinks`를 매 요청의 `history`에 다시 보내야 합니다.
 
 **요청**
 ```json
 {
   "message": "그중 낮은 도수는?",
-  "user_id": "user_001",
+  "user_id": null,
   "history": [
     {
       "role": "assistant",
-      "content": "A와 B를 추천합니다.",
-      "referenced_drinks": [{"name": "A"}, {"name": "B"}]
+      "content": "테스트 생막걸리와 테스트 저도주를 추천합니다.",
+      "referenced_drinks": [
+        {"name": "테스트 생막걸리"},
+        {"name": "테스트 저도주"}
+      ]
     }
   ]
 }
@@ -1004,23 +1073,43 @@ Gemini는 질문·직전 답변·추천 제품에 관련된 후속 질문 생성
 |------|------|------|------|
 | message | string | Y | 사용자 질문 |
 | user_id | string | N | 있으면 실제 taste history 또는 survey profile을 개인화에 사용 |
-| history | array | N | 이전 대화 기록. assistant 항목의 `referenced_drinks`로 후속 제품 맥락 전달 가능 |
+| history | array | N, 기본 `[]` | 이전 대화 기록. 각 원소는 자유 형식 object이며 `role`, `content` 또는 `message`, assistant 응답의 `referenced_drinks`를 전달해야 안정적으로 후속 제품 맥락을 복원 |
 
-**응답**
+**응답 예시 — `tests/test_chat.py`의 실제 계약 fixture 기준**
 ```json
 {
-  "response": "앞서 언급한 제품 중 도수가 가장 낮은 술은 A(5도)입니다.",
+  "response": "사용자 취향 데이터가 없어 일반 추천으로 안내드립니다. 앞서 언급한 제품 중 도수가 가장 낮은 술은 테스트 저도주(3.0도)입니다.",
   "context": "traditional_korean_alcohol",
-  "suggested_questions": ["A에 어울리는 안주는?", "A와 B의 맛 차이는?"],
-  "referenced_drinks": [{"id": "drink_a", "name": "A", "brewery": "A양조장", "abv": 5.0}],
-  "next_actions": ["A에 어울리는 안주는?", "A와 B의 맛 차이는?"],
+  "suggested_questions": ["테스트 저도주의 안주는?", "도수를 비교해 주세요."],
+  "referenced_drinks": [
+    {
+      "id": "d2",
+      "name": "테스트 저도주",
+      "brewery": "견본양조",
+      "abv": 3.0,
+      "region": "서울",
+      "features": "가벼운 안주와 잘 어울린다."
+    }
+  ],
+  "next_actions": ["테스트 저도주의 안주는?", "도수를 비교해 주세요."],
   "intent": "lowest_abv",
-  "personalization_source": "taste_history"
+  "personalization_source": "general"
 }
 ```
 
 기존 `response`, `context`, `suggested_questions` 필드는 유지됩니다. 추가 필드는 optional입니다.
 `personalization_source`는 `taste_history`, `survey_profile`, `general` 중 하나이며, `general`이면 답변에 일반 추천임을 명시합니다.
+
+| `intent` | 의미 |
+|---|---|
+| `recommend_drinks` | 일반·개인화 전통주 추천 |
+| `food_pairing` | 안주·음식 페어링 |
+| `drink_explanation` | 실제 카탈로그 제품 설명 |
+| `compare_drinks` | 직전 또는 직접 언급 제품 비교 |
+| `lowest_abv` | 직전 제품 중 최저 도수 |
+| `out_of_scope` | 전통주와 무관한 질문 |
+
+전통주 무관 질문은 HTTP 200으로 `context="out_of_scope"`, `intent="out_of_scope"`를 반환합니다.
 
 ---
 
@@ -1039,7 +1128,7 @@ Gemini는 질문·직전 답변·추천 제품에 관련된 후속 질문 생성
 | 필드 | 타입 | 필수 | 설명 |
 |------|------|------|------|
 | message | string | Y | 사용자 질문 |
-| session_id | string | N | 세션 ID (같은 ID 재사용 시 대화 맥락 유지) |
+| session_id | string | N | 현재 요청 모델 호환 필드일 뿐 서버에서 저장·사용하지 않음 |
 
 **응답** `Content-Type: text/event-stream`
 
@@ -1058,8 +1147,10 @@ data: {"type": "done",  "content": "", "full_response": "막걸리는 쌀, 물, 
 | `off_topic` | 전통주 무관 질문 거절 |
 | `error` | 오류 발생 |
 
+`/api/chat/stream`은 이번 실제 카탈로그 제한·개인화 큐레이션 통합 대상이 아닙니다. 멀티턴 맥락 유지가 필요하면 `/api/chat`과 `history`를 사용합니다.
+
 **에러**
-- 503: `GEMINI_AVAILABLE: false`일 때
+- 503: `GEMINI_API_KEY` 미설정
 
 ---
 
@@ -1146,7 +1237,8 @@ curl -X POST http://localhost:8000/api/drinks/requests/req_20260522_001/approve
 ## 22. POST `/api/funding/register`
 
 펀딩 전통주를 등록하고 `pool: "funding"` 추천 풀에 편입 (`is_funding: true` 마킹).  
-`taste_input` 미입력 시 Gemini가 자동으로 맛벡터 생성.
+`taste_input` 미입력 시 Gemini가 자동으로 맛벡터 생성을 시도하고, 실패하면 모든 축 `5.0`인 fallback 벡터를 사용합니다.
+이 라우트는 현재 Pydantic 요청 모델을 직접 받지 않고 raw JSON을 읽은 뒤 필수값을 검증하여 `FundingRegisterRequest`를 구성합니다.
 
 **요청**
 ```json
@@ -1171,13 +1263,13 @@ curl -X POST http://localhost:8000/api/drinks/requests/req_20260522_001/approve
 |------|------|------|------|
 | funding_id | string | Y | 펀딩 고유 ID (중복 불가) |
 | name | string | Y | 전통주 이름 |
-| brewery | string | N | 양조장 이름 |
-| brewery_user_id | string | N | 양조장/기획자 ID |
+| brewery | string | Y | 양조장 이름. 빈 문자열 불가 |
+| brewery_user_id | string | Y | 양조장/기획자 ID. 빈 문자열 불가 |
 | region | string | N | 생산 지역 |
 | abv | float | Y | 도수 (0~100) |
 | main_ingredient | string | N | 주재료 |
 | description | string | N | 전통주 설명 |
-| taste_input | TasteVector | N | 맛벡터 직접 입력. 없으면 Gemini 자동 생성 |
+| taste_input | object | N | 전달된 축은 float 변환, 누락 축은 `5.0`. 없으면 Gemini 생성 후 실패 시 전체 `5.0` fallback |
 
 **응답**
 ```json
@@ -1193,7 +1285,10 @@ curl -X POST http://localhost:8000/api/drinks/requests/req_20260522_001/approve
 
 **에러**
 - 400: 이미 등록된 `funding_id`
-- 400: `abv`가 0~100 범위 밖
+- 400: `funding_id`, `name`, `brewery`, `brewery_user_id`, `abv` 누락
+- 400: `abv`가 숫자가 아니거나 0~100 범위 밖
+
+`source`는 `direct_input`, `gemini`, `fallback` 중 하나입니다.
 
 ---
 
@@ -1383,6 +1478,21 @@ curl "http://localhost:8000/api/recipe/ingredient-region?ingredient=쌀"
 > 서브재료 공식 요청은 사용자가 선택한 `region`을 별도로 전달합니다. 지역 목록 첫 항목을 서버가 임의 선택하지 않습니다.
 > 원본 농사로 수집 레코드는 `data/local_products.json`에 보관되고, API는 그 결과를 재가공한 `data/ingredient_region_map.json`을 읽습니다. 코드에서는 `"경상남도 > 의령군"` 형태를 `"경상남도 의령군"`처럼 정규화해 반환합니다.
 
+### 프론트 2단계 연동
+
+1. 메인 재료 입력 후 `GET /api/recipe/ingredient-region?ingredient=사과`를 호출합니다.
+2. 응답의 `regions`를 지역 선택 UI에 표시합니다.
+3. 사용자가 선택한 지역과 원래 메인 재료를 분리해 `POST /api/recipe/suggest-sub-ingredients`로 전달합니다.
+
+```json
+{
+  "main_ingredient": "사과",
+  "region": "청주시"
+}
+```
+
+`"청주 사과"`처럼 지역과 재료를 결합해 보내는 것은 공식 계약이 아닙니다. `region` 누락 시 서버는 `"전국"`을 임의 적용하지 않고 `data_source="unavailable"`과 빈 후보 목록을 반환합니다.
+
 **지원 재료 예시**
 
 | 재료 | 추론 지역 (복수 가능) |
@@ -1415,12 +1525,21 @@ OCR 결과는 관리자 검토 자료이며 자동 승인에 사용하지 않습
 
 **요청** `multipart/form-data`
 
+```bash
+curl -X POST "http://43.201.97.229:8000/api/brewery/verify-ocr" \
+  -F "file=@business-license.png;type=image/png" \
+  -F "originalName=business-license.png" \
+  -F "mimeType=image/png"
+```
+
 | 필드 | 타입 | 필수 | 기본값 | 설명 |
 |------|------|------|--------|------|
 | file | file | 조건부 | — | 공식 백엔드 필드 미확정. `businessLicense`와 임시 호환 |
 | businessLicense | file | 조건부 | — | `file` 임시 호환 필드 |
 | mimeType | string | N | — | upload content type이 없을 때 검증용 |
+| mime_type | string | N | — | `mimeType` snake_case 호환 alias |
 | documentUrl / documentKey / originalName | string | N | — | 현재 OCR 및 DB 저장에 사용하지 않음 |
+| document_url / document_key / original_name | string | N | — | 위 camelCase 필드의 snake_case 호환 alias. 현재 처리·저장에는 사용하지 않음 |
 
 PNG, JPEG, PDF magic bytes와 MIME 타입을 함께 검증하며 파일 크기 상한은 10MB입니다.
 PDF는 코드 경로만 지원하며 실제 Gemini 라이브 호출은 미검증입니다.
@@ -1466,6 +1585,8 @@ PDF는 코드 경로만 지원하며 실제 Gemini 라이브 호출은 미검증
 인증 신청 비차단 정책을 위해 모든 OCR 업무 결과는 HTTP 200이며 `body.status`로 완료·실패를 구분합니다.
 실패 reason은 `NO_FILE`, `EMPTY_FILE`, `FILE_TOO_LARGE`, `UNSUPPORTED_FILE_TYPE`, `OCR_PROCESSING_FAILED`입니다.
 사업자등록번호 체크섬 실패와 필드 누락은 반려가 아니라 `warnings`에만 추가됩니다.
+`documentUrl`, `documentKey`, `originalName`은 현재 처리·저장에 사용되지 않으며, 원본 bytes/base64는 응답이나 일반 로그에 기록하지 않습니다. `rawText`는 응답에는 포함되지만 일반 로그에는 남기지 않습니다.
+`app.models.BreweryOCRRequest`의 기존 base64 모델 정의는 import 호환을 위해 남아 있지만 현재 `/api/brewery/verify-ocr` 라우트에서는 사용하지 않습니다.
 
 ---
 
@@ -1511,6 +1632,14 @@ PDF는 코드 경로만 지원하며 실제 Gemini 라이브 호출은 미검증
 ---
 
 ## 변경 이력
+
+### 2026-06-14
+- **`POST /api/brewery/verify-ocr` JSON/base64 → multipart 전환**: `file`/`businessLicense` 임시 호환, document metadata와 MIME의 camelCase/snake_case alias 수신, PNG·JPEG·PDF magic bytes 및 MIME 검증, 10MB 상한. `python-multipart` 의존성 추가.
+- **OCR 관리자 검토 정책**: OCR 완료·실패 모두 자동 승인하지 않으며 `verified=false`. 인증 신청 비차단을 위해 업무 실패도 HTTP 200 + `body.status="FAILED"`로 반환.
+- **`POST /api/recipe/suggest-sub-ingredients` Gemini 보조 선별**: 실제 지역 후보 안에서만 궁합 선별하고 실패 시 기존 후보로 폴백. `SubIngredientsResponse` 계약은 유지.
+- **`GET /api/recipe/ingredient-region` 2단계 흐름 명시**: 메인 재료로 복수 지역 조회 후 사용자 선택 지역을 서브재료 API에 별도 전달.
+- **`POST /api/chat` 통합 큐레이션**: 실제 카탈로그 제품만 선택한 후 `_build_answer_curated`로 본문을 생성하고 실패 시 템플릿 폴백. 서버 무상태 멀티턴, `history.referenced_drinks`, `next_actions`, `intent`, `personalization_source`, `out_of_scope` 계약 명시.
+- **`POST /api/chat/stream` 범위 명시**: 통합 큐레이션 대상이 아니며 `session_id`는 현재 사용되지 않음.
 
 ### 2026-06-01
 - **`/api/law/filter` 3등급 판정(`verdict` block/pass/review) 반영** — `review`는 자동 차단·통과 없이 관리자 검토 큐로. `violation`은 `block`일 때만 `true`(하위호환). 모든 콘텐츠를 Gemini 1회 검토(무검토 통과 경로 제거), 실패 시 키워드 fallback.
