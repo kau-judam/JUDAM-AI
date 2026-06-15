@@ -61,7 +61,7 @@ curl http://localhost:8000/health
 |---|--------|------|------|--------|
 | 1 | GET | `/` | 서버 상태 확인 | |
 | 2 | GET | `/health` | 헬스체크 (기능별 상태 + KNN 상태) | |
-| 3 | POST | `/api/recommend` | 맛벡터 기반 전통주 추천 (food_pairing 앙상블) | |
+| 3 | POST | `/api/recommend` | 맛벡터 기반 전통주 추천 (8축 코사인 + 사실일치 가산, 95/99 캡) | |
 | 4 | POST | `/api/taste/update` | 사용자 취향 업데이트 | |
 | 5 | GET | `/api/taste/history/{user_id}` | 취향 히스토리 조회 | |
 | 6 | POST | `/api/survey/convert` | 술BTI 설문 → 맛벡터 변환 | |
@@ -345,16 +345,22 @@ curl http://localhost:8000/health
 맛벡터 또는 저장된 `user_id` 기반으로 전통주 추천.  
 `user_vector` 또는 `user_id` 중 **하나 필수**.
 
-**추천 앙상블 가중치**
+**매칭 % (`similarity_percent`) 산출**
 
-| 소스 | 가중치 | 설명 |
-|------|--------|------|
-| taste (코사인 유사도) | 0.65 | 맛벡터 8축 비교 (핵심) |
-| ingredient (자카드 유사도) | 0.15 | 원재료 겹치는 정도 |
-| region | 0.10 | 같은 지역이면 +0.1 |
-| food_pairing | 0.10 | 사용자 음식 선호 ↔ 전통주 features 텍스트 매칭 |
+- 매칭 %는 **사용자와 제품의 8축 취향 벡터 코사인 유사도**를 기반으로 한다. (재료·지역·음식 가중합이 아님)
+- 취향 코사인은 표시 시 **최대 95%로 캡**한다 ("100% 매칭" 단정 회피).
+- 사용자 프로필에 명시된 선호가 제품과 **"사실 일치"** 할 때만 소폭 가산한다 (추정이 아닌 사실 일치만):
 
-> `food_pairing` 점수는 설문 q24에서 저장된 `preferred_food_pairing` 또는 요청의 `food_pairing` 필드로 계산됩니다.
+| 가산 항목 | 조건 | 가산값 |
+|-----------|------|--------|
+| 선호 과일 | `preferred_fruit`(끝 '류'는 어간 매칭: 감귤류→감귤, 베리류→베리)가 제품 `ingredients`에 포함 | **+3%p** |
+| 선호 도수 | `preferred_abv` 구간(예: 7~9도)에 제품 `abv`가 들어감 | **+2%p** |
+
+- 가산 포함 **최종 상한은 99%** (100%는 표시되지 않음, 최대 가산 +5%p).
+- 정렬은 표시 % 기준이므로 **표시 % 순서 = 목록 순서**.
+- `similarity`는 raw 코사인(0~1) 그대로 반환하고, `similarity_percent`만 위 방식(캡 + 사실일치 가산)으로 산출한다. **요청/응답 스키마는 변경 없음**(내부 산출만 변경).
+
+> `food_pairing` / `weights`는 요청 필드로 받기는 하지만 **현재 매칭 % 계산에는 사용하지 않는다** (취향 코사인 + 사실 일치 가산만 반영).
 
 **요청**
 ```json
@@ -389,7 +395,7 @@ curl http://localhost:8000/health
 | pool | string | N | `"all"` | 추천 대상 풀 선택 |
 | food_pairing | string[] | N | null | 음식 선호 한글 리스트. `user_id` 사용 시 프로필의 `preferred_food_pairing`으로 자동 대체. 직접 입력하면 우선 적용 |
 | exclude_ids | string[] | N | `[]` | 결과에서 제외할 전통주 ID 목록 |
-| weights | object | N | null | 앙상블 가중치 직접 지정 `{"taste":0.65,"ingredient":0.15,"region":0.1,"food":0.1}` |
+| weights | object | N | null | (구) 앙상블 가중치. **현재 매칭 % 계산에 미사용** (취향 코사인 + 사실 일치 가산만 반영) |
 
 **food_pairing 선택 가능 값** (설문 q24 레이블과 동일)
 
@@ -433,7 +439,7 @@ curl http://localhost:8000/health
 
 | 응답 필드 | 설명 |
 |----------|------|
-| `similarity_percent` | 앙상블 유사도 × 100 (0~100) |
+| `similarity_percent` | 8축 취향 코사인 % (최대 95 캡) + 사실 일치 가산(선호과일 +3 / 선호도수 +2), 최종 상한 99 |
 | `match_reason` | 가장 가까운 맛축 상위 2개 한글 설명 |
 | `is_funding` | `true` = 펀딩 전통주 |
 | `status` | `"available"` \| `"funding"` |

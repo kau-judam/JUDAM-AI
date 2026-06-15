@@ -404,6 +404,49 @@ async def health():
         }
 
 
+def _parse_abv_range(label: str):
+    """preferred_abv 라벨('중간 도수(7~9도)' 등) → (lo, hi) 도수 구간. 파싱 불가 시 None(가산점 0)."""
+    if not label:
+        return None
+    nums = [int(n) for n in re.findall(r"\d+", label)]
+    try:
+        if "이하" in label and len(nums) >= 1:
+            return (0.0, float(nums[0]))
+        if "이상" in label and len(nums) >= 1:
+            return (float(nums[0]), float("inf"))
+        if len(nums) >= 2:
+            return (float(min(nums)), float(max(nums)))
+    except (ValueError, TypeError):
+        return None
+    return None
+
+
+def _fruit_stem(pref_fruit: str) -> str:
+    """선호 과일 라벨 → 재료 매칭용 어간. 끝의 '류' 접미사 제거('감귤류'→'감귤','베리류'→'베리').
+    1글자 이하 어간은 오탐 방지 위해 빈 문자열 반환."""
+    stem = str(pref_fruit or "").strip()
+    if stem.endswith("류") and len(stem) >= 3:   # '감귤류'(3)·'베리류'(3) → 어간 2글자 확보
+        stem = stem[:-1]
+    return stem if len(stem) >= 2 else ""
+
+
+def _fact_match_bonus(profile: dict, drink: dict) -> int:
+    """추정 없이 '사실 일치'에만 주는 가산점(%p). 선호과일(어간)∈재료 +3, 제품도수∈선호도수구간 +2."""
+    bonus = 0
+    pref_fruit = _fruit_stem((profile or {}).get("preferred_fruit") or "")
+    if pref_fruit and pref_fruit in str(drink.get("ingredients") or ""):
+        bonus += 3
+    abv_range = _parse_abv_range(str((profile or {}).get("preferred_abv") or ""))
+    if abv_range is not None:
+        try:
+            av = float(drink.get("abv"))
+            if abv_range[0] <= av <= abv_range[1]:
+                bonus += 2
+        except (TypeError, ValueError):
+            pass
+    return bonus
+
+
 @app.post("/api/recommend", response_model=List[RecommendResponse])
 async def recommend(request: RecommendRequest):
     """
@@ -468,6 +511,23 @@ async def recommend(request: RecommendRequest):
             exclude_ids=request.exclude_ids,
             user_food_pairings=user_food or [],
         )
+
+        # 사실 일치 가산점 + 95% 캡 (메인 점수=8축 코사인 유지, 표시 %만 보정)
+        # 프로필(preferred_fruit/preferred_abv) 확보: 메모리 → 부족하면 DB. 없으면 가산점 0.
+        bonus_profile = (_user_profiles.get(request.user_id) or {}) if request.user_id else {}
+        if request.user_id and not bonus_profile.get('preferred_fruit') and not bonus_profile.get('preferred_abv'):
+            try:
+                dbp = await db.get_user_profile(request.user_id)
+                if dbp:
+                    bonus_profile = {**dbp, **bonus_profile}
+            except Exception:
+                pass
+        for rec in recommendations:
+            base = min(rec['similarity'] * 100.0, 95.0)          # 취향 단독 최대 95(우연한 100 방지)
+            bonus = _fact_match_bonus(bonus_profile, rec)        # 사실 일치만(+3/+2, 최대 +5)
+            rec['similarity_percent'] = round(min(base + bonus, 99.0), 1)  # 상한 99(100% 단정 회피)
+        # 표시 % 순서 = 목록 순서
+        recommendations.sort(key=lambda r: r['similarity_percent'], reverse=True)
 
         # 응답 변환
         response = []
