@@ -262,34 +262,14 @@ class AdvancedMakgeolliRecommender:
         Args:
             user_vector: 사용자 맛 벡터
             drink: 막걸리 데이터
-            weights: 가중치 (taste, ingredient, region, food)
-            user_food_pairings: 사용자 음식 선호 리스트 (한글 레이블)
+            weights: 호출자 호환용 가중치 (현재 추천 점수에는 미사용)
+            user_food_pairings: 호출자 호환용 음식 선호 리스트 (현재 추천 점수에는 미사용)
 
         Returns:
-            앙상블 유사도
+            8축 맛 벡터 코사인 유사도 (0~1)
         """
-        if weights is None:
-            weights = {
-                'taste': 0.65,
-                'ingredient': 0.15,
-                'region': 0.1,
-                'food': 0.1,
-            }
-
         taste_sim = self.cosine_similarity(user_vector, drink['taste_vector'])
-        ingredient_sim = self.ingredient_similarity(
-            ' '.join([str(v) for v in user_vector.values()]),
-            drink.get('ingredients', '')
-        )
-        region_sim = 0.0
-        food_sim = self.food_pairing_similarity(user_food_pairings or [], drink)
-
-        return (
-            weights['taste'] * taste_sim +
-            weights['ingredient'] * ingredient_sim +
-            weights['region'] * region_sim +
-            weights['food'] * food_sim
-        )
+        return max(0.0, min(1.0, taste_sim))
 
     def recommend(self, user_vector: Dict[str, float], top_k: int = 10, pool: str = "all", exclude_ids: List[str] = None, weights: Dict[str, float] = None, user_food_pairings: List[str] = None) -> List[Dict]:
         """
@@ -300,8 +280,8 @@ class AdvancedMakgeolliRecommender:
             top_k: 추천할 상위 k개
             pool: 추천 풀 (all|base|funding|recipe|approved)
             exclude_ids: 제외할 ID 리스트
-            weights: 가중치
-            user_food_pairings: 사용자 음식 선호 리스트 (한글 레이블)
+            weights: 호출자 호환용 가중치 (현재 추천 점수에는 미사용)
+            user_food_pairings: 호출자 호환용 음식 선호 리스트 (현재 추천 점수에는 미사용)
 
         Returns:
             추천 결과 리스트
@@ -366,9 +346,9 @@ class AdvancedMakgeolliRecommender:
             if funding_source:
                 best_funding = max(
                     funding_source,
-                    key=lambda d: self.cosine_similarity(user_vector, d['taste_vector'])
+                    key=lambda d: self.multi_source_similarity(user_vector, d, weights, user_food_pairings)
                 )
-                sim = self.cosine_similarity(user_vector, best_funding['taste_vector'])
+                sim = self.multi_source_similarity(user_vector, best_funding, weights, user_food_pairings)
                 funding_entry = {
                     **best_funding,
                     'similarity': sim,
