@@ -22,7 +22,13 @@ logger = logging.getLogger(__name__)
 from app.core.recommender import AdvancedMakgeolliRecommender
 from app.core.survey_converter import SurveyToVectorConverter, SurveyResponse
 from app.law_client import LawClient, ContentType, FilterResult
-from app.insight import InsightDashboard, InsightRequest, InsightResponse
+from app.insight import (
+    BreweryInsightRequest,
+    BreweryInsightResponse,
+    InsightDashboard,
+    InsightRequest,
+    InsightResponse,
+)
 from app.recipe import RecipeAI
 from app.image_generator import ImageGenerator
 from app.chat import router as chat_router
@@ -1127,6 +1133,21 @@ async def get_insights(period: str = "week"):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/insight", response_model=BreweryInsightResponse)
+async def create_brewery_insight(request: BreweryInsightRequest):
+    """백엔드 집계 데이터를 기반으로 양조장 운영 인사이트를 생성한다."""
+    insight_dashboard = app.state.insight_dashboard
+    try:
+        return await insight_dashboard.generate_brewery_insights(request)
+    except Exception:
+        logger.exception(
+            "Brewery insight processing failed: brewery_id=%s period=%s",
+            request.brewery_id,
+            request.period,
+        )
+        return insight_dashboard.empty_brewery_insight()
 
 
 # =====================================================
