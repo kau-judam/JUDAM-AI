@@ -273,7 +273,7 @@ class SurveyConvertResponse(BaseModel):
 class BTIFeedbackRequest(BaseModel):
     """BTI 결과 피드백 요청 모델"""
     user_id: str = Field(..., min_length=1, max_length=50)
-    bti_code: str = Field(..., min_length=5, max_length=5)
+    bti_code: str = Field(..., min_length=4, max_length=5)
     is_correct: bool
     actual_preference: Optional[str] = None
     wrong_axes: Optional[List[str]] = None      # 아니에요일 때 틀린 축 복수 선택(선택)
