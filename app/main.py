@@ -11,6 +11,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from typing import Any, List, Dict, Optional
+import base64
 import json
 from pathlib import Path
 
@@ -28,15 +29,14 @@ from app.insight import (
     InsightRequest,
     InsightResponse,
 )
-from app.rag import TraditionalAlcoholRAG, RAGSearchRequest, RAGSearchResponse
 from app.recipe import RecipeAI
 from app.image_generator import ImageGenerator
 from app.chat import router as chat_router
+from app.ocr import BreweryOCR
 from app.models import (
     TasteVector, RecommendRequest, RecommendResponse,
     TasteUpdateRequest, TasteUpdateResponse,
     TasteHistorySummaryResponse,
-    FoodRecommendRequest, FoodRecommendResponse,
     HealthResponse,
     LawFilterRequest,
     SurveyConvertResponse,
@@ -48,6 +48,7 @@ from app.models import (
     FundingTasteUpdateRequest, FundingTasteUpdateResponse,
     RecipeValidateRequest, RecipeValidateResponse,
     RecipeRegisterRequest, RecipeRegisterResponse,
+    BTIFeedbackRequest,
 )
 from app.db import db
 
@@ -84,9 +85,9 @@ _recommender = AdvancedMakgeolliRecommender()
 _survey_converter = SurveyToVectorConverter()
 _law_client = LawClient()
 _insight_dashboard = InsightDashboard()
-_rag_system = TraditionalAlcoholRAG()
 _recipe_ai = RecipeAI()
 _image_generator = ImageGenerator()
+_brewery_ocr = BreweryOCR()
 
 # FastAPI 인스턴스 생성
 app = FastAPI(
@@ -100,7 +101,6 @@ app.state.recommender = _recommender
 app.state.survey_converter = _survey_converter
 app.state.law_client = _law_client
 app.state.insight_dashboard = _insight_dashboard
-app.state.rag_system = _rag_system
 app.state.recipe_ai = _recipe_ai
 
 @app.exception_handler(404)
@@ -164,6 +164,17 @@ async def startup_event():
     except Exception as e:
         logger.warning(f"DB 연결 실패 (JSON fallback 사용): {e}")
         _recommender.db_connected = False
+
+    # InsightDashboard 에 DB + 펀딩 저장소 주입
+    # (_fundings 는 dict 참조로 전달 → 이후 등록된 펀딩이 자동 반영됨)
+    _insight_dashboard.set_db(db, _fundings)
+
+    # 법령 RAG 초기화
+    try:
+        law_data = _law_client.get_all_laws()
+        _law_client.law_rag.initialize(law_data)
+    except Exception as e:
+        logger.warning(f"법령 RAG 초기화 실패: {e}")
 
     app.state.user_profiles = _user_profiles
 
@@ -329,7 +340,6 @@ def root():
             "recommend": "/api/recommend",
             "taste_update": "/api/taste/update",
             "taste_history": "/api/taste/history/{user_id}",
-            "food_recommend": "/api/food/recommend",
             "survey_convert": "/api/survey/convert",
             "taste_profile": "/api/taste/profile/{user_id}",
             "recipe_suggest_sub_ingredients": "/api/recipe/suggest-sub-ingredients",
@@ -338,15 +348,15 @@ def root():
             "law_filter": "/api/law/filter",
             "law_info": "/api/law/info",
             "insight": "/api/insight",
-            "rag_search": "/api/rag/search",
             "chat": "/api/chat",
+            "chat_stream": "/api/chat/stream",
             "health": "/health"
         }
     }
 
 
 @app.get("/health")
-def health():
+async def health():
     """헬스체크 엔드포인트 (기능별 상태 포함)"""
     try:
         recommender = app.state.recommender
@@ -371,11 +381,19 @@ def health():
             "data_count": len(recommender.drinks),
             "funding_count": len(_fundings),
             "recipe_count": len(_recipes),
+            "pool_breakdown": {
+                "base": len(recommender.drinks),
+                "funding": len(recommender.funding_drinks),
+                "recipe": len(recommender.recipe_drinks),
+                "approved": len(recommender.approved_drinks),
+            },
             "user_count": len(_user_profiles),
             "gemini_key_loaded": bool(api_key),
             "gemini_available": GEMINI_AVAILABLE,
             "law_key_loaded": bool(law_key),
             "db_connected": recommender.db_connected,
+            "knn_model_loaded": bool(_survey_converter.knn_model),
+            "bti_feedback_count": await db.get_bti_feedback_count() if db.db_connected else (len(json.load(open('data/bti_feedback.json', encoding='utf-8'))) if Path('data/bti_feedback.json').exists() else 0),
             "uptime_seconds": uptime,
             "api_status": {
                 "recommend": recommend_ok,
@@ -390,6 +408,49 @@ def health():
             "status": "error",
             "error": str(e)
         }
+
+
+def _parse_abv_range(label: str):
+    """preferred_abv 라벨('중간 도수(7~9도)' 등) → (lo, hi) 도수 구간. 파싱 불가 시 None(가산점 0)."""
+    if not label:
+        return None
+    nums = [int(n) for n in re.findall(r"\d+", label)]
+    try:
+        if "이하" in label and len(nums) >= 1:
+            return (0.0, float(nums[0]))
+        if "이상" in label and len(nums) >= 1:
+            return (float(nums[0]), float("inf"))
+        if len(nums) >= 2:
+            return (float(min(nums)), float(max(nums)))
+    except (ValueError, TypeError):
+        return None
+    return None
+
+
+def _fruit_stem(pref_fruit: str) -> str:
+    """선호 과일 라벨 → 재료 매칭용 어간. 끝의 '류' 접미사 제거('감귤류'→'감귤','베리류'→'베리').
+    1글자 이하 어간은 오탐 방지 위해 빈 문자열 반환."""
+    stem = str(pref_fruit or "").strip()
+    if stem.endswith("류") and len(stem) >= 3:   # '감귤류'(3)·'베리류'(3) → 어간 2글자 확보
+        stem = stem[:-1]
+    return stem if len(stem) >= 2 else ""
+
+
+def _fact_match_bonus(profile: dict, drink: dict) -> int:
+    """추정 없이 '사실 일치'에만 주는 가산점(%p). 선호과일(어간)∈재료 +3, 제품도수∈선호도수구간 +2."""
+    bonus = 0
+    pref_fruit = _fruit_stem((profile or {}).get("preferred_fruit") or "")
+    if pref_fruit and pref_fruit in str(drink.get("ingredients") or ""):
+        bonus += 3
+    abv_range = _parse_abv_range(str((profile or {}).get("preferred_abv") or ""))
+    if abv_range is not None:
+        try:
+            av = float(drink.get("abv"))
+            if abv_range[0] <= av <= abv_range[1]:
+                bonus += 2
+        except (TypeError, ValueError):
+            pass
+    return bonus
 
 
 @app.post("/api/recommend", response_model=List[RecommendResponse])
@@ -407,6 +468,8 @@ async def recommend(request: RecommendRequest):
         raise HTTPException(status_code=400, detail={"status": "error", "message": "user_vector 또는 user_id 중 하나는 필수입니다."})
     if not (1 <= request.top_k <= 50):
         raise HTTPException(status_code=400, detail={"status": "error", "message": "top_k는 1~50 사이여야 합니다."})
+    if request.pool not in ("all", "base", "funding", "recipe", "approved"):
+        raise HTTPException(status_code=400, detail={"status": "error", "message": "pool은 all/base/funding/recipe/approved 중 하나여야 합니다."})
 
     try:
         recommender = app.state.recommender
@@ -415,33 +478,62 @@ async def recommend(request: RecommendRequest):
         if request.user_vector is not None:
             user_vector = request.user_vector.model_dump()
         elif request.user_id:
-            mem = _user_profiles.get(request.user_id)
-            if mem:
-                user_vector = mem['taste_vector']
+            # taste/update 이력이 있으면 진화된 벡터 우선 사용
+            if recommender.user_taste_history.get(request.user_id):
+                user_vector = recommender.get_evolved_taste_vector(request.user_id)
             else:
-                db_profile = await db.get_user_profile(request.user_id)
-                if db_profile and db_profile.get('taste_vector'):
-                    import json as _json
-                    tv = db_profile['taste_vector']
-                    user_vector = _json.loads(tv) if isinstance(tv, str) else tv
-                    _user_profiles[request.user_id] = {'taste_vector': user_vector}
+                mem = _user_profiles.get(request.user_id)
+                if mem:
+                    user_vector = mem['taste_vector']
                 else:
-                    raise HTTPException(
-                        status_code=400,
-                        detail="user_vector 또는 저장된 user_id 중 하나를 제공해주세요."
-                    )
+                    db_profile = await db.get_user_profile(request.user_id)
+                    if db_profile and db_profile.get('taste_vector'):
+                        import json as _json
+                        tv = db_profile['taste_vector']
+                        user_vector = _json.loads(tv) if isinstance(tv, str) else tv
+                        _user_profiles[request.user_id] = {'taste_vector': user_vector}
+                    else:
+                        raise HTTPException(
+                            status_code=400,
+                            detail="user_vector 또는 저장된 user_id 중 하나를 제공해주세요."
+                        )
         else:
             raise HTTPException(
                 status_code=400,
                 detail="user_vector 또는 저장된 user_id 중 하나를 제공해주세요."
             )
 
+        # food_pairing: 요청값 우선, 없으면 저장된 프로필에서 가져오기
+        user_food = request.food_pairing
+        if not user_food and request.user_id:
+            profile = _user_profiles.get(request.user_id) or {}
+            user_food = profile.get('preferred_food_pairing') or []
+
         # 추천
         recommendations = recommender.recommend(
             user_vector=user_vector,
             top_k=request.top_k,
-            exclude_ids=request.exclude_ids
+            pool=request.pool,
+            exclude_ids=request.exclude_ids,
+            user_food_pairings=user_food or [],
         )
+
+        # 사실 일치 가산점 + 95% 캡 (메인 점수=8축 코사인 유지, 표시 %만 보정)
+        # 프로필(preferred_fruit/preferred_abv) 확보: 메모리 → 부족하면 DB. 없으면 가산점 0.
+        bonus_profile = (_user_profiles.get(request.user_id) or {}) if request.user_id else {}
+        if request.user_id and not bonus_profile.get('preferred_fruit') and not bonus_profile.get('preferred_abv'):
+            try:
+                dbp = await db.get_user_profile(request.user_id)
+                if dbp:
+                    bonus_profile = {**dbp, **bonus_profile}
+            except Exception:
+                pass
+        for rec in recommendations:
+            base = min(rec['similarity'] * 100.0, 95.0)          # 취향 단독 최대 95(우연한 100 방지)
+            bonus = _fact_match_bonus(bonus_profile, rec)        # 사실 일치만(+3/+2, 최대 +5)
+            rec['similarity_percent'] = round(min(base + bonus, 99.0), 1)  # 상한 99(100% 단정 회피)
+        # 표시 % 순서 = 목록 순서
+        recommendations.sort(key=lambda r: r['similarity_percent'], reverse=True)
 
         # 응답 변환
         response = []
@@ -463,6 +555,8 @@ async def recommend(request: RecommendRequest):
 
         return response
 
+    except HTTPException:
+        raise  # 입력검증 400(저장 프로필 없음 등)이 500으로 둔갑하지 않도록
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -531,56 +625,6 @@ def taste_history(user_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/api/food/recommend", response_model=List[FoodRecommendResponse])
-def food_recommend(request: FoodRecommendRequest):
-    """
-    음식 기반 추천
-
-    Args:
-        request: 음식 기반 추천 요청
-
-    Returns:
-        추천 결과 리스트
-    """
-    if not request.food.strip():
-        raise HTTPException(status_code=400, detail={"status": "error", "message": "음식 이름을 입력해주세요."})
-
-    try:
-        cache_key = f"food:{request.food}:{request.top_k}"
-        cached = get_cache(cache_key)
-        if cached is not None:
-            logger.info(f"음식 캐시 히트: {cache_key}")
-            return cached
-
-        recommender = app.state.recommender
-
-        # 추천
-        recommendations = recommender.recommend_by_food(
-            food=request.food,
-            top_k=request.top_k
-        )
-
-        # 응답 변환
-        response = []
-        for rec in recommendations:
-            response.append(FoodRecommendResponse(
-                id=rec['id'],
-                name=rec['name'],
-                abv=rec['abv'],
-                brewery=clean_string(rec.get('brewery')),
-                region=clean_string(rec.get('region')),
-                features=clean_string(rec.get('features')),
-                taste_vector=TasteVector(**rec['taste_vector']),
-                reason=rec['reason']
-            ))
-
-        set_cache(cache_key, response, ttl_minutes=1440)
-        return response
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
 @app.post("/api/survey/convert", response_model=SurveyConvertResponse)
 async def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
     """
@@ -613,6 +657,8 @@ async def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
             preferred_food_pairing=full.get('preferred_food_pairing', []),
             preferred_aroma=full.get('preferred_aroma', []),
             taste_profile_summary=full.get('taste_profile_summary', ''),
+            bti_method=full.get('bti_method', 'rule_based'),
+            bti_confidence=full.get('bti_confidence', 'medium'),
         )
 
         if user_id:
@@ -628,6 +674,47 @@ async def survey_convert(survey: SurveyResponse, user_id: Optional[str] = None):
         return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/bti/feedback")
+async def bti_feedback(request: BTIFeedbackRequest):
+    """BTI 결과에 대한 사용자 피드백 수집 (KNN 훈련 데이터로 활용)"""
+    profile = _user_profiles.get(request.user_id, {})
+    entry = {
+        'user_id': request.user_id,
+        'taste_vector': profile.get('taste_vector', {}),
+        'bti_code': request.bti_code,
+        'original_code': request.actual_preference or request.bti_code,
+        'is_correct': request.is_correct,
+        'wrong_axes': request.wrong_axes,            # 메모리/JSON 폴백에만 적재(DB 컬럼 없음 → INSERT 미반영)
+        'feedback_reason': request.feedback_reason,   # 자유 텍스트 이유(VARCHAR(10)인 actual_preference와 분리)
+        'timestamp': datetime.now().isoformat(),
+    }
+
+    # DB 우선 저장
+    db_saved = await db.insert_bti_feedback(entry)
+
+    if not db_saved:
+        # JSON fallback
+        feedback_file = Path('data/bti_feedback.json')
+        feedback = []
+        if feedback_file.exists():
+            with open(feedback_file, 'r', encoding='utf-8') as f:
+                feedback = json.load(f)
+        feedback.append(entry)
+        feedback_file.parent.mkdir(exist_ok=True)
+        with open(feedback_file, 'w', encoding='utf-8') as f:
+            json.dump(feedback, f, ensure_ascii=False, indent=2)
+        total = len(feedback)
+    else:
+        total = await db.get_bti_feedback_count()
+
+    return {
+        'status': 'success',
+        'message': '피드백이 저장되었습니다.',
+        'storage': 'db' if db_saved else 'json',
+        'total_feedback': total,
+    }
 
 
 @app.get("/api/taste/profile/{user_id}")
@@ -678,13 +765,12 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
     Returns:
         서브재료 리스트
     """
-    if not GEMINI_AVAILABLE:
-        raise HTTPException(status_code=503, detail="AI 서비스 점검 중입니다. 잠시 후 다시 시도해주세요.")
     try:
-        cache_key = f"recipe_sub_{hash(request.main_ingredient + request.region)}"
+        effective_region = request.region or "unavailable"
+        cache_key = f"recipe_sub_{hash(request.main_ingredient + effective_region)}"
         cached = get_cache(cache_key)
         if cached is not None:
-            logger.info(f"서브재료 캐시 히트: {request.main_ingredient}/{request.region}")
+            logger.info(f"서브재료 캐시 히트: {request.main_ingredient}/{effective_region}")
             return cached
 
         recipe_ai = app.state.recipe_ai
@@ -694,12 +780,188 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
             region=request.region
         )
 
-        response_obj = SubIngredientsResponse(sub_ingredients=result["sub_ingredients"])
+        response_obj = SubIngredientsResponse(**result)
         set_cache(cache_key, response_obj, ttl_minutes=1440)
         return response_obj
 
     except Exception as e:
         raise_api_error(e, "서브재료 추천 중 오류가 발생했습니다.")
+
+
+@app.get("/api/recipe/ingredient-region")
+async def get_ingredient_region(ingredient: str):
+    """
+    메인재료 입력 시 생산 지역 목록 반환.
+    여러 지역이 있을 수 있음 → 프론트에서 선택하게 할 것.
+    현재는 임시 데이터, 농사로 API 연동 후 정확도 향상 예정.
+    """
+    from app.recipe import _match_nongsaro_regions
+    regions = _recipe_ai.get_region_from_ingredient(ingredient)
+    data_source = (
+        "nongsaro_api"
+        if _match_nongsaro_regions(ingredient)
+        else ("manual" if regions else "unavailable")
+    )
+    return {
+        "ingredient": ingredient,
+        "regions": regions,
+        "found": bool(regions),
+        "data_source": data_source,
+    }
+
+
+@app.post("/api/brewery/verify-ocr")
+async def brewery_verify_ocr(
+    file: Optional[UploadFile] = File(None),
+    businessLicense: Optional[UploadFile] = File(None),
+    documentUrl: Optional[str] = Form(None),
+    document_url: Optional[str] = Form(None),
+    documentKey: Optional[str] = Form(None),
+    document_key: Optional[str] = Form(None),
+    originalName: Optional[str] = Form(None),
+    original_name: Optional[str] = Form(None),
+    mimeType: Optional[str] = Form(None),
+    mime_type: Optional[str] = Form(None),
+):
+    """양조장 인증 서류 OCR 분석 (multipart 업로드).
+
+    실제 백엔드 계약을 확인할 수 없어 `file` 또는 `businessLicense` 를 임시 호환한다.
+    documentUrl/documentKey/originalName 과 snake_case alias 는 현재 OCR/DB 저장에 사용하지 않는다.
+    mimeType/mime_type 은 업로드 content_type 이 없을 때 파일 시그니처 대조용 임시 호환값으로만 사용한다.
+    지원 서류(사업자등록증/신분증/통신판매업신고증/주류통신판매승인서/전통주제조면허증 등)는
+    app/ocr.py 의 SUPPORTED_DOC_TYPES 레지스트리로 관리 — 종류 추가가 쉬운 구조.
+
+    정책:
+    - OCR 결과는 자동 승인에 쓰지 않는다 (manualReviewOnly 항상 true).
+    - OCR 가 실패해도 인증 신청을 막지 않는다 (FAILED 여도 HTTP 200 으로 반환).
+    """
+    _REVIEW_POLICY = "OCR_RESULT_IS_FOR_ADMIN_REVIEW_ONLY"
+    _MAX_FILE_SIZE = 10 * 1024 * 1024
+    _GENERIC_MIME_TYPES = {"", "application/octet-stream"}
+    _SUPPORTED_MIME_TYPES = {"image/png", "image/jpeg", "application/pdf"}
+
+    def _failed(reason: str, error: str):
+        """인증 신청을 막지 않도록 OCR 업무 실패를 HTTP 200으로 반환한다."""
+        body = {
+            "status": "FAILED",
+            "ocrSucceeded": False,
+            "verified": False,
+            "documentAssessment": "MANUAL_REVIEW",
+            "summary": {
+                "reason": reason,
+                "manualReviewOnly": True,
+                "reviewPolicy": _REVIEW_POLICY,
+            },
+            "error": error,
+            "warnings": ["관리자 수동 검토가 필요합니다."],
+        }
+        return JSONResponse(status_code=200, content=body)
+
+    def _detect_mime(data: bytes) -> Optional[str]:
+        """파일 시그니처로 지원 MIME을 판별한다."""
+        if data.startswith(b"\x89PNG\r\n\x1a\n"):
+            return "image/png"
+        if data.startswith(b"\xff\xd8\xff"):
+            return "image/jpeg"
+        if data.startswith(b"%PDF-"):
+            return "application/pdf"
+        return None
+
+    def _business_number_is_valid(value: str) -> bool:
+        """사업자등록번호의 기본 형식과 체크섬을 검증한다."""
+        digits = re.sub(r"\D", "", value or "")
+        if len(digits) != 10:
+            return False
+        nums = [int(digit) for digit in digits]
+        weights = [1, 3, 7, 1, 3, 7, 1, 3, 5]
+        checksum = sum(num * weight for num, weight in zip(nums[:9], weights))
+        checksum += (nums[8] * 5) // 10
+        return (10 - checksum % 10) % 10 == nums[9]
+
+    # 어떤 예외든(파일 bytes 가 JSON/UTF-8 로 디코드되며 터지는 경우 포함) FAILED JSON 으로 흡수.
+    # 방어: 파일 bytes/base64와 OCR 원문은 로그에 남기지 않는다 (예외 타입명만 로깅).
+    # OCR rawText는 관리자 검토 계약에 따라 성공 응답에만 포함한다.
+    try:
+        upload = file or businessLicense
+        if upload is None:
+            logger.warning("verify-ocr: 업로드 파일이 없습니다 (file/businessLicense 모두 비어있음).")
+            return _failed("NO_FILE", "업로드된 파일이 없습니다.")
+
+        data = await upload.read(_MAX_FILE_SIZE + 1)
+        if not data:
+            logger.warning("verify-ocr: 업로드 파일이 비어있습니다.")
+            return _failed("EMPTY_FILE", "빈 파일은 처리할 수 없습니다.")
+        if len(data) > _MAX_FILE_SIZE:
+            logger.warning("verify-ocr: 파일 크기 상한 초과.")
+            return _failed("FILE_TOO_LARGE", "파일 크기는 10MB 이하여야 합니다.")
+
+        detected_mime = _detect_mime(data)
+        declared_mime = (upload.content_type or mimeType or mime_type or "").lower().split(";", 1)[0].strip()
+        if detected_mime is None or detected_mime not in _SUPPORTED_MIME_TYPES:
+            logger.warning("verify-ocr: 지원하지 않는 파일 시그니처.")
+            return _failed("UNSUPPORTED_FILE_TYPE", "PNG, JPEG, PDF 파일만 지원합니다.")
+        if declared_mime not in _GENERIC_MIME_TYPES and declared_mime != detected_mime:
+            logger.warning("verify-ocr: MIME 타입과 파일 시그니처 불일치.")
+            return _failed("UNSUPPORTED_FILE_TYPE", "파일 형식과 MIME 타입이 일치하지 않습니다.")
+
+        image_b64 = base64.b64encode(data).decode("ascii")
+        result = await _brewery_ocr.extract_brewery_info(image_b64, detected_mime)
+
+        if result.get("status") != "success":
+            logger.warning("verify-ocr: OCR 비성공 (status=%s).", result.get("status"))
+            return _failed("OCR_PROCESSING_FAILED", "OCR 처리 중 오류가 발생했습니다.")
+
+        ext = result.get("extracted", {}) or {}
+        document_type = str(ext.get("document_type") or "")
+        business_number = str(ext.get("business_number") or "")
+        if not business_number and document_type == "사업자등록증":
+            business_number = str(ext.get("registration_number") or "")
+        raw_text = str(ext.get("raw_text") or "")
+        warnings = []
+
+        required_fields = {
+            "businessNumber": business_number,
+            "breweryName": ext.get("brewery_name"),
+            "representativeName": ext.get("owner_name"),
+            "address": ext.get("address"),
+            "licenseType": document_type,
+        }
+        for field_name, value in required_fields.items():
+            if not str(value or "").strip():
+                warnings.append(f"필수 필드 누락: {field_name}")
+        if business_number and not _business_number_is_valid(business_number):
+            warnings.append("사업자등록번호 형식 또는 체크섬을 확인할 수 없습니다.")
+        if not ext.get("is_valid_document") or document_type == "인식불가":
+            warnings.append("지원 서류 종류로 확인되지 않았습니다.")
+        if ext.get("confidence") in {"low", None, ""}:
+            warnings.append("OCR 추출 신뢰도가 낮습니다.")
+        compact_raw_text = re.sub(r"\s+", "", raw_text)
+        if len(compact_raw_text) < 30:
+            warnings.append("OCR 텍스트가 지나치게 짧거나 판독이 어렵습니다.")
+        elif compact_raw_text.count("\ufffd") / len(compact_raw_text) > 0.05:
+            warnings.append("OCR 텍스트에 판독 불가 문자가 많습니다.")
+
+        return {
+            "status": "COMPLETED",
+            "ocrSucceeded": True,
+            "verified": False,
+            "documentAssessment": "REVIEW_REQUIRED",
+            "summary": {
+                "businessNumber": business_number,
+                "breweryName": ext.get("brewery_name", ""),
+                "representativeName": ext.get("owner_name", ""),
+                "address": ext.get("address", ""),
+                "licenseType": document_type,
+                "manualReviewOnly": True,
+                "reviewPolicy": _REVIEW_POLICY,
+            },
+            "rawText": raw_text,
+            "warnings": warnings,
+        }
+
+    except Exception as e:
+        logger.error("verify-ocr 처리 실패: %s", type(e).__name__)
+        return _failed("OCR_PROCESSING_FAILED", "OCR 처리 중 오류가 발생했습니다.")
 
 
 @app.post("/api/recipe/suggest-flavor-tags", response_model=FlavorTagsResponse)
@@ -796,6 +1058,7 @@ async def law_filter(request: LawFilterRequest):
 
         response_data = {
             "violation": result.violation,
+            "verdict": result.verdict,  # block | pass | review (review=관리자 검토 큐)
             "details": [
                 {
                     "category": d.category,
@@ -856,10 +1119,16 @@ async def get_insights(period: str = "week"):
         인사이트 결과 (ai_report 포함)
     """
     try:
-        insight_dashboard = app.state.insight_dashboard
+        cache_key = f"insight_{period}"
+        cached = get_cache(cache_key)
+        if cached is not None:
+            logger.info(f"인사이트 캐시 히트: {period}")
+            return cached
 
+        insight_dashboard = app.state.insight_dashboard
         insights = await insight_dashboard.get_insights(period=period)
 
+        set_cache(cache_key, insights, ttl_minutes=60)
         return insights
 
     except Exception as e:
@@ -881,67 +1150,8 @@ async def create_brewery_insight(request: BreweryInsightRequest):
         return insight_dashboard.empty_brewery_insight()
 
 
-@app.post("/api/rag/search")
-def rag_search(request: RAGSearchRequest):
-    """
-    RAG 문서 검색
-
-    Args:
-        request: RAG 검색 요청
-
-    Returns:
-        검색 결과
-    """
-    try:
-        cache_key = f"rag:{request.query}:{request.top_k}:{request.category}"
-        cached = get_cache(cache_key)
-        if cached is not None:
-            logger.info(f"RAG 캐시 히트: {cache_key[:60]}")
-            return cached
-
-        rag_system = app.state.rag_system
-
-        results = rag_system.search(
-            query=request.query,
-            top_k=request.top_k,
-            category=request.category
-        )
-
-        set_cache(cache_key, results, ttl_minutes=60)
-        return results
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-
 # =====================================================
-# 3단계: 크롤러 모니터 API
-# =====================================================
-
-@app.post("/api/crawler/check")
-def crawler_check():
-    """
-    koreansool.co.kr 에서 새로운 전통주를 감지하고 auto_pipeline 을 트리거합니다.
-
-    Returns:
-        감지 결과 (new_count, new_items, total_seen)
-    """
-    try:
-        from app.crawler.traditional_alcohol_monitor import check_new_entries
-        from app.auto_pipeline import AutoPipeline
-
-        auto_pipeline = AutoPipeline()
-        result = check_new_entries(auto_pipeline=auto_pipeline)
-        return result
-
-    except Exception as e:
-        logger.error(f"크롤러 체크 실패: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-# =====================================================
-# 4단계: 전통주 등록 요청 API (메모리 기반)
+# 전통주 등록 요청 API (메모리 기반)
 # =====================================================
 
 # 메모리 기반 등록 요청 저장소
@@ -952,12 +1162,17 @@ _drink_request_id_counter = [0]
 class ImageGenerateRequest(BaseModel):
     name: str
     description: str
-    flavor_tags: List[str] = []
+    flavor_tags: List[str] = Field(default_factory=list)
     region: Optional[str] = None
+    main_ingredient: Optional[str] = None
+    sub_ingredients: List[str] = Field(default_factory=list)
+    concept: Optional[str] = None
+    taste_vector: Optional[Dict[str, float]] = None  # 8축 맛벡터 → 색·질감 시각화 (선택)
+    seed: Optional[int] = None  # 동일 입력 재현/변주 제어 (선택)
 
 
 class DrinkRequestCreate(BaseModel):
-    user_id: str = Field(..., description="요청자 사용자 ID")
+    user_id: str = Field(..., min_length=1, description="요청자 user_id")
     name: str = Field(..., description="전통주 이름")
     brewery: Optional[str] = Field(None, description="양조장")
     region: Optional[str] = Field(None, description="지역")
@@ -1049,9 +1264,36 @@ def approve_drink_request(request_id: int):
         }
         vector = pipeline.create_taste_vector(drink_data, use_gemini=True)
 
+        # Gemini가 all-zero 벡터를 반환하면 기본 벡터로 fallback
+        if all(v == 0.0 for v in vector.values()):
+            logger.warning(f"Gemini all-zero 벡터 반환, 기본 벡터로 fallback: #{request_id}")
+            vector = pipeline._create_basic_vector(drink_data)
+
         record["status"] = "approved"
         record["approved_at"] = datetime.now().isoformat()
         record["taste_vector"] = vector
+
+        # 추천 풀 편입
+        drink_entry = {
+            "id": f"request_{request_id}",
+            "name": record["name"],
+            "abv": 0.0,
+            "brewery": record["brewery"],
+            "region": record["region"],
+            "features": record["description"],
+            "description": record["description"],
+            "ingredients": "",
+            "taste_vector": vector,
+            "is_funding": False,
+        }
+        existing_ids = {d["id"] for d in _recommender.approved_drinks}
+        if drink_entry["id"] not in existing_ids:
+            _recommender.approved_drinks.append(drink_entry)
+        else:
+            for i, d in enumerate(_recommender.approved_drinks):
+                if d["id"] == drink_entry["id"]:
+                    _recommender.approved_drinks[i] = drink_entry
+                    break
 
         logger.info(f"전통주 등록 요청 승인 완료: #{request_id} {record['name']}")
 
@@ -1060,216 +1302,6 @@ def approve_drink_request(request_id: int):
     except Exception as e:
         logger.error(f"승인 처리 중 오류: {e}")
         raise HTTPException(status_code=500, detail=str(e))
-
-
-# =====================================================
-# Brewery verification OCR API
-# =====================================================
-
-OCR_REVIEW_POLICY = "OCR_RESULT_IS_FOR_ADMIN_REVIEW_ONLY"
-
-
-def _brewery_ocr_failure_response(
-    error_message: str = "OCR 처리 중 오류가 발생했습니다.",
-    reason: str = "OCR_PROCESSING_FAILED",
-) -> Dict[str, Any]:
-    return {
-        "status": "FAILED",
-        "verified": False,
-        "summary": {
-            "reason": reason,
-            "manualReviewOnly": True,
-            "reviewPolicy": OCR_REVIEW_POLICY,
-        },
-        "error": error_message,
-        "warnings": ["관리자 수동 검토가 필요합니다."],
-    }
-
-
-def _clean_ocr_text(value: Any) -> str:
-    if value is None:
-        return ""
-    return str(value).strip()
-
-
-def _first_non_empty(*values: Any) -> str:
-    for value in values:
-        cleaned = _clean_ocr_text(value)
-        if cleaned:
-            return cleaned
-    return ""
-
-
-def _regex_first(pattern: str, text: str) -> str:
-    match = re.search(pattern, text, flags=re.IGNORECASE | re.MULTILINE)
-    if not match:
-        return ""
-    return _clean_ocr_text(match.group(1) if match.lastindex == 1 else match.group(match.lastindex))
-
-
-def _extract_ocr_json(text: str) -> Dict[str, Any]:
-    match = re.search(r"\{[\s\S]*\}", text or "")
-    if not match:
-        return {}
-    try:
-        parsed = json.loads(match.group(0))
-        return parsed if isinstance(parsed, dict) else {}
-    except json.JSONDecodeError:
-        return {}
-
-
-def _list_ocr_warnings(value: Any) -> List[str]:
-    if isinstance(value, list):
-        return [_clean_ocr_text(item) for item in value if _clean_ocr_text(item)]
-    if isinstance(value, str) and value.strip():
-        return [value.strip()]
-    return []
-
-
-def _normalize_brewery_ocr_result(response_text: str) -> Dict[str, Any]:
-    parsed = _extract_ocr_json(response_text)
-    summary = parsed.get("summary") if isinstance(parsed.get("summary"), dict) else parsed
-    raw_text = _first_non_empty(
-        parsed.get("rawText"),
-        parsed.get("raw_text"),
-        summary.get("rawText") if isinstance(summary, dict) else None,
-        summary.get("raw_text") if isinstance(summary, dict) else None,
-        response_text,
-    )
-
-    business_number = _first_non_empty(
-        summary.get("businessNumber"),
-        summary.get("business_number"),
-        summary.get("registrationNumber"),
-        _regex_first(r"(?:사업자\s*등록\s*번호|사업자등록번호|등록번호)\s*[:\-]?\s*([0-9]{3}-?[0-9]{2}-?[0-9]{5})", raw_text),
-    )
-    brewery_name = _first_non_empty(
-        summary.get("breweryName"),
-        summary.get("brewery_name"),
-        summary.get("businessName"),
-        summary.get("companyName"),
-        _regex_first(r"(?:상호|법인명|단체명|업체명|상호명)\s*[:\-]?\s*([^\r\n]+)", raw_text),
-    )
-    representative_name = _first_non_empty(
-        summary.get("representativeName"),
-        summary.get("representative_name"),
-        summary.get("ceoName"),
-        _regex_first(r"(?:대표자명|대표자|성명)\s*[:\-]?\s*([^\r\n]+)", raw_text),
-    )
-    address = _first_non_empty(
-        summary.get("address"),
-        summary.get("businessAddress"),
-        _regex_first(r"(?:사업장\s*소재지|소재지|주소)\s*[:\-]?\s*([^\r\n]+)", raw_text),
-    )
-    license_type = _first_non_empty(
-        summary.get("licenseType"),
-        summary.get("license_type"),
-        "사업자등록증",
-    )
-    warnings = _list_ocr_warnings(parsed.get("warnings") or summary.get("warnings"))
-
-    if not raw_text:
-        warnings.append("OCR 결과가 비어 있습니다.")
-
-    return {
-        "status": "COMPLETED",
-        "verified": True,
-        "summary": {
-            "businessNumber": business_number,
-            "breweryName": brewery_name,
-            "representativeName": representative_name,
-            "address": address,
-            "licenseType": license_type,
-            "manualReviewOnly": True,
-            "reviewPolicy": OCR_REVIEW_POLICY,
-        },
-        "rawText": raw_text,
-        "warnings": warnings,
-    }
-
-
-async def _run_brewery_ocr(document_bytes: bytes, mime_type: str) -> Dict[str, Any]:
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY is not configured")
-
-    import google.generativeai as genai
-
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-2.5-flash-lite")
-    prompt = """
-양조장 인증 서류 이미지를 OCR로 읽고 사업자등록증 정보를 추출해줘.
-OCR 결과는 자동 승인에 쓰지 않고 관리자 수동 검토 참고용으로만 사용한다.
-
-다음 JSON 형식만 반환해줘.
-{
-  "businessNumber": "",
-  "breweryName": "",
-  "representativeName": "",
-  "address": "",
-  "licenseType": "사업자등록증",
-  "rawText": "",
-  "warnings": []
-}
-확실하지 않은 값은 빈 문자열로 두고, 추정하지 마.
-"""
-    response = await model.generate_content_async(
-        [
-            prompt,
-            {
-                "mime_type": mime_type or "application/octet-stream",
-                "data": document_bytes,
-            },
-        ],
-        generation_config={"max_output_tokens": 2048},
-    )
-    return _normalize_brewery_ocr_result(getattr(response, "text", "") or "")
-
-
-@app.post("/api/brewery/verify-ocr")
-async def brewery_verify_ocr(
-    file: Optional[UploadFile] = File(None),
-    businessLicense: Optional[UploadFile] = File(None),
-    documentUrl: Optional[str] = Form(None),
-    document_url: Optional[str] = Form(None),
-    documentKey: Optional[str] = Form(None),
-    document_key: Optional[str] = Form(None),
-    originalName: Optional[str] = Form(None),
-    original_name: Optional[str] = Form(None),
-    mimeType: Optional[str] = Form(None),
-    mime_type: Optional[str] = Form(None),
-):
-    """양조장 인증 서류 OCR. 결과는 관리자 검토 참고용으로만 반환한다."""
-    upload = file or businessLicense
-    if upload is None:
-        logger.warning("Brewery OCR request missing upload file")
-        return _brewery_ocr_failure_response()
-
-    effective_document_url = documentUrl or document_url
-    effective_document_key = documentKey or document_key
-    effective_original_name = originalName or original_name or upload.filename
-    effective_mime_type = mimeType or mime_type or upload.content_type or "application/octet-stream"
-
-    try:
-        document_bytes = await upload.read()
-        if not document_bytes:
-            logger.warning("Brewery OCR request received empty file: filename=%s", effective_original_name)
-            return _brewery_ocr_failure_response()
-
-        logger.info(
-            "Brewery OCR request received: filename=%s content_type=%s size=%s document_key=%s document_url_present=%s",
-            effective_original_name,
-            effective_mime_type,
-            len(document_bytes),
-            effective_document_key,
-            bool(effective_document_url),
-        )
-        return await _run_brewery_ocr(document_bytes, effective_mime_type)
-    except Exception as e:
-        logger.exception("Brewery OCR processing failed: %s", e)
-        return _brewery_ocr_failure_response()
-    finally:
-        await upload.close()
 
 
 # =====================================================
@@ -1390,13 +1422,13 @@ async def funding_register(request: Request):
             "taste_vector": taste_vector,
             "is_funding": True,
         }
-        existing_ids = {d["id"] for d in recommender.drinks}
+        existing_ids = {d["id"] for d in recommender.funding_drinks}
         if request.funding_id not in existing_ids:
-            recommender.drinks.append(drink_entry)
+            recommender.funding_drinks.append(drink_entry)
         else:
-            for i, d in enumerate(recommender.drinks):
+            for i, d in enumerate(recommender.funding_drinks):
                 if d["id"] == request.funding_id:
-                    recommender.drinks[i] = drink_entry
+                    recommender.funding_drinks[i] = drink_entry
                     break
 
         # DB 저장 시도
@@ -1487,7 +1519,7 @@ async def funding_taste_update(funding_id: str, request: FundingTasteUpdateReque
 
     # 추천 풀 업데이트
     recommender = app.state.recommender
-    for d in recommender.drinks:
+    for d in recommender.funding_drinks:
         if d["id"] == funding_id:
             d["taste_vector"] = updated_vector
             break
@@ -1566,14 +1598,15 @@ async def recipe_register(request: RecipeRegisterRequest):
             "description": request.description or "",
             "ingredients": request.main_ingredient,
             "taste_vector": taste_vector,
+            "is_funding": False,
         }
-        existing_ids = {d["id"] for d in recommender.drinks}
+        existing_ids = {d["id"] for d in recommender.recipe_drinks}
         if request.recipe_id not in existing_ids:
-            recommender.drinks.append(drink_entry)
+            recommender.recipe_drinks.append(drink_entry)
         else:
-            for i, d in enumerate(recommender.drinks):
+            for i, d in enumerate(recommender.recipe_drinks):
                 if d["id"] == request.recipe_id:
-                    recommender.drinks[i] = drink_entry
+                    recommender.recipe_drinks[i] = drink_entry
                     break
 
         _recipes[request.recipe_id] = {
@@ -1655,7 +1688,12 @@ async def generate_image(request: ImageGenerateRequest):
         name=request.name,
         description=request.description,
         flavor_tags=request.flavor_tags,
-        region=request.region
+        region=request.region,
+        main_ingredient=request.main_ingredient,
+        sub_ingredients=request.sub_ingredients,
+        concept=request.concept,
+        taste_vector=request.taste_vector,
+        seed=request.seed
     )
     return result
 

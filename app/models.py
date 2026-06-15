@@ -3,7 +3,7 @@ Pydantic 모델
 요청/응답 데이터 검증용 모델
 """
 
-from pydantic import BaseModel, Field, validator
+from pydantic import AliasChoices, BaseModel, Field, validator
 from typing import List, Dict, Optional
 from datetime import datetime
 
@@ -140,6 +140,8 @@ class RecommendRequest(BaseModel):
         None,
         description="가중치 (taste, ingredient, region)"
     )
+    pool: str = Field("all", description="추천 풀 선택 (all|base|funding|recipe|approved)")
+    food_pairing: Optional[List[str]] = Field(None, description="음식 선호 리스트 (예: ['고기', '디저트'])")
 
 
 class RecommendResponse(BaseModel):
@@ -165,7 +167,7 @@ class TasteUpdateRequest(BaseModel):
     """취향 업데이트 요청 모델"""
     user_id: str = Field(..., min_length=1, max_length=50, description="사용자 ID")
     drink_id: str = Field(..., min_length=1, max_length=50, description="전통주 ID")
-    rating: Optional[int] = Field(None, ge=1, le=5, description="별점 (1~5)")
+    rating: Optional[float] = Field(None, ge=1, le=5, description="별점 (1~5)")
     ratings: Optional[Dict[str, float]] = Field(None, description="축별 평가 (sweetness, body, carbonation, flavor, alcohol, acidity, aroma_intensity, finish 각 0~10)")
     tags: List[str] = Field(default_factory=list, description="태그")
 
@@ -262,6 +264,20 @@ class SurveyConvertResponse(BaseModel):
     preferred_food_pairing: List[str] = []
     preferred_aroma: List[str] = []
     taste_profile_summary: str = ""
+    bti_method: str = "rule_based"
+    bti_confidence: str = "medium"
+
+
+# ========== BTI 피드백 관련 ==========
+
+class BTIFeedbackRequest(BaseModel):
+    """BTI 결과 피드백 요청 모델"""
+    user_id: str = Field(..., min_length=1, max_length=50)
+    bti_code: str = Field(..., min_length=5, max_length=5)
+    is_correct: bool
+    actual_preference: Optional[str] = None
+    wrong_axes: Optional[List[str]] = None      # 아니에요일 때 틀린 축 복수 선택(선택)
+    feedback_reason: Optional[str] = None        # 자유 텍스트 이유(선택)
 
 
 # ========== 법률 필터링 관련 ==========
@@ -375,13 +391,21 @@ class BTITypeResponse(BaseModel):
 
 class SubIngredientsRequest(BaseModel):
     """서브재료 추천 요청 모델"""
-    main_ingredient: str = Field(..., description="메인 재료")
-    region: str = Field(..., description="지역")
+    main_ingredient: str = Field(
+        ...,
+        validation_alias=AliasChoices("main_ingredient", "mainIngredient"),
+        description="메인 재료. snake_case가 공식 계약이며 mainIngredient는 임시 호환",
+    )
+    region: Optional[str] = Field(None, description="특산물 생산 지역")
 
 
 class SubIngredientsResponse(BaseModel):
     """서브재료 추천 응답 모델"""
     sub_ingredients: List[str]
+    region: Optional[str] = None
+    data_source: str
+    traditional_liquor_status: str
+    warnings: List[str] = Field(default_factory=list)
 
 
 class FlavorTagsRequest(BaseModel):
@@ -507,6 +531,12 @@ class RecipeValidateResponse(BaseModel):
     suggestions: List[str]
     summary: str
     cached: bool = False
+
+
+class BreweryOCRRequest(BaseModel):
+    """양조장 인증 서류 OCR 요청 모델"""
+    image_base64: str = Field(..., description="이미지 base64 인코딩 문자열")
+    mime_type: str = Field(default="image/jpeg", description="image/jpeg 또는 image/png")
 
 
 class RecipeRegisterRequest(BaseModel):

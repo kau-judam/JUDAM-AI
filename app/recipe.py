@@ -1,4 +1,4 @@
-﻿"""
+"""
 레시피 AI 클라이언트
 Gemini API를 활용한 레시피 추천 기능
 """
@@ -6,13 +6,77 @@ Gemini API를 활용한 레시피 추천 기능
 import logging
 import os
 import json
-from typing import List, Dict
+from pathlib import Path
+from typing import List, Dict, Optional
 from dotenv import load_dotenv
 
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# 농사로 지역특산물 수집 결과 (scripts/collect_local_products.py 산출물)
+_NONGSARO_REGION_MAP_PATH = Path("data/ingredient_region_map.json")
+_NONGSARO_REGION_MAP: Optional[Dict[str, List[str]]] = None
+_LOCAL_PRODUCTS_PATH = Path("data/local_products.json")
+_LOCAL_PRODUCTS: Optional[List[Dict]] = None
+
+
+def _load_nongsaro_region_map() -> Dict[str, List[str]]:
+    """특산물명 → 지역목록 매핑 로드. ' > ' 구분자는 공백으로 정규화. 없으면 빈 dict."""
+    global _NONGSARO_REGION_MAP
+    if _NONGSARO_REGION_MAP is None:
+        try:
+            with open(_NONGSARO_REGION_MAP_PATH, encoding="utf-8") as f:
+                raw = json.load(f)
+            _NONGSARO_REGION_MAP = {
+                name: [r.replace(" > ", " ").strip() for r in regions]
+                for name, regions in raw.items()
+            }
+            logger.info(f"농사로 지역특산물 매핑 로드: {len(_NONGSARO_REGION_MAP)}개")
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            logger.warning(f"농사로 매핑 로드 실패({e}) → 하드코딩 fallback 사용")
+            _NONGSARO_REGION_MAP = {}
+    return _NONGSARO_REGION_MAP
+
+
+def _match_nongsaro_regions(ingredient: str) -> List[str]:
+    """농사로 매핑에서 ingredient 에 해당하는 지역목록 반환 (없으면 [])."""
+    if not ingredient or not ingredient.strip():
+        return []  # 빈 입력은 substring 매칭으로 전 항목과 오매칭되므로 차단
+    nmap = _load_nongsaro_region_map()
+    if not nmap:
+        return []
+    if ingredient in nmap:
+        return list(nmap[ingredient])
+    matched: List[str] = []
+    for name, regions in nmap.items():
+        if ingredient in name or name in ingredient:
+            for r in regions:
+                if r not in matched:
+                    matched.append(r)
+    return matched[:10]
+
+
+def _load_local_products() -> List[Dict]:
+    """농사로 수집 특산물 원본을 로드한다."""
+    global _LOCAL_PRODUCTS
+    if _LOCAL_PRODUCTS is None:
+        try:
+            with open(_LOCAL_PRODUCTS_PATH, encoding="utf-8") as file:
+                loaded = json.load(file)
+            _LOCAL_PRODUCTS = loaded if isinstance(loaded, list) else []
+        except (FileNotFoundError, json.JSONDecodeError) as exc:
+            logger.warning("농사로 특산물 원본 로드 실패: %s", type(exc).__name__)
+            _LOCAL_PRODUCTS = []
+    return _LOCAL_PRODUCTS
+
+
+def _region_matches(area: str, region: str) -> bool:
+    """수집 데이터의 광역·기초 지역 표기와 요청 지역을 비교한다."""
+    normalized_area = " ".join(str(area or "").replace(">", " ").split())
+    normalized_region = " ".join(str(region or "").replace(">", " ").split())
+    return bool(normalized_region and normalized_region in normalized_area)
 
 # Gemini 에러 관련 상수
 _QUOTA_MSG = "현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요."
@@ -32,13 +96,82 @@ def _gemini_error_message(e: Exception) -> str:
     return _CONN_MSG
 
 
+INGREDIENT_REGION_MAP = {
+    # 쌀
+    '이천 쌀': '경기도 이천', '여주 쌀': '경기도 여주',
+    '철원 쌀': '강원도 철원', '김제 쌀': '전라북도 김제',
+    '안동 쌀': '경상북도 안동', '홍성 쌀': '충청남도 홍성',
+    '진주 쌀': '경상남도 진주', '나주 쌀': '전라남도 나주',
+    # 과일
+    '제주 감귤': '제주도', '감귤': '제주도', '한라봉': '제주도',
+    '청송 사과': '경상북도 청송', '사과': '경상북도 청송',
+    '나주 배': '전라남도 나주', '배': '전라남도 나주',
+    '논산 딸기': '충청남도 논산', '딸기': '충청남도 논산',
+    '영천 포도': '경상북도 영천', '포도': '경상북도 영천',
+    '황도': '경상북도 청도', '복숭아': '경기도 이천',
+    # 기타 재료
+    '해남 고구마': '전라남도 해남', '고구마': '전라남도 해남',
+    '가평 잣': '경기도 가평', '잣': '경기도 가평',
+    '강화 인삼': '인천 강화', '풍기 인삼': '경상북도 영주',
+    '인삼': '충청남도 금산', '홍삼': '충청남도 금산',
+    '보성 녹차': '전라남도 보성', '녹차': '전라남도 보성',
+    '담양 대나무': '전라남도 담양',
+    '영광 모싯잎': '전라남도 영광',
+    # 기본값
+    '쌀': '경기도 이천',
+}
+
+
 class RecipeAI:
     """레시피 AI 클라이언트"""
 
     def __init__(self):
         self.gemini_api_key = os.getenv("GEMINI_API_KEY")
 
-    async def suggest_sub_ingredients(self, main_ingredient: str, region: str) -> Dict[str, List[str]]:
+    def get_region_from_ingredient(self, main_ingredient: str) -> list:
+        """
+        메인재료 → 생산 지역 목록 반환.
+        1순위: 농사로 지역특산물 수집 데이터(data/ingredient_region_map.json),
+        2순위(fallback): 하드코딩 테이블.
+        """
+        if not main_ingredient or not main_ingredient.strip():
+            return []  # 빈 입력은 substring 오매칭 방지
+
+        # 1순위: 농사로 수집 데이터
+        nongsaro = _match_nongsaro_regions(main_ingredient)
+        if nongsaro:
+            return nongsaro
+
+        # 2순위: 하드코딩 fallback
+        _MAP = {
+            '이천 쌀': ['경기도 이천'],
+            '여주 쌀': ['경기도 여주'],
+            '철원 쌀': ['강원도 철원'],
+            '김제 쌀': ['전라북도 김제'],
+            '안동 쌀': ['경상북도 안동'],
+            '홍성 쌀': ['충청남도 홍성'],
+            '쌀': ['경기도 이천', '강원도 철원', '전라북도 김제'],
+            '감귤': ['제주도'],
+            '한라봉': ['제주도'],
+            '사과': ['경상북도 청송', '충청북도 충주', '경상남도 거창'],
+            '배': ['전라남도 나주', '충청남도 천안'],
+            '딸기': ['충청남도 논산', '경상남도 진주'],
+            '포도': ['경상북도 영천', '충청북도 영동'],
+            '복숭아': ['경기도 이천', '충청북도 음성'],
+            '고구마': ['전라남도 해남', '충청남도 당진'],
+            '잣': ['경기도 가평'],
+            '인삼': ['충청남도 금산', '경상북도 영주'],
+            '녹차': ['전라남도 보성'],
+            '대나무': ['전라남도 담양'],
+        }
+        if main_ingredient in _MAP:
+            return _MAP[main_ingredient]
+        for key, regions in _MAP.items():
+            if key in main_ingredient or main_ingredient in key:
+                return regions
+        return []
+
+    async def suggest_sub_ingredients(self, main_ingredient: str, region: Optional[str] = None) -> Dict:
         """
         서브재료 추천
 
@@ -49,64 +182,107 @@ class RecipeAI:
         Returns:
             서브재료 리스트
         """
-        if not self.gemini_api_key:
-            logger.warning("GEMINI_API_KEY가 설정되지 않음")
-            return {"sub_ingredients": []}
+        if not region:
+            return {
+                "sub_ingredients": [],
+                "region": None,
+                "data_source": "unavailable",
+                "traditional_liquor_status": "NEEDS_REVIEW",
+                "warnings": ["region을 입력해야 지역 특산물 후보를 확인할 수 있습니다."],
+            }
 
-        try:
-            import google.genai as genai
-            import re
+        candidates: List[str] = []
+        for product in _load_local_products():
+            name = str(product.get("name") or "").strip()
+            area = str(product.get("area") or "").strip()
+            if (
+                name
+                and _region_matches(area, region)
+                and name != main_ingredient
+                and name not in candidates
+            ):
+                candidates.append(name)
+        if candidates:
+            # 후보가 2개 이상일 때만 Gemini 선별(보조 단계). 실패 시 기존대로 candidates[:5] 폴백.
+            selected = candidates[:5]
+            if len(candidates) >= 2 and self.gemini_api_key:
+                try:
+                    selected = await self._gemini_select_sub_ingredients(main_ingredient, candidates)
+                except Exception as exc:
+                    logger.warning("서브재료 Gemini 선별 실패 → 후보 그대로 사용: %s", type(exc).__name__)
+                    selected = candidates[:5]
+            return {
+                "sub_ingredients": selected,
+                "region": region,
+                "data_source": "nongsaro_api",
+                "traditional_liquor_status": "NEEDS_REVIEW",
+                "warnings": ["지역특산주 요건 충족 여부는 별도 법률·면허 검토가 필요합니다."],
+            }
 
-            client = genai.Client(api_key=self.gemini_api_key)
+        manual = [
+            ingredient
+            for ingredient, mapped_region in INGREDIENT_REGION_MAP.items()
+            if region in mapped_region and ingredient != main_ingredient
+        ]
+        if manual:
+            return {
+                "sub_ingredients": manual[:5],
+                "region": region,
+                "data_source": "manual",
+                "traditional_liquor_status": "NEEDS_REVIEW",
+                "warnings": ["수동 매핑 기반 후보이며 실제 생산·지역특산주 요건 확인이 필요합니다."],
+            }
 
-            prompt = (
-                f"전통주 지리적 표시제 기준으로 {region} 내 시/군 단위 특산물 기반 "
-                f"서브재료 5개 추천해줘. 인접 지역 특산물은 제외하고 해당 지역 내 "
-                f"특산물만 추천. 각 재료 옆에 원산지 시/군명 포함.\n"
-                f"입력: 메인재료={main_ingredient}, 지역={region}\n"
-                f'출력: {{"sub_ingredients": ["이천 쌀", "여주 고구마", ...]}}\n'
-                f"다른 말 없이 JSON만 반환."
-            )
+        return {
+            "sub_ingredients": [],
+            "region": region,
+            "data_source": "unavailable",
+            "traditional_liquor_status": "NEEDS_REVIEW",
+            "warnings": ["해당 지역에서 확인된 특산물 후보가 없습니다."],
+        }
 
-            response = await client.aio.models.generate_content(
-                model='gemini-2.5-flash-lite',
-                contents=prompt,
-                config={"max_output_tokens": 200}
-            )
-            result_text = response.text.strip()
-            logger.info(f"Gemini 서브재료 응답: {result_text}")
+    async def _gemini_select_sub_ingredients(self, main_ingredient: str, candidates: List[str]) -> List[str]:
+        """지역 후보 중 main_ingredient 와 궁합 좋은 서브재료를 Gemini 로 선별.
 
-            try:
-                # 객체 형태 {"sub_ingredients": [...]} 우선 파싱
-                obj_match = re.search(r'\{[\s\S]*\}', result_text)
-                if obj_match:
-                    parsed = json.loads(obj_match.group(0))
-                    if "sub_ingredients" in parsed and isinstance(parsed["sub_ingredients"], list):
-                        return {"sub_ingredients": parsed["sub_ingredients"]}
+        - 반드시 candidates 안에서만 고른다(목록에 없는 재료 생성 금지).
+        - 실패/파싱오류 시 예외를 그대로 올려 호출자가 candidates[:5] 로 폴백하게 한다.
+        """
+        import google.genai as genai
+        import re
 
-                # fallback: 배열 형태 [...]
-                arr_match = re.search(r'\[[\s\S]*\]', result_text)
-                if arr_match:
-                    parsed = json.loads(arr_match.group(0))
-                    if isinstance(parsed, list):
-                        if parsed and isinstance(parsed[0], dict):
-                            return {"sub_ingredients": [
-                                item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료", "")
-                                for item in parsed
-                                if item.get("name") or item.get("ingredient") or item.get("재료명") or item.get("재료")
-                            ]}
-                        return {"sub_ingredients": parsed}
+        client = genai.Client(api_key=self.gemini_api_key)
+        candidates_str = ", ".join(candidates)
+        prompt = (
+            f"'{main_ingredient}'(으)로 만드는 전통주에 어울리는 서브재료를 아래 후보 중에서만 골라줘.\n"
+            f"후보: {candidates_str}\n"
+            "주로 무난히 어울리는 것 위주로 3~5개를 고르되, 그중 1개 정도는 의외성 있는(독특하지만 시도해볼 만한) 재료를 섞어도 좋아.\n"
+            "반드시 위 후보 목록 안에 있는 재료만 사용하고, 목록에 없는 재료는 만들지 마.\n"
+            "재료 이름 문자열만 담은 JSON 배열로만 답변. 이유·점수 등 다른 정보는 넣지 마."
+        )
 
-                return {"sub_ingredients": []}
+        response = await client.aio.models.generate_content(
+            model='gemini-2.5-flash-lite',
+            contents=prompt,
+            config={"max_output_tokens": 200},
+        )
+        result_text = response.text
+        json_match = re.search(r'\[[\s\S]*\]', result_text)
+        if json_match:
+            result_text = json_match.group(0)
+        parsed = json.loads(result_text)
+        if not isinstance(parsed, list):
+            raise ValueError("Gemini 서브재료 응답이 배열이 아님")
 
-            except json.JSONDecodeError as e:
-                logger.error(f"JSON 파싱 실패: {e}, 원본: {result_text}")
-                return {"sub_ingredients": []}
-
-        except Exception as e:
-            msg = _gemini_error_message(e)
-            logger.error(f"서브재료 추천 실패: {e}")
-            raise RuntimeError(msg) from e
+        # 후보 목록 안의 재료만, 순서 유지·중복 제거
+        allowed = set(candidates)
+        selected: List[str] = []
+        for item in parsed:
+            name = str(item).strip()
+            if name in allowed and name not in selected:
+                selected.append(name)
+        if not selected:
+            raise ValueError("Gemini 선별 결과가 후보와 일치하지 않음")
+        return selected[:5]
 
     async def suggest_flavor_tags(
         self,
@@ -211,28 +387,17 @@ class RecipeAI:
             desc_str = description or "없음"
 
             prompt = (
-                "전통주 양조 전문가로서 아래 레시피의 제작 가능성을 검토해줘.\n"
-                "재료 조합의 적절성, 도수 실현 가능성, 맛 밸런스를 분석하고\n"
-                "JSON으로만 반환해줘.\n"
-                "{\n"
-                '  "feasibility": "high/medium/low",\n'
-                '  "score": 0~100,\n'
-                '  "issues": ["문제점1", "문제점2"],\n'
-                '  "suggestions": ["개선안1", "개선안2"],\n'
-                '  "summary": "한 줄 검토 결과"\n'
-                "}\n\n"
-                f"제목: {title}\n"
-                f"메인재료: {main_ingredient}\n"
-                f"서브재료: {sub_str}\n"
-                f"목표도수: {abv_range}\n"
-                f"맛태그: {tags_str}\n"
-                f"설명: {desc_str}"
+                "전통주 양조 전문가. 아래 레시피 제작 가능성을 JSON으로만 반환.\n"
+                '{"feasibility":"high/medium/low","score":0~100,'
+                '"issues":["문제점"],"suggestions":["개선안"],"summary":"한줄결과"}\n\n'
+                f"제목:{title} 메인:{main_ingredient} 서브:{sub_str} "
+                f"도수:{abv_range} 맛:{tags_str}"
             )
 
             response = await client.aio.models.generate_content(
                 model='gemini-2.5-flash-lite',
                 contents=prompt,
-                config={"max_output_tokens": 300}
+                config={"max_output_tokens": 200}
             )
             result_text = response.text.strip()
             logger.info(f"Gemini 레시피 검토 응답: {result_text[:200]}")

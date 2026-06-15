@@ -3,6 +3,7 @@ DB 연결 모듈
 asyncpg를 활용한 비동기 PostgreSQL 연결
 """
 
+import json
 import logging
 import os
 from typing import Optional, Dict, List, Any
@@ -188,6 +189,17 @@ class Database:
                 preferred_aroma JSONB,
                 taste_profile_summary TEXT,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            """,
+            """
+            CREATE TABLE IF NOT EXISTS bti_feedback (
+                id SERIAL PRIMARY KEY,
+                user_id VARCHAR(50),
+                taste_vector JSONB,
+                bti_code VARCHAR(10),
+                original_code VARCHAR(10),
+                is_correct BOOLEAN,
+                created_at TIMESTAMP DEFAULT NOW()
             )
             """
         ]
@@ -426,6 +438,42 @@ class Database:
             "SELECT * FROM user_profiles WHERE user_id = $1",
             user_id
         )
+
+    async def insert_bti_feedback(self, feedback: dict) -> bool:
+        """BTI 피드백 저장"""
+        if not self.db_connected:
+            return False
+        await self.pool.execute(
+            """
+            INSERT INTO bti_feedback (user_id, taste_vector, bti_code, original_code, is_correct)
+            VALUES ($1, $2, $3, $4, $5)
+            """,
+            feedback['user_id'],
+            json.dumps(feedback.get('taste_vector', {})),
+            feedback['bti_code'],
+            feedback.get('original_code', feedback['bti_code']),
+            feedback['is_correct'],
+        )
+        return True
+
+    async def get_bti_feedback_count(self) -> int:
+        """BTI 피드백 총 건수 조회"""
+        if not self.db_connected:
+            return 0
+        return await self.pool.fetchval('SELECT COUNT(*) FROM bti_feedback')
+
+    async def get_bti_feedback_for_training(self) -> List[Dict]:
+        """KNN 학습용 피드백 데이터 조회 (taste_vector가 있는 것만)"""
+        if not self.db_connected:
+            return []
+        rows = await self.pool.fetch(
+            """
+            SELECT taste_vector, bti_code
+            FROM bti_feedback
+            WHERE taste_vector != '{}'::jsonb
+            """
+        )
+        return [dict(r) for r in rows]
 
 
 # 전역 DB 인스턴스

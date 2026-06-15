@@ -1,0 +1,5397 @@
+[
+  {
+    "query": "쌀",
+    "name": "쌀",
+    "area": "경상남도 > 의령군",
+    "raw": {
+      "areaNm": "경상남도 > 의령군",
+      "cntntsNo": "261925",
+      "cntntsSj": "쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261925_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.uiryeong.go.kr/tour/board/list.uiryeong?boardId=SHOP&listRow=12&listCel=1&menuCd=DOM_000000301005001000&paging=ok&categoryCode1=S001&startPage=1",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "영천쌀",
+    "area": "경상북도 > 영천시",
+    "raw": {
+      "areaNm": "경상북도 > 영천시",
+      "cntntsNo": "261903",
+      "cntntsSj": "영천쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261903_MF_BIMG_01.gif",
+      "linkUrl": "https://www.yc.go.kr/tour/productInfo/list.do?CATEGORY=&mId=0503010000",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "전통찹쌀유과",
+    "area": "경상북도 > 영천시",
+    "raw": {
+      "areaNm": "경상북도 > 영천시",
+      "cntntsNo": "261888",
+      "cntntsSj": "전통찹쌀유과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261888_MF_BIMG_01.gif",
+      "linkUrl": "https://www.yc.go.kr/tour/productInfo/list.do?CATEGORY=&mId=0503010000",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "칠곡 브랜드쌀",
+    "area": "경상북도 > 칠곡군",
+    "raw": {
+      "areaNm": "경상북도 > 칠곡군",
+      "cntntsNo": "261850",
+      "cntntsSj": "칠곡 브랜드쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261850_MF_BIMG_01.gif",
+      "linkUrl": "https://www.chilgok.go.kr/portal/contents.do?mId=0706020100",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "화순쌀",
+    "area": "전라남도 > 화순군",
+    "raw": {
+      "areaNm": "전라남도 > 화순군",
+      "cntntsNo": "261539",
+      "cntntsSj": "화순쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261539_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hwasun.go.kr/culture/contents.do?S=S05&M=030301000000",
+      "svcDt": "2025-07-02"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "쌀",
+    "area": "전북특별자치도 > 고창군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 고창군",
+      "cntntsNo": "261532",
+      "cntntsSj": "쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261532_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gochang.go.kr/tour/board/list.gochang?boardId=BBS_0000376&menuCd=DOM_000000403003001000&contentsSid=3734&cpath=%2Ftour",
+      "svcDt": "2025-07-02"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "쌀엿",
+    "area": "전북특별자치도 > 장수군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 장수군",
+      "cntntsNo": "261484",
+      "cntntsSj": "쌀엿",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261484_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.jangsu.go.kr/tour/board/list.jangsu?boardId=BBS_0000018&listRow=2&listCel=3&menuCd=DOM_000000403004003000&paging=ok&categoryCode1=C&startPage=2",
+      "svcDt": "2025-07-01"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "쌀",
+    "area": "전북특별자치도 > 남원시",
+    "raw": {
+      "areaNm": "전북특별자치도 > 남원시",
+      "cntntsNo": "261457",
+      "cntntsSj": "쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261457_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.namwon.go.kr/tour/index.do?menuUid=ff8080818e5f3f48018e6013cb6400fb",
+      "svcDt": "2025-07-01"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "쌀",
+    "area": "충청남도 > 논산시",
+    "raw": {
+      "areaNm": "충청남도 > 논산시",
+      "cntntsNo": "261419",
+      "cntntsSj": "쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261419_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.nonsan.go.kr/tour/html/sub04/0406.html",
+      "svcDt": "2025-06-30"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "고성향기찹쌀",
+    "area": "강원특별자치도 > 고성군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 고성군",
+      "cntntsNo": "261363",
+      "cntntsSj": "고성향기찹쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261363_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gwgs.go.kr/prog/spcPrd/atc/sub02_020101/SP001/list.do",
+      "svcDt": "2025-06-27"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "오대쌀밥",
+    "area": "강원특별자치도 > 고성군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 고성군",
+      "cntntsNo": "261359",
+      "cntntsSj": "오대쌀밥",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261359_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gwgs.go.kr/prog/spcPrd/atc/sub02_020501/SP012/list.do",
+      "svcDt": "2025-06-27"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "쌀",
+    "area": "충청북도 > 청주시",
+    "raw": {
+      "areaNm": "충청북도 > 청주시",
+      "cntntsNo": "261312",
+      "cntntsSj": "쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261312_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheongju.go.kr/ktour/contents.do?key=20362",
+      "svcDt": "2025-06-26"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "고성 쌀",
+    "area": "경상남도 > 고성군",
+    "raw": {
+      "areaNm": "경상남도 > 고성군",
+      "cntntsNo": "258320",
+      "cntntsSj": "고성 쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258320_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.goseong.go.kr/animal/index.goseong?menuCd=DOM_000001104013000000",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "문경새재 옛날찹쌀떡",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258297",
+      "cntntsSj": "문경새재 옛날찹쌀떡",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258297_MF_BIMG_01.png",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=104",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "새재의 아침쌀",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258283",
+      "cntntsSj": "새재의 아침쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258283_MF_BIMG_01.png",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=90",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "문경약돌쌀",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258281",
+      "cntntsSj": "문경약돌쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258281_MF_BIMG_01.png",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=88",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "희양산우렁쌀",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258280",
+      "cntntsSj": "희양산우렁쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258280_MF_BIMG_01.png",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=87",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "안동쌀",
+    "area": "경상북도 > 안동시",
+    "raw": {
+      "areaNm": "경상북도 > 안동시",
+      "cntntsNo": "258268",
+      "cntntsSj": "안동쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258268_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.andong.go.kr/portal/contents.do?mId=0306010000",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "신안쌀",
+    "area": "전라남도 > 신안군",
+    "raw": {
+      "areaNm": "전라남도 > 신안군",
+      "cntntsNo": "258248",
+      "cntntsSj": "신안쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258248_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.shinan.go.kr/home/tour/sale/sale_01/page.wscms",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "진도 검정쌀",
+    "area": "전라남도 > 진도군",
+    "raw": {
+      "areaNm": "전라남도 > 진도군",
+      "cntntsNo": "258247",
+      "cntntsSj": "진도 검정쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258247_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.jindo.go.kr/tour/tour/info/special/001.cs?m=30",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "찰보리쌀",
+    "area": "전라남도 > 영광군",
+    "raw": {
+      "areaNm": "전라남도 > 영광군",
+      "cntntsNo": "258213",
+      "cntntsSj": "찰보리쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258213_MF_BIMG_01.jpg",
+      "linkUrl": "https://tour.yeonggwang.go.kr/subpage/?site=tour_2019&mn=7473",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "간척지쌀",
+    "area": "전라남도 > 영광군",
+    "raw": {
+      "areaNm": "전라남도 > 영광군",
+      "cntntsNo": "258210",
+      "cntntsSj": "간척지쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258210_MF_BIMG_01.jpg",
+      "linkUrl": "https://tour.yeonggwang.go.kr/subpage/?site=tour_2019&mn=7473",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "나비랑 여문쌀",
+    "area": "전라남도 > 함평군",
+    "raw": {
+      "areaNm": "전라남도 > 함평군",
+      "cntntsNo": "258177",
+      "cntntsSj": "나비랑 여문쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258177_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hampyeong.go.kr/contentsView.do?pageId=www165",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "나비쌀",
+    "area": "전라남도 > 함평군",
+    "raw": {
+      "areaNm": "전라남도 > 함평군",
+      "cntntsNo": "258175",
+      "cntntsSj": "나비쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258175_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hampyeong.go.kr/contentsView.do?pageId=www165",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "속리산 쌀",
+    "area": "충청북도 > 보은군",
+    "raw": {
+      "areaNm": "충청북도 > 보은군",
+      "cntntsNo": "258142",
+      "cntntsSj": "속리산 쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258142_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.boeun.go.kr/tour/main/sub05_03_01.do#item2",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "친환경쌀",
+    "area": "충청북도 > 옥천군",
+    "raw": {
+      "areaNm": "충청북도 > 옥천군",
+      "cntntsNo": "258116",
+      "cntntsSj": "친환경쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258116_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.oc.go.kr/agri/contents.do?key=1624&",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "생거진천 쌀",
+    "area": "충청북도 > 진천군",
+    "raw": {
+      "areaNm": "충청북도 > 진천군",
+      "cntntsNo": "258102",
+      "cntntsSj": "생거진천 쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258102_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.jincheon.go.kr/jcact/sub.do?menukey=3611",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "쌀",
+    "area": "강원특별자치도 > 철원군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 철원군",
+      "cntntsNo": "257905",
+      "cntntsSj": "쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257905_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.cwg.go.kr/atc/contents.do?key=761",
+      "svcDt": "2025-01-24"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "대왕님표여주쌀",
+    "area": "경기도 > 여주시",
+    "raw": {
+      "areaNm": "경기도 > 여주시",
+      "cntntsNo": "257885",
+      "cntntsSj": "대왕님표여주쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257885_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yeoju.go.kr/agriculture/contents.do?key=1063",
+      "svcDt": "2025-01-24"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "용인백옥쌀",
+    "area": "경기도 > 용인시",
+    "raw": {
+      "areaNm": "경기도 > 용인시",
+      "cntntsNo": "257846",
+      "cntntsSj": "용인백옥쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "https://www.yongin.go.kr/home/atc/spcPrdct/spcPrdctR.jsp",
+      "svcDt": "2025-01-23"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "가와지쌀",
+    "area": "경기도 > 고양시",
+    "raw": {
+      "areaNm": "경기도 > 고양시",
+      "cntntsNo": "257837",
+      "cntntsSj": "가와지쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257837_MF_BIMG_01.png",
+      "linkUrl": "https://www.goyang.go.kr/agr/agr03/agr03_7/agr03_7_01.jsp",
+      "svcDt": "2025-01-23"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "철마 무농약 인증쌀",
+    "area": "부산광역시 > 기장군",
+    "raw": {
+      "areaNm": "부산광역시 > 기장군",
+      "cntntsNo": "257836",
+      "cntntsSj": "철마 무농약 인증쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257836_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gijang.go.kr/agri/index.gijang?menuCd=DOM_000000604001000000",
+      "svcDt": "2025-01-23"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "장안 검정쌀",
+    "area": "부산광역시 > 기장군",
+    "raw": {
+      "areaNm": "부산광역시 > 기장군",
+      "cntntsNo": "257835",
+      "cntntsSj": "장안 검정쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257835_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gijang.go.kr/agri/index.gijang?menuCd=DOM_000000604001000000",
+      "svcDt": "2025-01-23"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "빛찬들쌀",
+    "area": "광주광역시",
+    "raw": {
+      "areaNm": "광주광역시",
+      "cntntsNo": "257818",
+      "cntntsSj": "빛찬들쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257818_MF_BIMG_01.png",
+      "linkUrl": "https://www.gwangju.go.kr/agri/contentsView.do?pageId=agri53",
+      "svcDt": "2025-01-23"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "화천 오대쌀 秀",
+    "area": "강원특별자치도 > 화천군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 화천군",
+      "cntntsNo": "257477",
+      "cntntsSj": "화천 오대쌀 秀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257477_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.ihc.go.kr/www/contents.do?key=323",
+      "svcDt": "2025-01-07"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "기차마을 신동진쌀",
+    "area": "전라남도 > 곡성군",
+    "raw": {
+      "areaNm": "전라남도 > 곡성군",
+      "cntntsNo": "257455",
+      "cntntsSj": "기차마을 신동진쌀",
+      "imgUrl": "",
+      "linkUrl": "https://www.gokseong.go.kr/kr/subPage.do?menuNo=103009001001",
+      "svcDt": "2025-01-06"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "흥타령쌀",
+    "area": "충청남도 > 천안시",
+    "raw": {
+      "areaNm": "충청남도 > 천안시",
+      "cntntsNo": "253300",
+      "cntntsSj": "흥타령쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/253300_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheonan.go.kr/tour/sub07_02_05.do",
+      "svcDt": "2024-07-05"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "쌀밥같은 현미",
+    "area": "경기도 > 연천군",
+    "raw": {
+      "areaNm": "경기도 > 연천군",
+      "cntntsNo": "253191",
+      "cntntsSj": "쌀밥같은 현미",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/253191_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.yeoncheon.go.kr/agri/selectBbsNttList.do?bbsNo=308&key=3793",
+      "svcDt": "2024-07-01"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "단풍미인찹쌀",
+    "area": "전북특별자치도 > 정읍시",
+    "raw": {
+      "areaNm": "전북특별자치도 > 정읍시",
+      "cntntsNo": "246093",
+      "cntntsSj": "단풍미인찹쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/246093_MF_BIMG_01.JPG",
+      "linkUrl": "http://www.jeongeup.go.kr/agri/index.jeongeup?menuCd=DOM_000000802002009000",
+      "svcDt": "2023-07-07"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "진주시농협쌀조합공동사업법인",
+    "area": "경상남도 > 진주시",
+    "raw": {
+      "areaNm": "경상남도 > 진주시",
+      "cntntsNo": "242656",
+      "cntntsSj": "진주시농협쌀조합공동사업법인",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242656_MF_BIMG_01.gif",
+      "linkUrl": "https://www.jinju.go.kr/02234/02351/04511.web",
+      "svcDt": "2023-01-18"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "달빛 무화과 쌀빵",
+    "area": "전라남도 > 영암군",
+    "raw": {
+      "areaNm": "전라남도 > 영암군",
+      "cntntsNo": "242574",
+      "cntntsSj": "달빛 무화과 쌀빵",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242574_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.yeongam.go.kr/home/nong/nong/nong_02/nong_02_03/yeongam.go",
+      "svcDt": "2023-01-16"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "영동쌀",
+    "area": "충청북도 > 영동군",
+    "raw": {
+      "areaNm": "충청북도 > 영동군",
+      "cntntsNo": "242555",
+      "cntntsSj": "영동쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242555_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.yd21.go.kr/tour/html/sub04/040423.html",
+      "svcDt": "2023-01-16"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "횡성쌀 어사진미",
+    "area": "강원특별자치도 > 횡성군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 횡성군",
+      "cntntsNo": "242554",
+      "cntntsSj": "횡성쌀 어사진미",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242554_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hsg.go.kr/agri/contents.do?key=2075&",
+      "svcDt": "2023-01-16"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "푸른햇쌀",
+    "area": "대전광역시",
+    "raw": {
+      "areaNm": "대전광역시",
+      "cntntsNo": "242484",
+      "cntntsSj": "푸른햇쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242484_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.daejeon.go.kr/far/FarContentsHtmlView.do?menuSeq=255",
+      "svcDt": "2023-01-13"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "황토햇쌀",
+    "area": "대전광역시",
+    "raw": {
+      "areaNm": "대전광역시",
+      "cntntsNo": "242483",
+      "cntntsSj": "황토햇쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242483_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.daejeon.go.kr/far/FarContentsHtmlView.do?menuSeq=255",
+      "svcDt": "2023-01-13"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "상문동 무농약쌀",
+    "area": "경상남도 > 거제시",
+    "raw": {
+      "areaNm": "경상남도 > 거제시",
+      "cntntsNo": "229358",
+      "cntntsSj": "상문동 무농약쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "http://www.geoje.go.kr/atc/index.geoje?menuCd=DOM_000010101003000000",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "일품쌀",
+    "area": "경상북도 > 예천군",
+    "raw": {
+      "areaNm": "경상북도 > 예천군",
+      "cntntsNo": "229341",
+      "cntntsSj": "일품쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229341_MF_BIMG_01.png",
+      "linkUrl": "http://www.ycg.kr/open.content/farm/situation/specialty/rice/",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "무안고품질 쌀",
+    "area": "전라남도 > 무안군",
+    "raw": {
+      "areaNm": "전라남도 > 무안군",
+      "cntntsNo": "229302",
+      "cntntsSj": "무안고품질 쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "http://tour.muan.go.kr/tour/lodge_food/shopping/special_market",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "웅치면올벼쌀",
+    "area": "전라남도 > 보성군",
+    "raw": {
+      "areaNm": "전라남도 > 보성군",
+      "cntntsNo": "229286",
+      "cntntsSj": "웅치면올벼쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229286_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.boseong.go.kr/tour/amusement/specialty/rice/ungchi_rice",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "쌀",
+    "name": "다향이숨쉬는쌀",
+    "area": "전라남도 > 보성군",
+    "raw": {
+      "areaNm": "전라남도 > 보성군",
+      "cntntsNo": "229284",
+      "cntntsSj": "다향이숨쉬는쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229284_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.boseong.go.kr/tour/amusement/specialty/rice/teaaroma_rice",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "경상북도 > 영양군",
+    "raw": {
+      "areaNm": "경상북도 > 영양군",
+      "cntntsNo": "265358",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/265358_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yyg.go.kr/www/introduce/products/agricultural/apple",
+      "svcDt": "2026-01-07"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "천안 사과",
+    "area": "충청남도 > 천안시",
+    "raw": {
+      "areaNm": "충청남도 > 천안시",
+      "cntntsNo": "265279",
+      "cntntsSj": "천안 사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/265279_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.cheonan.go.kr/tour/sub07_02_01.do",
+      "svcDt": "2026-01-05"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "영천사과",
+    "area": "경상북도 > 영천시",
+    "raw": {
+      "areaNm": "경상북도 > 영천시",
+      "cntntsNo": "261911",
+      "cntntsSj": "영천사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261911_MF_BIMG_01.gif",
+      "linkUrl": "https://www.yc.go.kr/tour/productInfo/list.do?CATEGORY=&mId=0503010000",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "칠곡 사과",
+    "area": "경상북도 > 칠곡군",
+    "raw": {
+      "areaNm": "경상북도 > 칠곡군",
+      "cntntsNo": "261855",
+      "cntntsSj": "칠곡 사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261855_MF_BIMG_01.png",
+      "linkUrl": "https://www.chilgok.go.kr/portal/contents.do?mId=0706030500",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "장수사과",
+    "area": "전북특별자치도 > 장수군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 장수군",
+      "cntntsNo": "261469",
+      "cntntsSj": "장수사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261469_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.jangsu.go.kr/tour/board/list.jangsu?boardId=BBS_0000018&menuCd=DOM_000000403004001000&contentsSid=308&cpath=%2Ftour",
+      "svcDt": "2025-07-01"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "강원특별자치도 > 양구군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 양구군",
+      "cntntsNo": "261347",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261347_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yanggu.go.kr/farm/user_sub?gfnc=www&mu_idx=413",
+      "svcDt": "2025-06-27"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "충청북도 > 청주시",
+    "raw": {
+      "areaNm": "충청북도 > 청주시",
+      "cntntsNo": "261316",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261316_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheongju.go.kr/ktour/contents.do?key=20362",
+      "svcDt": "2025-06-26"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "군위 사과",
+    "area": "대구광역시 > 군위군",
+    "raw": {
+      "areaNm": "대구광역시 > 군위군",
+      "cntntsNo": "261298",
+      "cntntsSj": "군위 사과",
+      "imgUrl": "",
+      "linkUrl": "https://www.gunwi.go.kr/tour/page.do?mnu_uid=381&",
+      "svcDt": "2025-06-26"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과가공식품",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258300",
+      "cntntsSj": "사과가공식품",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258300_MF_BIMG_01.png",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=107",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "문경사과",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258276",
+      "cntntsSj": "문경사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258276_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=83",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "안동사과",
+    "area": "경상북도 > 안동시",
+    "raw": {
+      "areaNm": "경상북도 > 안동시",
+      "cntntsNo": "258267",
+      "cntntsSj": "안동사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258267_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.andong.go.kr/portal/contents.do?mId=0306010000",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "전라남도 > 장성군",
+    "raw": {
+      "areaNm": "전라남도 > 장성군",
+      "cntntsNo": "258234",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258234_MF_BIMG_01.png",
+      "linkUrl": "https://www.jangseong.go.kr/home/tour_new/biz/shopping/shopping_01/shopping_01_01",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "전라남도 > 함평군",
+    "raw": {
+      "areaNm": "전라남도 > 함평군",
+      "cntntsNo": "258180",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258180_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hampyeong.go.kr/contentsView.do?pageId=www169",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "바리실사과",
+    "area": "충청남도 > 금산군",
+    "raw": {
+      "areaNm": "충청남도 > 금산군",
+      "cntntsNo": "258157",
+      "cntntsSj": "바리실사과",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "https://www.geumsan.go.kr/tour/html/sub05/05030103.html",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "속리산 사과",
+    "area": "충청북도 > 보은군",
+    "raw": {
+      "areaNm": "충청북도 > 보은군",
+      "cntntsNo": "258140",
+      "cntntsSj": "속리산 사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258140_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.boeun.go.kr/tour/main/sub05_03_01.do#item2",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "괴산사과",
+    "area": "충청북도 > 괴산군",
+    "raw": {
+      "areaNm": "충청북도 > 괴산군",
+      "cntntsNo": "258130",
+      "cntntsSj": "괴산사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258130_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.goesan.go.kr/gsat/contents.do?key=779",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "강원특별자치도 > 철원군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 철원군",
+      "cntntsNo": "257908",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257908_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.cwg.go.kr/atc/contents.do?key=761",
+      "svcDt": "2025-01-24"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "강원특별자치도 > 평창군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 평창군",
+      "cntntsNo": "257899",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257899_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.pc.go.kr/agri/specialty",
+      "svcDt": "2025-01-24"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "성산사과",
+    "area": "경상남도 > 창녕군",
+    "raw": {
+      "areaNm": "경상남도 > 창녕군",
+      "cntntsNo": "257487",
+      "cntntsSj": "성산사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257487_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.cng.go.kr/01660/02183/02226.web",
+      "svcDt": "2025-01-07"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "화천사과즙",
+    "area": "강원특별자치도 > 화천군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 화천군",
+      "cntntsNo": "257482",
+      "cntntsSj": "화천사과즙",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257482_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.ihc.go.kr/www/contents.do?key=327",
+      "svcDt": "2025-01-07"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "베리베리 사과농원 잼",
+    "area": "경기도 > 연천군",
+    "raw": {
+      "areaNm": "경기도 > 연천군",
+      "cntntsNo": "253190",
+      "cntntsSj": "베리베리 사과농원 잼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/253190_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.yeoncheon.go.kr/agri/selectBbsNttList.do?key=3793&id=&&bbsNo=308&searchCtgry=&pageUnit=8&searchCnd=all&searchKrwd=&integrDeptCode=&pageIndex=1",
+      "svcDt": "2024-07-01"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "횡성사과",
+    "area": "강원특별자치도 > 횡성군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 횡성군",
+      "cntntsNo": "246090",
+      "cntntsSj": "횡성사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/246090_MF_BIMG_01.png",
+      "linkUrl": "https://www.hsg.go.kr/agri/contents.do?key=2075&",
+      "svcDt": "2023-07-07"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "경상북도 > 경주시",
+    "raw": {
+      "areaNm": "경상북도 > 경주시",
+      "cntntsNo": "229309",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229309_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gyeongju.go.kr/agriculture/EgovPageLink.do?link=main/doc/03_06&menuNo=30000",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "전라남도 > 보성군",
+    "raw": {
+      "areaNm": "전라남도 > 보성군",
+      "cntntsNo": "229289",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229289_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.boseong.go.kr/tour/amusement/specialty/fruit/apple",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "전북특별자치도 > 무주군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 무주군",
+      "cntntsNo": "229231",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229231_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.muju.go.kr/index.9is?contentUid=ff8080816c5f9d47016cbda7616903af",
+      "svcDt": "2021-06-16"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "대구광역시",
+    "raw": {
+      "areaNm": "대구광역시",
+      "cntntsNo": "215039",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215039_MF_BIMG_01.jpg",
+      "linkUrl": "https://daegu.go.kr/agri/index.do?menu_id=00939912&menu_link=/icms/bbs/selectBoardList.do&bbsId=BBS_01824",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "경상남도 > 함양군",
+    "raw": {
+      "areaNm": "경상남도 > 함양군",
+      "cntntsNo": "214989",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214989_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hygn.go.kr/01347/01364.web?pageunit=9&gubun=SPC01&cpage=3",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "얼음골 사과",
+    "area": "경상남도 > 밀양시",
+    "raw": {
+      "areaNm": "경상남도 > 밀양시",
+      "cntntsNo": "214937",
+      "cntntsSj": "얼음골 사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214937_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.miryang.go.kr/agr/index.do?mnNo=30200000000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "경상북도 > 봉화군",
+    "raw": {
+      "areaNm": "경상북도 > 봉화군",
+      "cntntsNo": "214896",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214896_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.bonghwa.go.kr/farm/contents.do?mid=0402000000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "경상북도 > 성주군",
+    "raw": {
+      "areaNm": "경상북도 > 성주군",
+      "cntntsNo": "214888",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214888_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.sj.go.kr/sj-atc/page.do?mnu_uid=4176&",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "청송사과",
+    "area": "경상북도 > 청송군",
+    "raw": {
+      "areaNm": "경상북도 > 청송군",
+      "cntntsNo": "214854",
+      "cntntsSj": "청송사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214854_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.cs.go.kr/cheongsong/00003087/00006541.web",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "경상북도 > 영주시",
+    "raw": {
+      "areaNm": "경상북도 > 영주시",
+      "cntntsNo": "214833",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214833_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.yeongju.go.kr/atec/page.do?mnu_uid=10841&",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "충청남도 > 예산군",
+    "raw": {
+      "areaNm": "충청남도 > 예산군",
+      "cntntsNo": "214677",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214677_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yesan.go.kr/tour/sub05_05_02_01.do",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "단양소백산죽령사과",
+    "area": "충청북도 > 단양군",
+    "raw": {
+      "areaNm": "충청북도 > 단양군",
+      "cntntsNo": "214619",
+      "cntntsSj": "단양소백산죽령사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214619_MF_BIMG_01.png",
+      "linkUrl": "https://www.danyang.go.kr/atec/596",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "충청북도 > 증평군",
+    "raw": {
+      "areaNm": "충청북도 > 증평군",
+      "cntntsNo": "214604",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214604_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.jp.go.kr/farm/sub02_03.do",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "충청북도 > 충주시",
+    "raw": {
+      "areaNm": "충청북도 > 충주시",
+      "cntntsNo": "214574",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214574_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.chungju.go.kr/cja/contents.do?key=1022",
+      "svcDt": "2019-10-09"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "강원특별자치도 > 영월군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 영월군",
+      "cntntsNo": "214479",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214479_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yw.go.kr/agri/selectBbsNttList.do?bbsNo=125&key=670&ctgry=26",
+      "svcDt": "2019-10-09"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "치악산 사과",
+    "area": "강원특별자치도 > 원주시",
+    "raw": {
+      "areaNm": "강원특별자치도 > 원주시",
+      "cntntsNo": "214459",
+      "cntntsSj": "치악산 사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214459_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.wonju.go.kr/wjatc/contents.do?key=3445",
+      "svcDt": "2019-10-09"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "경기도 > 가평군",
+    "raw": {
+      "areaNm": "경기도 > 가평군",
+      "cntntsNo": "214439",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214439_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.gp.go.kr/gpnongup/contents.do?key=176",
+      "svcDt": "2019-10-09"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "경상남도 > 산청군",
+    "raw": {
+      "areaNm": "경상남도 > 산청군",
+      "cntntsNo": "200491",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200491_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.sancheong.go.kr/scatc/contents.do?key=1128",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "경상북도 > 의성군",
+    "raw": {
+      "areaNm": "경상북도 > 의성군",
+      "cntntsNo": "200373",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200373_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.usc.go.kr/uisungatec/page.do?mnu_uid=1849&",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "상주 사과",
+    "area": "경상북도 > 상주시",
+    "raw": {
+      "areaNm": "경상북도 > 상주시",
+      "cntntsNo": "200357",
+      "cntntsSj": "상주 사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200357_MF_BIMG_01.gif",
+      "linkUrl": "http://sja.sangju.go.kr/main/main.jsp?code=SPECIALTY_04_01&home_url=sja",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "공주배 / 공주사과",
+    "area": "충청남도 > 공주시",
+    "raw": {
+      "areaNm": "충청남도 > 공주시",
+      "cntntsNo": "200232",
+      "cntntsSj": "공주배 / 공주사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200232_MF_BIMG_01.jpg",
+      "linkUrl": "https://farming.gongju.go.kr/farming/sub03_01_03.do",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "영동사과",
+    "area": "충청북도 > 영동군",
+    "raw": {
+      "areaNm": "충청북도 > 영동군",
+      "cntntsNo": "200214",
+      "cntntsSj": "영동사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200214_MF_BIMG_01.JPG",
+      "linkUrl": "http://www.yd21.go.kr/tour/html/sub04/040409.html",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "강원특별자치도 > 홍천군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 홍천군",
+      "cntntsNo": "200163",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200163_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hongcheon.go.kr/agri/contents.do?key=1034",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "경상남도 > 합천군",
+    "raw": {
+      "areaNm": "경상남도 > 합천군",
+      "cntntsNo": "105689",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105689_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.hc.go.kr/06340/06382/07730.web",
+      "svcDt": "2016-01-07"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "예천사과",
+    "area": "경상북도 > 예천군",
+    "raw": {
+      "areaNm": "경상북도 > 예천군",
+      "cntntsNo": "104793",
+      "cntntsSj": "예천사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104793_MF_BIMG_01.gif",
+      "linkUrl": "http://www.ycg.kr/open.content/farm/situation/specialty/fruit/",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "전라남도 > 곡성군",
+    "raw": {
+      "areaNm": "전라남도 > 곡성군",
+      "cntntsNo": "104703",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104703_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.gokseong.go.kr/kr/subPage.do?menuNo=103009001002",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "사과",
+    "name": "사과",
+    "area": "충청북도 > 음성군",
+    "raw": {
+      "areaNm": "충청북도 > 음성군",
+      "cntntsNo": "104624",
+      "cntntsSj": "사과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104624_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.eumseong.go.kr/esatc/contents.do?key=953",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "경상북도 > 영양군",
+    "raw": {
+      "areaNm": "경상북도 > 영양군",
+      "cntntsNo": "265357",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/265357_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yyg.go.kr/www/introduce/products/agricultural/pear",
+      "svcDt": "2026-01-07"
+    }
+  },
+  {
+    "query": "배",
+    "name": "담배",
+    "area": "경상북도 > 영양군",
+    "raw": {
+      "areaNm": "경상북도 > 영양군",
+      "cntntsNo": "265348",
+      "cntntsSj": "담배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/265348_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yyg.go.kr/www/introduce/products/agricultural/tobacco",
+      "svcDt": "2026-01-07"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배말린",
+    "area": "충청남도 > 천안시",
+    "raw": {
+      "areaNm": "충청남도 > 천안시",
+      "cntntsNo": "265293",
+      "cntntsSj": "배말린",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/265293_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.cheonan.go.kr/tour/sub07_02_03.do",
+      "svcDt": "2026-01-05"
+    }
+  },
+  {
+    "query": "배",
+    "name": "영천배",
+    "area": "경상북도 > 영천시",
+    "raw": {
+      "areaNm": "경상북도 > 영천시",
+      "cntntsNo": "261910",
+      "cntntsSj": "영천배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261910_MF_BIMG_01.gif",
+      "linkUrl": "https://www.yc.go.kr/tour/productInfo/list.do?CATEGORY=&mId=0503010000",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배즙",
+    "area": "경상북도 > 영천시",
+    "raw": {
+      "areaNm": "경상북도 > 영천시",
+      "cntntsNo": "261897",
+      "cntntsSj": "배즙",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261897_MF_BIMG_01.gif",
+      "linkUrl": "https://www.yc.go.kr/tour/productInfo/list.do?CATEGORY=&mId=0503010000",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "배",
+    "name": "칠곡 배",
+    "area": "경상북도 > 칠곡군",
+    "raw": {
+      "areaNm": "경상북도 > 칠곡군",
+      "cntntsNo": "261857",
+      "cntntsSj": "칠곡 배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261857_MF_BIMG_01.png",
+      "linkUrl": "https://www.chilgok.go.kr/portal/contents.do?mId=0706030700",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "경상북도 > 김천시",
+    "raw": {
+      "areaNm": "경상북도 > 김천시",
+      "cntntsNo": "261561",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261561_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gc.go.kr/culture/contents.do?mId=0904000000",
+      "svcDt": "2025-07-02"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "전북특별자치도 > 고창군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 고창군",
+      "cntntsNo": "261534",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261534_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gochang.go.kr/tour/board/list.gochang?boardId=BBS_0000376&menuCd=DOM_000000403003001000&contentsSid=3734&cpath=%2Ftour",
+      "svcDt": "2025-07-02"
+    }
+  },
+  {
+    "query": "배",
+    "name": "무, 배추",
+    "area": "전북특별자치도 > 고창군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 고창군",
+      "cntntsNo": "261524",
+      "cntntsSj": "무, 배추",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261524_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gochang.go.kr/tour/board/list.gochang?boardId=BBS_0000376&menuCd=DOM_000000403003001000&contentsSid=3734&cpath=%2Ftour",
+      "svcDt": "2025-07-02"
+    }
+  },
+  {
+    "query": "배",
+    "name": "황금배",
+    "area": "전북특별자치도 > 남원시",
+    "raw": {
+      "areaNm": "전북특별자치도 > 남원시",
+      "cntntsNo": "261458",
+      "cntntsSj": "황금배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261458_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.namwon.go.kr/tour/index.do?menuUid=ff8080818e5f3f48018e6013cb6400fb",
+      "svcDt": "2025-07-01"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "충청남도 > 논산시",
+    "raw": {
+      "areaNm": "충청남도 > 논산시",
+      "cntntsNo": "261420",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261420_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.nonsan.go.kr/tour/html/sub04/0406.html",
+      "svcDt": "2025-06-30"
+    }
+  },
+  {
+    "query": "배",
+    "name": "절임배추",
+    "area": "강원특별자치도 > 고성군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 고성군",
+      "cntntsNo": "261351",
+      "cntntsSj": "절임배추",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261351_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gwgs.go.kr/prog/spcPrd/atc/sub02_020501/SP012/list.do",
+      "svcDt": "2025-06-27"
+    }
+  },
+  {
+    "query": "배",
+    "name": "절임배추",
+    "area": "충청북도 > 청주시",
+    "raw": {
+      "areaNm": "충청북도 > 청주시",
+      "cntntsNo": "261321",
+      "cntntsSj": "절임배추",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261321_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheongju.go.kr/ktour/contents.do?key=20362",
+      "svcDt": "2025-06-26"
+    }
+  },
+  {
+    "query": "배",
+    "name": "곱배인삼",
+    "area": "경상남도 > 고성군",
+    "raw": {
+      "areaNm": "경상남도 > 고성군",
+      "cntntsNo": "258333",
+      "cntntsSj": "곱배인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258333_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.goseong.go.kr/animal/index.goseong?menuCd=DOM_000001104013014000",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "배",
+    "name": "쌍샘배",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258278",
+      "cntntsSj": "쌍샘배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258278_MF_BIMG_01.png",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=85",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "전라남도 > 신안군",
+    "raw": {
+      "areaNm": "전라남도 > 신안군",
+      "cntntsNo": "258249",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258249_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.shinan.go.kr/home/tour/sale/sale_01/page.wscms",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "전라남도 > 장성군",
+    "raw": {
+      "areaNm": "전라남도 > 장성군",
+      "cntntsNo": "258237",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258237_MF_BIMG_01.png",
+      "linkUrl": "https://www.jangseong.go.kr/home/tour_new/biz/shopping/shopping_01/shopping_01_04",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "전라남도 > 함평군",
+    "raw": {
+      "areaNm": "전라남도 > 함평군",
+      "cntntsNo": "258181",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258181_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hampyeong.go.kr/contentsView.do?pageId=www169",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "배",
+    "name": "신정배",
+    "area": "충청남도 > 금산군",
+    "raw": {
+      "areaNm": "충청남도 > 금산군",
+      "cntntsNo": "258158",
+      "cntntsSj": "신정배",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "https://www.geumsan.go.kr/tour/html/sub05/05030103.html",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "배",
+    "name": "속리산 배",
+    "area": "충청북도 > 보은군",
+    "raw": {
+      "areaNm": "충청북도 > 보은군",
+      "cntntsNo": "258141",
+      "cntntsSj": "속리산 배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258141_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.boeun.go.kr/tour/main/sub05_03_01.do#item2",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "배",
+    "name": "시골절임배추",
+    "area": "충청북도 > 괴산군",
+    "raw": {
+      "areaNm": "충청북도 > 괴산군",
+      "cntntsNo": "258128",
+      "cntntsSj": "시골절임배추",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258128_MF_BIMG_01.gif",
+      "linkUrl": "https://www.goesan.go.kr/gsat/contents.do?key=777",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "충청북도 > 옥천군",
+    "raw": {
+      "areaNm": "충청북도 > 옥천군",
+      "cntntsNo": "258117",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258117_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.oc.go.kr/agri/contents.do?key=1624&",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배추",
+    "area": "강원특별자치도 > 평창군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 평창군",
+      "cntntsNo": "257895",
+      "cntntsSj": "배추",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257895_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.pc.go.kr/agri/specialty",
+      "svcDt": "2025-01-24"
+    }
+  },
+  {
+    "query": "배",
+    "name": "여주배",
+    "area": "경기도 > 여주시",
+    "raw": {
+      "areaNm": "경기도 > 여주시",
+      "cntntsNo": "257888",
+      "cntntsSj": "여주배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257888_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yeoju.go.kr/agriculture/contents.do?key=1066",
+      "svcDt": "2025-01-24"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "경기도 > 광주시",
+    "raw": {
+      "areaNm": "경기도 > 광주시",
+      "cntntsNo": "257882",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257882_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gjcity.go.kr/depart/contents.do?mId=0502020600",
+      "svcDt": "2025-01-24"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "경기도 > 용인시",
+    "raw": {
+      "areaNm": "경기도 > 용인시",
+      "cntntsNo": "257849",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "https://www.yongin.go.kr/home/atc/spcPrdct/spcPrdctB.jsp",
+      "svcDt": "2025-01-23"
+    }
+  },
+  {
+    "query": "배",
+    "name": "먹골배",
+    "area": "경기도 > 남양주시",
+    "raw": {
+      "areaNm": "경기도 > 남양주시",
+      "cntntsNo": "257841",
+      "cntntsSj": "먹골배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257841_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.nyj.go.kr/agri/contents.do?key=507",
+      "svcDt": "2025-01-23"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "부산광역시 > 기장군",
+    "raw": {
+      "areaNm": "부산광역시 > 기장군",
+      "cntntsNo": "257833",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257833_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gijang.go.kr/agri/index.gijang?menuCd=DOM_000000604001000000",
+      "svcDt": "2025-01-23"
+    }
+  },
+  {
+    "query": "배",
+    "name": "신고배",
+    "area": "충청남도 > 천안시",
+    "raw": {
+      "areaNm": "충청남도 > 천안시",
+      "cntntsNo": "253301",
+      "cntntsSj": "신고배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/253301_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheonan.go.kr/tour/sub07_02_01.do",
+      "svcDt": "2024-07-05"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "전라남도 > 순천시",
+    "raw": {
+      "areaNm": "전라남도 > 순천시",
+      "cntntsNo": "253274",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/253274_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.suncheon.go.kr/sca/special/0001/0008/",
+      "svcDt": "2024-07-04"
+    }
+  },
+  {
+    "query": "배",
+    "name": "단풍미인배",
+    "area": "전북특별자치도 > 정읍시",
+    "raw": {
+      "areaNm": "전북특별자치도 > 정읍시",
+      "cntntsNo": "246092",
+      "cntntsSj": "단풍미인배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/246092_MF_BIMG_01.JPG",
+      "linkUrl": "http://www.jeongeup.go.kr/agri/index.jeongeup?menuCd=DOM_000000802002011000",
+      "svcDt": "2023-07-07"
+    }
+  },
+  {
+    "query": "배",
+    "name": "고랭지배추·무",
+    "area": "강원특별자치도 > 삼척시",
+    "raw": {
+      "areaNm": "강원특별자치도 > 삼척시",
+      "cntntsNo": "246088",
+      "cntntsSj": "고랭지배추·무",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/246088_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.samcheok.go.kr/specialty/00467/01348.web",
+      "svcDt": "2023-07-07"
+    }
+  },
+  {
+    "query": "배",
+    "name": "영동배",
+    "area": "충청북도 > 영동군",
+    "raw": {
+      "areaNm": "충청북도 > 영동군",
+      "cntntsNo": "242563",
+      "cntntsSj": "영동배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242563_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.yd21.go.kr/tour/html/sub04/040408.html",
+      "svcDt": "2023-01-16"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "경기도 > 가평군",
+    "raw": {
+      "areaNm": "경기도 > 가평군",
+      "cntntsNo": "242553",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242553_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.gp.go.kr/gpnongup/contents.do?key=178",
+      "svcDt": "2023-01-16"
+    }
+  },
+  {
+    "query": "배",
+    "name": "양배추",
+    "area": "부산광역시",
+    "raw": {
+      "areaNm": "부산광역시",
+      "cntntsNo": "242478",
+      "cntntsSj": "양배추",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242478_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.busan.go.kr/nongup/agri",
+      "svcDt": "2023-01-13"
+    }
+  },
+  {
+    "query": "배",
+    "name": "수양동 배추, 무",
+    "area": "경상남도 > 거제시",
+    "raw": {
+      "areaNm": "경상남도 > 거제시",
+      "cntntsNo": "229359",
+      "cntntsSj": "수양동 배추, 무",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "http://www.geoje.go.kr/atc/index.geoje?menuCd=DOM_000010101003000000",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "배",
+    "name": "예천배",
+    "area": "경상북도 > 예천군",
+    "raw": {
+      "areaNm": "경상북도 > 예천군",
+      "cntntsNo": "229338",
+      "cntntsSj": "예천배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229338_MF_BIMG_01.png",
+      "linkUrl": "http://www.ycg.kr/open.content/farm/situation/specialty/fruit/",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "배",
+    "name": "꿀배",
+    "area": "경상북도 > 청송군",
+    "raw": {
+      "areaNm": "경상북도 > 청송군",
+      "cntntsNo": "229313",
+      "cntntsSj": "꿀배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229313_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.cs.go.kr/cheongsong/00003087/00006541.web",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "전라남도 > 보성군",
+    "raw": {
+      "areaNm": "전라남도 > 보성군",
+      "cntntsNo": "229287",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229287_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.boseong.go.kr/tour/amusement/specialty/fruit",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배추,무",
+    "area": "전북특별자치도 > 무주군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 무주군",
+      "cntntsNo": "229237",
+      "cntntsSj": "배추,무",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229237_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.muju.go.kr/index.9is?contentUid=ff8080816c5f9d47016cbda7616903af",
+      "svcDt": "2021-06-16"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "전북특별자치도 > 완주군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 완주군",
+      "cntntsNo": "229224",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229224_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.wanju.go.kr/tour/index.9is?contentUid=ff8080818c5d9e6d018ca4655b0b6904",
+      "svcDt": "2021-06-16"
+    }
+  },
+  {
+    "query": "배",
+    "name": "고냉지 김장절임배추",
+    "area": "강원특별자치도 > 화천군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 화천군",
+      "cntntsNo": "229103",
+      "cntntsSj": "고냉지 김장절임배추",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229103_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.ihc.go.kr/www/contents.do?key=327",
+      "svcDt": "2021-06-15"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "울산광역시",
+    "raw": {
+      "areaNm": "울산광역시",
+      "cntntsNo": "215088",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215088_MF_BIMG_01.gif",
+      "linkUrl": "https://www.ulsan.go.kr/s/atc/contents.ulsan?mId=001004001000000000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배(탑프루트)단지",
+    "area": "인천광역시",
+    "raw": {
+      "areaNm": "인천광역시",
+      "cntntsNo": "215064",
+      "cntntsSj": "배(탑프루트)단지",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215064_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.incheon.go.kr/agro/AGRO010403",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배추",
+    "area": "부산광역시",
+    "raw": {
+      "areaNm": "부산광역시",
+      "cntntsNo": "215014",
+      "cntntsSj": "배추",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215014_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.busan.go.kr/nongup/agri",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "배",
+    "name": "절임배추",
+    "area": "경상남도 > 함양군",
+    "raw": {
+      "areaNm": "경상남도 > 함양군",
+      "cntntsNo": "215002",
+      "cntntsSj": "절임배추",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215002_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hygn.go.kr/01347/01364.web",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "경상남도 > 함양군",
+    "raw": {
+      "areaNm": "경상남도 > 함양군",
+      "cntntsNo": "214990",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214990_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hygn.go.kr/01347/01364.web?pageunit=9&gubun=SPC01&cpage=3",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "배",
+    "name": "배",
+    "area": "경상남도 > 밀양시",
+    "raw": {
+      "areaNm": "경상남도 > 밀양시",
+      "cntntsNo": "214939",
+      "cntntsSj": "배",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214939_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.miryang.go.kr/agr/index.do?mnNo=30200000000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "배",
+    "name": "산삼배양근",
+    "area": "경상북도 > 영주시",
+    "raw": {
+      "areaNm": "경상북도 > 영주시",
+      "cntntsNo": "214853",
+      "cntntsSj": "산삼배양근",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214853_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.yeongju.go.kr/atec/page.do?mnu_uid=10863",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "배",
+    "name": "겨울배추",
+    "area": "전라남도 > 해남군",
+    "raw": {
+      "areaNm": "전라남도 > 해남군",
+      "cntntsNo": "214801",
+      "cntntsSj": "겨울배추",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214801_MF_BIMG_01.PNG",
+      "linkUrl": "http://www.haenam.go.kr/index.9is?contentUid=18e3368f5d745106015e55ecfc233517",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "영천딸기",
+    "area": "경상북도 > 영천시",
+    "raw": {
+      "areaNm": "경상북도 > 영천시",
+      "cntntsNo": "261904",
+      "cntntsSj": "영천딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261904_MF_BIMG_01.gif",
+      "linkUrl": "https://www.yc.go.kr/tour/productInfo/list.do?CATEGORY=&mId=0503010000",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "칠곡 딸기",
+    "area": "경상북도 > 칠곡군",
+    "raw": {
+      "areaNm": "경상북도 > 칠곡군",
+      "cntntsNo": "261859",
+      "cntntsSj": "칠곡 딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261859_MF_BIMG_01.png",
+      "linkUrl": "https://www.chilgok.go.kr/portal/contents.do?mId=0706030900",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "전북특별자치도 > 남원시",
+    "raw": {
+      "areaNm": "전북특별자치도 > 남원시",
+      "cntntsNo": "261459",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261459_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.namwon.go.kr/tour/index.do?menuUid=ff8080818e5f3f48018e6013cb6400fb",
+      "svcDt": "2025-07-01"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "충청남도 > 예산군",
+    "raw": {
+      "areaNm": "충청남도 > 예산군",
+      "cntntsNo": "261456",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261456_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yesan.go.kr/tour/sub05_05_02_12.do",
+      "svcDt": "2025-07-01"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "홍희딸기",
+    "area": "충청남도 > 홍성군",
+    "raw": {
+      "areaNm": "충청남도 > 홍성군",
+      "cntntsNo": "261452",
+      "cntntsSj": "홍희딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261452_MF_BIMG_01.png",
+      "linkUrl": "https://hongseong.go.kr/farm/sub02_02.do",
+      "svcDt": "2025-07-01"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "충청북도 > 청주시",
+    "raw": {
+      "areaNm": "충청북도 > 청주시",
+      "cntntsNo": "261314",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261314_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheongju.go.kr/ktour/contents.do?key=20362",
+      "svcDt": "2025-06-26"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상남도 > 고성군",
+    "raw": {
+      "areaNm": "경상남도 > 고성군",
+      "cntntsNo": "258325",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258325_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.goseong.go.kr/animal/index.goseong?menuCd=DOM_000001104013006000",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "안동딸기",
+    "area": "경상북도 > 안동시",
+    "raw": {
+      "areaNm": "경상북도 > 안동시",
+      "cntntsNo": "258271",
+      "cntntsSj": "안동딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258271_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.andong.go.kr/portal/contents.do?mId=0306010000",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "전라남도 > 장성군",
+    "raw": {
+      "areaNm": "전라남도 > 장성군",
+      "cntntsNo": "258239",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258239_MF_BIMG_01.png",
+      "linkUrl": "https://www.jangseong.go.kr/home/tour_new/biz/shopping/shopping_01/shopping_01_06",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "영광딸기",
+    "area": "전라남도 > 영광군",
+    "raw": {
+      "areaNm": "전라남도 > 영광군",
+      "cntntsNo": "258211",
+      "cntntsSj": "영광딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258211_MF_BIMG_01.jpg",
+      "linkUrl": "https://tour.yeonggwang.go.kr/subpage/?site=tour_2019&mn=7473",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "전라남도 > 함평군",
+    "raw": {
+      "areaNm": "전라남도 > 함평군",
+      "cntntsNo": "258183",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258183_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hampyeong.go.kr/contentsView.do?pageId=www169",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "부안딸기",
+    "area": "전북특별자치도 > 부안군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 부안군",
+      "cntntsNo": "258166",
+      "cntntsSj": "부안딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258166_MF_BIMG_01.gif",
+      "linkUrl": "https://www.buan.go.kr/tour/index.buan?menuCd=DOM_000000211004001000",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "인삼딸기",
+    "area": "충청남도 > 금산군",
+    "raw": {
+      "areaNm": "충청남도 > 금산군",
+      "cntntsNo": "258160",
+      "cntntsSj": "인삼딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "https://www.geumsan.go.kr/tour/html/sub05/05030103.html",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "충청남도 > 부여군",
+    "raw": {
+      "areaNm": "충청남도 > 부여군",
+      "cntntsNo": "258149",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258149_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.buyeo.go.kr/html/goodtrae/sub02/sub02_020106.html",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경기도 > 남양주시",
+    "raw": {
+      "areaNm": "경기도 > 남양주시",
+      "cntntsNo": "257839",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257839_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.nyj.go.kr/agri/contents.do?key=507",
+      "svcDt": "2025-01-23"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "부산광역시 > 기장군",
+    "raw": {
+      "areaNm": "부산광역시 > 기장군",
+      "cntntsNo": "257831",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257831_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gijang.go.kr/agri/index.gijang?menuCd=DOM_000000604001000000",
+      "svcDt": "2025-01-23"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "광주광역시",
+    "raw": {
+      "areaNm": "광주광역시",
+      "cntntsNo": "257821",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257821_MF_BIMG_01.png",
+      "linkUrl": "https://www.gwangju.go.kr/agri/contentsView.do?pageId=agri58",
+      "svcDt": "2025-01-23"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상북도 > 봉화군",
+    "raw": {
+      "areaNm": "경상북도 > 봉화군",
+      "cntntsNo": "246171",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/246171_MF_BIMG_01.png",
+      "linkUrl": "https://www.bonghwa.go.kr/farm/contents.do?mid=0411000000",
+      "svcDt": "2023-07-11"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "충청남도 > 계룡시",
+    "raw": {
+      "areaNm": "충청남도 > 계룡시",
+      "cntntsNo": "242566",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242566_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.gyeryong.go.kr/tour/html/sub05/0503.html",
+      "svcDt": "2023-01-16"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "산딸기",
+    "area": "부산광역시",
+    "raw": {
+      "areaNm": "부산광역시",
+      "cntntsNo": "242477",
+      "cntntsSj": "산딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242477_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.busan.go.kr/nongup/agri",
+      "svcDt": "2023-01-13"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "임실딸기",
+    "area": "전북특별자치도 > 임실군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 임실군",
+      "cntntsNo": "234302",
+      "cntntsSj": "임실딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "https://www.imsil.go.kr/agri/index.imsil?menuCd=DOM_000000602002004002",
+      "svcDt": "2022-01-05"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상북도 > 경주시",
+    "raw": {
+      "areaNm": "경상북도 > 경주시",
+      "cntntsNo": "229310",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229310_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gyeongju.go.kr/agriculture/EgovPageLink.do?link=main/doc/03_07&menuNo=30000",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "전라남도 > 완도군",
+    "raw": {
+      "areaNm": "전라남도 > 완도군",
+      "cntntsNo": "229306",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229306_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.wando.go.kr/ares/sub.cs?m=21",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "전라남도 > 보성군",
+    "raw": {
+      "areaNm": "전라남도 > 보성군",
+      "cntntsNo": "229290",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229290_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.boseong.go.kr/tour/amusement/specialty/fruit/strawberry",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "여름딸기",
+    "area": "전북특별자치도 > 무주군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 무주군",
+      "cntntsNo": "229238",
+      "cntntsSj": "여름딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229238_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.muju.go.kr/index.9is?contentUid=ff8080816c5f9d47016cbda7616903af",
+      "svcDt": "2021-06-16"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "전북특별자치도 > 완주군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 완주군",
+      "cntntsNo": "229219",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229219_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.wanju.go.kr/tour/index.9is?contentUid=ff8080818c5d9e6d018ca4655aa668ff",
+      "svcDt": "2021-06-16"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기(삼례,고산,완창)",
+    "area": "전북특별자치도 > 완주군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 완주군",
+      "cntntsNo": "229186",
+      "cntntsSj": "딸기(삼례,고산,완창)",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229186_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.wanju.go.kr/atc/planweb/board/list.9is?page=1&&contentUid=ff808081898ba9ba0189f1c96339013b&boardUid=ff8080818b024d8e018b0329043f03bb&subPath=/atc",
+      "svcDt": "2021-06-16"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "인천광역시 > 옹진군",
+    "raw": {
+      "areaNm": "인천광역시 > 옹진군",
+      "cntntsNo": "215081",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215081_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.ongjin.go.kr/open_content/agriculture/product/strawberry.jsp",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상남도 > 함양군",
+    "raw": {
+      "areaNm": "경상남도 > 함양군",
+      "cntntsNo": "214997",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214997_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hygn.go.kr/01347/01364.web?pageunit=9&gubun=SPC01&cpage=2",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상남도 > 창원시",
+    "raw": {
+      "areaNm": "경상남도 > 창원시",
+      "cntntsNo": "214958",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214958_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.changwon.go.kr/cwportal/depart/11071/11079/13498.web#poet02",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상북도 > 청도군",
+    "raw": {
+      "areaNm": "경상북도 > 청도군",
+      "cntntsNo": "214871",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214871_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheongdo.go.kr/farm/contents.do?mid=0301070000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기묘",
+    "area": "전라남도 > 순천시",
+    "raw": {
+      "areaNm": "전라남도 > 순천시",
+      "cntntsNo": "214766",
+      "cntntsSj": "딸기묘",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214766_MF_BIMG_01.png",
+      "linkUrl": "https://www.suncheon.go.kr/sca/special/0001/0003/",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "논산딸기",
+    "area": "충청남도 > 논산시",
+    "raw": {
+      "areaNm": "충청남도 > 논산시",
+      "cntntsNo": "214649",
+      "cntntsSj": "논산딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214649_MF_BIMG_02.jpg",
+      "linkUrl": "https://www.nonsan.go.kr/tour/html/sub04/0406.html",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "충청북도 > 증평군",
+    "raw": {
+      "areaNm": "충청북도 > 증평군",
+      "cntntsNo": "214607",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214607_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.jp.go.kr/farm/sub02_03.do",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상남도 > 산청군",
+    "raw": {
+      "areaNm": "경상남도 > 산청군",
+      "cntntsNo": "200497",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200497_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.sancheong.go.kr/scatc/contents.do?key=1128",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상남도 > 하동군",
+    "raw": {
+      "areaNm": "경상남도 > 하동군",
+      "cntntsNo": "200483",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200483_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.hadong.go.kr/02136/02167/02172.web",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상남도 > 사천시",
+    "raw": {
+      "areaNm": "경상남도 > 사천시",
+      "cntntsNo": "200433",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200433_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.sacheon.go.kr/agriculture/00978/00997.web",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상남도 > 진주시",
+    "raw": {
+      "areaNm": "경상남도 > 진주시",
+      "cntntsNo": "200408",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200408_MF_BIMG_01.gif",
+      "linkUrl": "https://www.jinju.go.kr/02234/02351/04486.web",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "고령 딸기",
+    "area": "경상북도 > 고령군",
+    "raw": {
+      "areaNm": "경상북도 > 고령군",
+      "cntntsNo": "200392",
+      "cntntsSj": "고령 딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200392_MF_BIMG_01.JPG",
+      "linkUrl": "http://www.goryeong.go.kr/tec/contents.do?IDX=13",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기 / 토마토",
+    "area": "충청남도 > 공주시",
+    "raw": {
+      "areaNm": "충청남도 > 공주시",
+      "cntntsNo": "200231",
+      "cntntsSj": "딸기 / 토마토",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200231_MF_BIMG_01.jpg",
+      "linkUrl": "https://farming.gongju.go.kr/farming/sub03_01_02.do",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상남도 > 합천군",
+    "raw": {
+      "areaNm": "경상남도 > 합천군",
+      "cntntsNo": "105678",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105678_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.hc.go.kr/06340/06382/07730.web",
+      "svcDt": "2016-01-07"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상남도 > 통영시",
+    "raw": {
+      "areaNm": "경상남도 > 통영시",
+      "cntntsNo": "105338",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105338_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.tongyeong.go.kr/agri/01735/01864/01874.web",
+      "svcDt": "2015-12-28"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "산딸기",
+    "area": "경상남도 > 김해시",
+    "raw": {
+      "areaNm": "경상남도 > 김해시",
+      "cntntsNo": "105096",
+      "cntntsSj": "산딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105096_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.gimhae.go.kr/01547/02647/01984.web",
+      "svcDt": "2015-12-28"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상남도 > 김해시",
+    "raw": {
+      "areaNm": "경상남도 > 김해시",
+      "cntntsNo": "105085",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105085_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.gimhae.go.kr/01547/02647/01973.web",
+      "svcDt": "2015-12-28"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "경상남도 > 밀양시",
+    "raw": {
+      "areaNm": "경상남도 > 밀양시",
+      "cntntsNo": "105068",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105068_MF_BIMG_01.gif",
+      "linkUrl": "https://www.miryang.go.kr/agr/index.do?mnNo=30200000000",
+      "svcDt": "2015-12-28"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "전북특별자치도 > 순창군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 순창군",
+      "cntntsNo": "104764",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104764_MF_BIMG_01.gif",
+      "linkUrl": "https://www.sunchang.go.kr/farm/index.do?menuUid=ff8080819a2f0e3b019a37ff151f05a8",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "대전광역시",
+    "raw": {
+      "areaNm": "대전광역시",
+      "cntntsNo": "104753",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104753_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.daejeon.go.kr/far/FarContentsHtmlView.do?menuSeq=255",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "전라남도 > 곡성군",
+    "raw": {
+      "areaNm": "전라남도 > 곡성군",
+      "cntntsNo": "104702",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104702_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gokseong.go.kr/kr/subPage.do?menuNo=103009001003",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "딸기",
+    "name": "딸기",
+    "area": "충청남도 > 보령시",
+    "raw": {
+      "areaNm": "충청남도 > 보령시",
+      "cntntsNo": "104653",
+      "cntntsSj": "딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104653_MF_BIMG_01.gif",
+      "linkUrl": "http://www.brcn.go.kr/farm/sub01_02_02.do",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "경상북도 > 영양군",
+    "raw": {
+      "areaNm": "경상북도 > 영양군",
+      "cntntsNo": "265355",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/265355_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yyg.go.kr/www/introduce/products/agricultural/grapes",
+      "svcDt": "2026-01-07"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "경상북도 > 경산시",
+    "raw": {
+      "areaNm": "경상북도 > 경산시",
+      "cntntsNo": "261916",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261916_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gbgs.go.kr/open_content/tour/page.do?mnu_uid=5735&",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "영천포도",
+    "area": "경상북도 > 영천시",
+    "raw": {
+      "areaNm": "경상북도 > 영천시",
+      "cntntsNo": "261914",
+      "cntntsSj": "영천포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261914_MF_BIMG_01.gif",
+      "linkUrl": "https://www.yc.go.kr/tour/productInfo/list.do?CATEGORY=&mId=0503010000",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도즙",
+    "area": "경상북도 > 영천시",
+    "raw": {
+      "areaNm": "경상북도 > 영천시",
+      "cntntsNo": "261896",
+      "cntntsSj": "포도즙",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261896_MF_BIMG_01.gif",
+      "linkUrl": "https://www.yc.go.kr/tour/productInfo/list.do?CATEGORY=&mId=0503010000",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "칠곡포도",
+    "area": "경상북도 > 칠곡군",
+    "raw": {
+      "areaNm": "경상북도 > 칠곡군",
+      "cntntsNo": "261851",
+      "cntntsSj": "칠곡포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261851_MF_BIMG_01.png",
+      "linkUrl": "https://www.chilgok.go.kr/portal/contents.do?mId=0706030100",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "충청남도 > 청양군",
+    "raw": {
+      "areaNm": "충청남도 > 청양군",
+      "cntntsNo": "261449",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261449_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.cheongyang.go.kr/tour/sub05_07.do",
+      "svcDt": "2025-07-01"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "충청남도 > 논산시",
+    "raw": {
+      "areaNm": "충청남도 > 논산시",
+      "cntntsNo": "261424",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261424_MF_BIMG_01.png",
+      "linkUrl": "https://www.nonsan.go.kr/tour/html/sub04/0406.html",
+      "svcDt": "2025-06-30"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "충청북도 > 청주시",
+    "raw": {
+      "areaNm": "충청북도 > 청주시",
+      "cntntsNo": "261319",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261319_MF_BIMG_01.png",
+      "linkUrl": "",
+      "svcDt": "2025-06-26"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "안동포도",
+    "area": "경상북도 > 안동시",
+    "raw": {
+      "areaNm": "경상북도 > 안동시",
+      "cntntsNo": "258264",
+      "cntntsSj": "안동포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258264_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.andong.go.kr/portal/contents.do?mId=0306010000",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "전라남도 > 신안군",
+    "raw": {
+      "areaNm": "전라남도 > 신안군",
+      "cntntsNo": "258250",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258250_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.shinan.go.kr/home/tour/sale/sale_01/page.wscms",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "전라남도 > 장성군",
+    "raw": {
+      "areaNm": "전라남도 > 장성군",
+      "cntntsNo": "258236",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258236_MF_BIMG_01.png",
+      "linkUrl": "https://www.jangseong.go.kr/home/tour_new/biz/shopping/shopping_01/shopping_01_03",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "추부포도",
+    "area": "충청남도 > 금산군",
+    "raw": {
+      "areaNm": "충청남도 > 금산군",
+      "cntntsNo": "258159",
+      "cntntsSj": "추부포도",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "https://www.geumsan.go.kr/tour/html/sub05/05030103.html",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "충청남도 > 부여군",
+    "raw": {
+      "areaNm": "충청남도 > 부여군",
+      "cntntsNo": "258152",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258152_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.buyeo.go.kr/html/goodtrae/sub02/sub02_020109.html",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "충청북도 > 옥천군",
+    "raw": {
+      "areaNm": "충청북도 > 옥천군",
+      "cntntsNo": "258114",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258114_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.oc.go.kr/agri/contents.do?key=1624&",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "백옥포도",
+    "area": "경기도 > 용인시",
+    "raw": {
+      "areaNm": "경기도 > 용인시",
+      "cntntsNo": "257850",
+      "cntntsSj": "백옥포도",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "https://www.yongin.go.kr/home/atc/spcPrdct/spcPrdctG.jsp",
+      "svcDt": "2025-01-23"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "거봉포도",
+    "area": "충청남도 > 천안시",
+    "raw": {
+      "areaNm": "충청남도 > 천안시",
+      "cntntsNo": "253305",
+      "cntntsSj": "거봉포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/253305_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheonan.go.kr/tour/sub07_02_01.do",
+      "svcDt": "2024-07-05"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도(샤인머스캣)",
+    "area": "경상북도 > 성주군",
+    "raw": {
+      "areaNm": "경상북도 > 성주군",
+      "cntntsNo": "250121",
+      "cntntsSj": "포도(샤인머스캣)",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/250121_MF_BIMG_01.JPG",
+      "linkUrl": "http://www.sj.go.kr/sj-atc/page.do?mnu_uid=4176&",
+      "svcDt": "2024-02-01"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "경상남도 > 사천시",
+    "raw": {
+      "areaNm": "경상남도 > 사천시",
+      "cntntsNo": "242670",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242670_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.sacheon.go.kr/agriculture/00978/01003.web",
+      "svcDt": "2023-01-18"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "경상북도 > 청송군",
+    "raw": {
+      "areaNm": "경상북도 > 청송군",
+      "cntntsNo": "229314",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229314_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.cs.go.kr/cheongsong/00003087/00006541.web",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "경상북도 > 경주시",
+    "raw": {
+      "areaNm": "경상북도 > 경주시",
+      "cntntsNo": "229308",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229308_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gyeongju.go.kr/agriculture/EgovPageLink.do?link=main/doc/03_05&menuNo=30000",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "전북특별자치도 > 무주군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 무주군",
+      "cntntsNo": "229234",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229234_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.muju.go.kr/index.9is?contentUid=ff8080816c5f9d47016cbda7616903af",
+      "svcDt": "2021-06-16"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "인천광역시 > 옹진군",
+    "raw": {
+      "areaNm": "인천광역시 > 옹진군",
+      "cntntsNo": "215077",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215077_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.ongjin.go.kr/open_content/agriculture/product/grape.jsp",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "대구광역시",
+    "raw": {
+      "areaNm": "대구광역시",
+      "cntntsNo": "215040",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215040_MF_BIMG_01.jpg",
+      "linkUrl": "https://daegu.go.kr/agri/index.do?menu_id=00939912&menu_link=/icms/bbs/selectBoardList.do&bbsId=BBS_01824",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "경상남도 > 밀양시",
+    "raw": {
+      "areaNm": "경상남도 > 밀양시",
+      "cntntsNo": "214938",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214938_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.miryang.go.kr/agr/index.do?mnNo=30200000000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "둔덕면  포도, 축산",
+    "area": "경상남도 > 거제시",
+    "raw": {
+      "areaNm": "경상남도 > 거제시",
+      "cntntsNo": "214920",
+      "cntntsSj": "둔덕면  포도, 축산",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214920_MF_BIMG_01.gif",
+      "linkUrl": "http://www.geoje.go.kr/atc/index.geoje?menuCd=DOM_000010101003000000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "경상북도 > 영주시",
+    "raw": {
+      "areaNm": "경상북도 > 영주시",
+      "cntntsNo": "214839",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214839_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.yeongju.go.kr/atec/page.do?mnu_uid=10849&",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "운주완창포도",
+    "area": "전북특별자치도 > 완주군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 완주군",
+      "cntntsNo": "214726",
+      "cntntsSj": "운주완창포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214726_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.wanju.go.kr/atc/planweb/board/list.9is?page=1&&contentUid=ff808081898ba9ba0189f1c96339013b&boardUid=ff8080818b024d8e018b0329043f03bb&subPath=/atc",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "봉동왕포도",
+    "area": "전북특별자치도 > 완주군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 완주군",
+      "cntntsNo": "214725",
+      "cntntsSj": "봉동왕포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214725_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.wanju.go.kr/atc/planweb/board/list.9is?page=1&&contentUid=ff808081898ba9ba0189f1c96339013b&boardUid=ff8080818b024d8e018b0329043f03bb&subPath=/atc",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "강원특별자치도 > 영월군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 영월군",
+      "cntntsNo": "214480",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214480_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yw.go.kr/agri/selectBbsNttList.do?bbsNo=125&key=670&ctgry=26",
+      "svcDt": "2019-10-09"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "고원포도",
+    "area": "강원특별자치도 > 삼척시",
+    "raw": {
+      "areaNm": "강원특별자치도 > 삼척시",
+      "cntntsNo": "214471",
+      "cntntsSj": "고원포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214471_MF_BIMG_02.jpg",
+      "linkUrl": "http://www.samcheok.go.kr/specialty/00467/01348.web",
+      "svcDt": "2019-10-09"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "경기도 > 가평군",
+    "raw": {
+      "areaNm": "경기도 > 가평군",
+      "cntntsNo": "214440",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214440_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.gp.go.kr/gpnongup/contents.do?key=177",
+      "svcDt": "2019-10-09"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "경상남도 > 함안군",
+    "raw": {
+      "areaNm": "경상남도 > 함안군",
+      "cntntsNo": "200447",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200447_MF_BIMG_02.jpg",
+      "linkUrl": "https://www.haman.go.kr/01524/01527/01560.web",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "상주 포도",
+    "area": "경상북도 > 상주시",
+    "raw": {
+      "areaNm": "경상북도 > 상주시",
+      "cntntsNo": "200358",
+      "cntntsSj": "상주 포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200358_MF_BIMG_01.gif",
+      "linkUrl": "http://sja.sangju.go.kr/main/main.jsp?code=SPECIALTY_05_01&home_url=sja",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "김천포도",
+    "area": "경상북도 > 김천시",
+    "raw": {
+      "areaNm": "경상북도 > 김천시",
+      "cntntsNo": "200345",
+      "cntntsSj": "김천포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200345_MF_BIMG_02.jpg",
+      "linkUrl": "https://www.gc.go.kr/culture/contents.do?mId=0904000000",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "영동포도주",
+    "area": "충청북도 > 영동군",
+    "raw": {
+      "areaNm": "충청북도 > 영동군",
+      "cntntsNo": "200221",
+      "cntntsSj": "영동포도주",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200221_MF_BIMG_01.JPG",
+      "linkUrl": "http://www.yd21.go.kr/tour/html/sub04/040416.html",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "영동포도",
+    "area": "충청북도 > 영동군",
+    "raw": {
+      "areaNm": "충청북도 > 영동군",
+      "cntntsNo": "200208",
+      "cntntsSj": "영동포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200208_MF_BIMG_01.JPG",
+      "linkUrl": "http://www.yd21.go.kr/tour/html/sub04/040401.html",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "강원특별자치도 > 홍천군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 홍천군",
+      "cntntsNo": "200162",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200162_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hongcheon.go.kr/agri/contents.do?key=1033",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "안성마춤 포도",
+    "area": "경기도 > 안성시",
+    "raw": {
+      "areaNm": "경기도 > 안성시",
+      "cntntsNo": "200149",
+      "cntntsSj": "안성마춤 포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200149_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.anseong.go.kr/depart/contents.do?mId=0203040000",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "강화섬포도",
+    "area": "인천광역시 > 강화군",
+    "raw": {
+      "areaNm": "인천광역시 > 강화군",
+      "cntntsNo": "200139",
+      "cntntsSj": "강화섬포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200139_MF_BIMG_01.gif",
+      "linkUrl": "http://www.ganghwa.go.kr/open_content/tour/shopping/product/grape.jsp",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "경상남도 > 김해시",
+    "raw": {
+      "areaNm": "경상남도 > 김해시",
+      "cntntsNo": "105093",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105093_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.gimhae.go.kr/01547/02647/01981.web",
+      "svcDt": "2015-12-28"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "하빈 기곡포도",
+    "area": "대구광역시 > 달성군",
+    "raw": {
+      "areaNm": "대구광역시 > 달성군",
+      "cntntsNo": "105076",
+      "cntntsSj": "하빈 기곡포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105076_MF_BIMG_01.gif",
+      "linkUrl": "http://dalseong.daegu.kr/dsfarm/index.do?menu_id=00000983",
+      "svcDt": "2015-12-28"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "경기도 > 파주시",
+    "raw": {
+      "areaNm": "경기도 > 파주시",
+      "cntntsNo": "104791",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104791_MF_BIMG_01.gif",
+      "linkUrl": "https://agri.paju.go.kr/agri/agri_02/agri_02_02/agri_02_02_03.jsp",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "대전광역시",
+    "raw": {
+      "areaNm": "대전광역시",
+      "cntntsNo": "104757",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104757_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.daejeon.go.kr/far/FarContentsHtmlView.do?menuSeq=255#tabmenu02",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "전라남도 > 완도군",
+    "raw": {
+      "areaNm": "전라남도 > 완도군",
+      "cntntsNo": "104727",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104727_MF_BIMG_01.gif",
+      "linkUrl": "http://www.wando.go.kr/ares/sub.cs?m=21",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "포도",
+    "area": "전라남도 > 곡성군",
+    "raw": {
+      "areaNm": "전라남도 > 곡성군",
+      "cntntsNo": "104706",
+      "cntntsSj": "포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104706_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gokseong.go.kr/kr/subPage.do?menuNo=103009001002",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "사현(남포)포도",
+    "area": "충청남도 > 보령시",
+    "raw": {
+      "areaNm": "충청남도 > 보령시",
+      "cntntsNo": "104655",
+      "cntntsSj": "사현(남포)포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104655_MF_BIMG_01.gif",
+      "linkUrl": "http://www.brcn.go.kr/farm/sub01_02_03.do",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "시흥포도",
+    "area": "경기도 > 시흥시",
+    "raw": {
+      "areaNm": "경기도 > 시흥시",
+      "cntntsNo": "103939",
+      "cntntsSj": "시흥포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/103939_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.siheung.go.kr/cultour/contents.do?mId=0102030000",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "포도",
+    "name": "김포포도",
+    "area": "경기도 > 김포시",
+    "raw": {
+      "areaNm": "경기도 > 김포시",
+      "cntntsNo": "103861",
+      "cntntsSj": "김포포도",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/103861_MF_BIMG_01.png",
+      "linkUrl": "https://www.gimpo.go.kr/agri/contents.do?key=2560",
+      "svcDt": "2015-12-21"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "경상북도 > 영양군",
+    "raw": {
+      "areaNm": "경상북도 > 영양군",
+      "cntntsNo": "265356",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/265356_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yyg.go.kr/www/introduce/products/agricultural/peach",
+      "svcDt": "2026-01-07"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "경상북도 > 경산시",
+    "raw": {
+      "areaNm": "경상북도 > 경산시",
+      "cntntsNo": "261917",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261917_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gbgs.go.kr/open_content/tour/page.do?mnu_uid=5735&",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "영천복숭아",
+    "area": "경상북도 > 영천시",
+    "raw": {
+      "areaNm": "경상북도 > 영천시",
+      "cntntsNo": "261913",
+      "cntntsSj": "영천복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261913_MF_BIMG_01.gif",
+      "linkUrl": "https://www.yc.go.kr/tour/productInfo/list.do?CATEGORY=&mId=0503010000",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "전라남도 > 화순군",
+    "raw": {
+      "areaNm": "전라남도 > 화순군",
+      "cntntsNo": "261544",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261544_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hwasun.go.kr/culture/contents.do?S=S05&M=030301000000",
+      "svcDt": "2025-07-02"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "전북특별자치도 > 남원시",
+    "raw": {
+      "areaNm": "전북특별자치도 > 남원시",
+      "cntntsNo": "261460",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261460_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.namwon.go.kr/tour/index.do?menuUid=ff8080818e5f3f48018e6013cb6400fb",
+      "svcDt": "2025-07-01"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "충청북도 > 청주시",
+    "raw": {
+      "areaNm": "충청북도 > 청주시",
+      "cntntsNo": "261318",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261318_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheongju.go.kr/ktour/contents.do?key=20362",
+      "svcDt": "2025-06-26"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258279",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258279_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=86",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "충청북도 > 옥천군",
+    "raw": {
+      "areaNm": "충청북도 > 옥천군",
+      "cntntsNo": "258115",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258115_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.oc.go.kr/agri/contents.do?key=1624&",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "여주복숭아",
+    "area": "경기도 > 여주시",
+    "raw": {
+      "areaNm": "경기도 > 여주시",
+      "cntntsNo": "257892",
+      "cntntsSj": "여주복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257892_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yeoju.go.kr/agriculture/contents.do?key=1070",
+      "svcDt": "2025-01-24"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "백옥복숭아",
+    "area": "경기도 > 용인시",
+    "raw": {
+      "areaNm": "경기도 > 용인시",
+      "cntntsNo": "257851",
+      "cntntsSj": "백옥복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "https://www.yongin.go.kr/home/atc/spcPrdct/spcPrdctP.jsp",
+      "svcDt": "2025-01-23"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "전라남도 > 순천시",
+    "raw": {
+      "areaNm": "전라남도 > 순천시",
+      "cntntsNo": "253275",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/253275_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.suncheon.go.kr/sca/special/0001/0009/",
+      "svcDt": "2024-07-04"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "경상북도 > 예천군",
+    "raw": {
+      "areaNm": "경상북도 > 예천군",
+      "cntntsNo": "229340",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229340_MF_BIMG_01.png",
+      "linkUrl": "http://www.ycg.kr/open.content/farm/situation/specialty/fruit/",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "전북특별자치도 > 순창군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 순창군",
+      "cntntsNo": "229242",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229242_MF_BIMG_01.png",
+      "linkUrl": "https://www.sunchang.go.kr/farm/index.do?menuUid=ff8080819a2f0e3b019a37fefb6805a4",
+      "svcDt": "2021-06-16"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "전북특별자치도 > 무주군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 무주군",
+      "cntntsNo": "229235",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229235_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.muju.go.kr/index.9is?contentUid=ff8080816c5f9d47016cbda7616903af",
+      "svcDt": "2021-06-16"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "강원특별자치도 > 홍천군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 홍천군",
+      "cntntsNo": "229097",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229097_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.hongcheon.go.kr/agri/contents.do?key=1035",
+      "svcDt": "2021-06-15"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "대구광역시",
+    "raw": {
+      "areaNm": "대구광역시",
+      "cntntsNo": "215041",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215041_MF_BIMG_01.jpg",
+      "linkUrl": "https://daegu.go.kr/agri/index.do?menu_id=00939912&menu_link=/icms/bbs/selectBoardList.do&bbsId=BBS_01824",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "경상남도 > 창원시",
+    "raw": {
+      "areaNm": "경상남도 > 창원시",
+      "cntntsNo": "214953",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214953_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.changwon.go.kr/cwportal/depart/11071/11079/13498.web#poet01",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "경상북도 > 청도군",
+    "raw": {
+      "areaNm": "경상북도 > 청도군",
+      "cntntsNo": "214866",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214866_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheongdo.go.kr/farm/contents.do?mid=0301020000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "경상북도 > 영주시",
+    "raw": {
+      "areaNm": "경상북도 > 영주시",
+      "cntntsNo": "214844",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214844_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.yeongju.go.kr/atec/page.do?mnu_uid=10854&",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "전북특별자치도 > 전주시",
+    "raw": {
+      "areaNm": "전북특별자치도 > 전주시",
+      "cntntsNo": "214696",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214696_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.jeonju.go.kr/index.9is?contentUid=ff8080818990c349018b041ab6d53b46",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "충청북도 > 충주시",
+    "raw": {
+      "areaNm": "충청북도 > 충주시",
+      "cntntsNo": "214575",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214575_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.chungju.go.kr/cja/contents.do?key=1022",
+      "svcDt": "2019-10-09"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "우포늪복숭아",
+    "area": "경상남도 > 창녕군",
+    "raw": {
+      "areaNm": "경상남도 > 창녕군",
+      "cntntsNo": "200460",
+      "cntntsSj": "우포늪복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200460_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.cng.go.kr/01660/02183/02225.web",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "경상남도 > 함안군",
+    "raw": {
+      "areaNm": "경상남도 > 함안군",
+      "cntntsNo": "200443",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200443_MF_BIMG_02.jpg",
+      "linkUrl": "https://www.haman.go.kr/01524/01527/01562.web",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "경상남도 > 진주시",
+    "raw": {
+      "areaNm": "경상남도 > 진주시",
+      "cntntsNo": "200423",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200423_MF_BIMG_01.gif",
+      "linkUrl": "https://www.jinju.go.kr/02234/02351/04500.web",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "경상북도 > 의성군",
+    "raw": {
+      "areaNm": "경상북도 > 의성군",
+      "cntntsNo": "200375",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200375_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.usc.go.kr/uisungatec/page.do?mnu_uid=1854&",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "상주 복숭아",
+    "area": "경상북도 > 상주시",
+    "raw": {
+      "areaNm": "경상북도 > 상주시",
+      "cntntsNo": "200361",
+      "cntntsSj": "상주 복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200361_MF_BIMG_01.gif",
+      "linkUrl": "http://sja.sangju.go.kr/main/main.jsp?code=SPECIALTY_08_01&home_url=sja",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "임실복숭아",
+    "area": "전북특별자치도 > 임실군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 임실군",
+      "cntntsNo": "200280",
+      "cntntsSj": "임실복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200280_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.imsil.go.kr/agri/index.imsil?menuCd=DOM_000000602002004001",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "영동복숭아",
+    "area": "충청북도 > 영동군",
+    "raw": {
+      "areaNm": "충청북도 > 영동군",
+      "cntntsNo": "200218",
+      "cntntsSj": "영동복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200218_MF_BIMG_01.JPG",
+      "linkUrl": "http://www.yd21.go.kr/tour/html/sub04/040413.html",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "강원특별자치도 > 양양군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 양양군",
+      "cntntsNo": "200178",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200178_MF_BIMG_01.JPG",
+      "linkUrl": "http://yyatc.yangyang.go.kr/gw/agriculture/yyfarm_special_peach",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "경상남도 > 김해시",
+    "raw": {
+      "areaNm": "경상남도 > 김해시",
+      "cntntsNo": "105092",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105092_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.gimhae.go.kr/01547/02647/01980.web",
+      "svcDt": "2015-12-28"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "복숭아",
+    "area": "충청북도 > 음성군",
+    "raw": {
+      "areaNm": "충청북도 > 음성군",
+      "cntntsNo": "104621",
+      "cntntsSj": "복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104621_MF_BIMG_02.jpg",
+      "linkUrl": "https://www.eumseong.go.kr/esatc/contents.do?key=953",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "복숭아",
+    "name": "치악산 복숭아",
+    "area": "강원특별자치도 > 원주시",
+    "raw": {
+      "areaNm": "강원특별자치도 > 원주시",
+      "cntntsNo": "100259",
+      "cntntsSj": "치악산 복숭아",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/100259_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.wonju.go.kr/wjatc/contents.do?key=1857",
+      "svcDt": "2015-12-04"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마",
+    "area": "전북특별자치도 > 고창군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 고창군",
+      "cntntsNo": "261522",
+      "cntntsSj": "고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261522_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gochang.go.kr/tour/board/list.gochang?boardId=BBS_0000376&menuCd=DOM_000000403003001000&contentsSid=3734&cpath=%2Ftour",
+      "svcDt": "2025-07-02"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마",
+    "area": "충청남도 > 논산시",
+    "raw": {
+      "areaNm": "충청남도 > 논산시",
+      "cntntsNo": "261426",
+      "cntntsSj": "고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261426_MF_BIMG_01.png",
+      "linkUrl": "https://www.nonsan.go.kr/tour/html/sub04/0406.html",
+      "svcDt": "2025-06-30"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마",
+    "area": "충청북도 > 청주시",
+    "raw": {
+      "areaNm": "충청북도 > 청주시",
+      "cntntsNo": "261322",
+      "cntntsSj": "고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261322_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheongju.go.kr/ktour/contents.do?key=20362",
+      "svcDt": "2025-06-26"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "여주고구마",
+    "area": "경기도 > 여주시",
+    "raw": {
+      "areaNm": "경기도 > 여주시",
+      "cntntsNo": "257886",
+      "cntntsSj": "여주고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257886_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yeoju.go.kr/agriculture/contents.do?key=1064",
+      "svcDt": "2025-01-24"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마",
+    "area": "경기도 > 양주시",
+    "raw": {
+      "areaNm": "경기도 > 양주시",
+      "cntntsNo": "246053",
+      "cntntsSj": "고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/246053_MF_BIMG_01.jpg",
+      "linkUrl": "https://market.yangju.go.kr/shop/shopbrand.html?type=M&xcode=001&mcode=005",
+      "svcDt": "2023-07-06"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "남부면 고구마",
+    "area": "경상남도 > 거제시",
+    "raw": {
+      "areaNm": "경상남도 > 거제시",
+      "cntntsNo": "229361",
+      "cntntsSj": "남부면 고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "http://www.geoje.go.kr/atc/index.geoje?menuCd=DOM_000010101003000000",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마",
+    "area": "충청남도 > 보령시",
+    "raw": {
+      "areaNm": "충청남도 > 보령시",
+      "cntntsNo": "229131",
+      "cntntsSj": "고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229131_MF_BIMG_01.gif",
+      "linkUrl": "http://www.brcn.go.kr/farm/sub01_02_01.do",
+      "svcDt": "2021-06-15"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마",
+    "area": "인천광역시 > 옹진군",
+    "raw": {
+      "areaNm": "인천광역시 > 옹진군",
+      "cntntsNo": "215079",
+      "cntntsSj": "고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215079_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.ongjin.go.kr/open_content/agriculture/product/sweet_potato.jsp",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마",
+    "area": "부산광역시",
+    "raw": {
+      "areaNm": "부산광역시",
+      "cntntsNo": "215017",
+      "cntntsSj": "고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215017_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.busan.go.kr/nongup/agri",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마 쫀득이",
+    "area": "경상남도 > 통영시",
+    "raw": {
+      "areaNm": "경상남도 > 통영시",
+      "cntntsNo": "214976",
+      "cntntsSj": "고구마 쫀득이",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214976_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.tongyeong.go.kr/agri/01735/01864/02052.web",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마 빼떼기죽",
+    "area": "경상남도 > 통영시",
+    "raw": {
+      "areaNm": "경상남도 > 통영시",
+      "cntntsNo": "214975",
+      "cntntsSj": "고구마 빼떼기죽",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214975_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.tongyeong.go.kr/agri/01735/01864/02051.web",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마",
+    "area": "경상북도 > 영주시",
+    "raw": {
+      "areaNm": "경상북도 > 영주시",
+      "cntntsNo": "214842",
+      "cntntsSj": "고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214842_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.yeongju.go.kr/atec/page.do?mnu_uid=10852&",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "황토고구마",
+    "area": "전라남도 > 해남군",
+    "raw": {
+      "areaNm": "전라남도 > 해남군",
+      "cntntsNo": "214800",
+      "cntntsSj": "황토고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214800_MF_BIMG_01.PNG",
+      "linkUrl": "http://www.haenam.go.kr/index.9is?contentUid=18e3368f5d745106015e55ebc05c3515",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마",
+    "area": "충청남도 > 예산군",
+    "raw": {
+      "areaNm": "충청남도 > 예산군",
+      "cntntsNo": "214685",
+      "cntntsSj": "고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214685_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yesan.go.kr/tour/sub05_05_02_09.do",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마",
+    "area": "충청북도 > 증평군",
+    "raw": {
+      "areaNm": "충청북도 > 증평군",
+      "cntntsNo": "214611",
+      "cntntsSj": "고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214611_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.jp.go.kr/farm/sub02_03.do",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마",
+    "area": "충청북도 > 충주시",
+    "raw": {
+      "areaNm": "충청북도 > 충주시",
+      "cntntsNo": "214578",
+      "cntntsSj": "고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214578_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.chungju.go.kr/cja/contents.do?key=1022",
+      "svcDt": "2019-10-09"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마",
+    "area": "경상남도 > 산청군",
+    "raw": {
+      "areaNm": "경상남도 > 산청군",
+      "cntntsNo": "200490",
+      "cntntsSj": "고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200490_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.sancheong.go.kr/scatc/contents.do?key=1128",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "황토고구마",
+    "area": "전라남도 > 무안군",
+    "raw": {
+      "areaNm": "전라남도 > 무안군",
+      "cntntsNo": "200324",
+      "cntntsSj": "황토고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200324_MF_BIMG_01.JPG",
+      "linkUrl": "http://tour.muan.go.kr/tour/lodge_food/shopping/special_market",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "황토고구마",
+    "area": "전라남도 > 영암군",
+    "raw": {
+      "areaNm": "전라남도 > 영암군",
+      "cntntsNo": "200314",
+      "cntntsSj": "황토고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200314_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.yeongam.go.kr/home/nong/nong/nong_02/nong_02_01/nong_02_01_02",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "조엄고구마",
+    "area": "강원특별자치도 > 원주시",
+    "raw": {
+      "areaNm": "강원특별자치도 > 원주시",
+      "cntntsNo": "200154",
+      "cntntsSj": "조엄고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200154_MF_BIMG_01.gif",
+      "linkUrl": "http://www.wonju.go.kr/wjatc/contents.do?key=1860",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "강화속노랑고구마",
+    "area": "인천광역시 > 강화군",
+    "raw": {
+      "areaNm": "인천광역시 > 강화군",
+      "cntntsNo": "200138",
+      "cntntsSj": "강화속노랑고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200138_MF_BIMG_01.gif",
+      "linkUrl": "http://www.ganghwa.go.kr/open_content/tour/shopping/product/potato.jsp",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마줄기",
+    "area": "경상남도 > 통영시",
+    "raw": {
+      "areaNm": "경상남도 > 통영시",
+      "cntntsNo": "105336",
+      "cntntsSj": "고구마줄기",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105336_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.tongyeong.go.kr/agri/01735/01864/01872.web",
+      "svcDt": "2015-12-28"
+    }
+  },
+  {
+    "query": "고구마",
+    "name": "고구마",
+    "area": "경상남도 > 통영시",
+    "raw": {
+      "areaNm": "경상남도 > 통영시",
+      "cntntsNo": "105332",
+      "cntntsSj": "고구마",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105332_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.tongyeong.go.kr/agri/01735/01864/01868.web",
+      "svcDt": "2015-12-28"
+    }
+  },
+  {
+    "query": "잣",
+    "name": "화천 잣",
+    "area": "강원특별자치도 > 화천군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 화천군",
+      "cntntsNo": "214509",
+      "cntntsSj": "화천 잣",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214509_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.ihc.go.kr/www/contents.do?key=327",
+      "svcDt": "2019-10-09"
+    }
+  },
+  {
+    "query": "잣",
+    "name": "가평잣",
+    "area": "경기도 > 가평군",
+    "raw": {
+      "areaNm": "경기도 > 가평군",
+      "cntntsNo": "214450",
+      "cntntsSj": "가평잣",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214450_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.gp.go.kr/gpnongup/contents.do?key=185",
+      "svcDt": "2019-10-09"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "곱배인삼",
+    "area": "경상남도 > 고성군",
+    "raw": {
+      "areaNm": "경상남도 > 고성군",
+      "cntntsNo": "258333",
+      "cntntsSj": "곱배인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258333_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.goseong.go.kr/animal/index.goseong?menuCd=DOM_000001104013014000",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "인삼달걀",
+    "area": "충청남도 > 금산군",
+    "raw": {
+      "areaNm": "충청남도 > 금산군",
+      "cntntsNo": "258162",
+      "cntntsSj": "인삼달걀",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "https://www.geumsan.go.kr/tour/html/sub05/05030103.html",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "인삼수박",
+    "area": "충청남도 > 금산군",
+    "raw": {
+      "areaNm": "충청남도 > 금산군",
+      "cntntsNo": "258161",
+      "cntntsSj": "인삼수박",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "https://www.geumsan.go.kr/tour/html/sub05/05030103.html",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "인삼딸기",
+    "area": "충청남도 > 금산군",
+    "raw": {
+      "areaNm": "충청남도 > 금산군",
+      "cntntsNo": "258160",
+      "cntntsSj": "인삼딸기",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "https://www.geumsan.go.kr/tour/html/sub05/05030103.html",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "금산인삼",
+    "area": "충청남도 > 금산군",
+    "raw": {
+      "areaNm": "충청남도 > 금산군",
+      "cntntsNo": "258154",
+      "cntntsSj": "금산인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258154_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.geumsan.go.kr/tour/html/sub05/05030101.html",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "괴산인삼",
+    "area": "충청북도 > 괴산군",
+    "raw": {
+      "areaNm": "충청북도 > 괴산군",
+      "cntntsNo": "258129",
+      "cntntsSj": "괴산인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258129_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.goesan.go.kr/gsat/contents.do?key=778",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "인삼",
+    "area": "충청북도 > 옥천군",
+    "raw": {
+      "areaNm": "충청북도 > 옥천군",
+      "cntntsNo": "258123",
+      "cntntsSj": "인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258123_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.oc.go.kr/agri/contents.do?key=1624&",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "인삼",
+    "area": "충청북도 > 진천군",
+    "raw": {
+      "areaNm": "충청북도 > 진천군",
+      "cntntsNo": "258111",
+      "cntntsSj": "인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258111_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.jincheon.go.kr/jcact/sub.do?menukey=3613",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "인삼죽염",
+    "area": "경상남도 > 함양군",
+    "raw": {
+      "areaNm": "경상남도 > 함양군",
+      "cntntsNo": "250129",
+      "cntntsSj": "인삼죽염",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/250129_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hygn.go.kr/01347/01369.web",
+      "svcDt": "2024-02-01"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "연천인삼",
+    "area": "경기도 > 연천군",
+    "raw": {
+      "areaNm": "경기도 > 연천군",
+      "cntntsNo": "229096",
+      "cntntsSj": "연천인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229096_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yeoncheon.go.kr/agri/selectBbsNttList.do?bbsNo=308&key=3793",
+      "svcDt": "2021-06-15"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "풍기인삼",
+    "area": "경상북도 > 영주시",
+    "raw": {
+      "areaNm": "경상북도 > 영주시",
+      "cntntsNo": "214834",
+      "cntntsSj": "풍기인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214834_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.yeongju.go.kr/atec/page.do?mnu_uid=10844&",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "서산6년근인삼",
+    "area": "충청남도 > 서산시",
+    "raw": {
+      "areaNm": "충청남도 > 서산시",
+      "cntntsNo": "214644",
+      "cntntsSj": "서산6년근인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214644_MF_BIMG_01.PNG",
+      "linkUrl": "http://www.seosan.go.kr/agritech/contents.do?key=864",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "영동인삼",
+    "area": "충청북도 > 영동군",
+    "raw": {
+      "areaNm": "충청북도 > 영동군",
+      "cntntsNo": "200219",
+      "cntntsSj": "영동인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200219_MF_BIMG_01.JPG",
+      "linkUrl": "http://www.yd21.go.kr/tour/html/sub04/040414.html",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "인삼",
+    "area": "강원특별자치도 > 홍천군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 홍천군",
+      "cntntsNo": "200169",
+      "cntntsSj": "인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200169_MF_BIMG_01.gif",
+      "linkUrl": "https://www.hongcheon.go.kr/agri/contents.do?key=1042",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "안성마춤 인삼",
+    "area": "경기도 > 안성시",
+    "raw": {
+      "areaNm": "경기도 > 안성시",
+      "cntntsNo": "200151",
+      "cntntsSj": "안성마춤 인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200151_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.anseong.go.kr/depart/contents.do?mId=0203060000",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "강화인삼",
+    "area": "인천광역시 > 강화군",
+    "raw": {
+      "areaNm": "인천광역시 > 강화군",
+      "cntntsNo": "200136",
+      "cntntsSj": "강화인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200136_MF_BIMG_01.gif",
+      "linkUrl": "http://www.ganghwa.go.kr/open_content/tour/shopping/product/ginseng.jsp",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "파주개성인삼",
+    "area": "경기도 > 파주시",
+    "raw": {
+      "areaNm": "경기도 > 파주시",
+      "cntntsNo": "104784",
+      "cntntsSj": "파주개성인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104784_MF_BIMG_01.gif",
+      "linkUrl": "https://agri.paju.go.kr/agri/agri_02/agri_02_02/agri_02_02_03.jsp",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "인삼",
+    "area": "충청북도 > 음성군",
+    "raw": {
+      "areaNm": "충청북도 > 음성군",
+      "cntntsNo": "104626",
+      "cntntsSj": "인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104626_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.eumseong.go.kr/esatc/contents.do?key=953",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "인삼",
+    "name": "김포인삼",
+    "area": "경기도 > 김포시",
+    "raw": {
+      "areaNm": "경기도 > 김포시",
+      "cntntsNo": "103860",
+      "cntntsSj": "김포인삼",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/103860_MF_BIMG_01.png",
+      "linkUrl": "https://www.gimpo.go.kr/agri/contents.do?key=2562",
+      "svcDt": "2015-12-21"
+    }
+  },
+  {
+    "query": "녹차",
+    "name": "하동녹차",
+    "area": "경상남도 > 하동군",
+    "raw": {
+      "areaNm": "경상남도 > 하동군",
+      "cntntsNo": "261587",
+      "cntntsSj": "하동녹차",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261587_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hadong.go.kr/greentea.web",
+      "svcDt": "2025-07-03"
+    }
+  },
+  {
+    "query": "녹차",
+    "name": "녹차",
+    "area": "전북특별자치도 > 고창군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 고창군",
+      "cntntsNo": "261514",
+      "cntntsSj": "녹차",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261514_MF_BIMG_02.jpg",
+      "linkUrl": "https://www.gochang.go.kr/tour/board/list.gochang?boardId=BBS_0000376&menuCd=DOM_000000403003001000&contentsSid=3734&cpath=%2Ftour",
+      "svcDt": "2025-07-02"
+    }
+  },
+  {
+    "query": "녹차",
+    "name": "녹차",
+    "area": "경상남도 > 합천군",
+    "raw": {
+      "areaNm": "경상남도 > 합천군",
+      "cntntsNo": "229404",
+      "cntntsSj": "녹차",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229404_MF_BIMG_01.JPG",
+      "linkUrl": "http://www.hc.go.kr/06340/06382/07730.web",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "녹차",
+    "name": "녹차",
+    "area": "경상남도 > 산청군",
+    "raw": {
+      "areaNm": "경상남도 > 산청군",
+      "cntntsNo": "229390",
+      "cntntsSj": "녹차",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229390_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.sancheong.go.kr/scatc/contents.do?key=1128",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "녹차",
+    "name": "녹차미인보성쌀",
+    "area": "전라남도 > 보성군",
+    "raw": {
+      "areaNm": "전라남도 > 보성군",
+      "cntntsNo": "229283",
+      "cntntsSj": "녹차미인보성쌀",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229283_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.boseong.go.kr/tour/amusement/specialty/rice/greentea_rice",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "녹차",
+    "name": "녹차판매처",
+    "area": "전라남도 > 보성군",
+    "raw": {
+      "areaNm": "전라남도 > 보성군",
+      "cntntsNo": "229273",
+      "cntntsSj": "녹차판매처",
+      "imgUrl": "http://www.nongsaro.go.kr/ps/img/cmmImg_2020/common/no_img.png",
+      "linkUrl": "http://www.boseong.go.kr/tour/amusement/specialty/grt_msr/sales",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "녹차",
+    "name": "녹차",
+    "area": "전라남도 > 보성군",
+    "raw": {
+      "areaNm": "전라남도 > 보성군",
+      "cntntsNo": "229272",
+      "cntntsSj": "녹차",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229272_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.boseong.go.kr/tour/amusement/specialty/grt_msr",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "녹차",
+    "name": "녹차한과",
+    "area": "전라남도 > 보성군",
+    "raw": {
+      "areaNm": "전라남도 > 보성군",
+      "cntntsNo": "200306",
+      "cntntsSj": "녹차한과",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200306_MF_BIMG_01.gif",
+      "linkUrl": "http://www.boseong.go.kr/tour/amusement/specialty/processed_food/traditional_cookies",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "녹차",
+    "name": "녹차된장/고추장",
+    "area": "전라남도 > 보성군",
+    "raw": {
+      "areaNm": "전라남도 > 보성군",
+      "cntntsNo": "200305",
+      "cntntsSj": "녹차된장/고추장",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200305_MF_BIMG_01.gif",
+      "linkUrl": "http://www.boseong.go.kr/tour/amusement/specialty/processed_food/grdoenjang",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "감",
+    "name": "단감",
+    "area": "경상남도 > 의령군",
+    "raw": {
+      "areaNm": "경상남도 > 의령군",
+      "cntntsNo": "261945",
+      "cntntsSj": "단감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261945_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.uiryeong.go.kr/tour/board/list.uiryeong?boardId=SHOP&listRow=12&listCel=1&menuCd=DOM_000000301005001000&paging=ok&categoryCode1=S001&startPage=2",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "감",
+    "name": "보현산 밤맛감자",
+    "area": "경상북도 > 영천시",
+    "raw": {
+      "areaNm": "경상북도 > 영천시",
+      "cntntsNo": "261902",
+      "cntntsSj": "보현산 밤맛감자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261902_MF_BIMG_01.gif",
+      "linkUrl": "https://www.yc.go.kr/tour/productInfo/list.do?CATEGORY=&mId=0503010000",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "감",
+    "name": "삼색감자",
+    "area": "경상북도 > 영천시",
+    "raw": {
+      "areaNm": "경상북도 > 영천시",
+      "cntntsNo": "261901",
+      "cntntsSj": "삼색감자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261901_MF_BIMG_01.gif",
+      "linkUrl": "https://www.yc.go.kr/tour/productInfo/list.do?CATEGORY=&mId=0503010000",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "감",
+    "name": "칠곡단감",
+    "area": "경상북도 > 칠곡군",
+    "raw": {
+      "areaNm": "경상북도 > 칠곡군",
+      "cntntsNo": "261853",
+      "cntntsSj": "칠곡단감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261853_MF_BIMG_01.png",
+      "linkUrl": "https://www.chilgok.go.kr/portal/contents.do?mId=0706030300",
+      "svcDt": "2025-07-23"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감자",
+    "area": "경상북도 > 김천시",
+    "raw": {
+      "areaNm": "경상북도 > 김천시",
+      "cntntsNo": "261559",
+      "cntntsSj": "감자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261559_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gc.go.kr/culture/contents.do?mId=0904000000",
+      "svcDt": "2025-07-02"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감자",
+    "area": "충청남도 > 예산군",
+    "raw": {
+      "areaNm": "충청남도 > 예산군",
+      "cntntsNo": "261455",
+      "cntntsSj": "감자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261455_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yesan.go.kr/tour/sub05_05_02_07.do",
+      "svcDt": "2025-07-01"
+    }
+  },
+  {
+    "query": "감",
+    "name": "곶감",
+    "area": "충청남도 > 논산시",
+    "raw": {
+      "areaNm": "충청남도 > 논산시",
+      "cntntsNo": "261427",
+      "cntntsSj": "곶감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261427_MF_BIMG_01.png",
+      "linkUrl": "https://www.nonsan.go.kr/tour/html/sub04/0406.html",
+      "svcDt": "2025-06-30"
+    }
+  },
+  {
+    "query": "감",
+    "name": "단감",
+    "area": "경상남도 > 고성군",
+    "raw": {
+      "areaNm": "경상남도 > 고성군",
+      "cntntsNo": "258321",
+      "cntntsSj": "단감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258321_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.goseong.go.kr/animal/index.goseong?menuCd=DOM_000001104013002000",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "감",
+    "name": "오감만족",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258313",
+      "cntntsSj": "오감만족",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258313_MF_BIMG_01.png",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=120",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "감",
+    "name": "작두콩,여주,자색돼지감자,야관문차",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258308",
+      "cntntsSj": "작두콩,여주,자색돼지감자,야관문차",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258308_MF_BIMG_01.png",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=115",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "감",
+    "name": "문경곶감",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258289",
+      "cntntsSj": "문경곶감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258289_MF_BIMG_01.png",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=96",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "감",
+    "name": "안동곶감",
+    "area": "경상북도 > 안동시",
+    "raw": {
+      "areaNm": "경상북도 > 안동시",
+      "cntntsNo": "258275",
+      "cntntsSj": "안동곶감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258275_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.andong.go.kr/portal/contents.do?mId=0306010000",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "감",
+    "name": "단감&대봉",
+    "area": "전라남도 > 장성군",
+    "raw": {
+      "areaNm": "전라남도 > 장성군",
+      "cntntsNo": "258235",
+      "cntntsSj": "단감&대봉",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258235_MF_BIMG_01.png",
+      "linkUrl": "https://www.jangseong.go.kr/home/tour_new/biz/shopping/shopping_01/shopping_01_02",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "감",
+    "name": "전통감물염색",
+    "area": "전라남도 > 함평군",
+    "raw": {
+      "areaNm": "전라남도 > 함평군",
+      "cntntsNo": "258205",
+      "cntntsSj": "전통감물염색",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258205_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hampyeong.go.kr/contentsView.do?pageId=www173",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "감",
+    "name": "부안감자",
+    "area": "전북특별자치도 > 부안군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 부안군",
+      "cntntsNo": "258165",
+      "cntntsSj": "부안감자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258165_MF_BIMG_01.gif",
+      "linkUrl": "https://www.buan.go.kr/tour/index.buan?menuCd=DOM_000000211004001000",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "감",
+    "name": "바이오씨감자",
+    "area": "충청북도 > 괴산군",
+    "raw": {
+      "areaNm": "충청북도 > 괴산군",
+      "cntntsNo": "258135",
+      "cntntsSj": "바이오씨감자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258135_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.goesan.go.kr/gsat/contents.do?key=1155",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "감",
+    "name": "괴산연풍곶감",
+    "area": "충청북도 > 괴산군",
+    "raw": {
+      "areaNm": "충청북도 > 괴산군",
+      "cntntsNo": "258132",
+      "cntntsSj": "괴산연풍곶감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258132_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.goesan.go.kr/gsat/contents.do?key=1152",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감(곶감)",
+    "area": "충청북도 > 옥천군",
+    "raw": {
+      "areaNm": "충청북도 > 옥천군",
+      "cntntsNo": "258118",
+      "cntntsSj": "감(곶감)",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258118_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.oc.go.kr/agri/contents.do?key=1624&",
+      "svcDt": "2025-02-03"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감자",
+    "area": "강원특별자치도 > 평창군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 평창군",
+      "cntntsNo": "257897",
+      "cntntsSj": "감자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257897_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.pc.go.kr/agri/specialty",
+      "svcDt": "2025-01-24"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감자빵",
+    "area": "강원특별자치도 > 화천군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 화천군",
+      "cntntsNo": "257483",
+      "cntntsSj": "감자빵",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257483_MF_BIMG_01.jpg",
+      "linkUrl": "",
+      "svcDt": "2025-01-07"
+    }
+  },
+  {
+    "query": "감",
+    "name": "단감",
+    "area": "전라남도 > 순천시",
+    "raw": {
+      "areaNm": "전라남도 > 순천시",
+      "cntntsNo": "253276",
+      "cntntsSj": "단감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/253276_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.suncheon.go.kr/sca/special/0001/0010/",
+      "svcDt": "2024-07-04"
+    }
+  },
+  {
+    "query": "감",
+    "name": "돼지감자",
+    "area": "경기도 > 양주시",
+    "raw": {
+      "areaNm": "경기도 > 양주시",
+      "cntntsNo": "246055",
+      "cntntsSj": "돼지감자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/246055_MF_BIMG_01.jpg",
+      "linkUrl": "https://market.yangju.go.kr/shop/shopbrand.html?type=M&xcode=001&mcode=009",
+      "svcDt": "2023-07-06"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감자",
+    "area": "경상남도 > 창녕군",
+    "raw": {
+      "areaNm": "경상남도 > 창녕군",
+      "cntntsNo": "242698",
+      "cntntsSj": "감자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242698_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.cng.go.kr/01660/02183/02232.web",
+      "svcDt": "2023-01-19"
+    }
+  },
+  {
+    "query": "감",
+    "name": "싱싱단감농장",
+    "area": "경상남도 > 진주시",
+    "raw": {
+      "areaNm": "경상남도 > 진주시",
+      "cntntsNo": "242642",
+      "cntntsSj": "싱싱단감농장",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242642_MF_BIMG_01.gif",
+      "linkUrl": "https://www.jinju.go.kr/02234/02351/04511.web",
+      "svcDt": "2023-01-18"
+    }
+  },
+  {
+    "query": "감",
+    "name": "영동곶감",
+    "area": "충청북도 > 영동군",
+    "raw": {
+      "areaNm": "충청북도 > 영동군",
+      "cntntsNo": "242562",
+      "cntntsSj": "영동곶감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242562_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.yd21.go.kr/tour/html/sub04/040403.html",
+      "svcDt": "2023-01-16"
+    }
+  },
+  {
+    "query": "감",
+    "name": "곶감",
+    "area": "경상남도 > 함안군",
+    "raw": {
+      "areaNm": "경상남도 > 함안군",
+      "cntntsNo": "229362",
+      "cntntsSj": "곶감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229362_MF_BIMG_02.jpg",
+      "linkUrl": "https://www.haman.go.kr/01524/01527/01563.web",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "감",
+    "name": "곶감",
+    "area": "경상남도 > 진주시",
+    "raw": {
+      "areaNm": "경상남도 > 진주시",
+      "cntntsNo": "229350",
+      "cntntsSj": "곶감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229350_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.jinju.go.kr/02234/02351/04508.web",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감자",
+    "area": "전라남도 > 보성군",
+    "raw": {
+      "areaNm": "전라남도 > 보성군",
+      "cntntsNo": "229293",
+      "cntntsSj": "감자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229293_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.boseong.go.kr/tour/amusement/specialty/vegetable/potato",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "감",
+    "name": "곶감",
+    "area": "전북특별자치도 > 완주군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 완주군",
+      "cntntsNo": "229217",
+      "cntntsSj": "곶감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229217_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.wanju.go.kr/tour/index.9is?contentUid=ff8080818c5d9e6d018ca4655a8068fd",
+      "svcDt": "2021-06-16"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감말랭이",
+    "area": "충청남도 > 보령시",
+    "raw": {
+      "areaNm": "충청남도 > 보령시",
+      "cntntsNo": "229141",
+      "cntntsSj": "감말랭이",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229141_MF_BIMG_01.gif",
+      "linkUrl": "http://www.brcn.go.kr/farm/sub01_02_06.do",
+      "svcDt": "2021-06-15"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감미료",
+    "area": "충청남도 > 보령시",
+    "raw": {
+      "areaNm": "충청남도 > 보령시",
+      "cntntsNo": "229140",
+      "cntntsSj": "감미료",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229140_MF_BIMG_01.gif",
+      "linkUrl": "http://www.brcn.go.kr/farm/sub01_02_06.do",
+      "svcDt": "2021-06-15"
+    }
+  },
+  {
+    "query": "감",
+    "name": "단감",
+    "area": "울산광역시",
+    "raw": {
+      "areaNm": "울산광역시",
+      "cntntsNo": "215089",
+      "cntntsSj": "단감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215089_MF_BIMG_01.gif",
+      "linkUrl": "https://www.ulsan.go.kr/s/atc/contents.ulsan?mId=001004001000000000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "강화장준감",
+    "area": "인천광역시 > 강화군",
+    "raw": {
+      "areaNm": "인천광역시 > 강화군",
+      "cntntsNo": "215075",
+      "cntntsSj": "강화장준감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215075_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.ganghwa.go.kr/open_content/tour/shopping/product/persimmon.jsp",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "현풍 단감",
+    "area": "대구광역시 > 달성군",
+    "raw": {
+      "areaNm": "대구광역시 > 달성군",
+      "cntntsNo": "215051",
+      "cntntsSj": "현풍 단감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215051_MF_BIMG_01.gif",
+      "linkUrl": "https://www.dalseong.daegu.kr/dsfarm/index.do?menu_id=00000985",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감말랭이",
+    "area": "경상남도 > 함양군",
+    "raw": {
+      "areaNm": "경상남도 > 함양군",
+      "cntntsNo": "215004",
+      "cntntsSj": "감말랭이",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215004_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hygn.go.kr/01347/01364.web",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "곶감",
+    "area": "경상남도 > 함양군",
+    "raw": {
+      "areaNm": "경상남도 > 함양군",
+      "cntntsNo": "215003",
+      "cntntsSj": "곶감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/215003_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hygn.go.kr/01347/01364.web",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "단감",
+    "area": "경상남도 > 함양군",
+    "raw": {
+      "areaNm": "경상남도 > 함양군",
+      "cntntsNo": "214991",
+      "cntntsSj": "단감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214991_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hygn.go.kr/01347/01364.web?pageunit=9&gubun=SPC01&cpage=3",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "단감",
+    "area": "경상남도 > 창원시",
+    "raw": {
+      "areaNm": "경상남도 > 창원시",
+      "cntntsNo": "214950",
+      "cntntsSj": "단감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214950_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.changwon.go.kr/cwportal/depart/11071/11079/13498.web#poet01",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감자",
+    "area": "경상남도 > 밀양시",
+    "raw": {
+      "areaNm": "경상남도 > 밀양시",
+      "cntntsNo": "214941",
+      "cntntsSj": "감자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214941_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.miryang.go.kr/agr/index.do?mnNo=30200000000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감자",
+    "area": "경상북도 > 봉화군",
+    "raw": {
+      "areaNm": "경상북도 > 봉화군",
+      "cntntsNo": "214904",
+      "cntntsSj": "감자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214904_MF_BIMG_01.gif",
+      "linkUrl": "hhttps://www.bonghwa.go.kr/farm/contents.do?mid=0410000000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감자",
+    "area": "경상북도 > 고령군",
+    "raw": {
+      "areaNm": "경상북도 > 고령군",
+      "cntntsNo": "214882",
+      "cntntsSj": "감자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214882_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.goryeong.go.kr/tec/contents.do?IDX=13",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감와인",
+    "area": "경상북도 > 청도군",
+    "raw": {
+      "areaNm": "경상북도 > 청도군",
+      "cntntsNo": "214880",
+      "cntntsSj": "감와인",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214880_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheongdo.go.kr/farm/contents.do?mid=0303160000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감잎차",
+    "area": "경상북도 > 청도군",
+    "raw": {
+      "areaNm": "경상북도 > 청도군",
+      "cntntsNo": "214877",
+      "cntntsSj": "감잎차",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214877_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheongdo.go.kr/farm/contents.do?mid=0303160000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감식초",
+    "area": "경상북도 > 청도군",
+    "raw": {
+      "areaNm": "경상북도 > 청도군",
+      "cntntsNo": "214876",
+      "cntntsSj": "감식초",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214876_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheongdo.go.kr/farm/contents.do?mid=0303160000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "감말랭이",
+    "area": "경상북도 > 청도군",
+    "raw": {
+      "areaNm": "경상북도 > 청도군",
+      "cntntsNo": "214874",
+      "cntntsSj": "감말랭이",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214874_MF_BIMG_01.png",
+      "linkUrl": "https://www.cheongdo.go.kr/farm/contents.do?mid=0303150000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "단감",
+    "area": "전라남도 > 영암군",
+    "raw": {
+      "areaNm": "전라남도 > 영암군",
+      "cntntsNo": "214804",
+      "cntntsSj": "단감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214804_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.yeongam.go.kr/home/nong/nong/nong_02/nong_02_01/nong_02_01_01",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "대봉감",
+    "area": "전라남도 > 영암군",
+    "raw": {
+      "areaNm": "전라남도 > 영암군",
+      "cntntsNo": "214803",
+      "cntntsSj": "대봉감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214803_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.yeongam.go.kr/home/nong/nong/nong_02/nong_02_01/nong_02_01_01",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "단감",
+    "area": "전라남도 > 구례군",
+    "raw": {
+      "areaNm": "전라남도 > 구례군",
+      "cntntsNo": "214794",
+      "cntntsSj": "단감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214794_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.gurye.go.kr/farmtech/subPage.do?menuNo=141002002011",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "씨없는동상곶감",
+    "area": "전북특별자치도 > 완주군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 완주군",
+      "cntntsNo": "214738",
+      "cntntsSj": "씨없는동상곶감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214738_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.wanju.go.kr/atc/planweb/board/list.9is?page=3&&contentUid=ff808081898ba9ba0189f1c96339013b&boardUid=ff8080818b024d8e018b0329043f03bb&subPath=/atc",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "감",
+    "name": "흑곶감",
+    "area": "전북특별자치도 > 완주군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 완주군",
+      "cntntsNo": "214734",
+      "cntntsSj": "흑곶감",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214734_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.wanju.go.kr/atc/planweb/board/list.9is?page=2&&contentUid=ff808081898ba9ba0189f1c96339013b&boardUid=ff8080818b024d8e018b0329043f03bb&subPath=/atc",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "매실",
+    "name": "하동매실",
+    "area": "경상남도 > 하동군",
+    "raw": {
+      "areaNm": "경상남도 > 하동군",
+      "cntntsNo": "261586",
+      "cntntsSj": "하동매실",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261586_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hadong.go.kr/02642/02657/02852.web",
+      "svcDt": "2025-07-03"
+    }
+  },
+  {
+    "query": "매실",
+    "name": "매실",
+    "area": "전라남도 > 순천시",
+    "raw": {
+      "areaNm": "전라남도 > 순천시",
+      "cntntsNo": "214765",
+      "cntntsSj": "매실",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214765_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.suncheon.go.kr/sca/special/0001/0002/",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "매실",
+    "name": "매실",
+    "area": "경상남도 > 사천시",
+    "raw": {
+      "areaNm": "경상남도 > 사천시",
+      "cntntsNo": "200436",
+      "cntntsSj": "매실",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200436_MF_BIMG_01.JPG",
+      "linkUrl": "https://www.sacheon.go.kr/agriculture/00978/01000.web",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "매실",
+    "name": "매실",
+    "area": "경상남도 > 진주시",
+    "raw": {
+      "areaNm": "경상남도 > 진주시",
+      "cntntsNo": "200422",
+      "cntntsSj": "매실",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200422_MF_BIMG_01.gif",
+      "linkUrl": "https://www.jinju.go.kr/02234/02351/04499.web",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "매실",
+    "name": "매실",
+    "area": "경상남도 > 합천군",
+    "raw": {
+      "areaNm": "경상남도 > 합천군",
+      "cntntsNo": "105638",
+      "cntntsSj": "매실",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105638_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.hc.go.kr/06340/06382/07730.web",
+      "svcDt": "2016-01-07"
+    }
+  },
+  {
+    "query": "매실",
+    "name": "매실",
+    "area": "경상남도 > 김해시",
+    "raw": {
+      "areaNm": "경상남도 > 김해시",
+      "cntntsNo": "105094",
+      "cntntsSj": "매실",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105094_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.gimhae.go.kr/01547/02647/01982.web",
+      "svcDt": "2015-12-28"
+    }
+  },
+  {
+    "query": "매실",
+    "name": "매실",
+    "area": "전북특별자치도 > 순창군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 순창군",
+      "cntntsNo": "104765",
+      "cntntsSj": "매실",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104765_MF_BIMG_01.gif",
+      "linkUrl": "https://www.sunchang.go.kr/farm/index.do?menuUid=ff8080819a2f0e3b019a37ff622505b4",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "매실",
+    "name": "매실",
+    "area": "전라남도 > 곡성군",
+    "raw": {
+      "areaNm": "전라남도 > 곡성군",
+      "cntntsNo": "104700",
+      "cntntsSj": "매실",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104700_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gokseong.go.kr/kr/subPage.do?menuNo=103009001002",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "오미자",
+    "area": "충청남도 > 천안시",
+    "raw": {
+      "areaNm": "충청남도 > 천안시",
+      "cntntsNo": "265284",
+      "cntntsSj": "오미자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/265284_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.cheonan.go.kr/tour/sub07_02_03.do",
+      "svcDt": "2026-01-05"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "오미자",
+    "area": "전북특별자치도 > 장수군",
+    "raw": {
+      "areaNm": "전북특별자치도 > 장수군",
+      "cntntsNo": "261475",
+      "cntntsSj": "오미자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/261475_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.jangsu.go.kr/tour/board/list.jangsu?boardId=BBS_0000018&listRow=2&listCel=3&menuCd=DOM_000000403004001000&paging=ok&categoryCode1=A&startPage=2",
+      "svcDt": "2025-07-01"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "오미자막걸리",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258310",
+      "cntntsSj": "오미자막걸리",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258310_MF_BIMG_01.png",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=117",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "오미자김",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258299",
+      "cntntsSj": "오미자김",
+      "imgUrl": "",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=106",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "문경새재 오미자빵",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258296",
+      "cntntsSj": "문경새재 오미자빵",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258296_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=103",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "오미자 찰보리빵",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258295",
+      "cntntsSj": "오미자 찰보리빵",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258295_MF_BIMG_01.png",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=102",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "오미자",
+    "area": "경상북도 > 문경시",
+    "raw": {
+      "areaNm": "경상북도 > 문경시",
+      "cntntsNo": "258277",
+      "cntntsSj": "오미자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/258277_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.gbmg.go.kr/tour/localFood/view.do?CATEGORY=&mId=0603010000&idx=84",
+      "svcDt": "2025-02-04"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "오미자",
+    "area": "강원특별자치도 > 평창군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 평창군",
+      "cntntsNo": "257900",
+      "cntntsSj": "오미자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/257900_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.pc.go.kr/agri/specialty",
+      "svcDt": "2025-01-24"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "오미자",
+    "area": "경상남도 > 함양군",
+    "raw": {
+      "areaNm": "경상남도 > 함양군",
+      "cntntsNo": "214994",
+      "cntntsSj": "오미자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214994_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hygn.go.kr/01347/01364.web?pageunit=9&gubun=SPC01&cpage=2",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "오미자",
+    "area": "경상북도 > 성주군",
+    "raw": {
+      "areaNm": "경상북도 > 성주군",
+      "cntntsNo": "214895",
+      "cntntsSj": "오미자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214895_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.sj.go.kr/sj-atc/page.do?mnu_uid=4176&",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "단양 오미자",
+    "area": "충청북도 > 단양군",
+    "raw": {
+      "areaNm": "충청북도 > 단양군",
+      "cntntsNo": "214615",
+      "cntntsSj": "단양 오미자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214615_MF_BIMG_01.png",
+      "linkUrl": "https://www.danyang.go.kr/atec/596",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "상주 오미자",
+    "area": "경상북도 > 상주시",
+    "raw": {
+      "areaNm": "경상북도 > 상주시",
+      "cntntsNo": "200363",
+      "cntntsSj": "상주 오미자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200363_MF_BIMG_01.gif",
+      "linkUrl": "http://sja.sangju.go.kr/main/main.jsp?home_url=sja&befor_home_url=sja&befor_code=SPECIALTY_11_01&code=SPECIALTY_12_01",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "오미자",
+    "area": "강원특별자치도 > 홍천군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 홍천군",
+      "cntntsNo": "200171",
+      "cntntsSj": "오미자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200171_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.hongcheon.go.kr/agri/contents.do?key=1044",
+      "svcDt": "2016-02-03"
+    }
+  },
+  {
+    "query": "오미자",
+    "name": "오미자",
+    "area": "강원특별자치도 > 인제군",
+    "raw": {
+      "areaNm": "강원특별자치도 > 인제군",
+      "cntntsNo": "104570",
+      "cntntsSj": "오미자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104570_MF_BIMG_01.gif",
+      "linkUrl": "http://www.inje.go.kr/farm/product/best",
+      "svcDt": "2015-12-23"
+    }
+  },
+  {
+    "query": "유자",
+    "name": "장목면 양파,유자",
+    "area": "경상남도 > 거제시",
+    "raw": {
+      "areaNm": "경상남도 > 거제시",
+      "cntntsNo": "242677",
+      "cntntsSj": "장목면 양파,유자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/242677_MF_BIMG_01.gif",
+      "linkUrl": "http://www.geoje.go.kr/atc/index.geoje?menuCd=DOM_000010101003000000",
+      "svcDt": "2023-01-18"
+    }
+  },
+  {
+    "query": "유자",
+    "name": "유자주",
+    "area": "경상남도 > 남해군",
+    "raw": {
+      "areaNm": "경상남도 > 남해군",
+      "cntntsNo": "229365",
+      "cntntsSj": "유자주",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/229365_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.namhae.go.kr/depart/Index.do?c=DE0604010500",
+      "svcDt": "2021-06-17"
+    }
+  },
+  {
+    "query": "유자",
+    "name": "동백·유자오일",
+    "area": "경상남도 > 통영시",
+    "raw": {
+      "areaNm": "경상남도 > 통영시",
+      "cntntsNo": "214972",
+      "cntntsSj": "동백·유자오일",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214972_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.tongyeong.go.kr/agri/01735/01864/02047.web",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "유자",
+    "name": "유자",
+    "area": "경상남도 > 통영시",
+    "raw": {
+      "areaNm": "경상남도 > 통영시",
+      "cntntsNo": "214965",
+      "cntntsSj": "유자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214965_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.tongyeong.go.kr/agri/01735/01864/02042.web",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "유자",
+    "name": "사등면  유자, 비파, 토마토, 느타리버섯",
+    "area": "경상남도 > 거제시",
+    "raw": {
+      "areaNm": "경상남도 > 거제시",
+      "cntntsNo": "214918",
+      "cntntsSj": "사등면  유자, 비파, 토마토, 느타리버섯",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214918_MF_BIMG_01.gif",
+      "linkUrl": "http://www.geoje.go.kr/atc/index.geoje?menuCd=DOM_000010101003000000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "유자",
+    "name": "연초면  상황버섯, 들깨, 유자",
+    "area": "경상남도 > 거제시",
+    "raw": {
+      "areaNm": "경상남도 > 거제시",
+      "cntntsNo": "214917",
+      "cntntsSj": "연초면  상황버섯, 들깨, 유자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214917_MF_BIMG_01.gif",
+      "linkUrl": "http://www.geoje.go.kr/atc/index.geoje?menuCd=DOM_000010101003000000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "유자",
+    "name": "하청면  맹종죽(죽순), 풋고추, 유자, 치자",
+    "area": "경상남도 > 거제시",
+    "raw": {
+      "areaNm": "경상남도 > 거제시",
+      "cntntsNo": "214914",
+      "cntntsSj": "하청면  맹종죽(죽순), 풋고추, 유자, 치자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214914_MF_BIMG_01.gif",
+      "linkUrl": "http://www.geoje.go.kr/atc/index.geoje?menuCd=DOM_000010101003000000",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "유자",
+    "name": "유자차",
+    "area": "전라남도 > 여수시",
+    "raw": {
+      "areaNm": "전라남도 > 여수시",
+      "cntntsNo": "214759",
+      "cntntsSj": "유자차",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/214759_MF_BIMG_01.jpg",
+      "linkUrl": "https://www.yeosu.go.kr/agr/info/specialty?idx=142707&mode=view",
+      "svcDt": "2019-10-10"
+    }
+  },
+  {
+    "query": "유자",
+    "name": "유자청",
+    "area": "경상남도 > 남해군",
+    "raw": {
+      "areaNm": "경상남도 > 남해군",
+      "cntntsNo": "200468",
+      "cntntsSj": "유자청",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200468_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.namhae.go.kr/depart/Index.do?c=DE0604010400",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "유자",
+    "name": "유자",
+    "area": "경상남도 > 남해군",
+    "raw": {
+      "areaNm": "경상남도 > 남해군",
+      "cntntsNo": "200467",
+      "cntntsSj": "유자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/200467_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.namhae.go.kr/depart/Index.do?c=DE0604010300",
+      "svcDt": "2016-02-04"
+    }
+  },
+  {
+    "query": "유자",
+    "name": "유자청",
+    "area": "경상남도 > 통영시",
+    "raw": {
+      "areaNm": "경상남도 > 통영시",
+      "cntntsNo": "105345",
+      "cntntsSj": "유자청",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/105345_MF_BIMG_01.jpg",
+      "linkUrl": "http://www.tongyeong.go.kr/agri/01735/01864/01881.web",
+      "svcDt": "2015-12-28"
+    }
+  },
+  {
+    "query": "유자",
+    "name": "유자",
+    "area": "전라남도 > 완도군",
+    "raw": {
+      "areaNm": "전라남도 > 완도군",
+      "cntntsNo": "104729",
+      "cntntsSj": "유자",
+      "imgUrl": "http://www.nongsaro.go.kr/cms_contents/1015/104729_MF_BIMG_01.gif",
+      "linkUrl": "http://www.wando.go.kr/ares/sub.cs?m=21",
+      "svcDt": "2015-12-23"
+    }
+  }
+]
