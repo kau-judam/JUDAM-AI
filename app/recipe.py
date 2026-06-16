@@ -103,6 +103,23 @@ _SUB_WHITELIST = (
 )
 
 
+def _filter_regions_with_sub(regions: List[str], main_ingredient: str) -> List[str]:
+    """지역 목록 중 '화이트리스트 통과 서브재료가 1개 이상' 있는 지역만 남긴다.
+    각 특산물 name 을 1회만 normalize 한 뒤 지역 substring 매칭으로 판정(성능)."""
+    prods = []
+    for p in _load_local_products():
+        canon = _normalize_sub_ingredient(p.get("name"))
+        if canon and canon != main_ingredient:
+            area = " ".join(str(p.get("area") or "").replace(">", " ").split())
+            prods.append((canon, area))
+    kept = []
+    for r in regions:
+        nr = " ".join(str(r or "").replace(">", " ").split())
+        if nr and any(nr in area for _, area in prods):
+            kept.append(r)
+    return kept
+
+
 def _normalize_sub_ingredient(name: str):
     """후보 name → 막걸리 부재료 핵심 품목으로 정규화. 부적합/비화이트면 None."""
     n = str(name or "").strip()
@@ -275,7 +292,9 @@ class RecipeAI:
         manual = [
             ingredient
             for ingredient, mapped_region in INGREDIENT_REGION_MAP.items()
-            if region in mapped_region and ingredient != main_ingredient
+            if region in mapped_region
+            and ingredient != main_ingredient
+            and not any(k in ingredient for k in _SUB_BASE_EXCLUDE)   # 쌀·찹쌀·현미·보리 키 제외
         ]
         if manual:
             return {
