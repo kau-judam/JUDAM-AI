@@ -29,7 +29,7 @@ from app.insight import (
     InsightRequest,
     InsightResponse,
 )
-from app.recipe import RecipeAI
+from app.recipe import RecipeAI, _filter_rice_sub_ingredients
 from app.image_generator import ImageGenerator
 from app.chat import router as chat_router
 from app.ocr import BreweryOCR
@@ -79,6 +79,29 @@ def set_cache(key: str, value, ttl_minutes: int = 60):
         'value': value,
         'expires': datetime.now() + timedelta(minutes=ttl_minutes),
     }
+
+
+def _sanitize_sub_ingredients_response(value: Any) -> Any:
+    """캐시 포함 모든 서브재료 응답에서 '쌀' 포함 품목을 제거한다."""
+    if isinstance(value, SubIngredientsResponse):
+        cleaned = _filter_rice_sub_ingredients(value.sub_ingredients)
+        if cleaned == value.sub_ingredients:
+            return value
+        data = value.model_dump() if hasattr(value, "model_dump") else value.dict()
+        data["sub_ingredients"] = cleaned
+        if not cleaned:
+            data["data_source"] = "unavailable"
+        return SubIngredientsResponse(**data)
+    if isinstance(value, dict):
+        cleaned = _filter_rice_sub_ingredients(value.get("sub_ingredients", []))
+        if cleaned == value.get("sub_ingredients", []):
+            return value
+        sanitized = dict(value)
+        sanitized["sub_ingredients"] = cleaned
+        if not cleaned:
+            sanitized["data_source"] = "unavailable"
+        return sanitized
+    return value
 
 # 추천 시스템 초기화
 _recommender = AdvancedMakgeolliRecommender()
@@ -182,10 +205,9 @@ async def startup_event():
     async def warm_cache():
         try:
             warm_targets = [
-                {'main_ingredient': '이천 쌀', 'region': '경기도 이천'},
                 {'main_ingredient': '제주 감귤', 'region': '제주도'},
-                {'main_ingredient': '안동 쌀', 'region': '경상북도 안동'},
-                {'main_ingredient': '전주 쌀', 'region': '전라북도 전주'},
+                {'main_ingredient': '사과', 'region': '경상북도 청송'},
+                {'main_ingredient': '복숭아', 'region': '경기도 이천'},
             ]
             for target in warm_targets:
                 cache_key = f"recipe_sub_{hash(target['main_ingredient']+target['region'])}"
@@ -771,7 +793,7 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
         cached = get_cache(cache_key)
         if cached is not None:
             logger.info(f"서브재료 캐시 히트: {request.main_ingredient}/{effective_region}")
-            return cached
+            return _sanitize_sub_ingredients_response(cached)
 
         recipe_ai = app.state.recipe_ai
 
@@ -781,6 +803,7 @@ async def suggest_sub_ingredients(request: SubIngredientsRequest):
         )
 
         response_obj = SubIngredientsResponse(**result)
+        response_obj = _sanitize_sub_ingredients_response(response_obj)
         set_cache(cache_key, response_obj, ttl_minutes=1440)
         return response_obj
 

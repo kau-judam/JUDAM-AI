@@ -22,6 +22,16 @@ _LOCAL_PRODUCTS_PATH = Path("data/local_products.json")
 _LOCAL_PRODUCTS: Optional[List[Dict]] = None
 
 
+def _has_rice_text(value: object) -> bool:
+    """품목명에 '쌀' 글자가 들어 있으면 True. 서브재료·지역조회 전 경로 차단 기준."""
+    return "쌀" in str(value or "")
+
+
+def _filter_rice_sub_ingredients(sub_ingredients: List[str]) -> List[str]:
+    """서브재료 목록에서 '쌀' 포함 품목을 제거한다."""
+    return [item for item in sub_ingredients if not _has_rice_text(item)]
+
+
 def _load_nongsaro_region_map() -> Dict[str, List[str]]:
     """특산물명 → 지역목록 매핑 로드. ' > ' 구분자는 공백으로 정규화. 없으면 빈 dict."""
     global _NONGSARO_REGION_MAP
@@ -44,6 +54,8 @@ def _match_nongsaro_regions(ingredient: str) -> List[str]:
     """농사로 매핑에서 ingredient 에 해당하는 지역목록 반환 (없으면 [])."""
     if not ingredient or not ingredient.strip():
         return []  # 빈 입력은 substring 매칭으로 전 항목과 오매칭되므로 차단
+    if _has_rice_text(ingredient):
+        return []
     nmap = _load_nongsaro_region_map()
     if not nmap:
         return []
@@ -106,6 +118,8 @@ _SUB_WHITELIST = (
 def _filter_regions_with_sub(regions: List[str], main_ingredient: str) -> List[str]:
     """지역 목록 중 '화이트리스트 통과 서브재료가 1개 이상' 있는 지역만 남긴다.
     각 특산물 name 을 1회만 normalize 한 뒤 지역 substring 매칭으로 판정(성능)."""
+    if _has_rice_text(main_ingredient):
+        return []
     prods = []
     for p in _load_local_products():
         canon = _normalize_sub_ingredient(p.get("name"))
@@ -124,6 +138,8 @@ def _normalize_sub_ingredient(name: str):
     """후보 name → 막걸리 부재료 핵심 품목으로 정규화. 부적합/비화이트면 None."""
     n = str(name or "").strip()
     if not n:
+        return None
+    if _has_rice_text(n):
         return None
     # 1) 복합·다품목 문자열 차단
     if any(c in n for c in (",", "/", "·", "&")) or "  " in n:
@@ -208,6 +224,8 @@ class RecipeAI:
         """
         if not main_ingredient or not main_ingredient.strip():
             return []  # 빈 입력은 substring 오매칭 방지
+        if _has_rice_text(main_ingredient):
+            return []
 
         # 1순위: 농사로 수집 데이터
         nongsaro = _match_nongsaro_regions(main_ingredient)
@@ -294,11 +312,12 @@ class RecipeAI:
             for ingredient, mapped_region in INGREDIENT_REGION_MAP.items()
             if region in mapped_region
             and ingredient != main_ingredient
+            and not _has_rice_text(ingredient)
             and not any(k in ingredient for k in _SUB_BASE_EXCLUDE)   # 쌀·찹쌀·현미·보리 키 제외
         ]
         if manual:
             return {
-                "sub_ingredients": manual[:5],
+                "sub_ingredients": _filter_rice_sub_ingredients(manual[:5]),
                 "region": region,
                 "data_source": "manual",
                 "traditional_liquor_status": "NEEDS_REVIEW",
@@ -355,7 +374,7 @@ class RecipeAI:
                 selected.append(name)
         if not selected:
             raise ValueError("Gemini 선별 결과가 후보와 일치하지 않음")
-        return selected[:5]
+        return _filter_rice_sub_ingredients(selected[:5])
 
     async def suggest_flavor_tags(
         self,
