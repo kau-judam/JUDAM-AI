@@ -78,6 +78,61 @@ def _region_matches(area: str, region: str) -> bool:
     normalized_region = " ".join(str(region or "").replace(">", " ").split())
     return bool(normalized_region and normalized_region in normalized_area)
 
+
+# ── 서브재료 화이트리스트 (막걸리 부재료로 적합한 핵심 품목만 통과) ──
+# 제외는 substring 오매칭이 우려되는 키워드(차·김·주·청·죽·묘·식초 등)는 'endswith(접미)'로,
+# 채소·베이스·시설·비식품은 'substring'으로 비대칭 적용한다. 화이트는 '토큰 포함'으로 정규화.
+_SUB_BASE_EXCLUDE = ("쌀", "찹쌀", "현미", "보리")                       # 곡물 베이스(쌀류)
+_SUB_VEG_EXCLUDE = ("배추", "양배추", "감자", "고구마줄기",
+                    "양파", "마늘", "버섯", "죽순", "풋고추", "들깨", "작두콩")  # 채소·나물
+_SUB_NONFOOD_EXCLUDE = ("담배", "염색")                                 # 비식품
+_SUB_FACILITY_EXCLUDE = ("판매처", "조합", "법인", "농원", "농장", "단지", "배양근")  # 시설·상품명
+_SUB_PROC_SUFFIX = ("즙", "주", "청", "식초", "와인", "빵", "떡", "한과", "유과",
+                    "엿", "죽", "오일", "달걀", "죽염", "잼", "된장", "고추장",
+                    "막걸리", "가공식품", "식품", "쫀득이", "빼떼기", "감미료")  # 가공 접미
+# (token, canonical) — 앞쪽(더 구체적)부터 검사해 정규화. '배추'·'감자'는 위에서 먼저 제외됨.
+_SUB_WHITELIST = (
+    ("샤인머스캣", "포도"), ("거봉", "포도"),
+    ("산딸기", "산딸기"),
+    ("곶감", "감"), ("단감", "감"), ("대봉", "감"),
+    ("무화과", "무화과"), ("복숭아", "복숭아"),
+    ("사과", "사과"), ("포도", "포도"), ("딸기", "딸기"), ("매실", "매실"),
+    ("유자", "유자"), ("오미자", "오미자"), ("인삼", "인삼"), ("잣", "잣"),
+    ("녹차", "녹차"), ("고구마", "고구마"),
+    ("배", "배"), ("감", "감"),
+)
+
+
+def _normalize_sub_ingredient(name: str):
+    """후보 name → 막걸리 부재료 핵심 품목으로 정규화. 부적합/비화이트면 None."""
+    n = str(name or "").strip()
+    if not n:
+        return None
+    # 1) 복합·다품목 문자열 차단
+    if any(c in n for c in (",", "/", "·", "&")) or "  " in n:
+        return None
+    # 2) 명시 제외 (화이트 매칭보다 먼저 — substring 우선순위)
+    if any(k in n for k in _SUB_BASE_EXCLUDE):
+        return None
+    if any(k in n for k in _SUB_VEG_EXCLUDE):
+        return None
+    if any(k in n for k in _SUB_NONFOOD_EXCLUDE):
+        return None
+    if any(k in n for k in _SUB_FACILITY_EXCLUDE):
+        return None
+    if n.endswith("묘") or n.endswith("김"):
+        return None
+    if n.endswith("차") and not n.endswith("녹차"):   # 유자차·감잎차 제외, 녹차는 통과
+        return None
+    if any(n.endswith(suf) for suf in _SUB_PROC_SUFFIX):
+        return None
+    # 3) 화이트리스트 정확 토큰 → 정규화
+    for token, canon in _SUB_WHITELIST:
+        if token in n:
+            return canon
+    return None
+
+
 # Gemini 에러 관련 상수
 _QUOTA_MSG = "현재 AI 서비스가 일시적으로 혼잡합니다. 잠시 후 다시 시도해주세요."
 _CONN_MSG  = "AI 서비스에 연결할 수 없습니다. 잠시 후 다시 시도해주세요."
@@ -193,15 +248,13 @@ class RecipeAI:
 
         candidates: List[str] = []
         for product in _load_local_products():
-            name = str(product.get("name") or "").strip()
             area = str(product.get("area") or "").strip()
-            if (
-                name
-                and _region_matches(area, region)
-                and name != main_ingredient
-                and name not in candidates
-            ):
-                candidates.append(name)
+            if not _region_matches(area, region):
+                continue
+            canon = _normalize_sub_ingredient(product.get("name"))   # 화이트리스트 필터 + 정규화
+            if not canon or canon == main_ingredient or canon in candidates:
+                continue
+            candidates.append(canon)
         if candidates:
             # 후보가 2개 이상일 때만 Gemini 선별(보조 단계). 실패 시 기존대로 candidates[:5] 폴백.
             selected = candidates[:5]
@@ -253,9 +306,10 @@ class RecipeAI:
         client = genai.Client(api_key=self.gemini_api_key)
         candidates_str = ", ".join(candidates)
         prompt = (
-            f"'{main_ingredient}'(으)로 만드는 전통주에 어울리는 서브재료를 아래 후보 중에서만 골라줘.\n"
+            f"'{main_ingredient}'(으)로 만드는 막걸리·전통주에 어울리는 서브재료를 아래 후보 중에서만 골라줘.\n"
             f"후보: {candidates_str}\n"
-            "주로 무난히 어울리는 것 위주로 3~5개를 고르되, 그중 1개 정도는 의외성 있는(독특하지만 시도해볼 만한) 재료를 섞어도 좋아.\n"
+            "막걸리·전통주에 잘 어울리는 재료만 무난히 어울리는 것 위주로 3~5개 골라줘. "
+            "채소·나물·가공식품·비식품·판매처/상품명은 절대 고르지 마라.\n"
             "반드시 위 후보 목록 안에 있는 재료만 사용하고, 목록에 없는 재료는 만들지 마.\n"
             "재료 이름 문자열만 담은 JSON 배열로만 답변. 이유·점수 등 다른 정보는 넣지 마."
         )
